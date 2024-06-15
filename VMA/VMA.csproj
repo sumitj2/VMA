@@ -18,16 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BusinessLogic.Abstraction.VMA\BusinessLogic.Abstraction.VMA.csproj" />
     <ProjectReference Include="..\Database.Abstraction.VMA\Database.Abstraction.VMA.csproj" />
     <ProjectReference Include="..\Database.VMA\Database.VMA.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="CustomControls\" />
-    <Folder Include="MVVM\Models\" />
-    <Folder Include="MVVM\ViewModels\" />
     <Folder Include="Images\" />
-    <Folder Include="MVVM\Views\" />
   </ItemGroup>
 
 </Project>
