@@ -113,7 +113,7 @@ namespace VMA.MVVM.ViewModels.Login
         //Constructor
         public LoginViewModel(IUserBusinessLogic userBusinessLogic)
         {
-            _userBusinessLogic = userBusinessLogic;// Due to conructor parameter getting error in LoginView.xaml 
+            _userBusinessLogic = userBusinessLogic; 
         }
 
         private bool CanExecuteLoginCommand(object obj)

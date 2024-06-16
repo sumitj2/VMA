@@ -32,23 +32,21 @@ namespace VMA.MVVM.ViewModels
         public MainViewModel(IUserBusinessLogic userBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
-            CurrentUserAccount = new UserAccountModel();
-            LoadCurrentUserData();
+            _currentUserAccount = new UserAccountModel();
+            _ = LoadCurrentUserData();
         }
 
-        private async void LoadCurrentUserData()
+        private async Task LoadCurrentUserData()
         {
-            var user =await _userBusinessLogic.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
+            var user = await _userBusinessLogic.GetByUsername(Thread.CurrentPrincipal?.Identity?.Name ?? "").ConfigureAwait(false);
             if (user != null)
             {
                 CurrentUserAccount.Username = user.Username;
                 CurrentUserAccount.DisplayName = $"Welcome {user.Name} {user.LastName} ;)";
-                CurrentUserAccount.ProfilePicture = null;
             }
             else
             {
                 CurrentUserAccount.DisplayName = "Invalid user, not logged in";
-                //Hide child views.
             }
         }
     }

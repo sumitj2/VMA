@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogic.Abstraction.VMA.Contract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,11 +21,12 @@ namespace VMA.MVVM.Views
     /// </summary>
     public partial class LoginView : Window
     {
-        public LoginView()
+        private IUserBusinessLogic _userBusinessLogic;
+        public LoginView(IUserBusinessLogic userBusinessLogic)
         {
             InitializeComponent();
-
-            this.DataContext = new LoginViewModel(null);
+             _userBusinessLogic= userBusinessLogic;
+            this.DataContext = new LoginViewModel(_userBusinessLogic);
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {

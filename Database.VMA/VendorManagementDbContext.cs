@@ -15,6 +15,8 @@ public partial class VendorManagementDbContext : DbContext
         : base(options)
     {
     }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        => optionsBuilder.UseSqlServer(System.Configuration.ConfigurationManager.ConnectionStrings["VMA"].ConnectionString);
 
     public virtual DbSet<User> Users { get; set; }
 

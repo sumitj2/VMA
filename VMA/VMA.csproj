@@ -22,10 +22,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BusinessLogic.Abstraction.VMA\BusinessLogic.Abstraction.VMA.csproj" />
+    <ProjectReference Include="..\BusinessLogic.VMA\BusinessLogic.VMA.csproj" />
     <ProjectReference Include="..\Database.Abstraction.VMA\Database.Abstraction.VMA.csproj" />
     <ProjectReference Include="..\Database.VMA\Database.VMA.csproj" />
   </ItemGroup>

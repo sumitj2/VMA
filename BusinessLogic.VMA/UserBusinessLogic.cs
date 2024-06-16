@@ -21,7 +21,7 @@ namespace BusinessLogic.VMA
 
         public async Task<UserModel> GetByUsername(string username)
         {
-            UserModel userModel;
+            UserModel userModel=new();
             var res = await _userRepository.GetByUsername(username).ConfigureAwait(false);
 
             if (res != null)
@@ -34,7 +34,7 @@ namespace BusinessLogic.VMA
                     Username = res.Username
                 };
             }
-            return new UserModel();
+            return userModel;
 
         }
     }
