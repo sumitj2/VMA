@@ -80,33 +80,63 @@ namespace VMA.MVVM.ViewModels.Login
         }
 
         //-> Commands
-        public ICommand LoginCommand { get; }
-        public ICommand RecoverPasswordCommand { get; }
+        private ViewModelCommand loginCommand;
+        public ICommand LoginCommand
+        {
+            get
+            {
+                if (this.loginCommand == null)
+                {
+                    this.loginCommand = new ViewModelCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
+
+                }
+                return this.loginCommand;
+            }
+        }
+
+        private ViewModelCommand recoverPasswordCommand;
+        public ICommand RecoverPasswordCommand
+        {
+            get
+            {
+                if (this.recoverPasswordCommand == null)
+                {
+                    this.recoverPasswordCommand = new ViewModelCommand(p => ExecuteRecoverPassCommand("", ""));
+
+                }
+                return this.recoverPasswordCommand;
+            }
+        }
         public ICommand ShowPasswordCommand { get; }
         public ICommand RememberPasswordCommand { get; }
 
         //Constructor
         public LoginViewModel(IUserBusinessLogic userBusinessLogic)
         {
-            _userBusinessLogic=userBusinessLogic;// Due to conructor parameter getting error in LoginView.xaml 
-             LoginCommand = new ViewModelCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
-            RecoverPasswordCommand = new ViewModelCommand(p => ExecuteRecoverPassCommand("", ""));
+            _userBusinessLogic = userBusinessLogic;// Due to conructor parameter getting error in LoginView.xaml 
         }
 
         private bool CanExecuteLoginCommand(object obj)
         {
             bool validData;
+
             if (string.IsNullOrWhiteSpace(Username) || Username.Length < 3 ||
                 Password == null || Password.Length < 3)
+            {
                 validData = false;
+            }
             else
+            {
                 validData = true;
+            }
+
             return validData;
         }
 
         private async void ExecuteLoginCommand(object obj)
         {
-            var isValidUser =await _userBusinessLogic.AuthenticateUser(new NetworkCredential(Username, Password));
+            var isValidUser = await _userBusinessLogic.AuthenticateUser(new NetworkCredential(Username, Password));
+            
             if (isValidUser)
             {
                 Thread.CurrentPrincipal = new GenericPrincipal(
