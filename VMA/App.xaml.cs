@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
 using System.Data;
 using System.Windows;
+using VMA.MVVM.Views;
 
 namespace VMA
 {
@@ -23,13 +24,13 @@ namespace VMA
         {
             string cs = System.Configuration.ConfigurationManager.ConnectionStrings["VMA"].ConnectionString;
             // Register services and view models
-            services.AddSingleton<MainWindow>();
+            services.AddSingleton<LoginView>();
             services.AddDbContext<VendorManagementDbContext>(options => options.UseSqlServer(cs));
         }
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            var mainWindow = _serviceProvider.GetService<MainWindow>();
+            var mainWindow = _serviceProvider.GetService<LoginView>();
             mainWindow!.Show();
         }
     }
