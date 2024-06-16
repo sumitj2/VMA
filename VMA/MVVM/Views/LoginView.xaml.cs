@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using VMA.MVVM.ViewModels.Login;
 
 namespace VMA.MVVM.Views
 {
@@ -22,6 +23,8 @@ namespace VMA.MVVM.Views
         public LoginView()
         {
             InitializeComponent();
+
+            this.DataContext = new LoginViewModel(null);
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {

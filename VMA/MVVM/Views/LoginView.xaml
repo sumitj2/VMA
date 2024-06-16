@@ -4,20 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VMA.MVVM.Views"
-         xmlns:viewModel="clr-namespace:VMA.MVVM.ViewModels" xmlns:customcontrols="clr-namespace:VMA.CustomControls"
+        xmlns:viewModel="clr-namespace:VMA.MVVM.ViewModels" xmlns:customcontrols="clr-namespace:VMA.CustomControls"
         mc:Ignorable="d"
         Title="LoginView" Height="550" Width="800"
         WindowStyle="None"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
         Background="Transparent"
-        AllowsTransparency="True"
+        AllowsTransparency="True" Icon="/Images/logo.png"
         MouseDown="Window_MouseDown">
-
-<!--Due to error commented code below-->
-    <!--<Window.DataContext>
-        <viewModel:LoginViewModel/>
-    </Window.DataContext>-->
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
@@ -202,10 +197,10 @@
                                FontFamily="Montserrat"                             
                                Margin="0,15,0,0"/>
 
-                    <!--<customcontrols:BindablePasswordBox Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <customcontrols:BindablePasswordBox Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         Height="28"                            
                                                         Margin="0,5,0,0">
-                    </customcontrols:BindablePasswordBox>-->
+                    </customcontrols:BindablePasswordBox>
 
                     <TextBlock Text="{Binding ErrorMessage}"
                                Foreground="#D7596D"
