@@ -48,9 +48,9 @@ namespace VMA
         }
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
-            var mainWindow = _serviceProvider.GetService<LoginView>();
-            mainWindow!.Show();
+            //base.OnStartup(e);
+            //var mainWindow = _serviceProvider.GetService<LoginView>();
+            //mainWindow!.Show();
             var loginView = new LoginView(_userBusinessLogic);
             loginView.Show();
             loginView.IsVisibleChanged += (s, ev) =>

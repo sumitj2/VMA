@@ -32,7 +32,7 @@ namespace VMA.MVVM.Views
             this.DataContext = new MainViewModel(_userBusinessLogic);
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             InitializeComponent();
-            this.DataContext = new MainViewModel(_userBusinessLogic);
+            //this.DataContext = new MainViewModel(_userBusinessLogic);
         }
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
