@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using VMA.MVVM.ViewModels;
 using VMA.MVVM.ViewModels.Login;
-
+using System.Runtime;
 
 namespace VMA.MVVM.Views
 {
@@ -30,32 +30,36 @@ namespace VMA.MVVM.Views
         {
             _userBusinessLogic = userBusinessLogic;
             this.DataContext = new MainViewModel(_userBusinessLogic);
-            InitializeComponent();            
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            InitializeComponent();
+            this.DataContext = new MainViewModel(_userBusinessLogic);
         }
-        //[DllImport("user32.dll")]
-        //public static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
-        //private void pnlControlBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    WindowInteropHelper helper = new WindowInteropHelper(this);
-        //    SendMessage(helper.Handle, 161, 2, 0);​
-        //}
-        //private void pnlControlBar_MouseEnter(object sender, MouseEventArgs e)
-        //{
-        //  //  Este.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-        //}
-        private void btnClose_Click(object sender, RoutedEventArgs e)
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
+        private void PnlControlBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            WindowInteropHelper helper = new WindowInteropHelper(this);
+            SendMessage(helper.Handle, 161, 2, 0);
+        }
+        private void PnlControlBar_MouseEnter(object sender, MouseEventArgs e)
+        {
+            MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+        }
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
-        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        private void BtnMinimize_Click(object sender, RoutedEventArgs e)
         {
-           /// Este.WindowState = WindowState.Minimized;
+            WindowState = WindowState.Minimized;
         }
-        private void btnMaximize_Click(object sender, RoutedEventArgs e)
+        private void BtnMaximize_Click(object sender, RoutedEventArgs e)
         {
-            if (this.WindowState == WindowState.Normal) { }
-            /// Este.WindowState = WindowState.Maximized;
-            else this.WindowState = WindowState.Normal;
+            if (WindowState == WindowState.Normal)
+                WindowState = WindowState.Maximized;
+            else WindowState = WindowState.Normal;
         }
+
+
     }
 }

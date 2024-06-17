@@ -24,6 +24,10 @@ namespace VMA
         public App()
         {
             var serviceCollection = new ServiceCollection();
+            _vendorManagementDbContext = new VendorManagementDbContext();
+            _userRepository = new UserRepository(_vendorManagementDbContext);
+            _userBusinessLogic = new UserBusinessLogic(_userRepository);
+
             ConfigureServices(serviceCollection);
             _serviceProvider = serviceCollection.BuildServiceProvider();
         }
@@ -31,14 +35,12 @@ namespace VMA
         private void ConfigureServices(IServiceCollection services)
         {
             string cs = System.Configuration.ConfigurationManager.ConnectionStrings["VMA"].ConnectionString;
-            services.AddDbContext<VendorManagementDbContext>(options => options.UseSqlServer(cs));
+           // services.AddDbContext<VendorManagementDbContext>(options => options.UseSqlServer(cs));
 
-            services.AddSingleton<IUserBusinessLogic, UserBusinessLogic>();
-            services.AddSingleton<IUserRepository, UserRepository>();
+            //services.AddSingleton<IUserBusinessLogic, UserBusinessLogic>();
+          //  services.AddSingleton<IUserRepository, UserRepository>();
             // Register services and view models
-             _vendorManagementDbContext = new VendorManagementDbContext();
-             _userRepository = new UserRepository(_vendorManagementDbContext);
-            _userBusinessLogic = new UserBusinessLogic(_userRepository);
+             
            
             services.AddSingleton(x=>new LoginView(_userBusinessLogic));
             services.AddSingleton(x => new MainView(_userBusinessLogic));
@@ -47,8 +49,8 @@ namespace VMA
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            //var mainWindow = _serviceProvider.GetService<LoginView>();
-            //mainWindow!.Show();
+            var mainWindow = _serviceProvider.GetService<LoginView>();
+            mainWindow!.Show();
             var loginView = new LoginView(_userBusinessLogic);
             loginView.Show();
             loginView.IsVisibleChanged += (s, ev) =>
@@ -58,6 +60,7 @@ namespace VMA
                     var mainView = new MainView(_userBusinessLogic);
                     mainView.Show();
                     loginView.Close();
+
                 }
             };
         }

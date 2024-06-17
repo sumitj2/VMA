@@ -24,9 +24,10 @@ namespace VMA.MVVM.Views
         private IUserBusinessLogic _userBusinessLogic;
         public LoginView(IUserBusinessLogic userBusinessLogic)
         {
-            InitializeComponent();
-             _userBusinessLogic= userBusinessLogic;
+            _userBusinessLogic = userBusinessLogic;
             this.DataContext = new LoginViewModel(_userBusinessLogic);
+
+            InitializeComponent();
         }
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
