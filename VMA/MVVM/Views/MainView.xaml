@@ -59,7 +59,7 @@
 
                     <!--Menu Buttons-->
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color1}"
+                                 Tag="{StaticResource color2}"
                                  IsChecked="True"
                                  Command="{Binding ShowHomeViewCommand}">
                         <StackPanel Orientation="Horizontal">
