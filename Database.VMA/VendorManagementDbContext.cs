@@ -18,7 +18,7 @@ public partial class VendorManagementDbContext : DbContext
 
     public virtual DbSet<GstcalculationMaster> GstcalculationMasters { get; set; }
 
-    public virtual DbSet<InvoiceDetai> InvoiceDetais { get; set; }
+    public virtual DbSet<InvoiceDetails> InvoiceDetails { get; set; }
 
     public virtual DbSet<User> Users { get; set; }   
 
@@ -51,7 +51,7 @@ public partial class VendorManagementDbContext : DbContext
             entity.Property(e => e.SgstPercentage).HasColumnName("SGST_Percentage");
         });
 
-        modelBuilder.Entity<InvoiceDetai>(entity =>
+        modelBuilder.Entity<InvoiceDetails>(entity =>
         {
             entity.HasKey(e => e.InvoiceId).HasName("PK__InvoiceD__D796AAD50EAC611D");
 

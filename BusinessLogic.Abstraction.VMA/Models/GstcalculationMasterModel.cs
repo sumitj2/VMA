@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Database.VMA.Models;
+namespace BusinessLogic.Abstraction.VMA.Models;
 
-public partial class InvoiceDetai
+public partial class GstcalculationMasterModel
 {
-    public int InvoiceId { get; set; }
+    public int SrNo { get; set; }
 
-    public string? InvoiceNumber { get; set; }
+    public int? CgstPercentage { get; set; }
 
-    public DateTime? InvoiceDate { get; set; }
+    public int? SgstPercentage { get; set; }
 
-    public string? InvoiceParticulars { get; set; }
+    public int? IgstPercentage { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 

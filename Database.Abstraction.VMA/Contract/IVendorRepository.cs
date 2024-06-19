@@ -1,6 +1,6 @@
 namespace Database.Abstraction.VMA.Contract
 {
-    public class Class1
+    public interface IVendorRepository
     {
     }
 
