@@ -29,10 +29,10 @@ namespace VMA.MVVM.Views
         public MainView(IUserBusinessLogic userBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
-            this.DataContext = new MainViewModel(_userBusinessLogic);
-            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-            InitializeComponent();
-            //this.DataContext = new MainViewModel(_userBusinessLogic);
+            DataContext = new MainViewModel(_userBusinessLogic);
+            MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
+            InitializeComponent();            
         }
         [DllImport("user32.dll")]
         public static extern IntPtr SendMessage(IntPtr hWnd, int wMsg, int wParam, int lParam);
@@ -44,6 +44,7 @@ namespace VMA.MVVM.Views
         private void PnlControlBar_MouseEnter(object sender, MouseEventArgs e)
         {
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            MaxWidth= SystemParameters.MaximizedPrimaryScreenWidth;
         }
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {

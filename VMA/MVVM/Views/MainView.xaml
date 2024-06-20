@@ -12,6 +12,40 @@
         Background="Transparent"
         AllowsTransparency="True">
 
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
+            <local:HomeView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:VendorViewModel}">
+            <local:VendorsView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:ProductServicesViewModel}">
+            <local:ProductServices/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:DetailedInfoViewModel}">
+            <local:DetailedInfoView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:PaymentsViewModel}">
+            <local:PaymentView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:PaymentNotesViewModel}">
+            <local:PaymentNotesView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:ReportsViewModel}">
+            <local:ReportsView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
+            <local:SettingsView/>
+        </DataTemplate>
+
+    </Window.Resources>
     <Border CornerRadius="10"                    
             BorderThickness="1">
         <Border.BorderBrush>
@@ -59,7 +93,7 @@
 
                     <!--Menu Buttons-->
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color2}"
+                                 Tag="{StaticResource color1}"
                                  IsChecked="True"
                                  Command="{Binding ShowHomeViewCommand}">
                         <StackPanel Orientation="Horizontal">
@@ -69,8 +103,8 @@
                     </RadioButton>
                     
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color2}"
-                                 Command="{Binding ShowCustomerViewCommand}">
+                                 Tag="{StaticResource color3}"
+                                 Command="{Binding ShowVendorViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="UserGroup" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Vendors" Style="{StaticResource menuButtonText}"/>
@@ -78,8 +112,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color2}"
-                                 Command="{Binding ShowCustomerViewCommand}">
+                                 Tag="{StaticResource color4}"
+                                 Command="{Binding ShowProductServicesViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="ProductHunt" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Products Services" Style="{StaticResource menuButtonText}"/>
@@ -87,8 +121,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color2}"
-                                 Command="{Binding ShowCustomerViewCommand}">
+                                 Tag="{StaticResource color5}"
+                                 Command="{Binding ShowDetailedInfoViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="InfoCircle" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Detailed Info" Style="{StaticResource menuButtonText}"/>
@@ -96,8 +130,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color2}"
-                                 Command="{Binding ShowCustomerViewCommand}">
+                                 Tag="{StaticResource color6}"
+                                 Command="{Binding ShowPaymentViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Paypal" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Payments" Style="{StaticResource menuButtonText}"/>
@@ -105,8 +139,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color2}"
-                                 Command="{Binding ShowCustomerViewCommand}">
+                                 Tag="{StaticResource color7}"
+                                 Command="{Binding ShowPaymentNoteViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="NoteSticky" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Payment Notes" Style="{StaticResource menuButtonText}"/>
@@ -114,8 +148,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color2}"
-                                 Command="{Binding ShowCustomerViewCommand}">
+                                 Tag="{StaticResource color8}"
+                                 Command="{Binding ShowReportViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="File" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Reports" Style="{StaticResource menuButtonText}"/>
@@ -123,8 +157,8 @@
                     </RadioButton>
 
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color2}"
-                                 Command="{Binding ShowCustomerViewCommand}">
+                                 Tag="{StaticResource color9}"
+                                 Command="{Binding ShowSettingViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Gears" Style="{StaticResource menuButtonIcon}"/>
                             <TextBlock Text="Settings" Style="{StaticResource menuButtonText}"/>
@@ -199,12 +233,12 @@
                         <StackPanel Grid.Column="1"
                                     Orientation="Horizontal"
                                     VerticalAlignment="Center" >
-                            <fa:IconImage Icon="Home"
+                            <fa:IconImage Icon="{Binding Icon}"
                                           Height="20"
                                           Width="20"
                                           Foreground="{StaticResource titleColor2}"
                                           Margin="35,0,10,0"/>
-                            <TextBlock Text="Home"
+                            <TextBlock Text="{Binding Caption}"
                                        Foreground="{StaticResource titleColor2}"
                                        FontSize="16"
                                        FontFamily="Montserrat"
@@ -243,7 +277,7 @@
                     </Grid>
                     
                     <!--content section /child sectin-->
-                    <ContentControl Content=""
+                    <ContentControl Content="{Binding CurrentChildView}"
                                     Grid.Row="2"
                                     Margin="25"/>
                 </Grid>

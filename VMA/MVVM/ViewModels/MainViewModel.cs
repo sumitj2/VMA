@@ -1,10 +1,13 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using Database.VMA.Repositories;
+using FontAwesome.Sharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using VMA.MVVM.Models;
 
 namespace VMA.MVVM.ViewModels
@@ -14,7 +17,9 @@ namespace VMA.MVVM.ViewModels
         //Fields
         private UserAccountModel _currentUserAccount;
         private IUserBusinessLogic _userBusinessLogic;
-
+        private ViewModelBase _currentChildView;
+        private string _caption;
+        private IconChar _icon;
         public UserAccountModel CurrentUserAccount
         {
             get
@@ -29,11 +34,121 @@ namespace VMA.MVVM.ViewModels
             }
         }
 
+        public ViewModelBase CurrentChildView
+        {
+            get => _currentChildView;
+            set
+            {
+                _currentChildView = value;
+                OnPropertyChanged(nameof(CurrentChildView));
+            }
+        }
+        public string Caption
+        {
+            get => _caption;
+
+            set
+            {
+                _caption = value;
+                OnPropertyChanged(nameof(Caption));
+            }
+        }
+        public IconChar Icon
+        {
+            get => _icon;
+            set
+            {
+                _icon = value;
+                OnPropertyChanged(nameof(Icon));
+            }
+        }
+
+        //->Commond to show HomeView , VendorView,...
+
+        public ICommand ShowHomeViewCommand { get; }
+        public ICommand ShowVendorViewCommand { get; }
+        public ICommand ShowProductServicesViewCommand { get; }
+        public ICommand ShowDetailedInfoViewCommand { get; }
+        public ICommand ShowPaymentViewCommand { get; }
+        public ICommand ShowPaymentNoteViewCommand { get; }
+        public ICommand ShowReportViewCommand { get; }
+        public ICommand ShowSettingViewCommand { get; }
+
+
         public MainViewModel(IUserBusinessLogic userBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
             _currentUserAccount = new UserAccountModel();
+
+            //Initialize command
+            ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
+            ShowVendorViewCommand = new ViewModelCommand(ExecuteShowVendorViewCommand);
+            ShowProductServicesViewCommand = new ViewModelCommand(ExecuteShowProductServicesViewCommand);
+            ShowDetailedInfoViewCommand = new ViewModelCommand(ExecuteShowDetailedInfoViewCommand);
+            ShowPaymentViewCommand = new ViewModelCommand(ExecuteShowPaymentViewCommand);
+            ShowPaymentNoteViewCommand = new ViewModelCommand(ExecutePaymentNoteViewCommand);
+            ShowReportViewCommand = new ViewModelCommand(ExecuteShowReportViewCommand);
+            ShowSettingViewCommand = new ViewModelCommand(ExecuteShowSettingViewCommand);
+
+            //Default view
+            ExecuteShowHomeViewCommand(null);
             _ = LoadCurrentUserData();
+        }
+
+        private void ExecuteShowSettingViewCommand(object obj)
+        {
+            CurrentChildView = new SettingsViewModel();
+            Caption = "Settings";
+            Icon = IconChar.Gears;
+        }
+
+        private void ExecuteShowReportViewCommand(object obj)
+        {
+            CurrentChildView = new ReportsViewModel();
+            Caption = "Reports";
+            Icon = IconChar.File;
+        }
+
+        private void ExecutePaymentNoteViewCommand(object obj)
+        {
+            CurrentChildView = new PaymentNotesViewModel();
+            Caption = "Payment Notes";
+            Icon = IconChar.NoteSticky;
+        }
+
+        private void ExecuteShowPaymentViewCommand(object obj)
+        {
+            CurrentChildView = new PaymentsViewModel();
+            Caption = "Payments";
+            Icon = IconChar.Paypal;
+        }
+
+        private void ExecuteShowDetailedInfoViewCommand(object obj)
+        {
+            CurrentChildView = new DetailedInfoViewModel();
+            Caption = "Detailed Info";
+            Icon = IconChar.InfoCircle;
+        }
+
+        private void ExecuteShowProductServicesViewCommand(object obj)
+        {
+            CurrentChildView = new ProductServicesViewModel();
+            Caption = "Products Services";
+            Icon = IconChar.ProductHunt;
+        }
+
+        private void ExecuteShowVendorViewCommand(object obj)
+        {
+            CurrentChildView = new VendorViewModel();
+            Caption = "Vendors";
+            Icon = IconChar.UserGroup;
+        }
+
+        private void ExecuteShowHomeViewCommand(object obj)
+        {
+            CurrentChildView = new HomeViewModel();
+            Caption = "Home";
+            Icon = IconChar.Home;
         }
 
         private async Task LoadCurrentUserData()
