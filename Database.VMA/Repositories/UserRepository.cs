@@ -1,15 +1,7 @@
 ﻿using Database.Abstraction.VMA.Contract;
-using Database.VMA.Models;
-using Microsoft.Data.SqlClient;
+using Database.VMA.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client.Platforms.Features.DesktopOs.Kerberos;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Database.VMA.Repositories
 {

@@ -1,10 +1,5 @@
-﻿using Database.VMA.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Database.VMA.Entities;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Database.Abstraction.VMA.Contract
 {

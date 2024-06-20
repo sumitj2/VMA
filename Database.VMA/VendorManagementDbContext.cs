@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Database.VMA.Models;
+﻿using Database.VMA.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Database.VMA;

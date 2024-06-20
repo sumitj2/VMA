@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Database.VMA.Models;
+namespace Database.VMA.Entities;
 
 public partial class User
 {
