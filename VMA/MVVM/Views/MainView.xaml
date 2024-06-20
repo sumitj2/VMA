@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-        xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:viewModel="clr-namespace:VMA.MVVM.ViewModels" d:DataContext="{d:DesignInstance Type=viewModel:MainViewModel}"
+        xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:viewModel="clr-namespace:VMA.MVVM.ViewModels.Menus" xmlns:viewmodels="clr-namespace:VMA.MVVM.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindowView" Height="650" Width="860"
         WindowStartupLocation="CenterScreen"

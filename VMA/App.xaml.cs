@@ -97,19 +97,19 @@ namespace VMA
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            var loginView = _serviceProvider.GetService<MainView>();
+            var loginView = _serviceProvider.GetService<LoginView>();
             loginView!.Show();
 
-            //loginView.IsVisibleChanged += (s, ev) =>
-            //{
-            //    if (loginView.IsVisible == false && loginView.IsLoaded)
-            //    {
-            //        var mainView = _serviceProvider.GetService<MainView>();
-            //        mainView!.Show();
-            //        loginView.Close();
+            loginView.IsVisibleChanged += (s, ev) =>
+            {
+                if (loginView.IsVisible == false && loginView.IsLoaded)
+                {
+                    var mainView = _serviceProvider.GetService<MainView>();
+                    mainView!.Show();
+                    loginView.Close();
 
-            //    }
-            //};
+                }
+            };
         }
     }
 
