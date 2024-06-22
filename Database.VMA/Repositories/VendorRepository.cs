@@ -12,26 +12,33 @@ namespace Database.VMA.Repositories
         {
             _context = context;
         }
-        public void Add(Vendor userModel)
+        public async Task AddVendors(Vendor VendorEntity)
         {
-            _context.AddAsync(userModel).ConfigureAwait(true);
+            await _context.AddAsync(VendorEntity).ConfigureAwait(true);
+            await _context.SaveChangesAsync();
         }
-        public void Edit(Vendor userModel)
+        public async Task EditUpdateVendors(Vendor VendorEntity)
         {
-            _context.Vendors.Update(userModel);
+            var result = await GetVendorsById(VendorEntity.VendorId);
+            if (result != null)
+            {
+                _context.Vendors.Update(result);
+                await _context.SaveChangesAsync();
+            }
         }
-        public async Task<IEnumerable<Vendor>> GetByAll()
+        public async Task<IEnumerable<Vendor>> GetAllVendors()
         {
-            return await _context.Vendors.ToListAsync();
+            return await _context.Vendors.Where(x => x.IsActive == true).ToListAsync();
         }
-        public Vendor GetById(int id)
+        public async Task<Vendor?> GetVendorsById(int vendorId)
         {
-            throw new NotImplementedException();
+            return await _context.Vendors.Where(x => x.IsActive == true && x.VendorId == vendorId).FirstOrDefaultAsync();
         }
 
-        public void Remove(int id)
+        public async Task RemoveVendor(Vendor VendorEntity)
         {
-            throw new NotImplementedException();
+            _context.Vendors.Remove(VendorEntity);
+            await _context.SaveChangesAsync();
         }
     }
 }
