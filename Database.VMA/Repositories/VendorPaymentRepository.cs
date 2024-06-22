@@ -16,7 +16,6 @@ namespace Database.VMA.Repositories
         {
             _context = context;
         }
-
         public async Task AddVendorPayment(VendorPayment VendorPaymentEntity)
         {
             await _context.AddAsync(VendorPaymentEntity).ConfigureAwait(true);
