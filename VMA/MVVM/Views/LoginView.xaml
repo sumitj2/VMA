@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VMA.MVVM.Views"
-        xmlns:viewModel="clr-namespace:VMA.MVVM.ViewModels" xmlns:customcontrols="clr-namespace:VMA.CustomControls"
+        xmlns:viewModel="clr-namespace:VMA.MVVM.ViewModels" xmlns:customcontrols="clr-namespace:VMA.CustomControls" xmlns:viewModel1="clr-namespace:VMA.MVVM.ViewModels.Login"
         mc:Ignorable="d"
         Title="LoginView" Height="550" Width="800"
         WindowStyle="None"
@@ -14,6 +14,10 @@
         AllowsTransparency="True" Icon="/Images/logo.png"
         MouseDown="Window_MouseDown">
 
+    <!--<Window.DataContext>
+        <viewModel:LoginViewMode></viewModel:LoginViewMode>
+    </Window.DataContext>-->
+    
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
     </Window.Resources>

@@ -30,10 +30,6 @@ public partial class VendorManagementDbContext : DbContext
 
     public virtual DbSet<VendorService> VendorServices { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    { 
-        optionsBuilder.UseSqlServer(System.Configuration.ConfigurationManager.ConnectionStrings["VMA"].ConnectionString);
-    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<GstcalculationMaster>(entity =>

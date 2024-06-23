@@ -22,13 +22,9 @@ namespace VMA.MVVM.Views
     /// </summary>
     public partial class VendorsView : UserControl
     {
-        private IVendorBusinessLogic _vendorBusinessLogic;
-
         public VendorsView()
         {
-            InitializeComponent();
-            //_vendorBusinessLogic = vendorBusinessLogic;
-            //this.DataContext = new VendorViewModel();
+            InitializeComponent();           
         }
     }
 }

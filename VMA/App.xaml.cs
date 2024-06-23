@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
 using System.Data;
 using System.Windows;
+using VMA.MVVM.ViewModels;
+using VMA.MVVM.ViewModels.Login;
 using VMA.MVVM.Views;
 
 namespace VMA
@@ -18,32 +20,6 @@ namespace VMA
     public partial class App : Application
     {
         private IServiceProvider _serviceProvider;
-        private VendorManagementDbContext _vendorManagementDbContext;
-
-        #region repositories
-
-        private IUserRepository _userRepository;
-        private IVendorRepository _vendorRepository;
-        private IVendorDetailsRepository _vendorDetailsRepository;
-        private IVendorPaymentRepository _vendorPaymentRepository;
-        private IVendorServiceRepository _vendorServiceRepository;
-        private IGstcalculationMasterRepository _gstcalculationMasterRepository;
-        private IInvoiceDetailsRepository _invoiceDetailsRepository;
-        private IVenderPaymentNotesRepository _vendorPaymentNotesRepository;
-
-        #endregion
-
-        #region BusinessLayer
-
-        private IUserBusinessLogic _userBusinessLogic;
-        private IVendorBusinessLogic _vendorBusinessLogic;
-        private IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
-        private IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
-        private IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
-        private IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
-        private IInvoiceDetailsBusinessLogic _invoiceDetailsBusinessLogic;
-        private IVenderPaymentNotesBusinessLogic _vendorPaymentNotesBusinessLogic;
-        #endregion
 
         public App()
         {
@@ -54,47 +30,23 @@ namespace VMA
 
         private void ConfigureServices(IServiceCollection services)
         {
-            _vendorManagementDbContext = new VendorManagementDbContext();
-            InitializeRepositories();
-            InitializeBusinessLogic();
+            string cs = ConfigurationManager.ConnectionStrings["VMA"].ConnectionString;
+            services.AddDbContext<VendorManagementDbContext>(options => options.UseSqlServer(cs));
 
-            //string cs = System.Configuration.ConfigurationManager.ConnectionStrings["VMA"].ConnectionString;
-            //services.AddDbContext<VendorManagementDbContext>(options => options.UseSqlServer(cs));
+            services.AddSingleton<IUserBusinessLogic, UserBusinessLogic>();
+            services.AddSingleton<IUserRepository, UserRepository>();
 
-            //services.AddSingleton<IUserBusinessLogic, UserBusinessLogic>();
-            //services.AddSingleton<IUserRepository, UserRepository>();
-            //Register services and view models            
+            services.AddSingleton<IVendorBusinessLogic, VendorBusinessLogic>();
+            services.AddSingleton<IVendorRepository, VendorRepository>();
 
-            services.AddSingleton(x => new LoginView(_userBusinessLogic));
-            //services.AddSingleton(x => new VendorsView(_vendorBusinessLogic));
-            services.AddSingleton(x => new MainView(_userBusinessLogic));
+            //Register services and view models
+            services.AddSingleton(x => new LoginViewModel(x.GetRequiredService<IUserBusinessLogic>()));
+            services.AddSingleton(x => new LoginView(x.GetRequiredService<LoginViewModel>()));
 
+            services.AddSingleton(x => new MainViewModel(x.GetRequiredService<IUserBusinessLogic>(),
+                                                         x.GetRequiredService<IVendorBusinessLogic>()));
+            services.AddSingleton(x => new MainView(x.GetRequiredService<MainViewModel>()));
         }
-
-        private void InitializeRepositories()
-        {
-            _userRepository = new UserRepository(_vendorManagementDbContext);
-            _vendorDetailsRepository = new VendorDetailsRepository(_vendorManagementDbContext);
-            _vendorRepository = new VendorRepository(_vendorManagementDbContext);
-            _vendorPaymentRepository = new VendorPaymentRepository(_vendorManagementDbContext);
-            _vendorServiceRepository = new VendorServiceRepository(_vendorManagementDbContext);
-            _gstcalculationMasterRepository = new GstcalculationMasterRepository(_vendorManagementDbContext);
-            _invoiceDetailsRepository = new InvoiceDetailsRepository(_vendorManagementDbContext);
-            _vendorPaymentNotesRepository = new VenderPaymentNotesRepository(_vendorManagementDbContext);
-        }
-
-        private void InitializeBusinessLogic()
-        {
-            _userBusinessLogic = new UserBusinessLogic(_userRepository);
-            _vendorBusinessLogic = new VendorBusinessLogic(_vendorRepository);
-            _gstcalculationMasterBusinessLogic = new GstcalculationMasterBusinessLogic(_gstcalculationMasterRepository);
-            _invoiceDetailsBusinessLogic = new InvoiceDetailsBusinessLogic(_invoiceDetailsRepository);
-            _vendorDetailsBusinessLogic = new VendorDetailsBusinessLogic(_vendorDetailsRepository);
-            _vendorPaymentNotesBusinessLogic = new VenderPaymentNotesBusinesslogic(_vendorPaymentNotesRepository);
-            _vendorServiceBusinessLogic = new VendorServiceBusinessLogic(_vendorServiceRepository);
-            _vendorPaymentBusinessLogic=new VendorPaymentBusinessLogic(_vendorPaymentRepository);
-        }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
