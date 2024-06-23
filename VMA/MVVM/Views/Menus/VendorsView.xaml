@@ -11,6 +11,7 @@
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/> 
@@ -131,7 +132,10 @@
                 </Button.Style>
             </Button>
         </Grid>
-        <Border Grid.Row="1"
+
+        <Border Grid.Row="1" Visibility="{Binding IsVendorFormVisible}"/>
+
+        <Border Grid.Row="1" Visibility="{Binding IsVendorFormVisible}"
                 Background="#200F53"
                 CornerRadius="10" 
                 Padding="10">

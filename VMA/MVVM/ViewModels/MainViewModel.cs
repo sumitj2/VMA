@@ -18,6 +18,8 @@ namespace VMA.MVVM.ViewModels
         //Fields
         private UserAccountModel _currentUserAccount;
         private IUserBusinessLogic _userBusinessLogic;
+        private IVendorBusinessLogic _vendorBusinessLogic;
+
         private ViewModelBase _currentChildView;
         private string _caption;
         private IconChar _icon;
@@ -76,9 +78,10 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowSettingViewCommand { get; }
 
 
-        public MainViewModel(IUserBusinessLogic userBusinessLogic)
+        public MainViewModel(IUserBusinessLogic userBusinessLogic,IVendorBusinessLogic vendorBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
+            _vendorBusinessLogic = vendorBusinessLogic;
             _currentUserAccount = new UserAccountModel();
 
             //Initialize command
@@ -140,7 +143,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowVendorViewCommand(object obj)
         {
-            CurrentChildView = new VendorViewModel();
+            CurrentChildView = new VendorViewModel(_vendorBusinessLogic);
             Caption = "Vendors";
             Icon = IconChar.UserGroup;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessLogic.Abstraction.VMA.Contract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using VMA.MVVM.ViewModels.Menus;
 
 namespace VMA.MVVM.Views
 {
@@ -20,9 +22,13 @@ namespace VMA.MVVM.Views
     /// </summary>
     public partial class VendorsView : UserControl
     {
+        private IVendorBusinessLogic _vendorBusinessLogic;
+
         public VendorsView()
         {
             InitializeComponent();
+            //_vendorBusinessLogic = vendorBusinessLogic;
+            //this.DataContext = new VendorViewModel();
         }
     }
 }

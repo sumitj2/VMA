@@ -66,6 +66,7 @@ namespace VMA
             //Register services and view models            
 
             services.AddSingleton(x => new LoginView(_userBusinessLogic));
+            //services.AddSingleton(x => new VendorsView(_vendorBusinessLogic));
             services.AddSingleton(x => new MainView(_userBusinessLogic));
 
         }
@@ -106,8 +107,6 @@ namespace VMA
                 {
                     var mainView = _serviceProvider.GetService<MainView>();
                     mainView!.Show();
-                    loginView.Close();
-
                 }
             };
         }

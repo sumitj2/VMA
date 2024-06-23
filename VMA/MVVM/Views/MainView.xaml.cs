@@ -26,10 +26,11 @@ namespace VMA.MVVM.Views
     public partial class MainView : Window
     {
         private IUserBusinessLogic _userBusinessLogic;
+        private IVendorBusinessLogic _vendorBusinessLogic;
         public MainView(IUserBusinessLogic userBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
-            DataContext = new MainViewModel(_userBusinessLogic);
+            DataContext = new MainViewModel(_userBusinessLogic, _vendorBusinessLogic);
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
             WindowState = WindowState.Maximized;
