@@ -32,6 +32,7 @@ namespace VMA.MVVM.Views
             DataContext = new MainViewModel(_userBusinessLogic);
             MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
             MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
+            WindowState = WindowState.Maximized;
             InitializeComponent();            
         }
         [DllImport("user32.dll")]
