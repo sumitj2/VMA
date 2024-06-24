@@ -143,7 +143,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowVendorViewCommand(object obj)
         {
-            CurrentChildView = new VendorViewModel(_vendorBusinessLogic);
+            CurrentChildView = new VendorViewModel(_vendorBusinessLogic,);
             Caption = "Vendors";
             Icon = IconChar.UserGroup;
         }

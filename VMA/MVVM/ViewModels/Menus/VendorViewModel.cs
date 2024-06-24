@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
+using BusinessLogic.Abstraction.VMA.Models;
 using Database.VMA.Entities;
 using Database.VMA.Repositories;
 using System;
@@ -8,41 +9,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using VMA.MVVM.ViewModels.Add;
 
 namespace VMA.MVVM.ViewModels.Menus
 {
     public class VendorViewModel : ViewModelBase
     {
         private readonly IVendorBusinessLogic _vendorBusinessLogic;
+        private MainViewModel _parentViewModel;
 
         //-> Commands
         private ViewModelCommand showVendorFormCommand;
-        public ICommand ShowVendorFormCommand
-        {
-            get
-            {
-                if (this.showVendorFormCommand == null)
-                {
-                    this.showVendorFormCommand = new ViewModelCommand(x => ShowVendorForm());
-
-                }
-                return this.showVendorFormCommand;
-            }
-        }
+        public ICommand ShowVendorFormCommand;
+        //{
+        //    get
+        //    {
+        //        showVendorFormCommand ??= new ViewModelCommand(x => ShowVendorForm());
+        //        return showVendorFormCommand;
+        //    }
+        //}
 
         private ViewModelCommand hideVendorFormCommand;
-        public ICommand HideVendorFormCommand
-        {
-            get
-            {
-                if (this.hideVendorFormCommand == null)
-                {
-                    this.hideVendorFormCommand = new ViewModelCommand(x => HideVendorForm());
 
-                }
-                return this.hideVendorFormCommand;
-            }
-        }
+
+        public ICommand HideVendorFormCommand;
+        //{
+        //    get
+        //    {
+        //        if (this.hideVendorFormCommand == null)
+        //        {
+        //            this.hideVendorFormCommand = new ViewModelCommand(x => HideVendorForm());
+
+        //        }
+        //        return this.hideVendorFormCommand;
+        //    }
+        //}
 
         private bool _isVendorFormVisible;
         public bool IsVendorFormVisible
@@ -55,8 +56,8 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private ObservableCollection<Vendor> _vendors;
-        public ObservableCollection<Vendor> Vendors
+        private ObservableCollection<VendorModel> _vendors;
+        public ObservableCollection<VendorModel> Vendors
         {
             get { return _vendors; }
             set
@@ -66,23 +67,28 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic)
+        public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
         {
             _vendorBusinessLogic = vendorBusinessLogic;
-            getVendors();
+            _parentViewModel = parentViewModel;
+            ShowVendorFormCommand = new ViewModelCommand(ShowVendorForm);
+            HideVendorFormCommand = new ViewModelCommand(HideVendorForm);
+            _ = GetVendors();
         }
 
-        private async Task getVendors()
+        private async Task GetVendors()
         {
             var vendors = await _vendorBusinessLogic.GetAllVendor();
+            Vendors = new ObservableCollection<VendorModel>(vendors);
         }
 
-        private void ShowVendorForm()
+        private void ShowVendorForm(object obj)
         {
-            IsVendorFormVisible = true;
+            _parentViewModel.CurrentChildView = new AddVendorViewModel(_vendorBusinessLogic, this);
+
         }
 
-        private void HideVendorForm()
+        private void HideVendorForm(object obj)
         {
             IsVendorFormVisible = true;
         }
