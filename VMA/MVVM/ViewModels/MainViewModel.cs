@@ -16,13 +16,11 @@ namespace VMA.MVVM.ViewModels
     public class MainViewModel : ViewModelBase
     {
         //Fields
-        private UserAccountModel _currentUserAccount;
         private IUserBusinessLogic _userBusinessLogic;
         private IVendorBusinessLogic _vendorBusinessLogic;
 
-        private ViewModelBase _currentChildView;
-        private string _caption;
-        private IconChar _icon;
+        private UserAccountModel _currentUserAccount;
+
         public UserAccountModel CurrentUserAccount
         {
             get
@@ -37,6 +35,8 @@ namespace VMA.MVVM.ViewModels
             }
         }
 
+        private ViewModelBase _currentChildView;
+
         public ViewModelBase CurrentChildView
         {
             get => _currentChildView;
@@ -46,6 +46,9 @@ namespace VMA.MVVM.ViewModels
                 OnPropertyChanged(nameof(CurrentChildView));
             }
         }
+
+        private string _caption;
+
         public string Caption
         {
             get => _caption;
@@ -56,6 +59,9 @@ namespace VMA.MVVM.ViewModels
                 OnPropertyChanged(nameof(Caption));
             }
         }
+
+        private IconChar _icon;
+
         public IconChar Icon
         {
             get => _icon;
@@ -143,7 +149,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowVendorViewCommand(object obj)
         {
-            CurrentChildView = new VendorViewModel(_vendorBusinessLogic);
+            CurrentChildView = new VendorViewModel(_vendorBusinessLogic,this);
             Caption = "Vendors";
             Icon = IconChar.UserGroup;
         }

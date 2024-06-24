@@ -4,11 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
-        xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:viewModel="clr-namespace:VMA.MVVM.ViewModels.Menus" xmlns:viewmodels="clr-namespace:VMA.MVVM.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        xmlns:local="clr-namespace:VMA.MVVM.Views" 
+        xmlns:viewModel="clr-namespace:VMA.MVVM.ViewModels.Menus" 
+        xmlns:viewmodels="clr-namespace:VMA.MVVM.ViewModels"
+        xmlns:vendorViews="clr-namespace:VMA.MVVM.Views.Menus.Vendor"
+        xmlns:vendorViewModels="clr-namespace:VMA.MVVM.ViewModels.Menus.Vendor"
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindowView" Height="650" Width="860"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="None"
+        WindowStyle="None" Icon="/Images/logo.png"
         Background="Transparent"
         AllowsTransparency="True">
 
@@ -45,12 +50,16 @@
             <local:SettingsView/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type vendorViewModels:VendorDetailsViewModel}">
+            <vendorViews:VendorDetails/>
+        </DataTemplate>
     </Window.Resources>
+    
     <Border CornerRadius="10"                    
             BorderThickness="1">
         <Border.BorderBrush>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="{StaticResource  winBorderColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
                 <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
                 <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
             </LinearGradientBrush>

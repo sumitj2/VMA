@@ -30,6 +30,7 @@ namespace Database.VMA.Repositories
         {
             return await _context.Vendors.Where(x => x.IsActive == true).ToListAsync();
         }
+
         public async Task<Vendor?> GetVendorsById(int vendorId)
         {
             return await _context.Vendors.Where(x => x.IsActive == true && x.VendorId == vendorId).FirstOrDefaultAsync();

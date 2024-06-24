@@ -9,12 +9,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using VMA.MVVM.ViewModels.Menus.Vendor;
+using VMA.MVVM.Views;
 
 namespace VMA.MVVM.ViewModels.Menus
 {
     public class VendorViewModel : ViewModelBase
     {
         private readonly IVendorBusinessLogic _vendorBusinessLogic;
+        private MainViewModel _parentViewModel;
 
         //-> Commands
         private ViewModelCommand showVendorFormCommand;
@@ -45,17 +48,6 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private bool _isVendorFormVisible;
-        public bool IsVendorFormVisible
-        {
-            get { return _isVendorFormVisible; }
-            set
-            {
-                _isVendorFormVisible = value;
-                OnPropertyChanged(nameof(IsVendorFormVisible));
-            }
-        }
-
         private ObservableCollection<VendorModel> _vendors;
         public ObservableCollection<VendorModel> Vendors
         {
@@ -67,9 +59,10 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic)
+        public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
         {
             _vendorBusinessLogic = vendorBusinessLogic;
+            _parentViewModel = parentViewModel;
             getVendors();
         }
 
@@ -81,12 +74,12 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private void ShowVendorForm()
         {
-            IsVendorFormVisible = true;
+           _parentViewModel.CurrentChildView = new VendorDetailsViewModel(_vendorBusinessLogic,this);
         }
 
-        private void HideVendorForm()
+        public void HideVendorForm()
         {
-            IsVendorFormVisible = true;
+            _parentViewModel.CurrentChildView = this;
         }
     }
 }

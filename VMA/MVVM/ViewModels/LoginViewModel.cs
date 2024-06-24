@@ -113,6 +113,9 @@ namespace VMA.MVVM.ViewModels.Login
         //Constructor
         public LoginViewModel(IUserBusinessLogic userBusinessLogic)
         {
+#if DEBUG
+            Username = "admin";
+#endif
             _userBusinessLogic = userBusinessLogic; 
         }
 

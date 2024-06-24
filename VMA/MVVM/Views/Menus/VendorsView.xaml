@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:local="clr-namespace:VMA.MVVM.Views" 
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -99,7 +101,7 @@
             </StackPanel>
            
             <Button Grid.Column="1"
-                 Command="{Binding LoginCommand}"                            
+                 Command="{Binding ShowVendorFormCommand}"                            
                  Content="Add"                            
                  FontSize="12"
                  FontFamily="Montserrat"
@@ -133,7 +135,7 @@
             </Button>
         </Grid>
 
-        <Border Grid.Row="1" Visibility="{Binding IsVendorFormVisible}"
+        <Border Grid.Row="1" 
                 Background="#200F53"
                 CornerRadius="10" 
                 Padding="10">
