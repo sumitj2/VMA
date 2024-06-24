@@ -7,16 +7,16 @@
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:menus="clr-namespace:VMA.MVVM.ViewModels.Menus" d:DataContext="{d:DesignInstance Type=menus:VendorViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
+
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/> 
+                <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
             <StackPanel Orientation="Horizontal"
@@ -25,7 +25,9 @@
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Top"
                             Margin="0,0,0,0">
-                    <ComboBox Name="searchCriteria" 
+                    
+                    <ComboBox Style="{StaticResource vendorCombobox}"
+                              Name="searchCriteria" 
                               Grid.Row="1" 
                               Width="130" 
                               Height="30" 
@@ -37,101 +39,45 @@
                               FontFamily="Montserrat"                            
                               Foreground="{StaticResource plainTextColor3}"
                               BorderBrush="{StaticResource plainTextColor3}"
-                              BorderThickness="0,0,0,1" >
-                        <ComboBox.Style>
-                            <Style TargetType="ComboBox">
-                                <Setter Property="Background" Value="#773DFF"/>
-                                
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#836EFB"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>                            
-                        </ComboBox.Style>
+                              BorderThickness="0,0,0,1" >                        
                     </ComboBox>
                 </StackPanel>
                 <fa:IconImage Icon="Search" Height="20" Width="20" Margin="10,0,0,0" Foreground="{StaticResource plainTextColor3}"/>
                 <TextBox Text="Search..."   
-                    FontSize="13"
+                         FontSize="13"
                          Height="24"
-                           Width="150"
-                           Background="Transparent"
-                             FontWeight="Medium"
-                             FontFamily="Montserrat"                            
-                             Foreground="{StaticResource plainTextColor3}"
-                             CaretBrush="{StaticResource plainTextColor3}"
-                             BorderBrush="{StaticResource plainTextColor3}"
-                             BorderThickness="0,0,0,1"                             
-                             VerticalContentAlignment="Center"
-                             Margin="7,5,0,0"></TextBox>
-                <Button 
-                 Command="{Binding }"                            
-                 Content="Search"                            
-                 FontSize="12"
-                 FontFamily="Montserrat"
-                 Cursor="Hand"
-                 BorderThickness="0"
-                 Foreground="White"
-                 VerticalAlignment="Top">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="#773DFF"/>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Height="30"
-                                         CornerRadius="15" Width="90"
-                                         Background="{TemplateBinding Background}"
-                                         Margin="0,0,0,0">
-                                            <ContentPresenter VerticalAlignment="Center"
-                                                           HorizontalAlignment="Center"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#836EFB"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
+                         Width="150"
+                         Background="Transparent"
+                         FontWeight="Medium"
+                         FontFamily="Montserrat"                            
+                         Foreground="{StaticResource plainTextColor3}"
+                         CaretBrush="{StaticResource plainTextColor3}"
+                         BorderBrush="{StaticResource plainTextColor3}"
+                         BorderThickness="0,0,0,1"                             
+                         VerticalContentAlignment="Center"
+                         Margin="7,5,0,0"></TextBox>
+                <Button Style="{StaticResource vendorSearchButton}"
+                        Command="{Binding }"                            
+                        Content="Search"                            
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Foreground="White"
+                        VerticalAlignment="Top">
                 </Button>
             </StackPanel>
-           
+
             <Button Grid.Column="1"
-                 Command="{Binding AddShowVendorFormCommand}"                            
-                 Content="Add"                            
-                 FontSize="12"
-                 FontFamily="Montserrat"
-                 Cursor="Hand"
-                 BorderThickness="0"
-                 Foreground="White"
-         VerticalAlignment="Top">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background" Value="#773DFF"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="Button">
-                                    <Border Height="30"
-                                         CornerRadius="15"
-                                         Background="{TemplateBinding Background}"
-                                            Margin="0,10,10,0">
-                                        <ContentPresenter VerticalAlignment="Center"
-                                                           HorizontalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#836EFB"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
+                    Style="{StaticResource vendorAddButton}"
+                    Command="{Binding AddShowVendorFormCommand}"                            
+                    Content="Add"                            
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    VerticalAlignment="Top">                
             </Button>
         </Grid>
 

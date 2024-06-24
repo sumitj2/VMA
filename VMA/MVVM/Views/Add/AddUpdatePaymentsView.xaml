@@ -6,7 +6,63 @@
              xmlns:local="clr-namespace:VMA.MVVM.Views.Add"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+    <Border CornerRadius="10"                    
+    BorderThickness="0"
+        Background="{StaticResource panelColor}" Opacity="0.95">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
+                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="410"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+
+            <!--buttons setting in footer-->
+            <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,10">
+                <Button Style="{StaticResource vendorSaveButton}"
+                    Command="{Binding }"                            
+                    Content="Save"                            
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    VerticalAlignment="Top"/>
+                <Button Style="{StaticResource vendorCancelButton}"
+                    Command="{Binding HideVendorFormCommand}"                            
+                    Content="Cancel"                            
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    VerticalAlignment="Top"/>
+                <Button Style="{StaticResource vendorClearButton}"
+                    Command="{Binding }"                            
+                    Content="Clear"                            
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    VerticalAlignment="Top"/>
+
+            </StackPanel>
+        </Grid>
+    </Border>
 </UserControl>

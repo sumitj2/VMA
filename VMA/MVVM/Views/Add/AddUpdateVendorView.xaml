@@ -3,22 +3,66 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views.Add"
+             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" d:DataContext="{d:DesignInstance Type=add:AddUpdateVendorViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
-    <Border Background="White" CornerRadius="4">
+
+    <Border CornerRadius="10"                    
+        BorderThickness="0"
+            Background="{StaticResource panelColor}" Opacity="0.95">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
+                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="60"/>
+                <RowDefinition Height="410"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            <Label Content="Add New Vendor Registration" Grid.Row="0" FontSize="14" FontFamily="Montserrat"
-FontWeight="Medium" Margin="5 5 0 0"/>
-            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Cancel" Command="{Binding HideVendorFormCommand}" Style="{StaticResource DefaultButtonStyle}"/>
-                <Button Content="Save" Command="{Binding SaveVendor}" Style="{StaticResource DefaultButtonStyle}"/>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="400"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+            
+            <!--buttons setting in footer--> 
+            <StackPanel Grid.Row="2" 
+                        Orientation="Horizontal"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,10">
+                <Button Style="{StaticResource vendorSaveButton}"
+                        Command="{Binding }"                            
+                        Content="Save"                            
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Foreground="White"
+                        VerticalAlignment="Top"/>
+                <Button Style="{StaticResource vendorCancelButton}"
+                        Command="{Binding HideVendorFormCommand}"                            
+                        Content="Cancel"                            
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Foreground="White"
+                        VerticalAlignment="Top"/>
+                <Button Style="{StaticResource vendorClearButton}"
+                        Command="{Binding }"                            
+                        Content="Clear"                            
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Foreground="White"
+                        VerticalAlignment="Top"/>
+
             </StackPanel>
         </Grid>
     </Border>
