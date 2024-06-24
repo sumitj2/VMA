@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
+using BusinessLogic.Abstraction.VMA.Models;
 using Database.VMA.Entities;
 using Database.VMA.Repositories;
 using System;
@@ -55,8 +56,8 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private ObservableCollection<Vendor> _vendors;
-        public ObservableCollection<Vendor> Vendors
+        private ObservableCollection<VendorModel> _vendors;
+        public ObservableCollection<VendorModel> Vendors
         {
             get { return _vendors; }
             set
@@ -75,6 +76,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private async Task getVendors()
         {
             var vendors = await _vendorBusinessLogic.GetAllVendor();
+            Vendors = new ObservableCollection<VendorModel>(vendors);
         }
 
         private void ShowVendorForm()

@@ -133,13 +133,12 @@
             </Button>
         </Grid>
 
-        <Border Grid.Row="1" Visibility="{Binding IsVendorFormVisible}"/>
-
         <Border Grid.Row="1" Visibility="{Binding IsVendorFormVisible}"
                 Background="#200F53"
                 CornerRadius="10" 
                 Padding="10">
-            <DataGrid ColumnWidth="*"
+            <DataGrid ColumnWidth="*" ItemsSource="{Binding Vendors}" AutoGenerateColumns="False" CanUserResizeRows="False"
+                      CanUserResizeColumns="False"
                   Background="#200F53"
                   BorderThickness="0">
                 <DataGrid.ColumnHeaderStyle>
@@ -152,12 +151,12 @@
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="First name"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Last name"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Phone"/>
+                    <DataGridTextColumn Binding="{Binding VendorId}" ClipboardContentBinding="{x:Null}" Header="ID" HeaderStringFormat=""/>
+                    <DataGridTextColumn Binding="{Binding VendorName}" ClipboardContentBinding="{x:Null}" Header="First name"/>
+                    <DataGridTextColumn Binding="{Binding VendorPhoneNo}" ClipboardContentBinding="{x:Null}" Header="Last name"/>
+                    <DataGridTextColumn Binding="{Binding VendorPhoneNo}" ClipboardContentBinding="{x:Null}" Header="Phone"/>
                     <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Number"/>
-                    <DataGridTextColumn Binding="{x:Null}" ClipboardContentBinding="{x:Null}" Header="Address"/>
+                    <DataGridTextColumn Binding="{Binding VendorAddress}" ClipboardContentBinding="{x:Null}" Header="Address"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Border>
