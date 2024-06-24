@@ -7,8 +7,8 @@
         xmlns:local="clr-namespace:VMA.MVVM.Views" 
         xmlns:viewModel="clr-namespace:VMA.MVVM.ViewModels.Menus" 
         xmlns:viewmodels="clr-namespace:VMA.MVVM.ViewModels"
-        xmlns:vendorViews="clr-namespace:VMA.MVVM.Views.Menus.Vendor"
-        xmlns:vendorViewModels="clr-namespace:VMA.MVVM.ViewModels.Menus.Vendor"
+        xmlns:viewModelAdd="clr-namespace:VMA.MVVM.ViewModels.Add"
+        xmlns:vendorAddViews="clr-namespace:VMA.MVVM.Views.Add"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindowView" Height="650" Width="860"
@@ -50,8 +50,8 @@
             <local:SettingsView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type vendorViewModels:VendorDetailsViewModel}">
-            <vendorViews:VendorDetails/>
+        <DataTemplate DataType="{x:Type viewModelAdd:AddUpdateVendorViewModel}">
+            <vendorAddViews:AddUpdateVendorView/>
         </DataTemplate>
     </Window.Resources>
     

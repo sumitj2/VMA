@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace VMA.MVVM.Views.Menus.Vendor
+namespace VMA.MVVM.Views.Add
 {
     /// <summary>
-    /// Interaction logic for VendorDetails.xaml
+    /// Interaction logic for AddUpdateDetailedInfoView.xaml
     /// </summary>
-    public partial class VendorDetails : UserControl
+    public partial class AddUpdateDetailedInfoView : UserControl
     {
-        public VendorDetails()
+        public AddUpdateDetailedInfoView()
         {
             InitializeComponent();
         }

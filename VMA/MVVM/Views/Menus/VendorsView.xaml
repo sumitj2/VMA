@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VMA.MVVM.Views" 
-             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:menus="clr-namespace:VMA.MVVM.ViewModels.Menus" d:DataContext="{d:DesignInstance Type=menus:VendorViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
@@ -101,7 +101,7 @@
             </StackPanel>
            
             <Button Grid.Column="1"
-                 Command="{Binding ShowVendorFormCommand}"                            
+                 Command="{Binding AddShowVendorFormCommand}"                            
                  Content="Add"                            
                  FontSize="12"
                  FontFamily="Montserrat"

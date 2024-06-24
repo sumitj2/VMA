@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace VMA.MVVM.Views.Add
 {
     /// <summary>
-    /// Interaction logic for AddPaymentsView.xaml
+    /// Interaction logic for AddUpdatePaymentsView.xaml
     /// </summary>
-    public partial class AddPaymentsView : UserControl
+    public partial class AddUpdatePaymentsView : UserControl
     {
-        public AddPaymentsView()
+        public AddUpdatePaymentsView()
         {
             InitializeComponent();
         }
