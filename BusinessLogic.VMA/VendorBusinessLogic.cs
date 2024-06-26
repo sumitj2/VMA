@@ -24,10 +24,10 @@ namespace Database.VMA.Repositories
             {
 
                 CreatedBy = vendorModel.CreatedBy,
-                CreatedDate = DateTime.Now,
-                IsActive = vendorModel.IsActive,
+                CreatedDate = DateTime.UtcNow,
+                IsActive = true,
                 LastUpdateBy = vendorModel.LastUpdateBy,
-                LastUpdatedDate = DateTime.Now,
+                LastUpdatedDate = DateTime.UtcNow,
                 VendorAccountNumber = vendorModel.VendorAccountNumber,
                 VendorName = vendorModel.VendorName,
                 VendorAddress = vendorModel.VendorAddress,

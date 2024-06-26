@@ -24,5 +24,6 @@ namespace VMA.MVVM.Views.Add
         {
             InitializeComponent();
         }
+       
     }
 }
