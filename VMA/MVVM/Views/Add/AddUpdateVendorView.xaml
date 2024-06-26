@@ -23,7 +23,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <TabControl Background="{StaticResource panelColor}">
+                <TabControl SelectedIndex="{Binding SelectedTabIndex}" Background="{StaticResource panelColor}">
                     <TabItem Header="Contact Inforamtion">
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
@@ -38,7 +38,7 @@
                                            Margin="20,20,230,0"/>
 
                                 <TextBox x:Name="txtVendorCode"
-                                         Text="{Binding VendorCode ,UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding VendorCode ,UpdateSourceTrigger=PropertyChanged }"
                                          Style="{StaticResource FormTextBox}"/>
 
                                 <TextBlock Text="Vendor Name"
@@ -135,7 +135,7 @@
                         Margin="0,0,0,9">
                 <Button Style="{StaticResource vendorSaveButton}"
                         Command="{Binding SubmitCommand}"                            
-                        Content="Save"                            
+                        Content="{Binding SaveButtonName, Mode=TwoWay}"                            
                         FontSize="12"
                         FontFamily="Montserrat"
                         Cursor="Hand"
@@ -152,7 +152,7 @@
                         Foreground="White"
                         VerticalAlignment="Top"/>
                 <Button Style="{StaticResource vendorClearButton}"
-                        Command="{Binding }"                            
+                        Command="{Binding ClearFormCommand }"                            
                         Content="Clear"                            
                         FontSize="12"
                         FontFamily="Montserrat"
