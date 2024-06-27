@@ -25,7 +25,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
         // Commands
         public ICommand AddShowVendorFormCommand { get; }
-        public ICommand HideVendorFormCommand { get; }       
+        public ICommand HideVendorFormCommand { get; }    
+        public ICommand SelectAllCommand { get; }
 
         public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
         {
@@ -33,7 +34,13 @@ namespace VMA.MVVM.ViewModels.Menus
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelCommand(ShowVendorForm);
             HideVendorFormCommand = new ViewModelCommand(HideVendorForm);
+            SelectAllCommand = new ViewModelCommand(CheckBoxChecked);
             _ = GetVendors();
+        }
+
+        private void CheckBoxChecked(object obj)
+        {
+            
         }
 
         private async Task GetVendors()

@@ -10,6 +10,8 @@
                 <ResourceDictionary Source="/Styles/SubMenuButtonStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/TabControlStyles.xaml"/>
                 <ResourceDictionary Source="/Styles/FormStyles.xaml"/>
+
+                <ResourceDictionary Source="/Styles/GridStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

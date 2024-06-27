@@ -26,5 +26,10 @@ namespace VMA.MVVM.Views
         {
             InitializeComponent();           
         }
+
+        private void Deselect_Unchecked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
