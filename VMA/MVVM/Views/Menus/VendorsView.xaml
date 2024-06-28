@@ -26,8 +26,11 @@
                 <StackPanel Orientation="Horizontal"
                             VerticalAlignment="Top"
                             Margin="0,0,0,0">
-                    
-                    <ComboBox Style="{StaticResource vendorCombobox}"
+
+                    <ComboBox Style="{StaticResource vendorCombobox}"                              
+                              ItemsSource="{Binding Path=ComboItem}"   
+                              SelectedItem="{Binding Path=selectComboItem}"  
+                              DisplayMemberPath="NameSearch"  
                               Name="searchCriteria" 
                               Grid.Row="1" 
                               Width="130" 
@@ -40,7 +43,7 @@
                               FontFamily="Montserrat"                            
                               Foreground="{StaticResource plainTextColor3}"
                               BorderBrush="{StaticResource plainTextColor3}"
-                              BorderThickness="0,0,0,1" >                        
+                              BorderThickness="0,0,0,1" >
                     </ComboBox>
                 </StackPanel>
                 <fa:IconImage Icon="Search" Height="20" Width="20" Margin="10,0,0,0" Foreground="{StaticResource plainTextColor3}"/>
@@ -78,7 +81,7 @@
                     Cursor="Hand"
                     BorderThickness="0"
                     Foreground="White"
-                    VerticalAlignment="Top">                
+                    VerticalAlignment="Top">
             </Button>
         </Grid>
 
@@ -91,9 +94,20 @@
                 CellStyle="{DynamicResource DataGridCellStyle1}" 
                 ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                 RowStyle="{DynamicResource DataGridRowStyle1}" 
-                ItemsSource="{Binding Vendors}" AutoGenerateColumns="False" CanUserResizeRows="False">
+                ItemsSource="{Binding Vendors}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+
+                    <DataGridTextColumn Header="Vendor Code" Binding="{Binding VendorCode}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Vendor Name" Binding="{Binding VendorName}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Phone No" Binding="{Binding VendorPhoneNo}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Email Id" Binding="{Binding VendorEmailId}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Address"  Binding="{Binding VendorAddress}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Pin Code" Binding="{Binding VendorPinCode}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Bank Name" Binding="{Binding VendorBankName}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Account Number" Binding="{Binding VendorAccountNumber}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="IFSC Code" Binding="{Binding VendorIfsccode}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="GST Number" Binding="{Binding VendorGstnumber}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto" DisplayIndex="0">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -101,22 +115,15 @@
                                         <iconPacks:PackIconMaterial Kind="PencilOutline" Width="12" Height="12" VerticalAlignment="Center"/>
                                     </Button>
                                     <!--<Button Style="{StaticResource gridRemoveButton}">
-                                        <iconPacks:PackIconMaterial Kind="DeleteOutline" Width="12" Height="12" VerticalAlignment="Center"  />
-                                    </Button>-->
+                                    <iconPacks:PackIconMaterial Kind="DeleteOutline" Width="12" Height="12" VerticalAlignment="Center"  />
+                                </Button>-->
                                 </StackPanel>
-                                    
+
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Vendor Code" Binding="{Binding VendorCode}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="Vendor Name" Binding="{Binding VendorName}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="Address"  Binding="{Binding VendorAddress}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="Pin Code" Binding="{Binding VendorPinCode}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="Phone No" Binding="{Binding VendorPhoneNo}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="Bank Name" Binding="{Binding VendorBankName}" IsReadOnly="True" Width="*"/>
-                    <DataGridTextColumn Header="Account Number" Binding="{Binding VendorAccountNumber}" IsReadOnly="True" Width="*"/>
 
-                </DataGrid.Columns> 
+                </DataGrid.Columns>
             </DataGrid>
         </Border>
     </Grid>

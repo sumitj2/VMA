@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using VMA.MVVM.ViewModels.Add;
@@ -23,25 +24,40 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
+        private ObservableCollection<SearchModel> _comboItem;
+
+        public ObservableCollection<SearchModel> ComboItem
+        {
+            get { return _comboItem; }
+            set { _comboItem = value; }
+        }
+        private SearchModel _selectComboItem;
+
+        public SearchModel selectComboItem
+        {
+            get { return _selectComboItem; }
+            set { _selectComboItem = value; }
+        }
+
         // Commands
         public ICommand AddShowVendorFormCommand { get; }
-        public ICommand HideVendorFormCommand { get; }    
-        public ICommand SelectAllCommand { get; }
+        public ICommand HideVendorFormCommand { get; }
 
         public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
         {
+            ComboItem =
+            [
+                new(){NameSearch="Vedor Code",SearchId=1},
+                new(){NameSearch="Vedor Name",SearchId=2},
+
+            ];
             _vendorBusinessLogic = vendorBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelCommand(ShowVendorForm);
             HideVendorFormCommand = new ViewModelCommand(HideVendorForm);
-            SelectAllCommand = new ViewModelCommand(CheckBoxChecked);
             _ = GetVendors();
         }
 
-        private void CheckBoxChecked(object obj)
-        {
-            
-        }
 
         private async Task GetVendors()
         {
