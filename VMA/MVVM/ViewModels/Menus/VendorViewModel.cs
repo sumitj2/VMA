@@ -39,9 +39,22 @@ namespace VMA.MVVM.ViewModels.Menus
             set { _selectComboItem = value; }
         }
 
+        private VendorModel _selectedVendor;
+
+        public VendorModel SelectedVendor
+        {
+            get { return _selectedVendor; }
+            set { _selectedVendor = value; OnPropertyChanged(nameof(SelectedVendor)); }
+        }
+
+
         // Commands
         public ICommand AddShowVendorFormCommand { get; }
+
+        public ICommand UpdateVendorFormCommand { get; }
         public ICommand HideVendorFormCommand { get; }
+
+        public ICommand EditVendorCommand {  get; }
 
         public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
         {
@@ -53,21 +66,25 @@ namespace VMA.MVVM.ViewModels.Menus
             ];
             _vendorBusinessLogic = vendorBusinessLogic;
             _parentViewModel = parentViewModel;
-            AddShowVendorFormCommand = new ViewModelCommand(ShowVendorForm);
+            AddShowVendorFormCommand = new ViewModelCommand(ShowVendorForm);            
             HideVendorFormCommand = new ViewModelCommand(HideVendorForm);
+            EditVendorCommand = new ViewModelCommand(EditVendor);
             _ = GetVendors();
         }
 
+        private void EditVendor(object obj)
+        {
+            _parentViewModel.CurrentChildView = new AddUpdateVendorViewModel(_vendorBusinessLogic, this, (VendorModel)obj);
+        }
 
         private async Task GetVendors()
         {
             var vendors = await _vendorBusinessLogic.GetAllVendor();
             Vendors = new ObservableCollection<VendorModel>(vendors);
         }
-
         private void ShowVendorForm(object obj)
         {
-            _parentViewModel.CurrentChildView = new AddUpdateVendorViewModel(_vendorBusinessLogic, this);
+            _parentViewModel.CurrentChildView = new AddUpdateVendorViewModel(_vendorBusinessLogic, this, SelectedVendor);           
         }
 
         public void HideVendorForm(object obj)

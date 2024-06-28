@@ -19,10 +19,10 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdateVendors(Vendor VendorEntity)
         {
-            var result = await GetVendorsById(VendorEntity.VendorId);
-            if (result != null)
+           /// var result = await GetVendorsById(VendorEntity.VendorId);
+            if (VendorEntity != null)
             {
-                _context.Vendors.Update(result);
+                _context.Vendors.Update(VendorEntity);
                 await _context.SaveChangesAsync();
             }
         }

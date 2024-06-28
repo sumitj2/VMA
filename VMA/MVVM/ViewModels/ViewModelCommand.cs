@@ -12,12 +12,18 @@ namespace VMA.MVVM.ViewModels
         //Fields
         private readonly Action<object> _executeAction;
         private readonly Predicate<object> _canExecuteAction;
+        private ICommand? editVendor;
 
         //Constructors
         public ViewModelCommand(Action<object> executeAction)
         {
             _executeAction = executeAction;
             _canExecuteAction = null;
+        }
+
+        public ViewModelCommand(ICommand? editVendor)
+        {
+            this.editVendor = editVendor;
         }
 
         public ViewModelCommand(Action<object> executeAction, Predicate<object> canExecuteAction)

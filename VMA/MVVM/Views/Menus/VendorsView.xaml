@@ -111,8 +111,8 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource gridEditButton}">
-                                        <iconPacks:PackIconMaterial Kind="PencilOutline" Width="12" Height="12" VerticalAlignment="Center"/>
+                                    <Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditVendorCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" >
+                                        <iconPacks:PackIconMaterial Kind="PencilOutline" Width="12" Height="12" VerticalAlignment="Center" />
                                     </Button>
                                     <!--<Button Style="{StaticResource gridRemoveButton}">
                                     <iconPacks:PackIconMaterial Kind="DeleteOutline" Width="12" Height="12" VerticalAlignment="Center"  />

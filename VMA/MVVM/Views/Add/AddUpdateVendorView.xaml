@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" d:DataContext="{d:DesignInstance Type=add:AddUpdateVendorViewModel}"
+             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" d:DataContext="{d:DesignInstance Type=add:AddUpdateVendorViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
@@ -133,6 +133,9 @@
                         VerticalAlignment="Bottom"
                         HorizontalAlignment="Center"
                         Margin="0,0,0,9">
+                <Button Command="{Binding BackCommand}" Style="{StaticResource gridEditButton}">
+                    <iconPacks:PackIconMaterial Kind="LessThan" Width="12" Height="12" VerticalAlignment="Center" />
+                </Button>
                 <Button Style="{StaticResource vendorSaveButton}"
                         Command="{Binding SubmitCommand}"                            
                         Content="{Binding SaveButtonName, Mode=TwoWay}"                            
@@ -160,6 +163,9 @@
                         BorderThickness="0"
                         Foreground="White"
                         VerticalAlignment="Top"/>
+                <Button Command="{Binding NextCommand}" Margin="4" Style="{StaticResource gridEditButton}">
+                    <iconPacks:PackIconMaterial Kind="GreaterThan" Width="12" Height="12" VerticalAlignment="Center" />
+                </Button>
 
             </StackPanel>
         </Grid>

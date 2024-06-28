@@ -44,27 +44,26 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdateVendor(VendorModel vendorModel)
         {
-            Vendor vendorEntity = new()
+            var vendorEntity=await _vendorRepository.GetVendorsById(vendorModel.VendorId);
+            if (vendorEntity != null)
             {
-                CreatedBy = vendorModel?.CreatedBy,
-                CreatedDate = vendorModel?.CreatedDate,
-                IsActive = vendorModel?.IsActive,
-                LastUpdateBy = vendorModel?.LastUpdateBy,
-                LastUpdatedDate = vendorModel?.LastUpdatedDate,
-                VendorPinCode = vendorModel?.VendorPinCode,
-                VendorPhoneNo = vendorModel?.VendorPhoneNo,
-                VendorIfsccode = vendorModel?.VendorIfsccode,
-                VendorId = vendorModel!.VendorId,
-                VendorGstnumber = vendorModel?.VendorGstnumber,
-                VendorAccountNumber = vendorModel?.VendorAccountNumber,
-                VendorAddress = vendorModel?.VendorAddress,
-                VendorBankName = vendorModel?.VendorBankName,
-                VendorCode = vendorModel?.VendorCode,
-                VendorEmailId = vendorModel?.VendorEmailId,
-                VendorName = vendorModel?.VendorName
-            };
-            await _vendorRepository.EditUpdateVendors(vendorEntity);
+                vendorEntity.IsActive = true;
+                vendorEntity.LastUpdateBy = vendorModel?.LastUpdateBy;
+                vendorEntity.LastUpdatedDate = DateTime.UtcNow;
+                vendorEntity.VendorPinCode = vendorModel?.VendorPinCode;
+                vendorEntity.VendorPhoneNo = vendorModel?.VendorPhoneNo;
+                vendorEntity.VendorIfsccode = vendorModel?.VendorIfsccode;
+                vendorEntity.VendorId = vendorModel!.VendorId;
+                vendorEntity.VendorGstnumber = vendorModel?.VendorGstnumber;
+                vendorEntity.VendorAccountNumber = vendorModel?.VendorAccountNumber;
+                vendorEntity.VendorAddress = vendorModel?.VendorAddress;
+                vendorEntity.VendorBankName = vendorModel?.VendorBankName;
+                vendorEntity.VendorCode = vendorModel?.VendorCode;
+                vendorEntity.VendorEmailId = vendorModel?.VendorEmailId;
+                vendorEntity.VendorName = vendorModel?.VendorName;
 
+                await _vendorRepository.EditUpdateVendors(vendorEntity);
+            }
         }
         public async Task<IEnumerable<VendorModel>> GetAllVendor()
         {

@@ -3,6 +3,7 @@ using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,8 +17,12 @@ namespace VMA.MVVM.ViewModels.Add
     {
         private readonly IVendorBusinessLogic _vendorbusinessLogic;
         private readonly VendorViewModel _vendorViewModel;
-               
+        private int _selectedTabIndex;        
+        
+
         #region Command
+        public ICommand BackCommand { get; set; }
+        public ICommand NextCommand { get; set; }
         public ICommand HideVendorFormCommand { get; }
         public ICommand SubmitCommand { get; }
         public ICommand ClearFormCommand { get; }        
@@ -38,17 +43,8 @@ namespace VMA.MVVM.ViewModels.Add
         private string _vendorIfsccode;
         private string _vendorGstnumber;
         private string _saveButtonName;
-        private int _selectedTabIndex;
-
-        public int SelectedTabIndex
-        {
-            get => _selectedTabIndex;
-            set
-            {
-                _selectedTabIndex = value;
-                OnPropertyChanged(nameof(SelectedTabIndex));
-            }
-        }
+       
+        public VendorModel _selectedVendor { get; set; }       
         public string SaveButtonName
         {
             get => _saveButtonName;
@@ -179,16 +175,38 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorGstnumber));
             }
         }
-        
+        public int SelectedTabIndex
+        {
+            get => _selectedTabIndex;
+            set
+            {
+                _selectedTabIndex = value;
+                OnPropertyChanged(nameof(SelectedTabIndex));
+                OnPropertyChanged(nameof(CanGoBack));
+                OnPropertyChanged(nameof(CanGoNext));
+            }
+        }
+
         #endregion
 
-       
-        
-        public AddUpdateVendorViewModel(IVendorBusinessLogic vendorBusinessLogic, VendorViewModel parentViewModel)
+
+
+        public AddUpdateVendorViewModel(IVendorBusinessLogic vendorBusinessLogic, VendorViewModel parentViewModel, VendorModel SelectedVendor)
         {
-            SaveButtonName = "Next";
-            SwitchToTab1Command = new ViewModelCommand(SelectTab2);
-            _vendorbusinessLogic = vendorBusinessLogic;
+            _selectedVendor = SelectedVendor;
+            if (SelectedVendor != null) 
+            {
+                SaveButtonName = "Update";
+            }
+            else
+            {
+                SaveButtonName = "Submit";
+            }
+            SelectedTabIndex = 0;
+            PopulateValues();
+            BackCommand = new ViewModelCommand(CanGoBack);
+            NextCommand = new ViewModelCommand(CanGoNext);
+             _vendorbusinessLogic = vendorBusinessLogic;
             _vendorViewModel = parentViewModel;
             HideVendorFormCommand = new ViewModelCommand(HideVendorForm);
             SubmitCommand = new ViewModelCommand(SaveVendor);
@@ -196,9 +214,31 @@ namespace VMA.MVVM.ViewModels.Add
             //Initialize command
         }
 
-        private void SelectTab2(object obj)
+        private void CanGoBack(object obj)
         {
-            SelectedTabIndex = 1;
+            SelectedTabIndex--;
+        }
+
+        private void CanGoNext(object obj)
+        {
+            SelectedTabIndex++;
+        }
+        private void PopulateValues()
+        {
+            if (_selectedVendor != null)
+            {
+                VendorAccountNumber = _selectedVendor.VendorAccountNumber;
+                VendorCode = _selectedVendor.VendorCode;
+                VendorAddress = _selectedVendor.VendorAddress;
+                VendorBankName = _selectedVendor.VendorBankName;
+                VendorEmailId = _selectedVendor.VendorEmailId;
+                VendorName = _selectedVendor.VendorName;
+                VendorIfsccode = _selectedVendor.VendorIfsccode;
+                VendorPhoneNo = _selectedVendor.VendorPhoneNo;
+                VendorPinCode = _selectedVendor.VendorPinCode;
+                VendorGstnumber = _selectedVendor.VendorGstnumber;             
+
+            }
         }
 
         private void ClearValues(object obj)
@@ -217,10 +257,25 @@ namespace VMA.MVVM.ViewModels.Add
 
         private void SaveVendor(object obj)
         {
-            if (SaveButtonName == "Next")
+            if (SaveButtonName == "Update")
             {
-                SelectTab2(this);
-                SaveButtonName = "Save";
+                VendorModel vendorModel = new VendorModel()
+                {
+                    VendorAccountNumber = _vendorAccountNumber,
+                    VendorCode = _vendorCode,
+                    VendorAddress = _vendorAddress,
+                    VendorBankName = _vendorBankName,
+                    VendorEmailId = _vendorEmailId,
+                    VendorName = _vendorName,
+                    VendorIfsccode = _vendorIfsccode,
+                    VendorPhoneNo = _vendorPhoneNo,
+                    VendorPinCode = _vendorPinCode,
+                    CreatedBy = Thread.CurrentPrincipal?.Identity?.Name ?? "",
+                    VendorGstnumber = _vendorGstnumber,
+                    VendorId = _selectedVendor.VendorId,
+                   
+                };
+                _vendorbusinessLogic.EditUpdateVendor(vendorModel);
             }
             else
             {
@@ -239,8 +294,9 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorGstnumber = _vendorGstnumber
                 };
                 _vendorbusinessLogic.AddVendor(vendorModel);
-                HideVendorForm(this);//to do :refresh not happen on grid view
+                //to do :refresh not happen on grid view
             }
+            HideVendorForm(this);
         }
 
         private void HideVendorForm(object obj)
