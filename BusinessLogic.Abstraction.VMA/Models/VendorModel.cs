@@ -10,6 +10,7 @@ public partial class VendorModel
     public string? VendorCode { get; set; }
 
     public string? VendorName { get; set; }
+    public string? VendorPan { get; set; }
 
     public string? VendorAddress { get; set; }
 

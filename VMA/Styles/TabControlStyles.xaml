@@ -7,8 +7,7 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Margin" Value="-2 -2 0 0"/>
         <Setter Property="Width" Value="178"/>
-        <Setter Property="Padding" Value="10 5 10 10"/>
-        <Setter Property="FontWeight" Value="ExtraBlack"/>
+        <Setter Property="Padding" Value="10 5 10 10"/>       
         <Setter Property="VerticalAlignment" Value="Top"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Height" Value="30"/>
@@ -33,11 +32,11 @@
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource secondaryBlueColor}"/>
+                            <Setter Property="Background" Value="#836EFB"/>
                             <Setter Property="Foreground" Value="{DynamicResource primaryGrayColour}"/>
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource primaryBlueColor}"/>
+                            <Setter Property="Background" Value="#773DFF"/>
                             <Setter Property="Foreground" Value="{DynamicResource primaryTextColor}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -45,9 +44,7 @@
 
             </Setter.Value>
         </Setter>
-        <!--Margin="-2,-2,0,0" Width="178"-->
-        <!--<Setter Property="FontFamily" Value="Montserrat"/>-->
-        <!--<Setter Property="FontSize" Value="13.5"/>-->
+       
     </Style>
 
     <Style x:Key="TabContorlStyle" TargetType="TabControl">
@@ -87,9 +84,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <!--<Setter Property="FontFamily" Value="Montserrat"/>
-        <Setter Property="FontWeight" Value="Medium"/>
-        <Setter Property="FontSize" Value="13.5"/>-->
+       
 
     </Style>
 </ResourceDictionary>

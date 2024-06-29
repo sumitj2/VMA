@@ -24,7 +24,7 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <TabControl Style="{DynamicResource TabContorlStyle}" SelectedIndex="{Binding SelectedTabIndex}" Background="White">
-                    <TabItem Header="Contact Inforamtion" Style="{DynamicResource TabItemStyle}">
+                    <TabItem Header="Contact Inforamtion" Style="{DynamicResource TabItemStyle}" Height="39">
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="400"/>
@@ -87,7 +87,7 @@
 
                         </Grid>
                     </TabItem>
-                    <TabItem Header="Bank and GST Details" Style="{DynamicResource TabItemStyle}">
+                    <TabItem Header="Bank and GST Details" Style="{DynamicResource TabItemStyle}" Height="39">
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="400"/>
@@ -96,9 +96,24 @@
                             <StackPanel x:Name="CompanyGSTAndBankDetails" 
                                         Grid.Row="0"
                                         Orientation="Vertical">
-                                <TextBlock Text="Account Number"
+                                <TextBlock Text="Vendor PAN"
                                            Style="{StaticResource FormTextBlock}"
                                            Margin="20,20,0,0"/>
+
+                                <TextBox x:Name="txtVendorPan"
+                                           Text="{Binding VendorPAN,UpdateSourceTrigger=PropertyChanged}"                                         
+                                           Style="{StaticResource FormTextBox}"/>
+                                
+                                <TextBlock Text="Bank Name"
+                                           Style="{StaticResource FormTextBlock}"
+                                           Margin="20,20,0,0"/>
+
+                                <TextBox x:Name="txtVendorBankName"
+                                           Text="{Binding VendorBankName ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                           Style="{StaticResource FormTextBox}"/>
+                                
+                                <TextBlock Text="Account Number"
+                                           Style="{StaticResource FormTextBlock}"/>
                                 
                                 <TextBox x:Name="txtVendorAccountNumber"
                                            Text="{Binding VendorAccountNumber ,UpdateSourceTrigger=PropertyChanged}"                                         
@@ -111,12 +126,18 @@
                                            Text="{Binding VendorIfsccode ,UpdateSourceTrigger=PropertyChanged}"                                         
                                             Style="{StaticResource FormTextBox}"/>
                                 
-                                <TextBlock Text="GTS Number"                                           
-                                           Style="{StaticResource FormTextBlock}"/>
                                 
+
+                            </StackPanel>
+                            <StackPanel x:Name="CompanyDetai" Grid.Column="1"
+                                        Orientation="Vertical">
+
+                                <TextBlock Text="GTS Number"                                           
+           Style="{StaticResource FormTextBlock}"/>
+
                                 <TextBox x:Name="txtVendorGSTNumber"
-                                           Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                           Style="{StaticResource FormTextBox}"/>
+           Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+           Style="{StaticResource FormTextBox}"/>
 
 
                             </StackPanel>

@@ -62,8 +62,9 @@
                          VerticalContentAlignment="Center"
                          Margin="7,5,0,0"></TextBox>
                 
-                <TextBlock IsHitTestVisible="False" Text="Search..." VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-150 0 0 0"                          Foreground="{StaticResource plainTextColor3}"
-FontSize="13">
+                <TextBlock IsHitTestVisible="False" Text="Search..." VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-150 0 0 0"  
+                           Foreground="{StaticResource plainTextColor3}"
+                           FontSize="13">
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Visibility" Value="Collapsed"/>
@@ -113,7 +114,9 @@ FontSize="13">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Vendor Code" Binding="{Binding VendorCode}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Vendor Name" Binding="{Binding VendorName}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Vendor PAN" Binding="{Binding VendorPan}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Phone No" Binding="{Binding VendorPhoneNo}" IsReadOnly="True" Width="auto"/>
+
                     <DataGridTextColumn Header="Email Id" Binding="{Binding VendorEmailId}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Address"  Binding="{Binding VendorAddress}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Pin Code" Binding="{Binding VendorPinCode}" IsReadOnly="True" Width="auto"/>

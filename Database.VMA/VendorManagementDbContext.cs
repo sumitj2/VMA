@@ -82,6 +82,7 @@ public partial class VendorManagementDbContext : DbContext
             entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.VendorGstnumber).HasColumnName("VendorGSTNumber");
             entity.Property(e => e.VendorIfsccode).HasColumnName("VendorIFSCCode");
+            entity.Property(e => e.VendorPan).HasColumnName("VendorPan");
         });
 
         modelBuilder.Entity<VendorDetail>(entity =>

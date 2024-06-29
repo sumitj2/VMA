@@ -18,7 +18,7 @@ public partial class Vendor
     public string? VendorPhoneNo { get; set; }
 
     public string? VendorEmailId { get; set; }
-
+    public string? VendorPan { get; set; }
     public string? VendorBankName { get; set; }
 
     public string? VendorAccountNumber { get; set; }

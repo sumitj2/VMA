@@ -5,11 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.Xml;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace VMA.MVVM.ViewModels
 {
@@ -19,21 +21,21 @@ namespace VMA.MVVM.ViewModels
         private IUserBusinessLogic _userBusinessLogic;
         private IVendorBusinessLogic _vendorBusinessLogic;
 
-        private UserAccountModel _currentUserAccount;
+        //private UserAccountModel _currentUserAccount;
 
-        public UserAccountModel CurrentUserAccount
-        {
-            get
-            {
-                return _currentUserAccount;
-            }
+        //public UserAccountModel CurrentUserAccount
+        //{
+        //    get
+        //    {
+        //        return _currentUserAccount;
+        //    }
 
-            set
-            {
-                _currentUserAccount = value;
-                OnPropertyChanged(nameof(CurrentUserAccount));
-            }
-        }
+        //    set
+        //    {
+        //        _currentUserAccount = value;
+        //        OnPropertyChanged(nameof(CurrentUserAccount));
+        //    }
+        //}
 
         private ViewModelBase _currentChildView;
 
@@ -88,7 +90,7 @@ namespace VMA.MVVM.ViewModels
         {
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
-            _currentUserAccount = new UserAccountModel();
+           // _currentUserAccount = new UserAccountModel();
 
             //Initialize command
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
@@ -166,12 +168,17 @@ namespace VMA.MVVM.ViewModels
             var user = await _userBusinessLogic.GetByUsername(Thread.CurrentPrincipal?.Identity?.Name ?? "").ConfigureAwait(false);
             if (user != null)
             {
-                CurrentUserAccount.Username = user.Username;
-                CurrentUserAccount.DisplayName = $"Welcome {user.Name} {user.LastName} ;)";
+
+                //CurrentUserAccount.Username = user.Username;
+                //CurrentUserAccount.DisplayName = $"Welcome {user.Name} {user.LastName} ;)";
+                UserAccountModel.Username = user.Username;
+                UserAccountModel.DisplayName = $"Welcome {user.Name} {user.LastName} ;)";
+
             }
             else
             {
-                CurrentUserAccount.DisplayName = "Invalid user, not logged in";
+                //CurrentUserAccount.DisplayName = "Invalid user, not logged in";
+                UserAccountModel.DisplayName = $"Invalid user, not logged in";
             }
         }
     }

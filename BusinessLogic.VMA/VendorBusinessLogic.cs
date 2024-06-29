@@ -22,7 +22,6 @@ namespace Database.VMA.Repositories
         {
             Vendor vendorEntity = new()
             {
-
                 CreatedBy = vendorModel.CreatedBy,
                 CreatedDate = DateTime.UtcNow,
                 IsActive = true,
@@ -38,7 +37,8 @@ namespace Database.VMA.Repositories
                 VendorId = vendorModel.VendorId,
                 VendorIfsccode = vendorModel.VendorIfsccode,
                 VendorPhoneNo = vendorModel.VendorPhoneNo,
-                VendorPinCode = vendorModel.VendorPinCode
+                VendorPinCode = vendorModel.VendorPinCode,
+                VendorPan= vendorModel.VendorPan
             };
             await _vendorRepository.AddVendors(vendorEntity);
         }
@@ -61,7 +61,7 @@ namespace Database.VMA.Repositories
                 vendorEntity.VendorCode = vendorModel?.VendorCode;
                 vendorEntity.VendorEmailId = vendorModel?.VendorEmailId;
                 vendorEntity.VendorName = vendorModel?.VendorName;
-
+                vendorEntity.VendorPan= vendorModel?.VendorPan;
                 await _vendorRepository.EditUpdateVendors(vendorEntity);
             }
         }
@@ -88,7 +88,8 @@ namespace Database.VMA.Repositories
                     VendorId = vendor.VendorId,
                     VendorIfsccode = vendor.VendorIfsccode,
                     VendorPhoneNo = vendor.VendorPhoneNo,
-                    VendorPinCode = vendor.VendorPinCode
+                    VendorPinCode = vendor.VendorPinCode,
+                    VendorPan=vendor.VendorPan,
                 });
             }
             return services;
@@ -114,7 +115,8 @@ namespace Database.VMA.Repositories
                 VendorAddress = repositoryResult?.VendorAddress,
                 VendorBankName = repositoryResult?.VendorBankName,
                 VendorCode = repositoryResult?.VendorCode,
-                VendorEmailId = repositoryResult?.VendorEmailId
+                VendorEmailId = repositoryResult?.VendorEmailId,
+                VendorPan=repositoryResult?.VendorPan,
 
             };
             return vendorModel;

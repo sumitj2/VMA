@@ -54,9 +54,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Height="30"
-              CornerRadius="15" Width="90"
-              Background="{TemplateBinding Background}"
-              Margin="5,0,0,0">
+                            CornerRadius="15" Width="90"
+                            Background="{TemplateBinding Background}"
+                            Margin="5,0,0,0">
                         <ContentPresenter VerticalAlignment="Center"
                                 HorizontalAlignment="Center"/>
                     </Border>
@@ -76,9 +76,9 @@
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border Height="30"
-              CornerRadius="15" Width="90"
-              Background="{TemplateBinding Background}"
-              Margin="5,0,0,0">
+                            CornerRadius="15" Width="90"
+                            Background="{TemplateBinding Background}"
+                            Margin="5,0,0,0">
                         <ContentPresenter VerticalAlignment="Center"
                                 HorizontalAlignment="Center"/>
                     </Border>
