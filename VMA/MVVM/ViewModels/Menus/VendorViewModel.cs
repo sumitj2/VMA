@@ -1,7 +1,11 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
+using Database.VMA.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
+using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.Reflection;
 using System.Windows.Input;
 using VMA.MVVM.ViewModels.Add;
 
@@ -24,6 +28,17 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
+        private ObservableCollection<VendorModel> _tempvendors;
+        public ObservableCollection<VendorModel> TempVendors
+        {
+            get { return _tempvendors; }
+            set
+            {
+                _tempvendors = value;
+                OnPropertyChanged(nameof(TempVendors));
+            }
+        }
+
         private ObservableCollection<SearchModel> _comboItem;
 
         public ObservableCollection<SearchModel> ComboItem
@@ -31,6 +46,7 @@ namespace VMA.MVVM.ViewModels.Menus
             get { return _comboItem; }
             set { _comboItem = value; }
         }
+
         private SearchModel _selectComboItem;
 
         public SearchModel selectComboItem
@@ -45,6 +61,27 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             get { return _selectedVendor; }
             set { _selectedVendor = value; OnPropertyChanged(nameof(SelectedVendor)); }
+        }
+
+        private string _searchValue;
+
+        public string SearchValue
+        {
+            get { return _searchValue; }
+            set { _searchValue = value;
+
+                if (selectComboItem != null && !string.IsNullOrEmpty(value))
+                {
+                    PropertyInfo propertyInfo = typeof(VendorModel).GetProperty(selectComboItem.NameSearch.Replace(" ",""));
+
+                    Vendors = new ObservableCollection<VendorModel>(Vendors.Where(x => propertyInfo.GetValue(x, null)?.ToString().ToLower().StartsWith(value.ToLower()) ?? false));
+                }
+                else
+                {
+                    Vendors = TempVendors;
+                }
+
+                OnPropertyChanged(nameof(SearchValue)); }
         }
 
 
@@ -80,7 +117,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private async Task GetVendors()
         {
             var vendors = await _vendorBusinessLogic.GetAllVendor();
-            Vendors = new ObservableCollection<VendorModel>(vendors);
+            Vendors = TempVendors = new ObservableCollection<VendorModel>(vendors);
         }
 
         private void ShowVendorForm(object obj)
