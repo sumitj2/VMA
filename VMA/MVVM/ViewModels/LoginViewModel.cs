@@ -23,8 +23,6 @@ namespace VMA.MVVM.ViewModels.Login
         private string _errorMessage;
         private bool _isViewVisible = true;
 
-        private IUserRepository userRepository;
-
         //Properties
         public string Username
         {

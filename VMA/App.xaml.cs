@@ -5,8 +5,10 @@ using Database.VMA;
 using Database.VMA.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Windows;
 using VMA.MVVM.ViewModels;
 using VMA.MVVM.ViewModels.Login;
@@ -50,6 +52,20 @@ namespace VMA
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            // Configure Serilog
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.File("logs\\log-.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            // Handle UI thread exceptions
+            this.DispatcherUnhandledException += App_DispatcherUnhandledException;
+
+            // Handle non-UI thread exceptions
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
             var loginView = _serviceProvider.GetService<LoginView>();
             loginView!.Show();
 
@@ -61,6 +77,46 @@ namespace VMA
                     mainView!.Show();
                 }
             };
+        }
+
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            // Log the exception
+            LogException(e.Exception);
+
+            // Show a message to the user
+            MessageBox.Show("An unhandled exception occurred: " + e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            // Prevent default unhandled exception processing
+            e.Handled = true;
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            // Log the exception
+            LogException(e.ExceptionObject as Exception);
+
+            // Show a message to the user
+            MessageBox.Show("An unhandled exception occurred: " + (e.ExceptionObject as Exception)?.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            // Log the exception
+            LogException(e.Exception);
+
+            // Show a message to the user
+            MessageBox.Show("An unobserved task exception occurred: " + e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            // Prevent the exception from crashing the application
+            e.SetObserved();
+        }
+
+        private void LogException(Exception ex)
+        {
+            // Implement logging logic here
+            // For example, write to a file, send to a logging server, etc.
+            Debug.WriteLine(ex.ToString());
         }
     }
 
