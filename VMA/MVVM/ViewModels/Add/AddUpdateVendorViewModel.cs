@@ -189,8 +189,6 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
-
-
         public AddUpdateVendorViewModel(IVendorBusinessLogic vendorBusinessLogic, VendorViewModel parentViewModel, VendorModel SelectedVendor)
         {
             _selectedVendor = SelectedVendor;
@@ -203,6 +201,8 @@ namespace VMA.MVVM.ViewModels.Add
                 SaveButtonName = "Submit";
             }
             SelectedTabIndex = 0;
+            VendorCode = Convert.ToString(parentViewModel.Vendors.Count + 1);
+
             PopulateValues();
             BackCommand = new ViewModelCommand(CanGoBack);
             NextCommand = new ViewModelCommand(CanGoNext);
@@ -211,6 +211,7 @@ namespace VMA.MVVM.ViewModels.Add
             HideVendorFormCommand = new ViewModelCommand(HideVendorForm);
             SubmitCommand = new ViewModelCommand(SaveVendor);
             ClearFormCommand = new ViewModelCommand(ClearValues);
+
             //Initialize command
         }
 
@@ -223,6 +224,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             SelectedTabIndex++;
         }
+
         private void PopulateValues()
         {
             if (_selectedVendor != null)
@@ -237,7 +239,6 @@ namespace VMA.MVVM.ViewModels.Add
                 VendorPhoneNo = _selectedVendor.VendorPhoneNo;
                 VendorPinCode = _selectedVendor.VendorPinCode;
                 VendorGstnumber = _selectedVendor.VendorGstnumber;             
-
             }
         }
 

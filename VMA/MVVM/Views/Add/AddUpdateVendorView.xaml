@@ -37,8 +37,8 @@
                                            Style="{StaticResource FormTextBlock}"
                                            Margin="20,20,230,0"/>
 
-                                <TextBox x:Name="txtVendorCode"
-                                         Text="{Binding VendorCode ,UpdateSourceTrigger=PropertyChanged }"
+                                <TextBox x:Name="txtVendorCode" IsEnabled="False"
+                                         Text="{Binding VendorCode ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                                          Style="{StaticResource FormTextBox}"/>
 
                                 <TextBlock Text="Vendor Name"
