@@ -60,8 +60,8 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             ComboItem =
             [
-                new(){NameSearch="Vedor Code",SearchId=1},
-                new(){NameSearch="Vedor Name",SearchId=2},
+                new(){NameSearch="Vendor Code",SearchId=1},
+                new(){NameSearch="Vendor Name",SearchId=2},
 
             ];
             _vendorBusinessLogic = vendorBusinessLogic;
@@ -82,6 +82,7 @@ namespace VMA.MVVM.ViewModels.Menus
             var vendors = await _vendorBusinessLogic.GetAllVendor();
             Vendors = new ObservableCollection<VendorModel>(vendors);
         }
+
         private void ShowVendorForm(object obj)
         {
             _parentViewModel.CurrentChildView = new AddUpdateVendorViewModel(_vendorBusinessLogic, this, SelectedVendor);           
@@ -90,6 +91,8 @@ namespace VMA.MVVM.ViewModels.Menus
         public void HideVendorForm(object obj)
         {
             _parentViewModel.CurrentChildView = this;
+            Thread.Sleep(1000);
+            GetVendors();
         }
     }
 }

@@ -94,9 +94,8 @@
                 CellStyle="{DynamicResource DataGridCellStyle1}" 
                 ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                 RowStyle="{DynamicResource DataGridRowStyle1}" 
-                ItemsSource="{Binding Vendors}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                ItemsSource="{Binding Vendors,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
-
                     <DataGridTextColumn Header="Vendor Code" Binding="{Binding VendorCode}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Vendor Name" Binding="{Binding VendorName}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Phone No" Binding="{Binding VendorPhoneNo}" IsReadOnly="True" Width="auto"/>
@@ -107,7 +106,7 @@
                     <DataGridTextColumn Header="Account Number" Binding="{Binding VendorAccountNumber}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="IFSC Code" Binding="{Binding VendorIfsccode}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="GST Number" Binding="{Binding VendorGstnumber}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto" DisplayIndex="0">
+                    <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
