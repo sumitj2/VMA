@@ -7,6 +7,15 @@
     <Color x:Key="secondaryBackColor1">#24105F</Color>
     <Color x:Key="secondaryBackColor2">#210F55</Color>
     
+    <!--tab control colour-->
+    <SolidColorBrush x:Key="primaryBlueColor">#348EF6</SolidColorBrush>
+    <SolidColorBrush x:Key="secondaryBlueColor">#6D2FFF</SolidColorBrush>
+
+    <SolidColorBrush x:Key="primaryTextColor">#FFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="secondaryTextColor">#BBC1d1</SolidColorBrush>
+
+    <SolidColorBrush x:Key="primaryGrayColour">#BBC1d1</SolidColorBrush>
+
     <!--Window Border Colors-->
     <Color x:Key="winBorderColor1">#6D2FFF</Color>
     <Color x:Key="winBorderColor2">#FB539B</Color>

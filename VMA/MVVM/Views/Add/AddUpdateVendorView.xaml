@@ -9,7 +9,7 @@
 
     <Border CornerRadius="10"                    
         BorderThickness="0"
-            Background="{StaticResource panelColor}" Opacity="0.95">
+            Background="white" Opacity="0.95">
         <Border.BorderBrush>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
@@ -23,8 +23,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <TabControl SelectedIndex="{Binding SelectedTabIndex}" Background="{StaticResource panelColor}">
-                    <TabItem Header="Contact Inforamtion">
+                <TabControl Style="{DynamicResource TabContorlStyle}" SelectedIndex="{Binding SelectedTabIndex}" Background="White">
+                    <TabItem Header="Contact Inforamtion" Style="{DynamicResource TabItemStyle}">
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="400"/>
@@ -79,15 +79,15 @@
                                 <TextBlock Text="Vendor Email Id"
                                             Style="{StaticResource FormTextBlock}"/>
                                
-                                <TextBox x:Name="txtVendorEmailId"
-                                           Text="{Binding VendorEmailId,UpdateSourceTrigger=PropertyChanged}"                                         
+                                <TextBox x:Name="txtVendorEmailId" 
+                                           Text="{Binding VendorEmailId,UpdateSourceTrigger=PropertyChanged ,ValidatesOnDataErrors=True}"                                          
                                            Style="{StaticResource FormTextBox}"/>
 
                             </StackPanel>
 
                         </Grid>
                     </TabItem>
-                    <TabItem Header="Bank and GST Details" Style="{StaticResource TabItemStyle}">
+                    <TabItem Header="Bank and GST Details" Style="{DynamicResource TabItemStyle}">
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="400"/>

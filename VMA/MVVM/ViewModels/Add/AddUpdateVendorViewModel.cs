@@ -4,6 +4,7 @@ using BusinessLogic.Abstraction.VMA.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -115,6 +116,8 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPhoneNo));
             }
         }
+
+        [EmailAddress(ErrorMessage = "Invalid email address")]
         public string VendorEmailId
         {
             get
