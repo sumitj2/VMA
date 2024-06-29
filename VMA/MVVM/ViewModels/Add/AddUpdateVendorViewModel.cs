@@ -47,7 +47,7 @@ namespace VMA.MVVM.ViewModels.Add
         private string _vendorGstnumber;
         private string _saveButtonName;
 
-        public VendorModel _selectedVendor { get; set; }
+        public VendorModel SelectedVendor { get; set; }
         public string SaveButtonName
         {
             get => _saveButtonName;
@@ -209,7 +209,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         public AddUpdateVendorViewModel(IVendorBusinessLogic vendorBusinessLogic, VendorViewModel parentViewModel, VendorModel SelectedVendor)
         {
-            _selectedVendor = SelectedVendor;
+            this.SelectedVendor = SelectedVendor;
             if (SelectedVendor != null)
             {
                 SaveButtonName = "Update";
@@ -247,19 +247,19 @@ namespace VMA.MVVM.ViewModels.Add
 
         private void PopulateValues()
         {
-            if (_selectedVendor != null)
+            if (SelectedVendor != null)
             {
-                VendorAccountNumber = _selectedVendor.VendorAccountNumber;
-                VendorCode = _selectedVendor.VendorCode;
-                VendorAddress = _selectedVendor.VendorAddress;
-                VendorBankName = _selectedVendor.VendorBankName;
-                VendorEmailId = _selectedVendor.VendorEmailId;
-                VendorName = _selectedVendor.VendorName;
-                VendorIfsccode = _selectedVendor.VendorIfsccode;
-                VendorPhoneNo = _selectedVendor.VendorPhoneNo;
-                VendorPinCode = _selectedVendor.VendorPinCode;
-                VendorGstnumber = _selectedVendor.VendorGstnumber;
-                VendorPAN = _selectedVendor.VendorPan;
+                VendorAccountNumber = SelectedVendor.VendorAccountNumber;
+                VendorCode = SelectedVendor.VendorCode;
+                VendorAddress = SelectedVendor.VendorAddress;
+                VendorBankName = SelectedVendor.VendorBankName;
+                VendorEmailId = SelectedVendor.VendorEmailId;
+                VendorName = SelectedVendor.VendorName;
+                VendorIfsccode = SelectedVendor.VendorIfsccode;
+                VendorPhoneNo = SelectedVendor.VendorPhoneNo;
+                VendorPinCode = SelectedVendor.VendorPinCode;
+                VendorGstnumber = SelectedVendor.VendorGstnumber;
+                VendorPAN = SelectedVendor.VendorPan;
             }
         }
 
@@ -281,7 +281,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             if (SaveButtonName == "Update")
             {
-                VendorModel vendorModel = new VendorModel()
+                VendorModel vendorModel = new()
                 {
                     VendorAccountNumber = _vendorAccountNumber,
                     VendorCode = _vendorCode,
@@ -294,7 +294,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorPinCode = _vendorPinCode,
                     CreatedBy = UserAccountModel.Username,
                     VendorGstnumber = _vendorGstnumber,
-                    VendorId = _selectedVendor.VendorId,
+                    VendorId = SelectedVendor.VendorId,
                     VendorPan = _vendorPAN
 
                 };
@@ -302,7 +302,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             else
             {
-                VendorModel vendorModel = new VendorModel()
+                VendorModel vendorModel = new()
                 {
                     VendorAccountNumber = _vendorAccountNumber,
                     VendorCode = _vendorCode,
@@ -313,12 +313,11 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorIfsccode = _vendorIfsccode,
                     VendorPhoneNo = _vendorPhoneNo,
                     VendorPinCode = _vendorPinCode,
-                    CreatedBy = Thread.CurrentPrincipal?.Identity?.Name ?? "",
+                    CreatedBy = UserAccountModel.Username,
                     VendorGstnumber = _vendorGstnumber,
                     VendorPan = _vendorPAN
                 };
-                _vendorbusinessLogic.AddVendor(vendorModel);
-                //to do :refresh not happen on grid view
+                _vendorbusinessLogic.AddVendor(vendorModel);                
             }
             HideVendorForm(this);
         }

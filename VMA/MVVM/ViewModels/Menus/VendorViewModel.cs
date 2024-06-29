@@ -14,10 +14,50 @@ namespace VMA.MVVM.ViewModels.Menus
     public class VendorViewModel : ViewModelBase
     {
         private readonly IVendorBusinessLogic _vendorBusinessLogic;
-
         private readonly MainViewModel _parentViewModel;
+        private VendorModel _selectedVendor;
+        private SearchModel _selectComboItem;
+        private string _searchValue;
 
+       
+        public SearchModel SelectComboItem
+        {
+            get { return _selectComboItem; }
+            set { _selectComboItem = value; }
+        }
+        public VendorModel SelectedVendor
+        {
+            get { return _selectedVendor; }
+            set { _selectedVendor = value; OnPropertyChanged(nameof(SelectedVendor)); }
+        }
+
+        public string SearchValue
+        {
+            get { return _searchValue; }
+            set
+            {
+                _searchValue = value;
+
+                if (SelectComboItem != null && !string.IsNullOrEmpty(value))
+                {
+                    PropertyInfo? propertyInfo = typeof(VendorModel)?.GetProperty(SelectComboItem.NameSearch.Replace(" ", ""));
+
+                    Vendors = new ObservableCollection<VendorModel>(Vendors.Where(x => propertyInfo?.GetValue(x, null)?.ToString()?.ToLower(System.Globalization.CultureInfo.CurrentCulture).StartsWith(value, StringComparison.CurrentCultureIgnoreCase) ?? false));
+                }
+                else
+                {
+                    Vendors = TempVendors;
+                }
+
+                OnPropertyChanged(nameof(SearchValue));
+            }
+        }
+
+        #region Observable collections
         private ObservableCollection<VendorModel> _vendors;
+        private ObservableCollection<VendorModel> _tempvendors;
+        private ObservableCollection<SearchModel> _comboItem;
+
         public ObservableCollection<VendorModel> Vendors
         {
             get { return _vendors; }
@@ -28,7 +68,6 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private ObservableCollection<VendorModel> _tempvendors;
         public ObservableCollection<VendorModel> TempVendors
         {
             get { return _tempvendors; }
@@ -39,59 +78,22 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private ObservableCollection<SearchModel> _comboItem;
-
         public ObservableCollection<SearchModel> ComboItem
         {
             get { return _comboItem; }
             set { _comboItem = value; }
         }
+        #endregion        
 
-        private SearchModel _selectComboItem;
-
-        public SearchModel selectComboItem
-        {
-            get { return _selectComboItem; }
-            set { _selectComboItem = value; }
-        }
-
-        private VendorModel _selectedVendor;
-
-        public VendorModel SelectedVendor
-        {
-            get { return _selectedVendor; }
-            set { _selectedVendor = value; OnPropertyChanged(nameof(SelectedVendor)); }
-        }
-
-        private string _searchValue;
-
-        public string SearchValue
-        {
-            get { return _searchValue; }
-            set { _searchValue = value;
-
-                if (selectComboItem != null && !string.IsNullOrEmpty(value))
-                {
-                    PropertyInfo propertyInfo = typeof(VendorModel).GetProperty(selectComboItem.NameSearch.Replace(" ",""));
-
-                    Vendors = new ObservableCollection<VendorModel>(Vendors.Where(x => propertyInfo.GetValue(x, null)?.ToString().ToLower().StartsWith(value.ToLower()) ?? false));
-                }
-                else
-                {
-                    Vendors = TempVendors;
-                }
-
-                OnPropertyChanged(nameof(SearchValue)); }
-        }
-
-
-        // Commands
+        #region commands
+        
         public ICommand AddShowVendorFormCommand { get; }
 
         public ICommand UpdateVendorFormCommand { get; }
         public ICommand HideVendorFormCommand { get; }
 
         public ICommand EditVendorCommand {  get; }
+        #endregion
 
         public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
         {
@@ -107,6 +109,13 @@ namespace VMA.MVVM.ViewModels.Menus
             HideVendorFormCommand = new ViewModelCommand(HideVendorForm);
             EditVendorCommand = new ViewModelCommand(EditVendor);
             _ = GetVendors();
+        }
+
+        public void HideVendorForm(object obj)
+        {
+            _parentViewModel.CurrentChildView = this;
+            Thread.Sleep(1000);
+            GetVendors();
         }
 
         private void EditVendor(object obj)
@@ -125,11 +134,5 @@ namespace VMA.MVVM.ViewModels.Menus
             _parentViewModel.CurrentChildView = new AddUpdateVendorViewModel(_vendorBusinessLogic, this, SelectedVendor);           
         }
 
-        public void HideVendorForm(object obj)
-        {
-            _parentViewModel.CurrentChildView = this;
-            Thread.Sleep(1000);
-            GetVendors();
-        }
     }
 }
