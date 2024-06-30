@@ -114,8 +114,8 @@ namespace VMA.MVVM.ViewModels.Menus
         public void HideVendorForm(object obj)
         {
             _parentViewModel.CurrentChildView = this;
-            Thread.Sleep(1000);
-            GetVendors();
+
+            Task.Run(() => GetVendors());
         }
 
         private void EditVendor(object obj)
