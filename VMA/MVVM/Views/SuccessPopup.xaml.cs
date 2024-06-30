@@ -33,8 +33,8 @@ namespace VMA.MVVM.Views
                 var transform = PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice;
                 var corner = transform.Transform(new Point(workingArea.Right, workingArea.Bottom));
 
-                this.Left = corner.X - this.ActualWidth - 100;
-                this.Top = corner.Y - this.ActualHeight;
+                //this.Left = corner.X - this.ActualWidth - 100;
+                //this.Top = corner.Y - this.ActualHeight;
             }));
         }
     }
