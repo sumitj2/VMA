@@ -21,6 +21,10 @@ namespace VMA
     /// </summary>
     public partial class App : Application
     {
+
+        /// <summary>
+        /// how to apply validations on multiple field with minimun coding and using standard practices in wpf
+        /// </summary>
         private IServiceProvider _serviceProvider;
 
         public App()
