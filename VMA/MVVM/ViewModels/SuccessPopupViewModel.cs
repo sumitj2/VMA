@@ -47,10 +47,10 @@ namespace VMA.MVVM.ViewModels
         public SuccessPopupViewModel()
         {
             // Load GIF image
-            GifSource = new BitmapImage();
-            GifSource.BeginInit();
-            GifSource.UriSource = new Uri("pack://application:,,,/YourAssemblyName;component/Resources/success.gif");
-            GifSource.EndInit();
+            //GifSource = new BitmapImage();
+            //GifSource.BeginInit();
+            //GifSource.UriSource = new Uri("pack://application:,,,/YourAssemblyName;component/Resources/success.gif");
+            //GifSource.EndInit();
         }
 
         public void ShowPopup(string message, int durationInSeconds)

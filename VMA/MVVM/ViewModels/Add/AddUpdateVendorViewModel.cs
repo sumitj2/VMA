@@ -8,9 +8,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
+using VMA.MVVM.Views;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace VMA.MVVM.ViewModels.Add
@@ -299,6 +302,18 @@ namespace VMA.MVVM.ViewModels.Add
 
                 };
                 _vendorbusinessLogic.EditUpdateVendor(vendorModel);
+
+                Window window = (Window)Activator.CreateInstance(typeof(SuccessPopup));
+                window.Show();
+                DispatcherTimer timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromSeconds(2); // Set the interval to 2 seconds
+                timer.Tick += (s, args) =>
+                {
+                    window.Close(); // Close the popup
+                    timer.Stop(); // Stop the timer
+                };
+
+                timer.Start(); 
             }
             else
             {
@@ -319,6 +334,7 @@ namespace VMA.MVVM.ViewModels.Add
                 };
                 _vendorbusinessLogic.AddVendor(vendorModel);                
             }
+
             HideVendorForm(this);
         }
 
