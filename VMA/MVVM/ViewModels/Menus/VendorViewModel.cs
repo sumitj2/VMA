@@ -19,7 +19,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private SearchModel _selectComboItem;
         private string _searchValue;
 
-       
+
         public SearchModel SelectComboItem
         {
             get { return _selectComboItem; }
@@ -42,7 +42,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 {
                     PropertyInfo? propertyInfo = typeof(VendorModel)?.GetProperty(SelectComboItem.NameSearch.Replace(" ", ""));
 
-                    Vendors = new ObservableCollection<VendorModel>(Vendors.Where(x => propertyInfo?.GetValue(x, null)?.ToString()?.ToLower(System.Globalization.CultureInfo.CurrentCulture).StartsWith(value, StringComparison.CurrentCultureIgnoreCase) ?? false));
+                    Vendors = new ObservableCollection<VendorModel>(Vendors.Where(x => propertyInfo?.GetValue(x, null)?.ToString()?.ToLower(System.Globalization.CultureInfo.CurrentCulture).Contains(value, StringComparison.CurrentCultureIgnoreCase) ?? false));
                 }
                 else
                 {
@@ -83,16 +83,16 @@ namespace VMA.MVVM.ViewModels.Menus
             get { return _comboItem; }
             set { _comboItem = value; }
         }
-        #endregion        
+        #endregion
 
         #region commands
-        
+
         public ICommand AddShowVendorFormCommand { get; }
 
         public ICommand UpdateVendorFormCommand { get; }
         public ICommand HideVendorFormCommand { get; }
 
-        public ICommand EditVendorCommand {  get; }
+        public ICommand EditVendorCommand { get; }
         #endregion
 
         public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
@@ -105,20 +105,20 @@ namespace VMA.MVVM.ViewModels.Menus
             ];
             _vendorBusinessLogic = vendorBusinessLogic;
             _parentViewModel = parentViewModel;
-            AddShowVendorFormCommand = new ViewModelCommand(ShowVendorForm);            
-            HideVendorFormCommand = new ViewModelCommand(HideVendorForm);
-            EditVendorCommand = new ViewModelCommand(EditVendor);
+            AddShowVendorFormCommand = new ViewModelCommand(ShowVendorForm);
+            HideVendorFormCommand = new ViewModelAsyncCommand<VendorModel>(HideVendorForm);
+            EditVendorCommand = new ViewModelAsyncCommand<VendorModel>(EditVendor);
             _ = GetVendors();
         }
 
-        public void HideVendorForm(object obj)
+        public async Task HideVendorForm(object obj)
         {
             _parentViewModel.CurrentChildView = this;
 
-            Task.Run(() => GetVendors());
+            await Task.Run(GetVendors).ConfigureAwait(true);
         }
 
-        private void EditVendor(object obj)
+        private async Task EditVendor(object obj)
         {
             SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
 
@@ -127,7 +127,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task GetVendors()
         {
-            var vendors = await _vendorBusinessLogic.GetAllVendor();
+            var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
             Vendors = TempVendors = new ObservableCollection<VendorModel>(vendors);
         }
 
@@ -135,7 +135,7 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, "Please wait...");
 
-            _parentViewModel.CurrentChildView = new AddUpdateVendorViewModel(_vendorBusinessLogic, this, SelectedVendor);           
+            _parentViewModel.CurrentChildView = new AddUpdateVendorViewModel(_vendorBusinessLogic, this, SelectedVendor);
         }
 
     }

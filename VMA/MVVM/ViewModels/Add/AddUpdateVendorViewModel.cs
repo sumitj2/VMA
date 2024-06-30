@@ -230,7 +230,7 @@ namespace VMA.MVVM.ViewModels.Add
             _vendorbusinessLogic = vendorBusinessLogic;
             _vendorViewModel = parentViewModel;
             HideVendorFormCommand = new ViewModelCommand(HideVendorForm);
-            SubmitCommand = new ViewModelCommand(SaveVendor);
+            SubmitCommand = new ViewModelAsyncCommand<VendorModel>(SaveVendor);
             ClearFormCommand = new ViewModelCommand(ClearValues);
 
             //Initialize command
@@ -280,7 +280,7 @@ namespace VMA.MVVM.ViewModels.Add
             VendorGstnumber = "";
         }
 
-        private void SaveVendor(object obj)
+        private async Task SaveVendor(object obj)
         {
             if (SaveButtonName == "Update")
             {
@@ -301,9 +301,10 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorPan = _vendorPAN
 
                 };
-                _vendorbusinessLogic.EditUpdateVendor(vendorModel);
+               await _vendorbusinessLogic.EditUpdateVendor(vendorModel);
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully");
+                await Task.Delay(1000);
             }
             else
             {
