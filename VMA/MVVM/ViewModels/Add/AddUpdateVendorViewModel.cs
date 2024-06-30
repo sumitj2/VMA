@@ -303,17 +303,7 @@ namespace VMA.MVVM.ViewModels.Add
                 };
                 _vendorbusinessLogic.EditUpdateVendor(vendorModel);
 
-                Window window = (Window)Activator.CreateInstance(typeof(SuccessPopup));
-                window.Show();
-                DispatcherTimer timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromSeconds(2); // Set the interval to 2 seconds
-                timer.Tick += (s, args) =>
-                {
-                    window.Close(); // Close the popup
-                    timer.Stop(); // Stop the timer
-                };
-
-                timer.Start(); 
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully");
             }
             else
             {
@@ -332,7 +322,9 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorGstnumber = _vendorGstnumber,
                     VendorPan = _vendorPAN
                 };
-                _vendorbusinessLogic.AddVendor(vendorModel);                
+                _vendorbusinessLogic.AddVendor(vendorModel);
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully");
             }
 
             HideVendorForm(this);

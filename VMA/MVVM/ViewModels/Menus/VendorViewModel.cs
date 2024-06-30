@@ -120,6 +120,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private void EditVendor(object obj)
         {
+            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
+
             _parentViewModel.CurrentChildView = new AddUpdateVendorViewModel(_vendorBusinessLogic, this, (VendorModel)obj);
         }
 
@@ -131,6 +133,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private void ShowVendorForm(object obj)
         {
+            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, "Please wait...");
+
             _parentViewModel.CurrentChildView = new AddUpdateVendorViewModel(_vendorBusinessLogic, this, SelectedVendor);           
         }
 

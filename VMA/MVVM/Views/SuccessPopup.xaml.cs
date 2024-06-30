@@ -25,7 +25,7 @@ namespace VMA.MVVM.Views
         public SuccessPopup()
         {
             InitializeComponent();
-            this.DataContext = new SuccessPopupViewModel();
+            this.DataContext = SuccessPopupViewModel.Instance;
 
             Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
             {

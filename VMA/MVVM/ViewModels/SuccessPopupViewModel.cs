@@ -3,26 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using VMA.Enums;
+using VMA.MVVM.Views;
 
 namespace VMA.MVVM.ViewModels
 {
     public class SuccessPopupViewModel: ViewModelBase
     {
-        private bool _isVisible;
-        private string _message;
-        private BitmapImage _gifSource;
+        private static SuccessPopupViewModel _instance;
 
-        public bool IsVisible
+        /// <summary>
+        /// Gets the instance.
+        /// </summary>
+        /// <value>The instance.</value>
+        public static SuccessPopupViewModel Instance 
         {
-            get => _isVisible;
-            set
+            get
             {
-                _isVisible = value;
-                OnPropertyChanged(nameof(IsVisible));
+                if (_instance == null)
+                {
+                    _instance = new SuccessPopupViewModel();
+                }
+
+                return _instance;
             }
         }
+
+        private string _message;
 
         public string Message
         {
@@ -34,38 +44,51 @@ namespace VMA.MVVM.ViewModels
             }
         }
 
-        public BitmapImage GifSource
+        private string _header;
+
+        public string Header
         {
-            get => _gifSource;
+            get => _header;
             set
             {
-                _gifSource = value;
-                OnPropertyChanged(nameof(GifSource));
+                _header = value;
+                OnPropertyChanged(nameof(Header));
+            }
+        }
+
+        private NotificationType _notificationType;
+
+        public NotificationType TypeOfNotification
+        {
+            get => _notificationType;
+            set
+            {
+                _notificationType = value;
+                OnPropertyChanged(nameof(TypeOfNotification));
             }
         }
 
         public SuccessPopupViewModel()
         {
-            // Load GIF image
-            //GifSource = new BitmapImage();
-            //GifSource.BeginInit();
-            //GifSource.UriSource = new Uri("pack://application:,,,/YourAssemblyName;component/Resources/success.gif");
-            //GifSource.EndInit();
+            
         }
 
-        public void ShowPopup(string message, int durationInSeconds)
+        public void ShowPopup(NotificationType notificationType, string message)
         {
             Message = message;
-            IsVisible = true;
-            var timer = new DispatcherTimer
+            TypeOfNotification = notificationType;
+            Header = notificationType.ToString();
+
+            Window window = (Window)Activator.CreateInstance(typeof(SuccessPopup));
+            window.Show();
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(2); // Set the interval to 2 seconds
+            timer.Tick += (s, args) =>
             {
-                Interval = TimeSpan.FromSeconds(durationInSeconds)
+                window.Close(); // Close the popup
+                timer.Stop(); // Stop the timer
             };
-            timer.Tick += (sender, args) =>
-            {
-                IsVisible = false;
-                timer.Stop();
-            };
+
             timer.Start();
         }
     }
