@@ -22,11 +22,11 @@
                 <RowDefinition Height="410"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
+            
             <Grid Grid.Row="0">
                 <TabControl Style="{DynamicResource TabContorlStyle}" SelectedIndex="{Binding SelectedTabIndex}" Background="White">
-                    <TabItem Header="Contact Inforamtion" Style="{DynamicResource TabItemStyle}" Height="39">
+                    <TabItem Header="Contact Information" Style="{DynamicResource TabItemStyle}" Height="39">
                         <AdornerDecorator>
-
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="400"/>
@@ -90,67 +90,68 @@
                             </Grid>
                         </AdornerDecorator>
                     </TabItem>
+
                     <TabItem Header="Bank and GST Details" Style="{DynamicResource TabItemStyle}" Height="39">
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="400"/>
-                                <ColumnDefinition Width="400"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel x:Name="CompanyGSTAndBankDetails" 
+                        <AdornerDecorator>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel x:Name="CompanyGSTAndBankDetails" 
                                         Grid.Row="0"
                                         Orientation="Vertical">
-                                <TextBlock Text="Vendor PAN"
+                                    <TextBlock Text="Vendor PAN"
                                            Style="{StaticResource FormTextBlock}"
                                            Margin="20,20,0,0"/>
 
-                                <TextBox x:Name="txtVendorPan"
+                                    <TextBox x:Name="txtVendorPan"
                                            Text="{Binding VendorPAN,UpdateSourceTrigger=PropertyChanged}"                                         
                                            Style="{StaticResource FormTextBox}"/>
-                                
-                                <TextBlock Text="Bank Name"
+
+                                    <TextBlock Text="Bank Name"
                                            Style="{StaticResource FormTextBlock}"
                                            Margin="20,20,0,0"/>
 
-                                <TextBox x:Name="txtVendorBankName"
+                                    <TextBox x:Name="txtVendorBankName"
                                            Text="{Binding VendorBankName ,UpdateSourceTrigger=PropertyChanged}"                                         
                                            Style="{StaticResource FormTextBox}"/>
-                                
-                                <TextBlock Text="Account Number"
+
+                                    <TextBlock Text="Account Number"
                                            Style="{StaticResource FormTextBlock}"/>
-                                
-                                <TextBox x:Name="txtVendorAccountNumber"
+
+                                    <TextBox x:Name="txtVendorAccountNumber"
                                            Text="{Binding VendorAccountNumber ,UpdateSourceTrigger=PropertyChanged}"                                         
                                           Style="{StaticResource FormTextBox}"/>
-                                
-                                <TextBlock Text="Bank IFSC Code"
+
+                                    <TextBlock Text="Bank IFSC Code"
                                            Style="{StaticResource FormTextBlock}"/>
-                                
-                                <TextBox x:Name="txtVendorIFSCCode"
+
+                                    <TextBox x:Name="txtVendorIFSCCode"
                                            Text="{Binding VendorIfsccode ,UpdateSourceTrigger=PropertyChanged}"                                         
                                             Style="{StaticResource FormTextBox}"/>
-                                
-                                
 
-                            </StackPanel>
-                            <StackPanel x:Name="CompanyDetai" Grid.Column="1"
+
+
+                                </StackPanel>
+                                <StackPanel x:Name="CompanyDetai" Grid.Column="1"
                                         Orientation="Vertical">
 
-                                <TextBlock Text="GTS Number"                                           
+                                    <TextBlock Text="GTS Number"                                           
            Style="{StaticResource FormTextBlock}"/>
 
-                                <TextBox x:Name="txtVendorGSTNumber"
+                                    <TextBox x:Name="txtVendorGSTNumber"
            Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
            Style="{StaticResource FormTextBox}"/>
 
 
-                            </StackPanel>
-                        </Grid>
-
+                                </StackPanel>
+                            </Grid>
+                        </AdornerDecorator>
                     </TabItem>
-
-
                 </TabControl>
             </Grid>
+            
             <!--buttons setting in footer-->
             <StackPanel Grid.Row="2" 
                         Orientation="Horizontal"

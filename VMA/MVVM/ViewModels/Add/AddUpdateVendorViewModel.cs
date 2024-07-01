@@ -61,6 +61,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(SaveButtonName));
             }
         }
+
         public string VendorPAN
         {
             get
@@ -73,6 +74,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPAN));
             }
         }
+
         public string VendorCode
         {
             get
@@ -98,6 +100,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorName));
             }
         }
+
         public string VendorAddress
         {
             get
@@ -110,6 +113,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorAddress));
             }
         }
+
         public string VendorPinCode
         {
             get
@@ -122,6 +126,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPinCode));
             }
         }
+
         public string VendorPhoneNo
         {
             get
@@ -148,6 +153,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorEmailId));
             }
         }
+
         public string VendorBankName
         {
             get
@@ -160,6 +166,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorBankName));
             }
         }
+
         public string VendorAccountNumber
         {
             get
@@ -172,6 +179,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorAccountNumber));
             }
         }
+
         public string VendorIfsccode
         {
             get
@@ -184,6 +192,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorIfsccode));
             }
         }
+
         public string VendorGstnumber
         {
             get
@@ -196,6 +205,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorGstnumber));
             }
         }
+
         public int SelectedTabIndex
         {
             get => _selectedTabIndex;
