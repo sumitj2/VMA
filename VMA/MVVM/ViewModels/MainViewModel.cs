@@ -20,7 +20,7 @@ namespace VMA.MVVM.ViewModels
         //Fields
         private IUserBusinessLogic _userBusinessLogic;
         private IVendorBusinessLogic _vendorBusinessLogic;
-
+        private IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -86,11 +86,11 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowSettingViewCommand { get; }
 
 
-        public MainViewModel(IUserBusinessLogic userBusinessLogic,IVendorBusinessLogic vendorBusinessLogic)
+        public MainViewModel(IUserBusinessLogic userBusinessLogic,IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
-           // _currentUserAccount = new UserAccountModel();
+            // _currentUserAccount = new UserAccountModel();
 
             //Initialize command
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
@@ -105,6 +105,7 @@ namespace VMA.MVVM.ViewModels
             //Default view
             ExecuteShowHomeViewCommand(null);
             _ = LoadCurrentUserData();
+            _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
         }
 
         private void ExecuteShowSettingViewCommand(object obj)
@@ -144,7 +145,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowProductServicesViewCommand(object obj)
         {
-            CurrentChildView = new ProductServicesViewModel();
+            CurrentChildView = new ProductServicesViewModel(_vendorServiceBusinessLogic,_vendorBusinessLogic,this);
             Caption = "Products Services";
             Icon = IconChar.ProductHunt;
         }

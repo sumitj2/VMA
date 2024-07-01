@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views.Add"
+             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" d:DataContext="{d:DesignInstance Type=add:AddProductServicesViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Border CornerRadius="10"                    
     BorderThickness="0"
-        Background="{StaticResource panelColor}" Opacity="0.95">
+        Background="White" Opacity="0.95">
         <Border.BorderBrush>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
@@ -21,11 +21,50 @@
                 <RowDefinition Height="410"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
+
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="400"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0">
+                    <StackPanel x:Name="VendorServiceList" Grid.Row="0"
+                                Orientation="Vertical" VerticalAlignment="Center">
+                        <TextBlock Text="Select Vendor"
+                                   Style="{StaticResource FormTextBlock}"
+                                   Margin="20,20,230,0"/>
+
+                        <ComboBox Style="{StaticResource vendorCombobox}"                              
+                                  ItemsSource="{Binding Path=ComboItem}"   
+                                  SelectedItem="{Binding Path=SelectComboItem}"  
+                                  DisplayMemberPath="NameSearch"  
+                                  Name="searchCriteria" 
+                                  Grid.Row="1" 
+                                  Width="239" 
+                                  Height="30" 
+                                  VerticalContentAlignment="Center"
+                                  HorizontalAlignment="Right"
+                                  Margin="0,-20,10,40"
+                                  Background="Transparent"
+                                  FontWeight="Medium"
+                                  FontFamily="Montserrat"                            
+                                  Foreground="{StaticResource plainTextColor3}"
+                                  BorderBrush="{StaticResource plainTextColor3}"
+                                  BorderThickness="0,0,0,1" />
+
+                        <TextBlock Text="Vendor Service Name"
+                                Style="{StaticResource FormTextBlock}"/>
+
+                        <TextBox x:Name="txtVendorServie"
+                                 Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource FormTextBox}"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"/>
+
+
+                    </StackPanel>
+                </Grid>
+
             </Grid>
 
             <!--buttons setting in footer-->
@@ -44,7 +83,7 @@
                     Foreground="White"
                     VerticalAlignment="Top"/>
                 <Button Style="{StaticResource vendorCancelButton}"
-                    Command="{Binding HideVendorFormCommand}"                            
+                    Command="{Binding HideVendorProductServiceFormCommand}"                            
                     Content="Cancel"                            
                     FontSize="12"
                     FontFamily="Montserrat"

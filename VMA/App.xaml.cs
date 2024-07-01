@@ -45,12 +45,16 @@ namespace VMA
             services.AddSingleton<IVendorBusinessLogic, VendorBusinessLogic>();
             services.AddSingleton<IVendorRepository, VendorRepository>();
 
+            services.AddSingleton<IVendorServiceBusinessLogic, VendorServiceBusinessLogic>();
+            services.AddSingleton<IVendorServiceRepository, VendorServiceRepository>();
+
             //Register services and view models
             services.AddSingleton(x => new LoginViewModel(x.GetRequiredService<IUserBusinessLogic>()));
             services.AddSingleton(x => new LoginView(x.GetRequiredService<LoginViewModel>()));
 
             services.AddSingleton(x => new MainViewModel(x.GetRequiredService<IUserBusinessLogic>(),
-                                                         x.GetRequiredService<IVendorBusinessLogic>()));
+                                                         x.GetRequiredService<IVendorBusinessLogic>(),
+                                                         x.GetRequiredService<IVendorServiceBusinessLogic>()));
             services.AddSingleton(x => new MainView(x.GetRequiredService<MainViewModel>()));
         }
         protected override void OnStartup(StartupEventArgs e)
