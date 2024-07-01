@@ -60,7 +60,8 @@
     <!--control bar button-->
     <Style x:Key="controlButton" TargetType="Button">
         <!--Normal button style-->
-        <Setter Property="Height" Value="20"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="40"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource plainTextColor3}"/>
         <Setter Property="Template">

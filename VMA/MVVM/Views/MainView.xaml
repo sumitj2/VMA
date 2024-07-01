@@ -206,7 +206,6 @@
                                 Orientation="Horizontal"
                                 FlowDirection="RightToLeft"
                                 Background="Transparent"
-                                Margin="0,0,13,0"
                                 MouseLeftButtonDown="PnlControlBar_MouseLeftButtonDown"
                                 MouseEnter="PnlControlBar_MouseEnter">
 

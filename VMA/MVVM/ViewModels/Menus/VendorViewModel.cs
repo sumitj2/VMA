@@ -42,7 +42,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 {
                     PropertyInfo? propertyInfo = typeof(VendorModel)?.GetProperty(SelectComboItem.NameSearch.Replace(" ", ""));
 
-                    Vendors = new ObservableCollection<VendorModel>(Vendors.Where(x => propertyInfo?.GetValue(x, null)?.ToString()?.ToLower(System.Globalization.CultureInfo.CurrentCulture).Contains(value, StringComparison.CurrentCultureIgnoreCase) ?? false));
+                    Vendors = new ObservableCollection<VendorModel>(TempVendors.Where(x => propertyInfo?.GetValue(x, null)?.ToString()?.ToLower(System.Globalization.CultureInfo.CurrentCulture).Contains(value, StringComparison.CurrentCultureIgnoreCase) ?? false));
                 }
                 else
                 {
