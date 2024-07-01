@@ -80,7 +80,7 @@
                                             Style="{StaticResource FormTextBlock}"/>
                                
                                 <TextBox x:Name="txtVendorEmailId" 
-                                           Text="{Binding VendorEmailId,UpdateSourceTrigger=PropertyChanged ,ValidatesOnDataErrors=True}"                                          
+                                           Text="{Binding VendorEmailId,UpdateSourceTrigger=PropertyChanged ,ValidatesOnDataErrors=True, Mode=TwoWay}"                                          
                                            Style="{StaticResource FormTextBox}"/>
 
                             </StackPanel>
