@@ -304,7 +304,6 @@ namespace VMA.MVVM.ViewModels.Add
                await _vendorbusinessLogic.EditUpdateVendor(vendorModel);
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully");
-                await Task.Delay(1000);
             }
             else
             {
