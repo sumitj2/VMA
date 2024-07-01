@@ -25,67 +25,70 @@
             <Grid Grid.Row="0">
                 <TabControl Style="{DynamicResource TabContorlStyle}" SelectedIndex="{Binding SelectedTabIndex}" Background="White">
                     <TabItem Header="Contact Inforamtion" Style="{DynamicResource TabItemStyle}" Height="39">
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="400"/>
-                                <ColumnDefinition Width="400"/>
-                            </Grid.ColumnDefinitions>
+                        <AdornerDecorator>
 
-                            <StackPanel x:Name="CompanyDetails" Grid.Row="0"
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel x:Name="CompanyDetails" Grid.Row="0"
                                         Orientation="Vertical">
-                                <TextBlock Text="Vendor Code"
+                                    <TextBlock Text="Vendor Code"
                                            Style="{StaticResource FormTextBlock}"
                                            Margin="20,20,230,0"/>
 
-                                <TextBox x:Name="txtVendorCode" IsEnabled="False"
+                                    <TextBox x:Name="txtVendorCode" IsEnabled="False"
                                          Text="{Binding VendorCode ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                                          Style="{StaticResource FormTextBox}"/>
 
-                                <TextBlock Text="Vendor Name"
+                                    <TextBlock Text="Vendor Name"
                                             Style="{StaticResource FormTextBlock}"/>
 
-                                <TextBox x:Name="txtVendorName"
+                                    <TextBox x:Name="txtVendorName"
                                          Text="{Binding VendorName ,UpdateSourceTrigger=PropertyChanged}"
                                           Style="{StaticResource FormTextBox}"/>
 
-                                <TextBlock Text="Vendor Address"
+                                    <TextBlock Text="Vendor Address"
                                            Style="{StaticResource FormTextBlock}"/>
 
-                                <TextBox x:Name="txtVendorAddress"
+                                    <TextBox x:Name="txtVendorAddress"
                                          Text="{Binding VendorAddress ,UpdateSourceTrigger=PropertyChanged}"
                                             Style="{StaticResource FormTextBox}"
                                             Height="54" TextWrapping="Wrap"
                                             AcceptsReturn="True"/>
 
-                                <TextBlock Text="Vendor Pin-Code"
+                                    <TextBlock Text="Vendor Pin-Code"
                                            Style="{StaticResource FormTextBlock}"/>
 
-                                <TextBox x:Name="txtVendorPinCode"
+                                    <TextBox x:Name="txtVendorPinCode"
                                          Text="{Binding VendorPinCode ,UpdateSourceTrigger=PropertyChanged}"
                                             Style="{StaticResource FormTextBox}"/>
 
-                            </StackPanel>
+                                </StackPanel>
 
-                            <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
+                                <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
                                            Orientation="Vertical">
-                                <TextBlock Text="Phone Number"
+                                    <TextBlock Text="Phone Number"
                                            Style="{StaticResource FormTextBlock}"
                                             Margin="20,20,230,0"/>
 
-                                <TextBox x:Name="txtVendorPhoneNo"
+                                    <TextBox x:Name="txtVendorPhoneNo"
                                            Text="{Binding VendorPhoneNo ,UpdateSourceTrigger=PropertyChanged}"                                         
                                             Style="{StaticResource FormTextBox}"/>
-                                
-                                <TextBlock Text="Vendor Email Id"
+
+                                    <TextBlock Text="Vendor Email Id"
                                             Style="{StaticResource FormTextBlock}"/>
-                               
-                                <TextBox x:Name="txtVendorEmailId" 
-                                           Text="{Binding VendorEmailId,UpdateSourceTrigger=PropertyChanged ,ValidatesOnDataErrors=True, Mode=TwoWay}"                                          
+
+                                    <TextBox x:Name="txtVendorEmailId" 
+                                           Text="{Binding VendorEmailId,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}"                                          
                                            Style="{StaticResource FormTextBox}"/>
 
-                            </StackPanel>
+                                </StackPanel>
 
-                        </Grid>
+                            </Grid>
+                        </AdornerDecorator>
                     </TabItem>
                     <TabItem Header="Bank and GST Details" Style="{DynamicResource TabItemStyle}" Height="39">
                         <Grid Grid.Row="0">

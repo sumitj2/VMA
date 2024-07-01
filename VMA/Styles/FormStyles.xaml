@@ -8,8 +8,8 @@
         <Setter Property="VerticalAlignment"  Value="Center"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="Margin" Value="25,10,230,0"/>
-
     </Style>
+
     <Style x:Key="FormTextBox" TargetType="TextBox">
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="FontWeight" Value="Medium"/>
@@ -21,9 +21,9 @@
         <Setter Property="Validation.ErrorTemplate">
             <Setter.Value>
                 <ControlTemplate>
-                    <DockPanel LastChildFill="True">
+                    <DockPanel>
                         <TextBlock Foreground="Red" DockPanel.Dock="Bottom" Text="{Binding [0].ErrorContent}" />
-                        <Border BorderBrush="Red" BorderThickness="1">
+                        <Border BorderBrush="Transparent" BorderThickness="0">
                             <AdornedElementPlaceholder />
                         </Border>
                     </DockPanel>
@@ -33,6 +33,7 @@
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="True">
                 <Setter Property="ToolTip" Value="{Binding (Validation.Errors)[0].ErrorContent, RelativeSource={RelativeSource Self}}" />
+                <Setter Property="BorderBrush" Value="Red"/>
             </Trigger>
         </Style.Triggers>
     </Style>
