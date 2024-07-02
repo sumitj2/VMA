@@ -124,21 +124,21 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecutePaymentNoteViewCommand(object obj)
         {
-            CurrentChildView = new PaymentNotesViewModel();
+            CurrentChildView = new PaymentNotesViewModel(this);
             Caption = "Payment Notes";
             Icon = IconChar.NoteSticky;
         }
 
         private void ExecuteShowPaymentViewCommand(object obj)
         {
-            CurrentChildView = new PaymentsViewModel();
+            CurrentChildView = new PaymentsViewModel(this);
             Caption = "Payments";
             Icon = IconChar.Paypal;
         }
 
         private void ExecuteShowDetailedInfoViewCommand(object obj)
         {
-            CurrentChildView = new DetailedInfoViewModel();
+            CurrentChildView = new DetailedInfoViewModel(this);
             Caption = "Detailed Info";
             Icon = IconChar.InfoCircle;
         }

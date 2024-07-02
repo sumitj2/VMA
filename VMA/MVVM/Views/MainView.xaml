@@ -57,6 +57,18 @@
         <DataTemplate DataType="{x:Type viewModelAdd:AddProductServicesViewModel}">
             <addViews:AddUpdateProductServicesView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModelAdd:AddPaymentsViewModel}">
+            <addViews:AddUpdatePaymentsView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModelAdd:AddDetailedInfoViewModel}">
+            <addViews:AddUpdateDetailedInfoView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModelAdd:AddPaymentNotesViewModel}">
+            <addViews:AddUpdatePaymentNotesView/>
+        </DataTemplate>
     </Window.Resources>
     
     <Border CornerRadius="10"                    

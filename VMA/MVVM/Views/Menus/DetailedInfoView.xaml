@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:menus="clr-namespace:VMA.MVVM.ViewModels.Menus" d:DataContext="{d:DesignInstance Type=menus:DetailedInfoViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -87,7 +87,7 @@
 
             <Button Grid.Column="1"
                     Style="{StaticResource vendorAddButton}"
-                    Command="{Binding AddShowVendorFormCommand}"                            
+                    Command="{Binding AddShowDetailInfoFormCommand}"                            
                     Content="Add"                            
                     FontSize="12"
                     FontFamily="Montserrat"

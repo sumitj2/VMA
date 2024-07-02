@@ -125,12 +125,12 @@ namespace VMA.MVVM.ViewModels.Menus
             throw new NotImplementedException();
         }
 
-        private async Task HideVendorServiceForm(VendorServiceModel model)
-        {
-            _parentViewModel.CurrentChildView = this;
+        //private async Task HideVendorServiceForm(VendorServiceModel model)
+        //{
+        //    _parentViewModel.CurrentChildView = this;
 
-            await Task.Run(GetVendorServices).ConfigureAwait(true);
-        }
+        //    await Task.Run(GetVendorServices).ConfigureAwait(true);
+        //}
         public async Task HideVendorServiceForm(object obj)
         {
             _parentViewModel.CurrentChildView = this;
