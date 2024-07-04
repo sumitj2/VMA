@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" d:DataContext="{d:DesignInstance Type=add:AddPaymentsViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Border CornerRadius="10"                    
@@ -65,19 +65,35 @@ BorderThickness="0"
                                    Orientation="Vertical">
                                    
                                         <TextBlock Text="Is GST Applicable"
-                                   Style="{StaticResource FormTextBlock}"
-                                    Margin="20,20,230,0"/>
+                                                   Style="{StaticResource FormTextBlock}"
+                                                   Margin="20,20,230,0"/>
 
-                                    <RadioButton x:Name="GST_Yes" Margin="20,5,0,0" GroupName="GST" >Yes</RadioButton>
+                                    <RadioButton x:Name="GST_Yes" IsChecked="{Binding IsGSTDetailsVisible}" Margin="20,5,0,0" GroupName="GST" >Yes</RadioButton>
                                     <RadioButton x:Name="GST_No" Margin="20,5,0,0" GroupName="GST" >No</RadioButton>
 
 
                                     <TextBlock Text="Is TDS Applicable"
                                     Style="{StaticResource FormTextBlock}"/>
 
-                                    <RadioButton  x:Name="TDS_Yes" Margin="20,5,0,0" GroupName="TDS" >Yes</RadioButton>
+                                    <RadioButton  x:Name="TDS_Yes" IsChecked="{Binding IsTDSTextBoxVisible}" Margin="20,5,0,0" GroupName="TDS" >Yes</RadioButton>
                                     <RadioButton  x:Name="TDS_No" Margin="20,5,0,0" GroupName="TDS" >No</RadioButton>
 
+                                    <TextBlock Text="Is This Payment for Branch"
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <RadioButton  x:Name="Branch_Yes" IsChecked="{Binding IsBranchNameVisible}" Margin="20,5,0,0" GroupName="branch" >Yes</RadioButton>
+                                    <RadioButton  x:Name="Branch_No" Margin="20,5,0,0" GroupName="branch" >No</RadioButton>
+
+                                    <TextBlock Text="Enter Branch Name"
+                                               Visibility="{Binding TextBlockBranchNameVisibility}"
+                                               Style="{StaticResource FormTextBlock}"/>
+                                    
+                                    <TextBox x:Name="txtBranchName"
+                                             Visibility="{Binding TextBoxBranchNameVisibility}"
+                                             Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True"/>
 
                                 </StackPanel>
 
@@ -122,12 +138,14 @@ BorderThickness="0"
                                 <StackPanel x:Name="RTGSDetailTDS" Grid.Column="1"
                                 Orientation="Vertical">                                    
 
-                                    <TextBlock Text="TDS Amout"                                           
-                                           Style="{StaticResource FormTextBlock}"/>
+                                    <TextBlock Text="TDS Amout"  
+                                               Visibility="{Binding TextBlockVisibility}" 
+                                               Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtTDSAmount"
-                                           Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                           Style="{StaticResource FormTextBox}"/>
+                                             Visibility="{Binding TextBoxVisibility}" 
+                                             Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"/>
 
 
                                 </StackPanel>
@@ -135,7 +153,7 @@ BorderThickness="0"
                         </AdornerDecorator>
                     </TabItem>
 
-                    <TabItem Header="GST Details" Style="{DynamicResource TabItemStyle}" Height="39">
+                    <TabItem Header="GST Details" Visibility="{Binding GSTTabVisible}" Style="{DynamicResource TabItemStyle}" Height="39">
                         <AdornerDecorator>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
