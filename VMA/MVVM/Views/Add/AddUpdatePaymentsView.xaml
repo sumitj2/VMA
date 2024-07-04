@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" 
+             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Border CornerRadius="10"                    
-    BorderThickness="0"
-        Background="{StaticResource panelColor}" Opacity="0.95">
+BorderThickness="0"
+    Background="white" Opacity="0.95">
         <Border.BorderBrush>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
@@ -21,46 +21,209 @@
                 <RowDefinition Height="410"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
+
             <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="400"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <TabControl Style="{DynamicResource TabContorlStyle}" SelectedIndex="{Binding SelectedTabIndex}" Background="White">
+                    <TabItem Header="Payment Details" Style="{DynamicResource TabItemStyle}" Height="39">
+                        <AdornerDecorator>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel x:Name="PaymentDetails" Grid.Row="0"
+                                Orientation="Vertical">
+                                    
+                                    <TextBlock Text="Enter Payment Year Range"
+                                           Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtPaymentYearRange"
+                                         Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"
+                                         Style="{StaticResource FormTextBox}"
+                                         TextWrapping="Wrap"
+                                         AcceptsReturn="True"/>
+
+                                    <TextBlock Text="Enter Payment Date"
+                                           Style="{StaticResource FormTextBlock}"/>
+
+                                    <DatePicker x:Name="paymentDate"
+                                         Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"/>
+
+                                    <TextBlock Text="Total Amount Paid"
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtTotalAmtPaid"
+                                             Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True"/>
+
+                                </StackPanel>
+
+                                <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
+                                   Orientation="Vertical">
+                                   
+                                        <TextBlock Text="Is GST Applicable"
+                                   Style="{StaticResource FormTextBlock}"
+                                    Margin="20,20,230,0"/>
+
+                                    <RadioButton x:Name="GST_Yes" Margin="20,5,0,0" GroupName="GST" >Yes</RadioButton>
+                                    <RadioButton x:Name="GST_No" Margin="20,5,0,0" GroupName="GST" >No</RadioButton>
+
+
+                                    <TextBlock Text="Is TDS Applicable"
+                                    Style="{StaticResource FormTextBlock}"/>
+
+                                    <RadioButton  x:Name="TDS_Yes" Margin="20,5,0,0" GroupName="TDS" >Yes</RadioButton>
+                                    <RadioButton  x:Name="TDS_No" Margin="20,5,0,0" GroupName="TDS" >No</RadioButton>
+
+
+                                </StackPanel>
+
+                            </Grid>
+                        </AdornerDecorator>
+                    </TabItem>
+
+                    <TabItem Header="RTGS Details" Style="{DynamicResource TabItemStyle}" Height="39">
+                        <AdornerDecorator>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <StackPanel x:Name="RTGSDetails" 
+                                            Grid.Row="0"
+                                            Orientation="Vertical">
+                                    
+                                        <TextBlock Text="RTGS Date"
+                                                   Style="{StaticResource FormTextBlock}"
+                                                   Margin="20,20,0,0"/>
+
+                                        <DatePicker x:Name="RTGSDate"/>
+
+                                        <TextBlock Text="RTGS Amount"
+                                                   Style="{StaticResource FormTextBlock}"
+                                                   Margin="20,20,0,0"/>
+
+                                        <TextBox x:Name="txtSantionedAmount"
+                                                 Text="{Binding VendorBankName ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                                 Style="{StaticResource FormTextBox}"/>
+
+                                         <TextBlock Text="UTR Number"                                           
+                                                    Style="{StaticResource FormTextBlock}"/>
+
+                                         <TextBox x:Name="txtUTRNumber"
+                                                  Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                                  Style="{StaticResource FormTextBox}"/>
+                                </StackPanel>
+                                
+                                <StackPanel x:Name="RTGSDetailTDS" Grid.Column="1"
+                                Orientation="Vertical">                                    
+
+                                    <TextBlock Text="TDS Amout"                                           
+                                           Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtTDSAmount"
+                                           Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                           Style="{StaticResource FormTextBox}"/>
+
+
+                                </StackPanel>
+                            </Grid>
+                        </AdornerDecorator>
+                    </TabItem>
+
+                    <TabItem Header="GST Details" Style="{DynamicResource TabItemStyle}" Height="39">
+                        <AdornerDecorator>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel x:Name="AddCalculateGSTAmount" 
+                                            Grid.Row="0"
+                                            Orientation="Vertical">
+
+                                    <TextBlock Text="CGST Amount"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,0,0"/>
+
+                                    <TextBox x:Name="txtCGSTAmount"
+                                             Text="{Binding VendorBankName ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"/>
+
+                                    <TextBlock Text="SGST Amount"                                           
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtSGSTAmount"
+                                             Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"/>
+                                </StackPanel>
+
+                                <StackPanel x:Name="GetGSTPercentage" Grid.Column="1"
+                                            Orientation="Vertical">
+
+                                    <TextBlock Text="CGST Percentage"                                           
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtCSGS"
+                                             Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"/>
+                                    
+                                    <TextBlock Text="SGST Percentage"                                           
+                                               Style="{StaticResource FormTextBlock}"/>
+                                    
+                                    <TextBox x:Name="txtCGST"
+                                             Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"/>
+                                </StackPanel>
+                            </Grid>
+                        </AdornerDecorator>
+                    </TabItem>
+                </TabControl>
             </Grid>
 
             <!--buttons setting in footer-->
             <StackPanel Grid.Row="2" 
-                    Orientation="Horizontal"
-                    VerticalAlignment="Bottom"
-                    HorizontalAlignment="Center"
-                    Margin="0,0,0,10">
+                Orientation="Horizontal"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Center"
+                Margin="0,0,0,9">
+                <Button Command="{Binding BackCommand}" Style="{StaticResource gridEditButton}">
+                    <iconPacks:PackIconMaterial Kind="LessThan" Width="12" Height="12" VerticalAlignment="Center" />
+                </Button>
                 <Button Style="{StaticResource vendorSaveButton}"
-                    Command="{Binding }"                            
-                    Content="Save"                            
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    VerticalAlignment="Top"/>
+                Command="{Binding SubmitCommand}"                            
+                Content="{Binding SaveButtonName, Mode=TwoWay}"                            
+                FontSize="12"
+                FontFamily="Montserrat"
+                Cursor="Hand"
+                BorderThickness="0"
+                Foreground="White"
+                VerticalAlignment="Top"/>
                 <Button Style="{StaticResource vendorCancelButton}"
-                    Command="{Binding HidePaymentFormCommand}"                            
-                    Content="Cancel"                            
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    VerticalAlignment="Top"/>
+                Command="{Binding HideVendorFormCommand}"                            
+                Content="Cancel"                            
+                FontSize="12"
+                FontFamily="Montserrat"
+                Cursor="Hand"
+                BorderThickness="0"
+                Foreground="White"
+                VerticalAlignment="Top"/>
                 <Button Style="{StaticResource vendorClearButton}"
-                    Command="{Binding }"                            
-                    Content="Clear"                            
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    VerticalAlignment="Top"/>
+                Command="{Binding ClearFormCommand }"                            
+                Content="Clear"                            
+                FontSize="12"
+                FontFamily="Montserrat"
+                Cursor="Hand"
+                BorderThickness="0"
+                Foreground="White"
+                VerticalAlignment="Top"/>
+                <Button Command="{Binding NextCommand}" Margin="4" Style="{StaticResource gridEditButton}">
+                    <iconPacks:PackIconMaterial Kind="GreaterThan" Width="12" Height="12" VerticalAlignment="Center" />
+                </Button>
 
             </StackPanel>
         </Grid>

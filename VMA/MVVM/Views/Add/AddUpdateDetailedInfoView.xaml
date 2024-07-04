@@ -3,12 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" 
+             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Border CornerRadius="10"                    
     BorderThickness="0"
-        Background="{StaticResource panelColor}" Opacity="0.95">
+        Background="white" Opacity="0.95">
         <Border.BorderBrush>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                 <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
@@ -21,11 +21,156 @@
                 <RowDefinition Height="410"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
+
             <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="400"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+                <TabControl Style="{DynamicResource TabContorlStyle}" SelectedIndex="{Binding SelectedTabIndex}" Background="White">
+                    <TabItem Header="Service Information" Style="{DynamicResource TabItemStyle}" Height="39">
+                        <AdornerDecorator>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel x:Name="CompanyDetails" Grid.Row="0"
+                                    Orientation="Vertical">
+                                    <TextBlock Text="Select Service"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
+
+                                    <ComboBox Style="{StaticResource vendorCombobox}"                              
+                                              ItemsSource="{Binding Path=ComboItem}"   
+                                              SelectedItem="{Binding Path=SelectComboItem}"  
+                                              DisplayMemberPath="NameSearch"  
+                                              Name="VendorServices" 
+                                              Grid.Row="1" 
+                                              Width="239" 
+                                              Height="30" 
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              Margin="0,-20,10,40"
+                                              Background="Transparent"
+                                              FontWeight="Medium"
+                                              FontFamily="Montserrat"                            
+                                              Foreground="{StaticResource plainTextColor3}"
+                                              BorderBrush="{StaticResource plainTextColor3}"
+                                              BorderThickness="0,0,0,1" />
+
+                                    <TextBlock Text="Enter Service Category details"
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtServieCategory"
+                                             Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True"/>
+                                    <TextBlock Text="Service Type"
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtServieType"
+                                             Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True"/>
+
+                                </StackPanel>
+
+                                <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
+                                       Orientation="Vertical">
+                                    <TextBlock Text="Service StartDate"
+                                       Style="{StaticResource FormTextBlock}"
+                                        Margin="20,20,230,0"/>
+
+                                    <DatePicker x:Name="txtVendorPhoneNo"
+                                       Text="{Binding VendorPhoneNo ,UpdateSourceTrigger=PropertyChanged}" Width="361"                                         
+                                        />
+
+                                    <TextBlock Text="Service End Date"
+                                        Style="{StaticResource FormTextBlock}"/>
+
+                                    <DatePicker x:Name="txtVendorEmailId" 
+                                       Text="{Binding VendorEmailId,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="354"                                          
+                                       />
+
+                                </StackPanel>
+
+                            </Grid>
+                        </AdornerDecorator>
+                    </TabItem>
+
+                    <TabItem Header="Service Santioned Details" Style="{DynamicResource TabItemStyle}" Height="39">
+                        <AdornerDecorator>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel x:Name="CompanyGSTAndBankDetails" 
+                                    Grid.Row="0"
+                                    Orientation="Vertical">
+                                    <TextBlock Text="Sandtioned By"
+                                       Style="{StaticResource FormTextBlock}"
+                                       Margin="20,20,0,0"/>
+
+                                    <TextBox x:Name="txtSantionBy"
+                                       Text="{Binding VendorPAN,UpdateSourceTrigger=PropertyChanged}"                                         
+                                       Style="{StaticResource FormTextBox}"/>
+
+                                    <TextBlock Text="Santioned Amount"
+                                       Style="{StaticResource FormTextBlock}"
+                                       Margin="20,20,0,0"/>
+
+                                    <TextBox x:Name="txtSantionedAmount"
+                                       Text="{Binding VendorBankName ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                       Style="{StaticResource FormTextBox}"/>
+
+                                    <TextBlock Text="Select Payment Type: "
+            Style="{StaticResource FormTextBlock}"
+            Margin="20,20,230,0"/>
+
+                                    <ComboBox Style="{StaticResource vendorCombobox}"                              
+           ItemsSource="{Binding Path=ComboItem}"   
+           SelectedItem="{Binding Path=SelectComboItem}"  
+           DisplayMemberPath="NameSearch"  
+           Name="paymentType" 
+           Grid.Row="1" 
+           Width="239" 
+           Height="30" 
+           VerticalContentAlignment="Center"
+           HorizontalAlignment="Right"
+           Margin="0,-20,10,40"
+           Background="Transparent"
+           FontWeight="Medium"
+           FontFamily="Montserrat"                            
+           Foreground="{StaticResource plainTextColor3}"
+           BorderBrush="{StaticResource plainTextColor3}"
+           BorderThickness="0,0,0,1" />
+
+
+                                </StackPanel>
+                                <StackPanel x:Name="CompanyDetai" Grid.Column="1"
+                                    Orientation="Vertical">
+
+                                    <TextBlock Text="Number Of Units Purchased"                                           
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtNumberOfUnitPurchased"
+                                             Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"/>
+
+                                    <TextBlock Text="Number Of Units Purchased"                                           
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtRatePerUnit"
+                                               Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                               Style="{StaticResource FormTextBox}"/>
+
+
+                                </StackPanel>
+                            </Grid>
+                        </AdornerDecorator>
+                    </TabItem>
+                </TabControl>
             </Grid>
 
             <!--buttons setting in footer-->
@@ -33,10 +178,13 @@
                     Orientation="Horizontal"
                     VerticalAlignment="Bottom"
                     HorizontalAlignment="Center"
-                    Margin="0,0,0,10">
+                    Margin="0,0,0,9">
+                <Button Command="{Binding BackCommand}" Style="{StaticResource gridEditButton}">
+                    <iconPacks:PackIconMaterial Kind="LessThan" Width="12" Height="12" VerticalAlignment="Center" />
+                </Button>
                 <Button Style="{StaticResource vendorSaveButton}"
-                    Command="{Binding }"                            
-                    Content="Save"                            
+                    Command="{Binding SubmitCommand}"                            
+                    Content="{Binding SaveButtonName, Mode=TwoWay}"                            
                     FontSize="12"
                     FontFamily="Montserrat"
                     Cursor="Hand"
@@ -44,7 +192,7 @@
                     Foreground="White"
                     VerticalAlignment="Top"/>
                 <Button Style="{StaticResource vendorCancelButton}"
-                    Command="{Binding HideDetailInfoFormCommand}"                            
+                    Command="{Binding HideVendorFormCommand}"                            
                     Content="Cancel"                            
                     FontSize="12"
                     FontFamily="Montserrat"
@@ -53,7 +201,7 @@
                     Foreground="White"
                     VerticalAlignment="Top"/>
                 <Button Style="{StaticResource vendorClearButton}"
-                    Command="{Binding }"                            
+                    Command="{Binding ClearFormCommand }"                            
                     Content="Clear"                            
                     FontSize="12"
                     FontFamily="Montserrat"
@@ -61,6 +209,9 @@
                     BorderThickness="0"
                     Foreground="White"
                     VerticalAlignment="Top"/>
+                <Button Command="{Binding NextCommand}" Margin="4" Style="{StaticResource gridEditButton}">
+                    <iconPacks:PackIconMaterial Kind="GreaterThan" Width="12" Height="12" VerticalAlignment="Center" />
+                </Button>
 
             </StackPanel>
         </Grid>
