@@ -34,7 +34,37 @@ BorderThickness="0"
 
                                 <StackPanel x:Name="PaymentDetails" Grid.Row="0"
                                 Orientation="Vertical">
-                                    
+                                    <TextBlock Text="Select Service"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
+
+                                    <ComboBox Style="{StaticResource vendorCombobox}"                              
+                                              ItemsSource="{Binding Path=ComboItem}"   
+                                              SelectedItem="{Binding Path=SelectComboItem}"  
+                                              DisplayMemberPath="NameSearch"  
+                                              Name="VendorServices" 
+                                              Grid.Row="1" 
+                                              Width="239" 
+                                              Height="30" 
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              Margin="0,-20,10,40"
+                                              Background="Transparent"
+                                              FontWeight="Medium"
+                                              FontFamily="Montserrat"                            
+                                              Foreground="{StaticResource plainTextColor3}"
+                                              BorderBrush="{StaticResource plainTextColor3}"
+                                              BorderThickness="0,0,0,1" />
+
+                                    <TextBlock Text="Enter Payment Code"
+                                                Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtPaymentCode"
+                                                Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource FormTextBox}"
+                                                TextWrapping="Wrap"
+                                                AcceptsReturn="True"/>
+
                                     <TextBlock Text="Enter Payment Year Range"
                                            Style="{StaticResource FormTextBlock}"/>
 
