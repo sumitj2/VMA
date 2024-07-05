@@ -35,9 +35,11 @@
                                    Margin="20,20,230,0"/>
 
                         <ComboBox Style="{StaticResource vendorCombobox}"                              
-                                  ItemsSource="{Binding Path=ComboItem}"   
+                                  ItemsSource="{Binding Vendors}"   
                                   SelectedItem="{Binding Path=SelectComboItem}"  
-                                  DisplayMemberPath="NameSearch"  
+                                  DisplayMemberPath="VendorName" 
+                                  SelectedValuePath="VendorId"
+                                  SelectedValue="{Binding SelectedVendor.VendorId, Mode=TwoWay}"
                                   Name="searchCriteria" 
                                   Grid.Row="1" 
                                   Width="239" 

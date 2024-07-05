@@ -1,7 +1,10 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
+using Database.VMA.Entities;
+using Database.VMA.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,8 +18,9 @@ namespace VMA.MVVM.ViewModels.Add
         private readonly IVendorBusinessLogic _vendorBusinessLogic;
         private readonly IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
         private readonly ProductServicesViewModel productServicesViewModel;
-        #region Command
        
+        #region Command
+
         public ICommand HideVendorProductServiceFormCommand { get; }
         public ICommand SubmitCommand { get; }
         public ICommand ClearFormCommand { get; }
@@ -78,9 +82,58 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorService));
             }
         }
-        #endregion
-        public AddProductServicesViewModel(IVendorBusinessLogic vendorBusinessLogic,IVendorServiceBusinessLogic vendorServiceBusinessLogic, ProductServicesViewModel parentViewModel, VendorServiceModel SelectedVendorService)
+
+        private Vendor _selectedVendor;
+        public Vendor SelectedVendor
         {
+            get { return _selectedVendor; }
+            set
+            {
+                if (_selectedVendor != value)
+                {
+                    _selectedVendor = value;
+                    OnPropertyChanged(nameof(SelectedVendor));
+                }
+            }
+        }
+
+        #endregion
+
+
+        #region Observable collections
+        private ObservableCollection<VendorModel> _vendors;
+        private ObservableCollection<VendorModel> _tempvendors;
+        private ObservableCollection<SearchModel> _comboItem;
+
+        public ObservableCollection<VendorModel> Vendors
+        {
+            get { return _vendors; }
+            set
+            {
+                _vendors = value;
+                OnPropertyChanged(nameof(Vendors));
+            }
+        }
+
+        public ObservableCollection<VendorModel> TempVendors
+        {
+            get { return _tempvendors; }
+            set
+            {
+                _tempvendors = value;
+                OnPropertyChanged(nameof(TempVendors));
+            }
+        }
+
+        public ObservableCollection<SearchModel> ComboItem
+        {
+            get { return _comboItem; }
+            set { _comboItem = value; }
+        }
+        #endregion
+       
+        public AddProductServicesViewModel(IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, ProductServicesViewModel parentViewModel, VendorServiceModel SelectedVendorService)
+        {  
             this.SelectedProductVendorService = SelectedVendorService;
             if (SelectedVendorService != null)
             {
@@ -90,13 +143,14 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 SaveButtonName = "Submit";
             }
-           // PopulateValues();
+            // PopulateValues();
             productServicesViewModel = parentViewModel;
             _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
             HideVendorProductServiceFormCommand = new ViewModelAsyncCommand<VendorServiceModel>(HideVendorServiceForm);
             SubmitCommand = new ViewModelAsyncCommand<VendorServiceModel>(SaveVendorService);
             ClearFormCommand = new ViewModelAsyncCommand<VendorServiceModel>(ClearValues);
+            LoadVendors();
         }
 
         private async Task ClearValues(VendorServiceModel model)
@@ -111,12 +165,20 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task HideVendorServiceForm(VendorServiceModel model)
         {
-          await  productServicesViewModel.HideVendorServiceForm(this);
+            await productServicesViewModel.HideVendorServiceForm(this);
         }
 
         private void PopulateValues()
         {
             throw new NotImplementedException();
+        }
+
+        private async Task LoadVendors()
+        {
+            var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
+            Vendors = new ObservableCollection<VendorModel>(vendors);
+            
+
         }
     }
 }

@@ -108,7 +108,7 @@ namespace VMA
             MessageBox.Show("An unhandled exception occurred: " + (e.ExceptionObject as Exception)?.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
-        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        private void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
         {
             // Log the exception
             LogException(e.Exception);
@@ -120,7 +120,7 @@ namespace VMA
             e.SetObserved();
         }
 
-        private void LogException(Exception ex)
+        private void LogException(Exception? ex)
         {
             // Implement logging logic here
             // For example, write to a file, send to a logging server, etc.
