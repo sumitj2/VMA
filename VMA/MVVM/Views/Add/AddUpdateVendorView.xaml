@@ -47,7 +47,7 @@
                                             Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtVendorName"
-                                         Text="{Binding VendorName ,UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding VendorName ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}"
                                           Style="{StaticResource FormTextBox}"/>
 
                                     <TextBlock Text="Vendor Address"

@@ -20,6 +20,9 @@ namespace VMA.MVVM.ViewModels.Add
 {
     public class AddUpdateVendorViewModel : ViewModelBase
     {
+        private string? TryGetMessageInt(int id) => "";
+        private string? TryGetMessageString(string name) => "";
+
         private readonly IVendorBusinessLogic _vendorbusinessLogic;
         private readonly VendorViewModel _vendorViewModel;
         private int _selectedTabIndex;
@@ -88,6 +91,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
+        [Required(ErrorMessage = "*Vendor Name is Required")]
         public string VendorName
         {
             get
@@ -239,11 +243,25 @@ namespace VMA.MVVM.ViewModels.Add
             NextCommand = new ViewModelCommand(CanGoNext);
             _vendorbusinessLogic = vendorBusinessLogic;
             _vendorViewModel = parentViewModel;
-            HideVendorFormCommand = new ViewModelCommand(HideVendorForm);
-            SubmitCommand = new ViewModelAsyncCommand<VendorModel>(SaveVendor);
-            ClearFormCommand = new ViewModelCommand(ClearValues);
+            HideVendorFormCommand = new ViewModelAsyncCommand<VendorModel>(HideVendorForm);
+            SubmitCommand = new ViewModelAsyncCommand<VendorModel>(SaveVendor, ValidateVendor);
+            ClearFormCommand = new ViewModelAsyncCommand<VendorModel>(ClearValues);            
+        }
 
-            //Initialize command
+        private bool ValidateVendor()
+        {
+            bool validData;
+
+            if (string.IsNullOrWhiteSpace(VendorName) || string.IsNullOrWhiteSpace(VendorEmailId))
+            {
+                validData = false;
+            }
+            else
+            {
+                validData = true;
+            }
+
+            return validData;
         }
 
         private void CanGoBack(object obj)
@@ -262,32 +280,35 @@ namespace VMA.MVVM.ViewModels.Add
         {
             if (SelectedVendor != null)
             {
-                VendorAccountNumber = SelectedVendor.VendorAccountNumber;
-                VendorCode = SelectedVendor.VendorCode;
-                VendorAddress = SelectedVendor.VendorAddress;
-                VendorBankName = SelectedVendor.VendorBankName;
-                VendorEmailId = SelectedVendor.VendorEmailId;
-                VendorName = SelectedVendor.VendorName;
-                VendorIfsccode = SelectedVendor.VendorIfsccode;
-                VendorPhoneNo = SelectedVendor.VendorPhoneNo;
-                VendorPinCode = SelectedVendor.VendorPinCode;
-                VendorGstnumber = SelectedVendor.VendorGstnumber;
-                VendorPAN = SelectedVendor.VendorPan;
+                VendorAccountNumber = SelectedVendor.VendorAccountNumber ?? "";
+                VendorCode = SelectedVendor.VendorCode ?? "";
+                VendorAddress = SelectedVendor.VendorAddress ?? "";
+                VendorBankName = SelectedVendor.VendorBankName ?? "";
+                VendorEmailId = SelectedVendor.VendorEmailId ?? "";
+                VendorName = SelectedVendor.VendorName ?? "";
+                VendorIfsccode = SelectedVendor.VendorIfsccode ?? "";
+                VendorPhoneNo = SelectedVendor.VendorPhoneNo ?? "";
+                VendorPinCode = SelectedVendor.VendorPinCode ?? "";
+                VendorGstnumber = SelectedVendor.VendorGstnumber ?? "";
+                VendorPAN = SelectedVendor.VendorPan ?? "";
             }
         }
 
-        private void ClearValues(object obj)
+        private async Task ClearValues(object obj)
         {
-            VendorAccountNumber = "";
-            VendorCode = "";
-            VendorAddress = "";
-            VendorBankName = "";
-            VendorEmailId = "";
-            VendorName = "";
-            VendorIfsccode = "";
-            VendorPhoneNo = "";
-            VendorPinCode = "";
-            VendorGstnumber = "";
+            await Task.Run(() =>
+            {
+                VendorAccountNumber = "";
+                //VendorCode = "";
+                VendorAddress = "";
+                VendorBankName = "";
+                VendorEmailId = "";
+                VendorName = "";
+                VendorIfsccode = "";
+                VendorPhoneNo = "";
+                VendorPinCode = "";
+                VendorGstnumber = "";
+            });
         }
 
         private async Task SaveVendor(object obj)
@@ -311,7 +332,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorPan = _vendorPAN
 
                 };
-               await _vendorbusinessLogic.EditUpdateVendor(vendorModel);
+                await _vendorbusinessLogic.EditUpdateVendor(vendorModel);
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully");
             }
@@ -332,17 +353,17 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorGstnumber = _vendorGstnumber,
                     VendorPan = _vendorPAN
                 };
-                _vendorbusinessLogic.AddVendor(vendorModel);
+                await _vendorbusinessLogic.AddVendor(vendorModel);
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully");
             }
 
-            HideVendorForm(this);
+            await HideVendorForm(this);
         }
 
-        private void HideVendorForm(object obj)
+        private async Task HideVendorForm(object obj)
         {
-            _vendorViewModel.HideVendorForm(this);
+            await _vendorViewModel.HideVendorForm(this);
         }
     }
 }
