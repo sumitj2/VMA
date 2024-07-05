@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
 
 namespace VMA.MVVM.ViewModels.Add
@@ -30,9 +31,9 @@ namespace VMA.MVVM.ViewModels.Add
         #region Properties
         private string _vendorCode;
         private string _vendorName;
-        private string _vendorService;
+        private string _vendorServiceName;
         private string _saveButtonName;
-
+        
         public VendorServiceModel SelectedProductVendorService { get; set; }
         public string SaveButtonName
         {
@@ -70,39 +71,39 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        public string VendorService
+        public string VendorServiceName
         {
             get
             {
-                return _vendorService;
+                return _vendorServiceName;
             }
             set
             {
-                _vendorService = value;
-                OnPropertyChanged(nameof(VendorService));
+                _vendorServiceName = value;
+                OnPropertyChanged(nameof(VendorServiceName));
             }
         }
 
-        private Vendor _selectedVendor;
-        public Vendor SelectedVendor
+        private VendorModel _selectedVendor;
+        public VendorModel SelectedVendor
         {
             get { return _selectedVendor; }
             set
             {
-                if (_selectedVendor != value)
-                {
+                
                     _selectedVendor = value;
-                    OnPropertyChanged(nameof(SelectedVendor));
-                }
+                    OnPropertyChanged("SelectedVendor");
+                
             }
         }
+
+
 
         #endregion
 
 
         #region Observable collections
         private ObservableCollection<VendorModel> _vendors;
-        private ObservableCollection<VendorModel> _tempvendors;
         private ObservableCollection<SearchModel> _comboItem;
 
         public ObservableCollection<VendorModel> Vendors
@@ -115,15 +116,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        public ObservableCollection<VendorModel> TempVendors
-        {
-            get { return _tempvendors; }
-            set
-            {
-                _tempvendors = value;
-                OnPropertyChanged(nameof(TempVendors));
-            }
-        }
+        
 
         public ObservableCollection<SearchModel> ComboItem
         {
@@ -158,12 +151,42 @@ namespace VMA.MVVM.ViewModels.Add
             throw new NotImplementedException();
         }
 
-        private async Task SaveVendorService(VendorServiceModel model)
+        private async Task SaveVendorService(object obj)
         {
-            throw new NotImplementedException();
+            
+
+            if (SaveButtonName == "Update")
+            {
+                VendorServiceModel model = new VendorServiceModel()
+                {
+                    VendorId = SelectedVendor.VendorId,
+                    VendorServiceName = VendorServiceName,
+                    CreatedBy = UserAccountModel.Username,
+                };
+                await _vendorServiceBusinessLogic.EditUpdateVendorService(model);
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully");
+            }
+            else
+            {
+                VendorServiceModel model = new VendorServiceModel()
+                {
+                    VendorId = SelectedVendor.VendorId,
+                    VendorServiceName = VendorServiceName,
+                    CreatedBy = UserAccountModel.Username,
+                    IsActive = true,
+                    FkVendorId = SelectedVendor.VendorId,
+                };
+                await _vendorServiceBusinessLogic.AddVendorService(model);
+
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully");
+            }
+
+            await HideVendorServiceForm(this);
         }
 
-        private async Task HideVendorServiceForm(VendorServiceModel model)
+        private async Task HideVendorServiceForm(object model)
         {
             await productServicesViewModel.HideVendorServiceForm(this);
         }
@@ -175,7 +198,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task LoadVendors()
         {
-            var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
+              var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
             Vendors = new ObservableCollection<VendorModel>(vendors);
             
 

@@ -20,8 +20,7 @@ namespace Database.VMA.Repositories
         public async Task AddVendorService(VendorServiceModel vendorServiceModel)
         {
             VendorService vendorService = new()
-            {
-                VendorServiceId = vendorServiceModel.VendorServiceId,
+            {                
                 FkVendorId = vendorServiceModel.FkVendorId,
                 CreatedBy = vendorServiceModel.CreatedBy,
                 CreatedDate = DateTime.Now,

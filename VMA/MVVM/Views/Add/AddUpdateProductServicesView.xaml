@@ -36,7 +36,7 @@
 
                         <ComboBox Style="{StaticResource vendorCombobox}"                              
                                   ItemsSource="{Binding Vendors}"   
-                                  SelectedItem="{Binding Path=SelectComboItem}"  
+                                  SelectedItem="{Binding SelectedVendor}"  
                                   DisplayMemberPath="VendorName" 
                                   SelectedValuePath="VendorId"
                                   SelectedValue="{Binding SelectedVendor.VendorId, Mode=TwoWay}"
@@ -58,7 +58,7 @@
                                 Style="{StaticResource FormTextBlock}"/>
 
                         <TextBox x:Name="txtVendorServie"
-                                 Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding VendorServiceName ,UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource FormTextBox}"
                                  TextWrapping="Wrap"
                                  AcceptsReturn="True"/>
@@ -76,7 +76,7 @@
                     HorizontalAlignment="Center"
                     Margin="0,0,0,10">
                 <Button Style="{StaticResource vendorSaveButton}"
-                    Command="{Binding }"                            
+                    Command="{Binding SubmitCommand}"                            
                     Content="Save"                            
                     FontSize="12"
                     FontFamily="Montserrat"
