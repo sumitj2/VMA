@@ -1,5 +1,6 @@
 ﻿using Database.Abstraction.VMA.Contract;
 using Database.VMA.Entities;
+using Database.VMA.Entities.CustomEntities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,29 @@ namespace Database.VMA.Repositories
         public async Task<IEnumerable<VendorService>> GetAllVendorServices()
         {
             return await _context.VendorServices.Where(x => x.IsActive == true).ToListAsync();
+        }
+
+        public async Task<List<VendorsWithServices>> GetVendorWithService() 
+        {
+            var productsWithVendors = from service in _context.VendorServices
+                                      join vendor in _context.Vendors
+                                      on service.FkVendorId equals vendor.VendorId 
+                                      where service.IsActive==true                                     
+                                      select new VendorsWithServices
+                                      {
+                                         FkVendorId = vendor.VendorId,
+                                          CreatedBy = service.CreatedBy,
+                                          CreatedDate = service.CreatedDate,
+                                          IsActive = service.IsActive,
+                                          LastUpdateBy = service.LastUpdateBy,  
+                                          LastUpdatedDate = service.LastUpdatedDate,
+                                          VendorServiceId  =service.VendorServiceId,
+                                          VendorServiceName = service.VendorServiceName,
+                                          VendorCode=vendor.VendorCode,
+                                          VendorId=vendor.VendorId,
+                                          VendorName=vendor.VendorName, 
+                                      };
+            return await productsWithVendors.ToListAsync();
         }
         public async Task<VendorService?> GetVendorServiceById(int vendorId)
         {

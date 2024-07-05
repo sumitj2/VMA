@@ -50,7 +50,7 @@ namespace Database.VMA.Repositories
         }
         public async Task<IEnumerable<VendorServiceModel>> GetAllVendorServices()
         {
-            var repositoryResult= await _vendorServiceRepository.GetAllVendorServices();
+            var repositoryResult= await _vendorServiceRepository.GetVendorWithService();
             List<VendorServiceModel> services = [];
             foreach(var service in repositoryResult)
             {
@@ -63,7 +63,10 @@ namespace Database.VMA.Repositories
                     IsActive=service.IsActive,
                     LastUpdateBy=service.LastUpdateBy,
                     LastUpdatedDate=service.LastUpdatedDate,
-                    VendorServiceId = service.VendorServiceId   
+                    VendorServiceId = service.VendorServiceId  ,
+                    VendorName = service.VendorName,
+                    VendorId=service.VendorId,
+                    VendorCode=service.VendorCode,
                 });
             }
             return services;

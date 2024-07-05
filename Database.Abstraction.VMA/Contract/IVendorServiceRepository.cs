@@ -1,4 +1,5 @@
 using Database.VMA.Entities;
+using Database.VMA.Entities.CustomEntities;
 
 namespace Database.Abstraction.VMA.Contract
 {
@@ -9,6 +10,7 @@ namespace Database.Abstraction.VMA.Contract
         public Task<IEnumerable<VendorService>> GetAllVendorServices();
         public Task<VendorService?> GetVendorServiceById(int vendorId);
         public Task RemoveVendorService(VendorService vendorService);
+        Task<List<VendorsWithServices>> GetVendorWithService();
     }
 
 }

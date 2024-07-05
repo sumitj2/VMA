@@ -46,14 +46,14 @@ namespace VMA.MVVM.ViewModels.Menus
                 {
                     PropertyInfo? propertyInfo = typeof(VendorServiceModel)?.GetProperty(SelectComboItem.NameSearch.Replace(" ", ""));
 
-                    Vendors = new ObservableCollection<VendorServiceModel>(TempVendors.Where(x => propertyInfo?.GetValue(x, null)?
+                    VendorsServices = new ObservableCollection<VendorServiceModel>(TempVendorServices.Where(x => propertyInfo?.GetValue(x, null)?
                                                                                       .ToString()?
                                                                                       .ToLower(System.Globalization.CultureInfo.CurrentCulture)
                                                                                       .Contains(value, StringComparison.CurrentCultureIgnoreCase) ?? false));
                 }
                 else
                 {
-                    Vendors = TempVendors;
+                    VendorsServices = TempVendorServices;
                 }
 
                 OnPropertyChanged(nameof(SearchValue));
@@ -65,23 +65,23 @@ namespace VMA.MVVM.ViewModels.Menus
         private ObservableCollection<VendorServiceModel> _tempvendors;
         private ObservableCollection<SearchModel> _comboItem;
 
-        public ObservableCollection<VendorServiceModel> Vendors
+        public ObservableCollection<VendorServiceModel> VendorsServices
         {
             get { return _vendors; }
             set
             {
                 _vendors = value;
-                OnPropertyChanged(nameof(Vendors));
+                OnPropertyChanged(nameof(VendorsServices));
             }
         }
 
-        public ObservableCollection<VendorServiceModel> TempVendors
+        public ObservableCollection<VendorServiceModel> TempVendorServices
         {
             get { return _tempvendors; }
             set
             {
                 _tempvendors = value;
-                OnPropertyChanged(nameof(TempVendors));
+                OnPropertyChanged(nameof(TempVendorServices));
             }
         }
 
@@ -124,13 +124,7 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             throw new NotImplementedException();
         }
-
-        //private async Task HideVendorServiceForm(VendorServiceModel model)
-        //{
-        //    _parentViewModel.CurrentChildView = this;
-
-        //    await Task.Run(GetVendorServices).ConfigureAwait(true);
-        //}
+       
         public async Task HideVendorServiceForm(object obj)
         {
             _parentViewModel.CurrentChildView = this;
@@ -142,9 +136,9 @@ namespace VMA.MVVM.ViewModels.Menus
             _parentViewModel.CurrentChildView = new AddProductServicesViewModel(_vendorBusinessLogic,_vendorServiceBusinessLogic, this, SelectedVendorService); 
         }
         private async Task GetVendorServices()
-        {
+         {
             var vendors = await _vendorServiceBusinessLogic.GetAllVendorServices().ConfigureAwait(true);
-            Vendors = TempVendors = new ObservableCollection<VendorServiceModel>(vendors);
+            VendorsServices = TempVendorServices = new ObservableCollection<VendorServiceModel>(vendors);
         }
     }
 }
