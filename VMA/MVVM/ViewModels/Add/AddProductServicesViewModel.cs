@@ -19,7 +19,7 @@ namespace VMA.MVVM.ViewModels.Add
         private readonly IVendorBusinessLogic _vendorBusinessLogic;
         private readonly IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
         private readonly ProductServicesViewModel productServicesViewModel;
-       
+
         #region Command
 
         public ICommand HideVendorProductServiceFormCommand { get; }
@@ -33,7 +33,7 @@ namespace VMA.MVVM.ViewModels.Add
         private string _vendorName;
         private string _vendorServiceName;
         private string _saveButtonName;
-        
+
         public VendorServiceModel SelectedProductVendorService { get; set; }
         public string SaveButtonName
         {
@@ -90,10 +90,10 @@ namespace VMA.MVVM.ViewModels.Add
             get { return _selectedVendor; }
             set
             {
-                
-                    _selectedVendor = value;
-                    OnPropertyChanged("SelectedVendor");
-                
+
+                _selectedVendor = value;
+                OnPropertyChanged("SelectedVendor");
+
             }
         }
 
@@ -116,7 +116,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        
+
 
         public ObservableCollection<SearchModel> ComboItem
         {
@@ -124,9 +124,9 @@ namespace VMA.MVVM.ViewModels.Add
             set { _comboItem = value; }
         }
         #endregion
-       
+
         public AddProductServicesViewModel(IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, ProductServicesViewModel parentViewModel, VendorServiceModel SelectedVendorService)
-        {  
+        {
             this.SelectedProductVendorService = SelectedVendorService;
             if (SelectedVendorService != null)
             {
@@ -136,14 +136,21 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 SaveButtonName = "Submit";
             }
-            // PopulateValues();
+           
             productServicesViewModel = parentViewModel;
             _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
+          
             HideVendorProductServiceFormCommand = new ViewModelAsyncCommand<VendorServiceModel>(HideVendorServiceForm);
             SubmitCommand = new ViewModelAsyncCommand<VendorServiceModel>(SaveVendorService);
             ClearFormCommand = new ViewModelAsyncCommand<VendorServiceModel>(ClearValues);
-            LoadVendors();
+
+            CallAync();
+        }
+
+        private async void CallAync()
+        {
+            await ManinTasss();
         }
 
         private async Task ClearValues(VendorServiceModel model)
@@ -153,7 +160,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task SaveVendorService(object obj)
         {
-            
+
 
             if (SaveButtonName == "Update")
             {
@@ -191,17 +198,36 @@ namespace VMA.MVVM.ViewModels.Add
             await productServicesViewModel.HideVendorServiceForm(this);
         }
 
-        private void PopulateValues()
+        private async Task PopulateValues()
         {
-            throw new NotImplementedException();
+            if (SelectedProductVendorService != null)
+            {
+
+                VendorCode = SelectedProductVendorService.VendorCode ?? "";
+                VendorName = SelectedProductVendorService.VendorName ?? "";
+                VendorServiceName = SelectedProductVendorService.VendorServiceName ?? "";
+                var vendorID = Vendors.ToList().Find(x => x.VendorId == SelectedProductVendorService.VendorId);
+                
+                if (vendorID != null)
+                {
+                    SelectedVendor = Vendors[Vendors.IndexOf(vendorID)];
+
+                }
+            }
         }
 
         private async Task LoadVendors()
         {
-              var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
+            var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
+           
             Vendors = new ObservableCollection<VendorModel>(vendors);
-            
+        }
 
+        public async Task ManinTasss()
+        {
+
+            await LoadVendors();
+            await PopulateValues();
         }
     }
 }

@@ -111,13 +111,13 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Vendor Code" Binding="{Binding VendorCode}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Vendor Name" Binding="{Binding VendorName}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Service Name" Binding="{Binding VendorServiceName}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Vendor Service Name" Binding="{Binding VendorServiceName}" IsReadOnly="True" Width="auto"/>
                     
                     <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditVendorCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" >
+                                    <Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditVendorServiceCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" >
                                         <iconPacks:PackIconMaterial Kind="PencilOutline" Width="12" Height="12" VerticalAlignment="Center" />
                                     </Button>
                                     <!--<Button Style="{StaticResource gridRemoveButton}">

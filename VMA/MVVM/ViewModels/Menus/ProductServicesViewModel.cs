@@ -108,7 +108,7 @@ namespace VMA.MVVM.ViewModels.Menus
             [
                 new(){NameSearch="Vendor Code",SearchId=1},
                 new(){NameSearch="Vendor Name",SearchId=2},
-                new(){NameSearch="Vendor Services",SearchId=3},
+                new(){NameSearch="Vendor Services Name",SearchId=3},
 
             ];
             _vendorBusinessLogic = vendorBusinessLogic;
@@ -122,7 +122,9 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task EditVendor(VendorServiceModel model)
         {
-            throw new NotImplementedException();
+            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
+
+            _parentViewModel.CurrentChildView = new AddProductServicesViewModel(_vendorBusinessLogic, _vendorServiceBusinessLogic, this, model);
         }
        
         public async Task HideVendorServiceForm(object obj)
