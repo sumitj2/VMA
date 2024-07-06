@@ -21,6 +21,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private SearchModel _selectComboItem;
         private string _searchValue;
         private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
+        private readonly IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
         public SearchModel SelectComboItem
         {
             get { return _selectComboItem; }
@@ -98,19 +99,26 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand EditDetailInfoCommand { get; }
         #endregion
-        public DetailedInfoViewModel(MainViewModel parentViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic)
+        public DetailedInfoViewModel(MainViewModel parentViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic)
         {
-            _vendorDetailsBusinessLogic= vendorDetailsBusinessLogic;
+            ComboItem =
+            [
+                new(){NameSearch="Vendor Code Detais",SearchId=1},
+                new(){NameSearch="Vendor Name",SearchId=2},
+
+            ];
+            _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
+            _vendorServiceBusinessLogic= vendorServiceBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowDetailInfoFormCommand = new ViewModelAsyncCommand<VendorDetailModel>(ShowDetailsInfoForm);
             HideDetailInfoFormCommand = new ViewModelAsyncCommand<VendorDetailModel>(HideDetailInfoForm);
             EditDetailInfoCommand = new ViewModelAsyncCommand<VendorDetailModel>(EditDetailInfoForm);
-            GetDetailsVendorServices();
+            _=GetDetailsVendorServices();
         }
 
         private async Task ShowDetailsInfoForm(VendorDetailModel model)
         {
-            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this);
+            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this,SelectedVendorService, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic);
         }
 
         private async Task EditDetailInfoForm(VendorDetailModel model)

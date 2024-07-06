@@ -39,10 +39,11 @@
                                                Margin="20,20,230,0"/>
 
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
-                                              ItemsSource="{Binding Path=ComboItem}"   
-                                              SelectedItem="{Binding Path=SelectComboItem}"  
-                                              DisplayMemberPath="NameSearch"  
-                                              Name="VendorServices" 
+                                              ItemsSource="{Binding VendorDetailServices}"   
+                                              SelectedItem="{Binding SelectedVendor, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="VendorServiceName" 
+                                              SelectedValuePath="VendorServiceId"
+                                              SelectedValue="{Binding SelectedVendor.VendorId, Mode=TwoWay}"
                                               Grid.Row="1" 
                                               Width="239" 
                                               Height="30" 
@@ -125,26 +126,26 @@
                                        Style="{StaticResource FormTextBox}"/>
 
                                     <TextBlock Text="Select Payment Type: "
-            Style="{StaticResource FormTextBlock}"
-            Margin="20,20,230,0"/>
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
 
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
-           ItemsSource="{Binding Path=ComboItem}"   
-           SelectedItem="{Binding Path=SelectComboItem}"  
-           DisplayMemberPath="NameSearch"  
-           Name="paymentType" 
-           Grid.Row="1" 
-           Width="239" 
-           Height="30" 
-           VerticalContentAlignment="Center"
-           HorizontalAlignment="Right"
-           Margin="0,-20,10,40"
-           Background="Transparent"
-           FontWeight="Medium"
-           FontFamily="Montserrat"                            
-           Foreground="{StaticResource plainTextColor3}"
-           BorderBrush="{StaticResource plainTextColor3}"
-           BorderThickness="0,0,0,1" />
+                                              ItemsSource="{Binding Path=ComboItem}"   
+                                              SelectedItem="{Binding Path=SelectComboItem}"  
+                                              DisplayMemberPath="NameSearch"  
+                                              Name="paymentType" 
+                                              Grid.Row="1" 
+                                              Width="239" 
+                                              Height="30" 
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              Margin="0,-20,10,40"
+                                              Background="Transparent"
+                                              FontWeight="Medium"
+                                              FontFamily="Montserrat"                            
+                                              Foreground="{StaticResource plainTextColor3}"
+                                              BorderBrush="{StaticResource plainTextColor3}"
+                                              BorderThickness="0,0,0,1" />
 
 
                                 </StackPanel>
