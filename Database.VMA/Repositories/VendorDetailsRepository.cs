@@ -1,5 +1,6 @@
 ﻿using Database.Abstraction.VMA.Contract;
 using Database.VMA.Entities;
+using Database.VMA.Entities.CustomEntities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,37 @@ namespace Database.VMA.Repositories
         public async Task<IEnumerable<VendorDetail>> GetAllVendorDetails()
         {
             return await _context.VendorDetails.Where(x => x.IsActive == true).ToListAsync();
+        }
+
+        public async Task<List<VendorDetailsWithService>> GetVendorDetailsWithService()
+        {
+            var productsWithVendors = from service in _context.VendorServices
+                                      join vendor in _context.VendorDetails
+                                      on service.VendorServiceId equals vendor.FkVendorServiceId
+                                      where service.IsActive == true
+                                      select new VendorDetailsWithService
+                                      {                                          
+                                          CreatedBy = vendor.CreatedBy,
+                                          CreatedDate = vendor.CreatedDate,
+                                          IsActive = vendor.IsActive,
+                                          LastUpdateBy = vendor.LastUpdateBy,
+                                          LastUpdatedDate = vendor.LastUpdatedDate,
+                                          VendorServiceId = service.VendorServiceId,
+                                          VendorServiceName = service.VendorServiceName,
+                                          FkVendorServiceId=vendor.FkVendorServiceId,
+                                          QuantityOfUnit=vendor.QuantityOfUnit,
+                                          RatePerUnit=vendor.RatePerUnit,
+                                          ServiceEndDate = vendor.ServiceEndDate,
+                                          ServicePaymentType=vendor.ServicePaymentType,
+                                          ServiceSantionAmount=vendor.ServiceSantionAmount,
+                                          ServiceSantionedBy=vendor.ServiceSantionedBy,
+                                          ServiceStartDate=vendor.ServiceStartDate, 
+                                          ServiceType=vendor.ServiceType,
+                                          VendorDetailCategory = vendor.VendorDetailCategory,
+                                          VendorDetailId=vendor.VendorDetailId,
+                                         
+                                      };
+            return await productsWithVendors.ToListAsync();
         }
         public async Task<VendorDetail?> GetVendorDetailsId(int vendorDetailId)
         {

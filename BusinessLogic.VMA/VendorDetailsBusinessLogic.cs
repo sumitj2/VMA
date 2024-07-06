@@ -62,7 +62,7 @@ namespace Database.VMA.Repositories
         }
         public async Task<IEnumerable<VendorDetailModel>> GetAllVendorDetails()
         {
-            var repositoryResult = await _vendorDetailsRepository.GetAllVendorDetails();
+            var repositoryResult = await _vendorDetailsRepository.GetVendorDetailsWithService();
             IList<VendorDetailModel> result = new List<VendorDetailModel>();
             foreach (var data in repositoryResult)
             {
@@ -83,8 +83,9 @@ namespace Database.VMA.Repositories
                     LastUpdatedDate = data.LastUpdatedDate,
                     ServiceSantionedBy = data.ServiceSantionedBy,
                     ServiceStartDate = data.ServiceStartDate,
-                    VendorDetailCategory = data.VendorDetailCategory
-
+                    VendorDetailCategory = data.VendorDetailCategory,
+                    VendorServiceId = data.VendorServiceId,
+                    VendorServiceName = data.VendorServiceName
                 });
             }
             return result;

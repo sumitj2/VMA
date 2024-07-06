@@ -5,6 +5,8 @@ namespace BusinessLogic.Abstraction.VMA.Models;
 
 public partial class VendorDetailModel
 {
+    public int VendorServiceId { get; set; }
+    public string? VendorServiceName { get; set; }
     public int VendorDetailId { get; set; }
 
     public string? VendorDetailCategory { get; set; }
