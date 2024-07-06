@@ -118,12 +118,12 @@
                     <DataGridTextColumn Header="Santioned Amount" Binding="{Binding ServiceSantionAmount}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Payment Type" Binding="{Binding ServicePaymentType}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Rate Per Unit" Binding="{Binding RatePerUnit}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Quantity of Units" Binding="{Binding q}" IsReadOnly="True" Width="auto"/>                   
+                    <DataGridTextColumn Header="Quantity of Units" Binding="{Binding QuantityOfUnit}" IsReadOnly="True" Width="auto"/>                   
                     <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditVendorCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" >
+                                    <Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditDetailInfoCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" >
                                         <iconPacks:PackIconMaterial Kind="PencilOutline" Width="12" Height="12" VerticalAlignment="Center" />
                                     </Button>
                                     <!--<Button Style="{StaticResource gridRemoveButton}">

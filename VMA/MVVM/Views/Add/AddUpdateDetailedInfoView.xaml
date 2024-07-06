@@ -40,10 +40,10 @@
 
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
                                               ItemsSource="{Binding VendorDetailServices}"   
-                                              SelectedItem="{Binding SelectedVendor, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              SelectedItem="{Binding SelectedVendorDetailService, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
                                               DisplayMemberPath="VendorServiceName" 
                                               SelectedValuePath="VendorServiceId"
-                                              SelectedValue="{Binding SelectedVendor.VendorId, Mode=TwoWay}"
+                                              SelectedValue="{Binding SelectedVendorDetailService.VendorServiceId, Mode=TwoWay}"
                                               Grid.Row="1" 
                                               Width="239" 
                                               Height="30" 
@@ -61,7 +61,7 @@
                                                Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtServieCategory"
-                                             Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"
+                                             Text="{Binding VendorDetailCategory ,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource FormTextBox}"
                                              TextWrapping="Wrap"
                                              AcceptsReturn="True"/>
@@ -69,7 +69,7 @@
                                                Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtServieType"
-                                             Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"
+                                             Text="{Binding ServiceType ,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource FormTextBox}"
                                              TextWrapping="Wrap"
                                              AcceptsReturn="True"/>
@@ -82,15 +82,15 @@
                                        Style="{StaticResource FormTextBlock}"
                                         Margin="20,20,230,0"/>
 
-                                    <DatePicker x:Name="txtVendorPhoneNo"
-                                       Text="{Binding VendorPhoneNo ,UpdateSourceTrigger=PropertyChanged}" Width="361"                                         
+                                    <DatePicker x:Name="txtserviceStartDate"
+                                       Text="{Binding ServiceStartDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361"                                         
                                         />
 
                                     <TextBlock Text="Service End Date"
                                         Style="{StaticResource FormTextBlock}"/>
 
-                                    <DatePicker x:Name="txtVendorEmailId" 
-                                       Text="{Binding VendorEmailId,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="354"                                          
+                                    <DatePicker x:Name="txtServiceEndDate" 
+                                       Text="{Binding ServiceEndDate,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="354"                                          
                                        />
 
                                 </StackPanel>
@@ -114,7 +114,7 @@
                                        Margin="20,20,0,0"/>
 
                                     <TextBox x:Name="txtSantionBy"
-                                       Text="{Binding VendorPAN,UpdateSourceTrigger=PropertyChanged}"                                         
+                                       Text="{Binding ServiceSantionedBy,UpdateSourceTrigger=PropertyChanged}"                                         
                                        Style="{StaticResource FormTextBox}"/>
 
                                     <TextBlock Text="Santioned Amount"
@@ -122,7 +122,7 @@
                                        Margin="20,20,0,0"/>
 
                                     <TextBox x:Name="txtSantionedAmount"
-                                       Text="{Binding VendorBankName ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                       Text="{Binding ServiceSantionAmount ,UpdateSourceTrigger=PropertyChanged}"                                         
                                        Style="{StaticResource FormTextBox}"/>
 
                                     <TextBlock Text="Select Payment Type: "
@@ -130,9 +130,11 @@
                                                Margin="20,20,230,0"/>
 
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
-                                              ItemsSource="{Binding Path=ComboItem}"   
-                                              SelectedItem="{Binding Path=SelectComboItem}"  
-                                              DisplayMemberPath="NameSearch"  
+                                              ItemsSource="{Binding ComboxPaymentMethods}"   
+                                              SelectedItem="{Binding SelectPaymentType, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="NameSearch" 
+                                               SelectedValuePath="SearchId"
+                                              SelectedValue="{Binding SelectPaymentType.SearchId, Mode=TwoWay}"
                                               Name="paymentType" 
                                               Grid.Row="1" 
                                               Width="239" 
@@ -156,14 +158,14 @@
                                                Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtNumberOfUnitPurchased"
-                                             Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Text="{Binding QuantityOfUnit ,UpdateSourceTrigger=PropertyChanged}"                                         
                                              Style="{StaticResource FormTextBox}"/>
 
                                     <TextBlock Text="Rate Per Units"                                           
                                                Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtRatePerUnit"
-                                               Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                               Text="{Binding RatePerUnit ,UpdateSourceTrigger=PropertyChanged}"                                         
                                                Style="{StaticResource FormTextBox}"/>
 
 

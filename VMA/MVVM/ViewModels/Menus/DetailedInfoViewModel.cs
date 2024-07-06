@@ -123,7 +123,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task EditDetailInfoForm(VendorDetailModel model)
         {
-            throw new NotImplementedException();
+            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this, model, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic);
+
         }
 
         public async Task HideDetailInfoForm(object obj)

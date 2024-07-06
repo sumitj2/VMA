@@ -32,33 +32,33 @@ namespace Database.VMA.Repositories
                 ServiceStartDate = vendorDetailModel.ServiceStartDate,
                 ServiceType = vendorDetailModel.ServiceType,
                 VendorDetailCategory = vendorDetailModel.VendorDetailCategory,
-                VendorDetailId = vendorDetailModel.VendorDetailId
+
             };
             await _vendorDetailsRepository.AddVendorDetails(vendorDetailEntity);
         }
         public async Task EditUpdateVendorDetails(VendorDetailModel vendorDetailModel)
         {
-            VendorDetail vendorDetailEntity = new()
-            {
-                CreatedBy = vendorDetailModel.CreatedBy,
-                CreatedDate = vendorDetailModel.CreatedDate,
-                IsActive = vendorDetailModel.IsActive,
-                LastUpdateBy = vendorDetailModel.LastUpdateBy,
-                LastUpdatedDate = vendorDetailModel.LastUpdatedDate,
-                VendorDetailId = vendorDetailModel.VendorDetailId,
-                VendorDetailCategory = vendorDetailModel.VendorDetailCategory,
-                ServiceType = vendorDetailModel.ServiceType,
-                ServiceStartDate = vendorDetailModel.ServiceStartDate,
-                ServiceSantionedBy = vendorDetailModel.ServiceSantionedBy,
-                ServiceSantionAmount = vendorDetailModel.ServiceSantionAmount,
-                ServicePaymentType = vendorDetailModel.ServiceType,
-                ServiceEndDate = vendorDetailModel.ServiceEndDate,
-                RatePerUnit = vendorDetailModel.RatePerUnit,
-                FkVendorServiceId = vendorDetailModel.FkVendorServiceId,
-                QuantityOfUnit = vendorDetailModel.QuantityOfUnit
+            var detail = await _vendorDetailsRepository.GetVendorDetailsId(vendorDetailModel.VendorDetailId);
+            if (detail != null)
+            {               
+                detail.IsActive = true;
+                detail.LastUpdateBy = vendorDetailModel.LastUpdateBy;
+                detail.LastUpdatedDate = DateTime.UtcNow;
+                detail.VendorDetailId = vendorDetailModel.VendorDetailId;
+                detail.VendorDetailCategory = vendorDetailModel.VendorDetailCategory;
+                detail.ServiceType = vendorDetailModel.ServiceType;
+                detail.ServiceStartDate = vendorDetailModel.ServiceStartDate;
+                detail.ServiceSantionedBy = vendorDetailModel.ServiceSantionedBy;
+                detail.ServiceSantionAmount = vendorDetailModel.ServiceSantionAmount;
+                detail.ServicePaymentType = vendorDetailModel.ServiceType;
+                detail.ServiceEndDate = vendorDetailModel.ServiceEndDate;
+                detail.RatePerUnit = vendorDetailModel.RatePerUnit;
+                detail.FkVendorServiceId = vendorDetailModel.FkVendorServiceId;
+                detail.QuantityOfUnit = vendorDetailModel.QuantityOfUnit;
 
-            };
-            await _vendorDetailsRepository.EditUpdateVendorDetail(vendorDetailEntity);
+
+                await _vendorDetailsRepository.EditUpdateVendorDetail(detail);
+            }
         }
         public async Task<IEnumerable<VendorDetailModel>> GetAllVendorDetails()
         {
@@ -76,11 +76,9 @@ namespace Database.VMA.Repositories
                     VendorDetailId = data.VendorDetailId,
                     QuantityOfUnit = data.QuantityOfUnit,
                     CreatedBy = data.CreatedBy,
-                    CreatedDate = data.CreatedDate,
+                    CreatedDate = DateTime.UtcNow,
                     FkVendorServiceId = data.FkVendorServiceId,
-                    IsActive = data.IsActive,
-                    LastUpdateBy = data.LastUpdateBy,
-                    LastUpdatedDate = data.LastUpdatedDate,
+                    IsActive =true,                    
                     ServiceSantionedBy = data.ServiceSantionedBy,
                     ServiceStartDate = data.ServiceStartDate,
                     VendorDetailCategory = data.VendorDetailCategory,
@@ -120,22 +118,22 @@ namespace Database.VMA.Repositories
         {
             VendorDetail vendorDetailEntity = new()
             {
-                VendorDetailId= VendorPaymentModel.VendorDetailId,
-                ServiceType= VendorPaymentModel.ServiceType,
-                ServiceSantionAmount=VendorPaymentModel.ServiceSantionAmount,
-                ServicePaymentType= VendorPaymentModel.ServicePaymentType,
-                RatePerUnit=VendorPaymentModel.RatePerUnit,
-                QuantityOfUnit=VendorPaymentModel.QuantityOfUnit,
-                CreatedBy=VendorPaymentModel.CreatedBy,
-                CreatedDate=VendorPaymentModel.CreatedDate,
-                FkVendorServiceId=VendorPaymentModel.FkVendorServiceId,
-                IsActive=VendorPaymentModel.IsActive,   
-                LastUpdateBy=VendorPaymentModel.LastUpdateBy,
-                LastUpdatedDate=VendorPaymentModel.LastUpdatedDate,
-                ServiceEndDate=VendorPaymentModel.ServiceEndDate,
-                ServiceSantionedBy= VendorPaymentModel.ServiceSantionedBy,
-                ServiceStartDate=VendorPaymentModel.ServiceStartDate,   
-                VendorDetailCategory= VendorPaymentModel.VendorDetailCategory   
+                VendorDetailId = VendorPaymentModel.VendorDetailId,
+                ServiceType = VendorPaymentModel.ServiceType,
+                ServiceSantionAmount = VendorPaymentModel.ServiceSantionAmount,
+                ServicePaymentType = VendorPaymentModel.ServicePaymentType,
+                RatePerUnit = VendorPaymentModel.RatePerUnit,
+                QuantityOfUnit = VendorPaymentModel.QuantityOfUnit,
+                CreatedBy = VendorPaymentModel.CreatedBy,
+                CreatedDate = VendorPaymentModel.CreatedDate,
+                FkVendorServiceId = VendorPaymentModel.FkVendorServiceId,
+                IsActive = VendorPaymentModel.IsActive,
+                LastUpdateBy = VendorPaymentModel.LastUpdateBy,
+                LastUpdatedDate = VendorPaymentModel.LastUpdatedDate,
+                ServiceEndDate = VendorPaymentModel.ServiceEndDate,
+                ServiceSantionedBy = VendorPaymentModel.ServiceSantionedBy,
+                ServiceStartDate = VendorPaymentModel.ServiceStartDate,
+                VendorDetailCategory = VendorPaymentModel.VendorDetailCategory
             };
             await _vendorDetailsRepository.RemoveVendorDetails(vendorDetailEntity);
         }

@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
+using Database.VMA.Entities;
 using Database.VMA.Repositories;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
 
 namespace VMA.MVVM.ViewModels.Add
@@ -21,6 +23,136 @@ namespace VMA.MVVM.ViewModels.Add
         private readonly VendorDetailModel _vendorDetailViewModel;
         private readonly IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
         private string _saveButtonName;
+
+        #region Properties
+        private string _vendorDetailCategory;
+        private string _ratePerUnit;
+
+        private int _quantityOfUnit;
+
+        private string _serviceSantionAmount;
+
+        private DateOnly _serviceStartDate;
+
+        private DateOnly _serviceEndDate;
+
+        private string _serviceSantionedBy;
+
+        private string _serviceType;
+
+        public string VendorDetailCategory
+        {
+            get
+            {
+                return _vendorDetailCategory;
+            }
+            set
+            {
+                _vendorDetailCategory = value;
+                OnPropertyChanged(nameof(VendorDetailCategory));
+            }
+        }
+
+        public string RatePerUnit
+        {
+            get
+            {
+                return _ratePerUnit;
+            }
+            set
+            {
+                _ratePerUnit = value;
+                OnPropertyChanged(nameof(RatePerUnit));
+            }
+        }
+
+        public int QuantityOfUnit
+        {
+            get
+            {
+                return _quantityOfUnit;
+            }
+            set
+            {
+                _quantityOfUnit = value;
+                OnPropertyChanged(nameof(QuantityOfUnit));
+            }
+        }
+
+
+        public string ServiceSantionAmount
+        {
+            get
+            {
+                return _serviceSantionAmount;
+            }
+            set
+            {
+                _serviceSantionAmount = value;
+                OnPropertyChanged(nameof(ServiceSantionAmount));
+            }
+        }
+
+        public DateOnly ServiceStartDate
+        {
+            get
+            {
+                return _serviceStartDate;
+            }
+            set
+            {
+                _serviceStartDate = value;
+                OnPropertyChanged(nameof(ServiceStartDate));
+            }
+        }
+
+        public DateOnly ServiceEndDate
+        {
+            get
+            {
+                return _serviceEndDate;
+            }
+            set
+            {
+                _serviceEndDate = value;
+                OnPropertyChanged(nameof(ServiceEndDate));
+            }
+        }
+
+        public string ServiceSantionedBy
+        {
+            get
+            {
+                return _serviceSantionedBy;
+            }
+            set
+            {
+                _serviceSantionedBy = value;
+                OnPropertyChanged(nameof(ServiceSantionedBy));
+            }
+        }
+
+        public string ServiceType
+        {
+            get
+            {
+                return _serviceType;
+            }
+            set
+            {
+                _serviceType = value;
+                OnPropertyChanged(nameof(ServiceType));
+            }
+        }
+
+        private SearchModel _selectPaymentType;
+        public SearchModel SelectPaymentType
+        {
+            get { return _selectPaymentType; }
+            set { _selectPaymentType = value; }
+        }
+
+        #endregion
 
         public string SaveButtonName
         {
@@ -44,6 +176,19 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
+        private VendorServiceModel _selectedVendorDetailService;
+        public VendorServiceModel SelectedVendorDetailService
+        {
+            get { return _selectedVendorDetailService; }
+            set
+            {
+
+                _selectedVendorDetailService = value;
+                OnPropertyChanged(nameof(SelectedVendorDetailService));
+
+            }
+        }
+
         #region Observable collections
         private ObservableCollection<VendorServiceModel> _vendorDetailServices;
         private ObservableCollection<SearchModel> _comboxPaymentMethod;
@@ -58,8 +203,6 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-
-
         public ObservableCollection<SearchModel> ComboxPaymentMethods
         {
             get { return _comboxPaymentMethod; }
@@ -73,13 +216,11 @@ namespace VMA.MVVM.ViewModels.Add
         public ICommand HideDetailInfoFormCommand { get; }
         public ICommand SubmitCommand { get; }
         public ICommand ClearFormCommand { get; }
-        public ICommand SwitchToTab1Command { get; }
-        public ICommand SwitchToTab2Command { get; }
 
         #endregion
-       
 
-        public AddDetailedInfoViewModel(DetailedInfoViewModel detailedInfoViewModel, VendorDetailModel vendorDetailViewModel,IVendorDetailsBusinessLogic vendorDetailsBusinessLogic,IVendorServiceBusinessLogic vendorServiceBusinessLogic)
+
+        public AddDetailedInfoViewModel(DetailedInfoViewModel detailedInfoViewModel, VendorDetailModel vendorDetailViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic)
         {
             ComboxPaymentMethods =
             [
@@ -89,11 +230,14 @@ namespace VMA.MVVM.ViewModels.Add
                 new(){NameSearch="Yearly",SearchId=4},
 
             ];
+
             _vendorDetailViewModel = vendorDetailViewModel;
-            _vendorServiceBusinessLogic= vendorServiceBusinessLogic;
+            _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             BackCommand = new ViewModelCommand(CanGoBack);
             NextCommand = new ViewModelCommand(CanGoNext);
+            SubmitCommand = new ViewModelAsyncCommand<VendorDetailModel>(SaveVendorServiceDetails, ValidateVendorServiceDetails);
+            ClearFormCommand = new ViewModelAsyncCommand<VendorDetailModel>(ClearFormFields);
             if (_vendorDetailViewModel != null)
             {
                 SaveButtonName = "Update";
@@ -103,17 +247,81 @@ namespace VMA.MVVM.ViewModels.Add
                 SaveButtonName = "Submit";
             }
             _detailedInfoViewModel = detailedInfoViewModel;
-            HideDetailInfoFormCommand = new ViewModelAsyncCommand<VendorViewModel>(HideDetailInfoForm);
+            HideDetailInfoFormCommand = new ViewModelAsyncCommand<VendorDetailModel>(HideDetailInfoForm);
             _vendorDetailViewModel = vendorDetailViewModel;
-            CallAync();            
+            CallAync();
         }
-        private async void CallAync()
-        {
-            await ManinTasss();
-        }
-        public async Task ManinTasss()
+
+        private async Task ClearFormFields(VendorDetailModel model)
         {
 
+        }
+
+        private bool ValidateVendorServiceDetails()
+        {
+            return true;
+        }
+
+        private async Task SaveVendorServiceDetails(VendorDetailModel model)
+        {
+            if (SaveButtonName == "Update")
+            {
+                VendorDetailModel vendorModel = new()
+                {
+                    IsActive = true,
+                    QuantityOfUnit = QuantityOfUnit,
+                    ServiceSantionAmount = ServiceSantionAmount,
+                    ServiceEndDate = ServiceEndDate,
+                    RatePerUnit = RatePerUnit,
+                    ServiceType = ServiceType,
+                    VendorDetailCategory = VendorDetailCategory,
+                    ServiceStartDate = ServiceStartDate,
+                    ServicePaymentType = SelectPaymentType.NameSearch,
+                    VendorServiceName = SelectedVendorDetailService.VendorServiceName,
+                    FkVendorServiceId = SelectedVendorDetailService.FkVendorId,
+                    VendorServiceId = SelectedVendorDetailService.VendorServiceId,
+                    ServiceSantionedBy = ServiceSantionedBy,
+                    LastUpdateBy = UserAccountModel.Username
+                   
+                };
+                await _vendorDetailsBusinessLogic.EditUpdateVendorDetails(vendorModel);
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully");
+            }
+            else
+            {
+                VendorDetailModel vendorModel = new()
+                {
+                    IsActive = true,
+                    CreatedBy = UserAccountModel.Username,
+                    QuantityOfUnit = QuantityOfUnit,
+                    ServiceSantionAmount = ServiceSantionAmount,
+                    ServiceEndDate = ServiceEndDate,
+                    RatePerUnit = RatePerUnit,
+                    ServiceType = ServiceType,
+                    VendorDetailCategory = VendorDetailCategory,
+                    ServiceStartDate = ServiceStartDate,
+                    ServicePaymentType = SelectPaymentType.NameSearch,
+                    VendorServiceName = SelectedVendorDetailService.VendorServiceName,
+                    FkVendorServiceId = SelectedVendorDetailService.FkVendorId,
+                    VendorServiceId = SelectedVendorDetailService.VendorServiceId,
+                    ServiceSantionedBy = ServiceSantionedBy
+
+                };
+                await _vendorDetailsBusinessLogic.AddVendorDetails(vendorModel);
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully");
+            }
+
+            await HideDetailInfoForm(this);
+        }
+
+        private async void CallAync()
+        {
+            await MainTask();
+        }
+        public async Task MainTask()
+        {
             await LoadVendorServiceDetails();
             await PopulateValues();
         }
@@ -130,9 +338,37 @@ namespace VMA.MVVM.ViewModels.Add
         }
         private async Task PopulateValues()
         {
-           
+            if (_vendorDetailViewModel != null)
+            {
+                ServiceSantionedBy = _vendorDetailViewModel.ServiceSantionedBy ?? "";
+                ServiceStartDate = (DateOnly)_vendorDetailViewModel.ServiceStartDate;
+                ServiceEndDate = (DateOnly)_vendorDetailViewModel.ServiceEndDate;
+                ServiceSantionAmount = _vendorDetailViewModel.ServiceSantionAmount ?? "";
+                RatePerUnit = _vendorDetailViewModel.RatePerUnit ?? "";
+                QuantityOfUnit = _vendorDetailViewModel.QuantityOfUnit ?? 0;
+                ServiceType = _vendorDetailViewModel.ServiceType ?? "";
+                VendorDetailCategory = _vendorDetailViewModel.VendorDetailCategory ?? "";
+                var paymentMethod = ComboxPaymentMethods.ToList().Find(x => x.NameSearch == _vendorDetailViewModel.ServicePaymentType);
+               
+                //to-do Edit button payment method is not updated need to check
+                if (paymentMethod != null)
+                    SelectPaymentType = ComboxPaymentMethods[1];//ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentMethod)];
+
+
+                var vendorID = VendorDetailServices.ToList().Find(x => x.VendorServiceId == _vendorDetailViewModel.VendorServiceId);
+
+                if (vendorID != null)
+                {
+                    SelectedVendorDetailService = VendorDetailServices[VendorDetailServices.IndexOf(vendorID)];
+
+                }
+            }
         }
 
+        /// <summary>
+        /// Combobox load item with Vendor Service Name
+        /// </summary>
+        /// <returns></returns>
         private async Task LoadVendorServiceDetails()
         {
             var vendorServiceDetails = await _vendorServiceBusinessLogic.GetAllVendorServices().ConfigureAwait(true);
@@ -140,7 +376,7 @@ namespace VMA.MVVM.ViewModels.Add
             VendorDetailServices = new ObservableCollection<VendorServiceModel>(vendorServiceDetails);
         }
 
-        private async Task HideDetailInfoForm(VendorViewModel model)
+        private async Task HideDetailInfoForm(object model)
         {
             await _detailedInfoViewModel.HideDetailInfoForm(this).ConfigureAwait(true);
         }
