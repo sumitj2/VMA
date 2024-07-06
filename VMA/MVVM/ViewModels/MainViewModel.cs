@@ -21,6 +21,7 @@ namespace VMA.MVVM.ViewModels
         private IUserBusinessLogic _userBusinessLogic;
         private IVendorBusinessLogic _vendorBusinessLogic;
         private IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
+        private IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -86,10 +87,11 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowSettingViewCommand { get; }
 
 
-        public MainViewModel(IUserBusinessLogic userBusinessLogic,IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic)
+        public MainViewModel(IUserBusinessLogic userBusinessLogic,IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
+            _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             // _currentUserAccount = new UserAccountModel();
 
             //Initialize command
@@ -138,7 +140,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowDetailedInfoViewCommand(object obj)
         {
-            CurrentChildView = new DetailedInfoViewModel(this);
+            CurrentChildView = new DetailedInfoViewModel(this, _vendorDetailsBusinessLogic);
             Caption = "Detailed Info";
             Icon = IconChar.InfoCircle;
         }

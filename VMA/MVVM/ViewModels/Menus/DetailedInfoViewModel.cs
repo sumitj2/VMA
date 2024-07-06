@@ -1,4 +1,7 @@
-﻿using BusinessLogic.Abstraction.VMA.Models;
+﻿using BusinessLogic.Abstraction.VMA.Contract;
+using BusinessLogic.Abstraction.VMA.Models;
+using Database.VMA.Entities;
+using Database.VMA.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,7 +20,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private VendorDetailModel _selectedVendor;
         private SearchModel _selectComboItem;
         private string _searchValue;
-
+        private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         public SearchModel SelectComboItem
         {
             get { return _selectComboItem; }
@@ -40,14 +43,14 @@ namespace VMA.MVVM.ViewModels.Menus
                 {
                     PropertyInfo? propertyInfo = typeof(VendorDetailModel)?.GetProperty(SelectComboItem.NameSearch.Replace(" ", ""));
 
-                    Vendors = new ObservableCollection<VendorDetailModel>(TempVendors.Where(x => propertyInfo?.GetValue(x, null)?
+                    VendorsDetails = new ObservableCollection<VendorDetailModel>(TempVendorsDetails.Where(x => propertyInfo?.GetValue(x, null)?
                                                                                       .ToString()?
                                                                                       .ToLower(System.Globalization.CultureInfo.CurrentCulture)
                                                                                       .Contains(value, StringComparison.CurrentCultureIgnoreCase) ?? false));
                 }
                 else
                 {
-                    Vendors = TempVendors;
+                    VendorsDetails = TempVendorsDetails;
                 }
 
                 OnPropertyChanged(nameof(SearchValue));
@@ -55,27 +58,27 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         #region Observable collections
-        private ObservableCollection<VendorDetailModel> _vendors;
-        private ObservableCollection<VendorDetailModel> _tempvendors;
+        private ObservableCollection<VendorDetailModel> _vendorsDetails;
+        private ObservableCollection<VendorDetailModel> _tempvendorsDetails;
         private ObservableCollection<SearchModel> _comboItem;
 
-        public ObservableCollection<VendorDetailModel> Vendors
+        public ObservableCollection<VendorDetailModel> VendorsDetails
         {
-            get { return _vendors; }
+            get { return _vendorsDetails; }
             set
             {
-                _vendors = value;
-                OnPropertyChanged(nameof(Vendors));
+                _vendorsDetails = value;
+                OnPropertyChanged(nameof(VendorsDetails));
             }
         }
 
-        public ObservableCollection<VendorDetailModel> TempVendors
+        public ObservableCollection<VendorDetailModel> TempVendorsDetails
         {
-            get { return _tempvendors; }
+            get { return _tempvendorsDetails; }
             set
             {
-                _tempvendors = value;
-                OnPropertyChanged(nameof(TempVendors));
+                _tempvendorsDetails = value;
+                OnPropertyChanged(nameof(TempVendorsDetails));
             }
         }
 
@@ -95,12 +98,14 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand EditDetailInfoCommand { get; }
         #endregion
-        public DetailedInfoViewModel(MainViewModel parentViewModel)
+        public DetailedInfoViewModel(MainViewModel parentViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic)
         {
+            _vendorDetailsBusinessLogic= vendorDetailsBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowDetailInfoFormCommand = new ViewModelAsyncCommand<VendorDetailModel>(ShowDetailsInfoForm);
             HideDetailInfoFormCommand = new ViewModelAsyncCommand<VendorDetailModel>(HideDetailInfoForm);
             EditDetailInfoCommand = new ViewModelAsyncCommand<VendorDetailModel>(EditDetailInfoForm);
+            GetDetailsVendorServices();
         }
 
         private async Task ShowDetailsInfoForm(VendorDetailModel model)
@@ -116,6 +121,12 @@ namespace VMA.MVVM.ViewModels.Menus
         public async Task HideDetailInfoForm(object obj)
         {
             _parentViewModel.CurrentChildView = this;
+        }
+
+        private async Task GetDetailsVendorServices()
+        {
+            var vendors = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
+            VendorsDetails = TempVendorsDetails = new ObservableCollection<VendorDetailModel>(vendors);
         }
     }
 }

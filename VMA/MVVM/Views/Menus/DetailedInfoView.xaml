@@ -107,18 +107,18 @@
                 CellStyle="{DynamicResource DataGridCellStyle1}" 
                 ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                 RowStyle="{DynamicResource DataGridRowStyle1}" 
-                ItemsSource="{Binding Vendors,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                ItemsSource="{Binding VendorsDetails,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Vendor Service Name" Binding="{Binding VendorCode}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Service Type" Binding="{Binding VendorName}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Service Category Detaills" Binding="{Binding VendorPan}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Service Start Date" Binding="{Binding VendorPhoneNo}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Service End Date" Binding="{Binding VendorEmailId}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Santioned By"  Binding="{Binding VendorAddress}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Santioned Amount" Binding="{Binding VendorPinCode}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Payment Type" Binding="{Binding VendorBankName}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Rate Per Unit" Binding="{Binding VendorAccountNumber}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Quantity of Units" Binding="{Binding VendorIfsccode}" IsReadOnly="True" Width="auto"/>                   
+                    <DataGridTextColumn Header="Vendor Service Name" Binding="{Binding VendorServiceName }" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Service Type" Binding="{Binding ServiceType}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Service Category Detaills" Binding="{Binding VendorDetailCategory}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Service Start Date" Binding="{Binding ServiceStartDate }" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Service End Date" Binding="{Binding ServiceEndDate}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Santioned By"  Binding="{Binding ServiceSantionedBy}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Santioned Amount" Binding="{Binding ServiceSantionAmount}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Payment Type" Binding="{Binding ServicePaymentType}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Rate Per Unit" Binding="{Binding RatePerUnit}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Quantity of Units" Binding="{Binding q}" IsReadOnly="True" Width="auto"/>                   
                     <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
