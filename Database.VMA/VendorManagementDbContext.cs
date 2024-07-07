@@ -16,7 +16,7 @@ public partial class VendorManagementDbContext : DbContext
 
     public virtual DbSet<GstcalculationMaster> GstcalculationMasters { get; set; }
 
-    public virtual DbSet<InvoiceDetails> InvoiceDetais { get; set; }
+    public virtual DbSet<InvoiceDetails> InvoiceDetails { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 

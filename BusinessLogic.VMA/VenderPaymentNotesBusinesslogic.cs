@@ -51,7 +51,7 @@ namespace Database.VMA.Repositories
         }
         public async Task<IEnumerable<VenderPaymentNoteModel>> GetAllPaymentNotes()
         {
-            var repositoryResult = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetails();
+            var repositoryResult = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetails().ConfigureAwait(true);
             List<VenderPaymentNoteModel> paymentNoteModel = [];
             foreach (var paymentNote in repositoryResult)
             {

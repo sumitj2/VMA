@@ -107,20 +107,20 @@
                 CellStyle="{DynamicResource DataGridCellStyle1}" 
                 ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
                 RowStyle="{DynamicResource DataGridRowStyle1}" 
-                ItemsSource="{Binding Vendors,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                ItemsSource="{Binding VendorPaymentNotes,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Service Name" Binding="{Binding VendorCode}" IsReadOnly="True" Width="auto"/> 
-                    <DataGridTextColumn Header="Payment Code" Binding="{Binding VendorCode}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Payment Note No" Binding="{Binding VendorName}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Payment Note Date" Binding="{Binding VendorPan}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Invoice Number" Binding="{Binding VendorPhoneNo}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Invoice Date" Binding="{Binding VendorEmailId}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Invoice Particulars"  Binding="{Binding VendorAddress}" IsReadOnly="True" Width="auto"/>                   
+                    <DataGridTextColumn Header="Service Name" Binding="{Binding VendorServiceName}" IsReadOnly="True" Width="auto"/> 
+                    <DataGridTextColumn Header="Payment Code" Binding="{Binding PaymentCode}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Payment Note No" Binding="{Binding PaymentNoteNo}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Payment Note Date" Binding="{Binding PaymentNoteDate}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Invoice Number" Binding="{Binding InvoiceNumber}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Invoice Date" Binding="{Binding InvoiceDate}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Invoice Particulars"  Binding="{Binding InvoiceParticulars}" IsReadOnly="True" Width="auto"/>                   
                     <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditVendorCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" >
+                                    <Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditPaymentNotesFormCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" >
                                         <iconPacks:PackIconMaterial Kind="PencilOutline" Width="12" Height="12" VerticalAlignment="Center" />
                                     </Button>
                                     <!--<Button Style="{StaticResource gridRemoveButton}">

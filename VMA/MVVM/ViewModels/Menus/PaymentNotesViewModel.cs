@@ -1,4 +1,7 @@
-﻿using BusinessLogic.Abstraction.VMA.Models;
+﻿using BusinessLogic.Abstraction.VMA.Contract;
+using BusinessLogic.Abstraction.VMA.Models;
+using Database.VMA.Entities;
+using Database.VMA.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,6 +16,7 @@ namespace VMA.MVVM.ViewModels.Menus
 {
     public class PaymentNotesViewModel : ViewModelBase
     {
+        private readonly IVenderPaymentNotesBusinessLogic _venderPaymentNotesBusinessLogic;
         private readonly MainViewModel _parentViewModel;
         private VenderPaymentNoteModel _selectedVendor;
         private SearchModel _selectComboItem;
@@ -40,14 +44,14 @@ namespace VMA.MVVM.ViewModels.Menus
                 {
                     PropertyInfo? propertyInfo = typeof(VenderPaymentNoteModel)?.GetProperty(SelectComboItem.NameSearch.Replace(" ", ""));
 
-                    Vendors = new ObservableCollection<VenderPaymentNoteModel>(TempVendors.Where(x => propertyInfo?.GetValue(x, null)?
+                    VendorPaymentNotes = new ObservableCollection<VenderPaymentNoteModel>(TempVendorPaymentNotes.Where(x => propertyInfo?.GetValue(x, null)?
                                                                                       .ToString()?
                                                                                       .ToLower(System.Globalization.CultureInfo.CurrentCulture)
                                                                                       .Contains(value, StringComparison.CurrentCultureIgnoreCase) ?? false));
                 }
                 else
                 {
-                    Vendors = TempVendors;
+                    VendorPaymentNotes = TempVendorPaymentNotes;
                 }
 
                 OnPropertyChanged(nameof(SearchValue));
@@ -59,23 +63,23 @@ namespace VMA.MVVM.ViewModels.Menus
         private ObservableCollection<VenderPaymentNoteModel> _tempvendors;
         private ObservableCollection<SearchModel> _comboItem;
 
-        public ObservableCollection<VenderPaymentNoteModel> Vendors
+        public ObservableCollection<VenderPaymentNoteModel> VendorPaymentNotes
         {
             get { return _vendors; }
             set
             {
                 _vendors = value;
-                OnPropertyChanged(nameof(Vendors));
+                OnPropertyChanged(nameof(VendorPaymentNotes));
             }
         }
 
-        public ObservableCollection<VenderPaymentNoteModel> TempVendors
+        public ObservableCollection<VenderPaymentNoteModel> TempVendorPaymentNotes
         {
             get { return _tempvendors; }
             set
             {
                 _tempvendors = value;
-                OnPropertyChanged(nameof(TempVendors));
+                OnPropertyChanged(nameof(TempVendorPaymentNotes));
             }
         }
 
@@ -95,17 +99,19 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand EditPaymentNotesFormCommand { get; }
         #endregion
-        public PaymentNotesViewModel(MainViewModel parentViewModel)
+        public PaymentNotesViewModel(MainViewModel parentViewModel,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
         {
+            _venderPaymentNotesBusinessLogic=venderPaymentNotesBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowPaymentNoteFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(ShowPaymentNotesForm);
             HidePaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(HidePaymentNotesForm);
             EditPaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(EditPaymentNoteForm);
+            _=GetPaymentsNote();
         }
 
         private async Task EditPaymentNoteForm(VenderPaymentNoteModel model)
         {
-            throw new NotImplementedException();
+            
         }
 
         private async Task ShowPaymentNotesForm(VenderPaymentNoteModel model)
@@ -117,6 +123,12 @@ namespace VMA.MVVM.ViewModels.Menus
         public async Task HidePaymentNotesForm(object obj)
         {
             _parentViewModel.CurrentChildView = this;
+        }
+
+        private async Task GetPaymentsNote()
+        {
+            var paymentNotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
+            VendorPaymentNotes = TempVendorPaymentNotes = new ObservableCollection<VenderPaymentNoteModel>(paymentNotes);
         }
     }
 }

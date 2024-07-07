@@ -26,22 +26,22 @@ namespace Database.VMA.Repositories
             var result = await GetInvoiceById(InvoiceDetailsEntity.InvoiceId);
             if (result != null)
             {
-                _context.InvoiceDetais.Update(result);
+                _context.InvoiceDetails.Update(result);
                 await _context.SaveChangesAsync();
             }
         }
         public async Task<IEnumerable<InvoiceDetails>> GetAllInvoices()
         {
-            return await _context.InvoiceDetais.Where(x => x.IsActive == true).ToListAsync();
+            return await _context.InvoiceDetails.Where(x => x.IsActive == true).ToListAsync();
         }
         public async Task<InvoiceDetails?> GetInvoiceById(int invoiceId)
         {
-            return await _context.InvoiceDetais.Where(x => x.IsActive == true && x.InvoiceId == invoiceId).FirstOrDefaultAsync();
+            return await _context.InvoiceDetails.Where(x => x.IsActive == true && x.InvoiceId == invoiceId).FirstOrDefaultAsync();
         }
 
         public async Task RemoveInvoice(InvoiceDetails invoiceDetails)
         {
-            _context.InvoiceDetais.Remove(invoiceDetails);
+            _context.InvoiceDetails.Remove(invoiceDetails);
             await _context.SaveChangesAsync();
         }
     }
