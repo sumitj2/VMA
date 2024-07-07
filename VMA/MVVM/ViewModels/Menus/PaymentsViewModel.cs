@@ -1,6 +1,7 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
 using Database.VMA.Entities;
+using Database.VMA.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -96,7 +97,7 @@ namespace VMA.MVVM.ViewModels.Menus
         public ICommand UpdateVendorFormCommand { get; }
         public ICommand HideVendorFormCommand { get; }
 
-        public ICommand EditVendorCommand { get; }
+        public ICommand EditPaymentCommand { get; }
         #endregion
         public PaymentsViewModel(MainViewModel parentViewModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic)
         {
@@ -111,13 +112,14 @@ namespace VMA.MVVM.ViewModels.Menus
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ShowPaymentForm);
             HideVendorFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
-            EditVendorCommand = new ViewModelAsyncCommand<VendorPaymentModel>(EditPayment);
+            EditPaymentCommand = new ViewModelAsyncCommand<VendorPaymentModel>(EditPayment);
             _=GetVendorPayments();
         }
 
         private async Task EditPayment(VendorPaymentModel model)
         {
-            
+            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
+            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this,_vendorDetailsBusinessLogic, model, _vendorPaymentBusinessLogic);
         }
 
         public async Task HidePaymentForm(object model)

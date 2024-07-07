@@ -21,7 +21,7 @@ namespace Database.VMA.Repositories
             var checkPaymentForService = res.Where(x => x.VendorServiceId == vendorDetailModel?.FkVendorServiceId);
             if (!checkPaymentForService.Any())
             {
-                paymentcode= string.Join("_", vendorDetailModel?.VendorServiceName?.Replace(" ",""), vendorDetailModel?.ServicePaymentType, counter);
+                paymentcode = string.Join("_", vendorDetailModel?.VendorServiceName?.Replace(" ", ""), vendorDetailModel?.ServicePaymentType, counter);
 
             }
             else
@@ -72,41 +72,48 @@ namespace Database.VMA.Repositories
                 VendorPaymentTdsamount = VendorPaymentModel.VendorPaymentTdsamount,
                 VendorPaymentTotalAmountPaid = VendorPaymentModel.VendorPaymentTotalAmountPaid,
                 VendorPaymentUtrnumber = VendorPaymentModel.VendorPaymentUtrnumber,
-                VendorPaymentYear = VendorPaymentModel.VendorPaymentYear
+                VendorPaymentYear = VendorPaymentModel.VendorPaymentYear,
+                PaymentCode = VendorPaymentModel.PaymentCode
             };
             await _vendorPaymentRepository.AddVendorPayment(vendorPayment);
         }
         public async Task EditUpdateVendorPayment(VendorPaymentModel VendorPaymentEntity)
         {
-            VendorPayment vendorPayment = new()
+            var entity = await _vendorPaymentRepository.GetVendorPaymentById(VendorPaymentEntity.VendorPaymentId);
+            if (entity != null)
             {
-                VendorPaymentYear = VendorPaymentEntity.VendorPaymentYear,
-                VendorPaymentTotalAmountPaid = VendorPaymentEntity.VendorPaymentTotalAmountPaid,
-                VendorPaymentUtrnumber = VendorPaymentEntity.VendorPaymentUtrnumber,
-                VendorPaymentTdsamount = VendorPaymentEntity.VendorPaymentTdsamount,
-                BankBranchName = VendorPaymentEntity.BankBranchName,
-                CreatedBy = VendorPaymentEntity.CreatedBy,
-                CreatedDate = VendorPaymentEntity.CreatedDate,
-                FkVendorDetailId = VendorPaymentEntity.FkVendorDetailId,
-                IsActive = VendorPaymentEntity.IsActive,
-                LastUpdateBy = VendorPaymentEntity.LastUpdateBy,
-                LastUpdatedDate = VendorPaymentEntity.LastUpdatedDate,
-                VendorPaymentAmount = VendorPaymentEntity.VendorPaymentAmount,
-                VendorPaymentCgst = VendorPaymentEntity.VendorPaymentCgst,
-                VendorPaymentDate = VendorPaymentEntity.VendorPaymentDate,
-                VendorPaymentId = VendorPaymentEntity.VendorPaymentId,
-                VendorPaymentIsGst = VendorPaymentEntity.VendorPaymentIsGst,
-                VendorPaymentNotesDetails = VendorPaymentEntity.VendorPaymentNotesDetails,
-                VendorPaymentRtgsAmount = VendorPaymentEntity.VendorPaymentRtgsAmount,
-                VendorPaymentRtgsDate = VendorPaymentEntity.VendorPaymentRtgsDate,
-                VendorPaymentSgst = VendorPaymentEntity.VendorPaymentSgst
-            };
-            await _vendorPaymentRepository.EditUpdateVendorPayment(vendorPayment);
+                entity.VendorPaymentYear = VendorPaymentEntity.VendorPaymentYear;
+                entity.VendorPaymentTotalAmountPaid = VendorPaymentEntity.VendorPaymentTotalAmountPaid;
+                entity.VendorPaymentUtrnumber = VendorPaymentEntity.VendorPaymentUtrnumber;
+                entity.VendorPaymentTdsamount = VendorPaymentEntity.VendorPaymentTdsamount;
+                entity.BankBranchName = VendorPaymentEntity.BankBranchName;
+                entity.CreatedBy = VendorPaymentEntity.CreatedBy;
+                entity.CreatedDate = VendorPaymentEntity.CreatedDate;
+                entity.FkVendorDetailId = VendorPaymentEntity.FkVendorDetailId;
+                entity.IsActive = VendorPaymentEntity.IsActive;
+                entity.LastUpdateBy = VendorPaymentEntity.LastUpdateBy;
+                entity.LastUpdatedDate = VendorPaymentEntity.LastUpdatedDate;
+                entity.VendorPaymentAmount = VendorPaymentEntity.VendorPaymentAmount;
+                entity.VendorPaymentCgst = VendorPaymentEntity.VendorPaymentCgst;
+                entity.VendorPaymentDate = VendorPaymentEntity.VendorPaymentDate;
+                entity.VendorPaymentId = VendorPaymentEntity.VendorPaymentId;
+                entity.VendorPaymentIsGst = VendorPaymentEntity.VendorPaymentIsGst;
+                entity.VendorPaymentNotesDetails = VendorPaymentEntity.VendorPaymentNotesDetails;
+                entity.VendorPaymentRtgsAmount = VendorPaymentEntity.VendorPaymentRtgsAmount;
+                entity.VendorPaymentRtgsDate = VendorPaymentEntity.VendorPaymentRtgsDate;
+                entity.VendorPaymentSgst = VendorPaymentEntity.VendorPaymentSgst;
+                entity.PaymentCode = VendorPaymentEntity.PaymentCode;
+                entity.IsPaymentForBranch = VendorPaymentEntity.IsPaymentForBranch;
+                entity.VendorPaymentIsTdsapplicable = VendorPaymentEntity.VendorPaymentIsTdsapplicable;
+
+            }
+
+            await _vendorPaymentRepository.EditUpdateVendorPayment(entity);
         }
         public async Task<IEnumerable<VendorPaymentModel>> GetAllVendorPayment()
         {
             var repositoryResult = await _vendorPaymentRepository.GetAllPaymentDetailsWithServiceDetails();
-            IList<VendorPaymentModel> result = new List<VendorPaymentModel>();
+            IList<VendorPaymentModel> result = [];
             foreach (var data in repositoryResult)
             {
                 result.Add(new VendorPaymentModel()
@@ -134,8 +141,10 @@ namespace Database.VMA.Repositories
                     VendorServiceName = data.VendorServiceName,
                     VendorServiceId = data.VendorServiceId,
                     ServiceSantionAmount = data.ServiceSantionAmount,
-                    ServicePaymentType = data.ServicePaymentType
-
+                    ServicePaymentType = data.ServicePaymentType,
+                    PaymentCode = data.PaymentCode,
+                    IsPaymentForBranch = data.IsPaymentForBranch,
+                    VendorPaymentIsTdsapplicable = data.VendorPaymentIsTdsapplicable
                 });
             }
             return result;

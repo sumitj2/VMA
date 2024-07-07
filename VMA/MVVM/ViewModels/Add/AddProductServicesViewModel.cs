@@ -155,20 +155,19 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task ClearValues(VendorServiceModel model)
         {
-            throw new NotImplementedException();
+           
         }
 
         private async Task SaveVendorService(object obj)
         {
-
-
             if (SaveButtonName == "Update")
             {
                 VendorServiceModel model = new VendorServiceModel()
                 {
                     VendorId = SelectedVendor.VendorId,
                     VendorServiceName = VendorServiceName,
-                    CreatedBy = UserAccountModel.Username,
+                    LastUpdateBy = UserAccountModel.Username,
+                    LastUpdatedDate = DateTime.UtcNow, 
                 };
                 await _vendorServiceBusinessLogic.EditUpdateVendorService(model);
 
@@ -181,6 +180,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorId = SelectedVendor.VendorId,
                     VendorServiceName = VendorServiceName,
                     CreatedBy = UserAccountModel.Username,
+                    CreatedDate = DateTime.UtcNow,
                     IsActive = true,
                     FkVendorId = SelectedVendor.VendorId,
                 };

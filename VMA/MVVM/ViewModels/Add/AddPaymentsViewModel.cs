@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
 
 namespace VMA.MVVM.ViewModels.Add
@@ -33,7 +34,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     isGSTDetailsVisible = value;
                     OnPropertyChanged(nameof(GSTTabVisible));
-                    VendorPaymentIsGst=true;
+                    VendorPaymentIsGst = true;
                 }
             }
         }
@@ -145,12 +146,12 @@ namespace VMA.MVVM.ViewModels.Add
             set { _comboxPaymentMethod = value; }
         }
 
-        
+
 
         private async void GeneratePaymentCode(VendorDetailModel? vendorDetailModel)
         {
-            var paymentCode=await _vendorPaymentBusinessLogic.GeneratePaymentCode(vendorDetailModel);
-            PaymentCode=paymentCode;
+            var paymentCode = await _vendorPaymentBusinessLogic.GeneratePaymentCode(vendorDetailModel);
+            PaymentCode = paymentCode;
         }
         #endregion
 
@@ -191,7 +192,8 @@ namespace VMA.MVVM.ViewModels.Add
         public string PaymentCode
         {
             get { return _paymentCode; }
-            set {
+            set
+            {
                 _paymentCode = value;
                 OnPropertyChanged(nameof(PaymentCode));
             }
@@ -205,7 +207,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentYear));
             }
         }
-
         public DateTime? VendorPaymentDate
         {
             get { return _vendorPaymentDate; }
@@ -215,7 +216,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentDate));
             }
         }
-
         public string? VendorPaymentAmount
         {
             get { return _VendorPaymentAmount; }
@@ -225,7 +225,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentAmount));
             }
         }
-
         public bool? VendorPaymentIsGst
         {
             get { return _vendorPaymentIsGst; }
@@ -235,7 +234,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentIsGst));
             }
         }
-
         public decimal? VendorPaymentCgst
         {
             get { return _vendorPaymentCgst; }
@@ -245,7 +243,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentCgst));
             }
         }
-
         public decimal? VendorPaymentSgst
         {
             get { return _vendorPaymentSgst; }
@@ -255,7 +252,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentSgst));
             }
         }
-
         public int? VendorPaymentTotalAmountPaid
         {
             get { return _vendorPaymentTotalAmountPaid; }
@@ -265,7 +261,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentTotalAmountPaid));
             }
         }
-
         public int? VendorPaymentUtrnumber
         {
             get { return _vendorPaymentUtrnumber; }
@@ -275,7 +270,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentUtrnumber));
             }
         }
-
         public decimal? VendorPaymentRtgsAmount
         {
             get { return _vendorPaymentRtgsAmount; }
@@ -285,7 +279,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentRtgsAmount));
             }
         }
-
         public DateOnly? VendorPaymentRtgsDate
         {
             get { return _vendorPaymentRtgsDate; }
@@ -304,7 +297,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentIsTdsapplicable));
             }
         }
-
         public bool? IsPaymentForBranch
         {
             get { return _isPaymentForBranch; }
@@ -323,7 +315,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentTdsamount));
             }
         }
-
         public string? VendorPaymentNotesDetails
         {
             get { return _vendorPaymentNotesDetails; }
@@ -333,7 +324,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentNotesDetails));
             }
         }
-
         public string? BankBranchName
         {
             get { return _bankBranchName; }
@@ -347,7 +337,42 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
-        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel,IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
+        private async Task PopulateValues()
+        {
+            if (_vendorPaymentModel != null)
+            {
+                PaymentCode = _vendorPaymentModel.PaymentCode;
+                VendorPaymentYear=_vendorPaymentModel.VendorPaymentYear;
+                VendorPaymentDate= _vendorPaymentModel.VendorPaymentDate;
+                VendorPaymentAmount= _vendorPaymentModel.VendorPaymentAmount;
+                VendorPaymentIsGst= _vendorPaymentModel.VendorPaymentIsGst;
+                VendorPaymentCgst= _vendorPaymentModel.VendorPaymentCgst;
+                VendorPaymentSgst= _vendorPaymentModel.VendorPaymentSgst;
+                VendorPaymentTotalAmountPaid = _vendorPaymentModel.VendorPaymentTotalAmountPaid;
+                VendorPaymentUtrnumber=_vendorPaymentModel.VendorPaymentUtrnumber;
+                VendorPaymentRtgsAmount= _vendorPaymentModel.VendorPaymentRtgsAmount;
+                VendorPaymentRtgsDate = _vendorPaymentModel.VendorPaymentRtgsDate;
+                VendorPaymentIsTdsapplicable=_vendorPaymentModel.VendorPaymentIsTdsapplicable;
+                IsPaymentForBranch= _vendorPaymentModel.IsPaymentForBranch;
+                VendorPaymentTdsamount = _vendorPaymentModel.VendorPaymentTdsamount;
+                VendorPaymentNotesDetails= _vendorPaymentModel.VendorPaymentNotesDetails;
+                BankBranchName = _vendorPaymentModel.BankBranchName;
+               
+                //VendorCode = SelectedProductVendorService.VendorCode ?? "";
+                //VendorName = SelectedProductVendorService.VendorName ?? "";
+                //VendorServiceName = SelectedProductVendorService.VendorServiceName ?? "";
+                var vendorID = VendorServiceDetails.ToList().Find(x => x.VendorDetailId == _vendorPaymentModel?.FkVendorDetailId);
+
+                if (vendorID != null)
+                {
+                    SelectedVendorServiceDetails = VendorServiceDetails[VendorServiceDetails.IndexOf(vendorID)];
+
+                }
+            }
+
+        }
+
+        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
         {
             _vendorPaymentModel = vendorPaymentModel;
             if (_vendorPaymentModel != null)
@@ -373,7 +398,74 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task SubmitPaymentDetails(VendorPaymentModel model)
         {
-          
+            if (SaveButtonName == "Update")
+            {
+                VendorPaymentModel payment = new()
+                {
+                    BankBranchName = BankBranchName,
+                    IsPaymentForBranch = IsPaymentForBranch,
+                    PaymentCode = PaymentCode,
+                    VendorPaymentAmount = VendorPaymentAmount,
+                    VendorPaymentCgst = VendorPaymentCgst,
+                    VendorPaymentDate = VendorPaymentDate,
+                    VendorPaymentIsGst = VendorPaymentIsGst,
+                    VendorPaymentNotesDetails = VendorPaymentNotesDetails,
+                    VendorPaymentIsTdsapplicable = VendorPaymentIsTdsapplicable,
+                    VendorPaymentRtgsDate = VendorPaymentRtgsDate,
+                    VendorPaymentSgst = VendorPaymentSgst,
+                    VendorPaymentTdsamount = VendorPaymentTdsamount,
+                    VendorServiceName = SelectedVendorServiceDetails?.VendorServiceName,
+                    ServicePaymentType = SelectedVendorServiceDetails?.ServicePaymentType,
+                    VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
+                    VendorPaymentUtrnumber = VendorPaymentUtrnumber,
+                    VendorServiceId = SelectedVendorServiceDetails.VendorServiceId,
+                    VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
+                    VendorPaymentYear = VendorPaymentYear,
+                    ServiceSantionAmount = SelectedVendorServiceDetails?.ServiceSantionAmount,
+                    FkVendorDetailId = SelectedVendorServiceDetails?.VendorDetailId,
+                    LastUpdateBy = UserAccountModel.Username,
+                    VendorPaymentId = _vendorPaymentModel.VendorPaymentId,
+                    IsActive = true
+                };
+                await _vendorPaymentBusinessLogic.EditUpdateVendorPayment(payment);
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully");
+            }
+            else
+            {
+                VendorPaymentModel payment = new()
+                {
+                    BankBranchName = BankBranchName,
+                    IsPaymentForBranch = IsPaymentForBranch,
+                    PaymentCode = PaymentCode,
+                    VendorPaymentAmount = VendorPaymentAmount,
+                    VendorPaymentCgst = VendorPaymentCgst,
+                    VendorPaymentDate = VendorPaymentDate,
+                    VendorPaymentIsGst = VendorPaymentIsGst,
+                    VendorPaymentNotesDetails = VendorPaymentNotesDetails,
+                    VendorPaymentIsTdsapplicable = VendorPaymentIsTdsapplicable,
+                    VendorPaymentRtgsDate = VendorPaymentRtgsDate,
+                    VendorPaymentSgst = VendorPaymentSgst,
+                    VendorPaymentTdsamount = VendorPaymentTdsamount,
+                    VendorServiceName = SelectedVendorServiceDetails?.VendorServiceName,
+                    ServicePaymentType = SelectedVendorServiceDetails?.ServicePaymentType,
+                    VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
+                    VendorPaymentUtrnumber = VendorPaymentUtrnumber,
+                    VendorServiceId = SelectedVendorServiceDetails.VendorServiceId,
+                    VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
+                    VendorPaymentYear = VendorPaymentYear,
+                    ServiceSantionAmount = SelectedVendorServiceDetails?.ServiceSantionAmount,
+                    FkVendorDetailId = SelectedVendorServiceDetails?.VendorDetailId,
+                    CreatedBy = UserAccountModel.Username,
+                    IsActive = true
+                };
+                await _vendorPaymentBusinessLogic.AddVendorPayment(payment);
+
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully");
+            }
+
+            await HidePaymentForm(this);
         }
 
         public async Task HidePaymentForm(object model)
@@ -401,11 +493,7 @@ namespace VMA.MVVM.ViewModels.Add
             if (SelectedTabIndex < _numbersOfTab)
                 SelectedTabIndex++;
         }
-        private async Task PopulateValues()
-        {
-
-
-        }
+        
 
         /// <summary>
         /// Combobox load item with Vendor Details 
@@ -418,6 +506,6 @@ namespace VMA.MVVM.ViewModels.Add
 
 
         }
-        
+
     }
 }

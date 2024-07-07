@@ -120,12 +120,12 @@
                     <DataGridTextColumn Header="UTR Number" Binding="{Binding VendorPaymentUtrnumber}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="TDS Amount" Binding="{Binding VendorPaymentTdsamount}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="CGST" Binding="{Binding VendorPaymentCgst}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="SGST" Binding="{Binding VendorPaymentIsGst}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="SGST" Binding="{Binding VendorPaymentSgst}" IsReadOnly="True" Width="auto"/>
                     <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditVendorCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" >
+                                    <Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditPaymentCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" >
                                         <iconPacks:PackIconMaterial Kind="PencilOutline" Width="12" Height="12" VerticalAlignment="Center" />
                                     </Button>
                                     <!--<Button Style="{StaticResource gridRemoveButton}">

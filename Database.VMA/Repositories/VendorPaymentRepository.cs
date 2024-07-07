@@ -24,12 +24,8 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdateVendorPayment(VendorPayment VendorPaymentEntity)
         {
-            var result = await GetVendorPaymentById(VendorPaymentEntity.VendorPaymentId);
-            if (result != null)
-            {
-                _context.VendorPayments.Update(result);
-                await _context.SaveChangesAsync();
-            }
+            _context.VendorPayments.Update(VendorPaymentEntity);
+            await _context.SaveChangesAsync();
         }
         public async Task<List<VendorPaymentWithService>> GetAllPaymentDetailsWithServiceDetails()
         {
@@ -67,6 +63,7 @@ namespace Database.VMA.Repositories
                                           ServiceSantionAmount = details.ServiceSantionAmount,
                                           VendorServiceId = service.VendorServiceId,
                                           VendorServiceName = service.VendorServiceName
+
                                       };
             return await productsWithVendors.ToListAsync();
         }
