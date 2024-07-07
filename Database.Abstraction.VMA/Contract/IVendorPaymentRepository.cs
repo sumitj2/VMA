@@ -1,4 +1,5 @@
 ﻿using Database.VMA.Entities;
+using Database.VMA.Entities.CustomEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Database.Abstraction.VMA.Contract
         public Task<IEnumerable<VendorPayment>> GetAllVendorPayment();
         public Task<VendorPayment?> GetVendorPaymentById(int vendorDetailId);
         public Task RemoveVendorPayment(VendorPayment VendorPaymentEntity);
+        public Task<List<VendorPaymentWithService>> GetAllPaymentDetailsWithServiceDetails();
     }
 }

@@ -51,6 +51,9 @@ namespace VMA
             services.AddSingleton<IVendorDetailsBusinessLogic, VendorDetailsBusinessLogic>();
             services.AddSingleton<IVendorDetailsRepository, VendorDetailsRepository>();
 
+            services.AddSingleton<IVendorPaymentBusinessLogic, VendorPaymentBusinessLogic>();
+            services.AddSingleton<IVendorPaymentRepository, VendorPaymentRepository>();
+
             //Register services and view models
             services.AddSingleton(x => new LoginViewModel(x.GetRequiredService<IUserBusinessLogic>()));
             services.AddSingleton(x => new LoginView(x.GetRequiredService<LoginViewModel>()));
@@ -58,7 +61,8 @@ namespace VMA
             services.AddSingleton(x => new MainViewModel(x.GetRequiredService<IUserBusinessLogic>(),
                                                          x.GetRequiredService<IVendorBusinessLogic>(),
                                                          x.GetRequiredService<IVendorServiceBusinessLogic>(),
-                                                         x.GetRequiredService<IVendorDetailsBusinessLogic>()));
+                                                         x.GetRequiredService<IVendorDetailsBusinessLogic>(),
+                                                         x.GetRequiredService<IVendorPaymentBusinessLogic>()));
             services.AddSingleton(x => new MainView(x.GetRequiredService<MainViewModel>()));
         }
         protected override void OnStartup(StartupEventArgs e)

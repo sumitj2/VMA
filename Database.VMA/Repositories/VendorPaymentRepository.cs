@@ -1,5 +1,6 @@
 ﻿using Database.Abstraction.VMA.Contract;
 using Database.VMA.Entities;
+using Database.VMA.Entities.CustomEntities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Database.VMA.Repositories
 {
-    public class VendorPaymentRepository: IVendorPaymentRepository
+    public class VendorPaymentRepository : IVendorPaymentRepository
     {
         private readonly VendorManagementDbContext _context;
         public VendorPaymentRepository(VendorManagementDbContext context)
@@ -29,6 +30,45 @@ namespace Database.VMA.Repositories
                 _context.VendorPayments.Update(result);
                 await _context.SaveChangesAsync();
             }
+        }
+        public async Task<List<VendorPaymentWithService>> GetAllPaymentDetailsWithServiceDetails()
+        {
+            var productsWithVendors = from payment in _context.VendorPayments
+                                      join details in _context.VendorDetails
+                                      on payment.FkVendorDetailId equals details.VendorDetailId
+                                      join service in _context.VendorServices
+                                      on details.FkVendorServiceId equals service.VendorServiceId
+                                      select new VendorPaymentWithService
+                                      {
+                                          CreatedBy = payment.CreatedBy,
+                                          CreatedDate = payment.CreatedDate,
+                                          IsActive = payment.IsActive,
+                                          LastUpdateBy = payment.LastUpdateBy,
+                                          LastUpdatedDate = payment.LastUpdatedDate,
+                                          FkVendorDetailId = payment.FkVendorDetailId,
+                                          BankBranchName = payment.BankBranchName,
+                                          IsPaymentForBranch = payment.IsPaymentForBranch,
+                                          PaymentCode = payment.PaymentCode,
+                                          VendorPaymentAmount = payment.VendorPaymentAmount,
+                                          VendorPaymentCgst = payment.VendorPaymentCgst,
+                                          VendorPaymentDate = payment.VendorPaymentDate,
+                                          VendorPaymentId = payment.VendorPaymentId,
+                                          VendorPaymentIsGst = payment.VendorPaymentIsGst,
+                                          VendorPaymentIsTdsapplicable = payment.VendorPaymentIsTdsapplicable,
+                                          VendorPaymentNotesDetails = payment.VendorPaymentNotesDetails,
+                                          VendorPaymentRtgsAmount = payment.VendorPaymentRtgsAmount,
+                                          VendorPaymentRtgsDate = payment.VendorPaymentRtgsDate,
+                                          VendorPaymentSgst = payment.VendorPaymentSgst,
+                                          VendorPaymentTdsamount = payment.VendorPaymentTdsamount,
+                                          VendorPaymentTotalAmountPaid = payment.VendorPaymentTotalAmountPaid,
+                                          VendorPaymentUtrnumber = payment.VendorPaymentUtrnumber,
+                                          VendorPaymentYear = payment.VendorPaymentYear,
+                                          ServicePaymentType = details.ServicePaymentType,
+                                          ServiceSantionAmount = details.ServiceSantionAmount,
+                                          VendorServiceId = service.VendorServiceId,
+                                          VendorServiceName = service.VendorServiceName
+                                      };
+            return await productsWithVendors.ToListAsync();
         }
         public async Task<IEnumerable<VendorPayment>> GetAllVendorPayment()
         {

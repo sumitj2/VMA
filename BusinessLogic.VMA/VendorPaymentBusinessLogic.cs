@@ -69,7 +69,7 @@ namespace Database.VMA.Repositories
         }
         public async Task<IEnumerable<VendorPaymentModel>> GetAllVendorPayment()
         {
-            var repositoryResult = await _vendorPaymentRepository.GetAllVendorPayment();
+            var repositoryResult = await _vendorPaymentRepository.GetAllPaymentDetailsWithServiceDetails();
             IList<VendorPaymentModel> result = new List<VendorPaymentModel>();
             foreach (var data in repositoryResult)
             {
@@ -94,7 +94,12 @@ namespace Database.VMA.Repositories
                     VendorPaymentTdsamount = data.VendorPaymentTdsamount,
                     VendorPaymentTotalAmountPaid = data.VendorPaymentTotalAmountPaid,
                     VendorPaymentUtrnumber = data.VendorPaymentUtrnumber,
-                    VendorPaymentYear = data.VendorPaymentYear
+                    VendorPaymentYear = data.VendorPaymentYear,
+                    VendorServiceName = data.VendorServiceName,
+                    VendorServiceId = data.VendorServiceId,
+                    ServiceSantionAmount = data.ServiceSantionAmount,
+                    ServicePaymentType = data.ServicePaymentType    
+                    
                 });
             }
             return result;

@@ -5,6 +5,10 @@ namespace BusinessLogic.Abstraction.VMA.Models;
 
 public partial class VendorPaymentModel
 {
+    public int VendorServiceId { get; set; }
+    public string? VendorServiceName { get; set; }
+    public string? ServiceSantionAmount { get; set; }
+    public string? ServicePaymentType { get; set; }
     public int VendorPaymentId { get; set; }
 
     public string? VendorPaymentYear { get; set; }
@@ -44,4 +48,5 @@ public partial class VendorPaymentModel
     public DateTime? LastUpdatedDate { get; set; }
 
     public int? FkVendorDetailId { get; set; }
+    public string? PaymentCode { get; set; }
 }

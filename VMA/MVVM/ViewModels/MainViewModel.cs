@@ -22,6 +22,8 @@ namespace VMA.MVVM.ViewModels
         private IVendorBusinessLogic _vendorBusinessLogic;
         private IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
         private IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
+        private IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
+
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -87,11 +89,12 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowSettingViewCommand { get; }
 
 
-        public MainViewModel(IUserBusinessLogic userBusinessLogic,IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic)
+        public MainViewModel(IUserBusinessLogic userBusinessLogic,IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic,IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
+            _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
             // _currentUserAccount = new UserAccountModel();
 
             //Initialize command
@@ -133,7 +136,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowPaymentViewCommand(object obj)
         {
-            CurrentChildView = new PaymentsViewModel(this);
+            CurrentChildView = new PaymentsViewModel(this,_vendorPaymentBusinessLogic);
             Caption = "Payments";
             Icon = IconChar.Paypal;
         }

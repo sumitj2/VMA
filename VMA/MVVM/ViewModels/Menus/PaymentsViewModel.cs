@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Abstraction.VMA.Models;
+﻿using BusinessLogic.Abstraction.VMA.Contract;
+using BusinessLogic.Abstraction.VMA.Models;
 using Database.VMA.Entities;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private VendorPaymentModel _selectedVendor;
         private SearchModel _selectComboItem;
         private string _searchValue;
-
+        private IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
         public SearchModel SelectComboItem
         {
             get { return _selectComboItem; }
@@ -41,14 +42,14 @@ namespace VMA.MVVM.ViewModels.Menus
                 {
                     PropertyInfo? propertyInfo = typeof(VendorPaymentModel)?.GetProperty(SelectComboItem.NameSearch.Replace(" ", ""));
 
-                    Vendors = new ObservableCollection<VendorPaymentModel>(TempVendors.Where(x => propertyInfo?.GetValue(x, null)?
+                    VendorsPayment = new ObservableCollection<VendorPaymentModel>(TempVendorsPayment.Where(x => propertyInfo?.GetValue(x, null)?
                                                                                       .ToString()?
                                                                                       .ToLower(System.Globalization.CultureInfo.CurrentCulture)
                                                                                       .Contains(value, StringComparison.CurrentCultureIgnoreCase) ?? false));
                 }
                 else
                 {
-                    Vendors = TempVendors;
+                    VendorsPayment = TempVendorsPayment;
                 }
 
                 OnPropertyChanged(nameof(SearchValue));
@@ -56,27 +57,27 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         #region Observable collections
-        private ObservableCollection<VendorPaymentModel> _vendors;
-        private ObservableCollection<VendorPaymentModel> _tempvendors;
+        private ObservableCollection<VendorPaymentModel> _vendorsPayment;
+        private ObservableCollection<VendorPaymentModel> _tempvendorsPayment;
         private ObservableCollection<SearchModel> _comboItem;
 
-        public ObservableCollection<VendorPaymentModel> Vendors
+        public ObservableCollection<VendorPaymentModel> VendorsPayment
         {
-            get { return _vendors; }
+            get { return _vendorsPayment; }
             set
             {
-                _vendors = value;
-                OnPropertyChanged(nameof(Vendors));
+                _vendorsPayment = value;
+                OnPropertyChanged(nameof(VendorsPayment));
             }
         }
 
-        public ObservableCollection<VendorPaymentModel> TempVendors
+        public ObservableCollection<VendorPaymentModel> TempVendorsPayment
         {
-            get { return _tempvendors; }
+            get { return _tempvendorsPayment; }
             set
             {
-                _tempvendors = value;
-                OnPropertyChanged(nameof(TempVendors));
+                _tempvendorsPayment = value;
+                OnPropertyChanged(nameof(TempVendorsPayment));
             }
         }
 
@@ -96,17 +97,25 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand EditVendorCommand { get; }
         #endregion
-        public PaymentsViewModel(MainViewModel parentViewModel)
+        public PaymentsViewModel(MainViewModel parentViewModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
         {
+            ComboItem =
+            [
+               new(){NameSearch="Vendor Code need to chnage",SearchId=1},
+                new(){NameSearch="Vendor Name",SearchId=2},
+                new(){NameSearch="Vendor Services Name",SearchId=3}
+            ];
+            _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ShowPaymentForm);
             HideVendorFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
             EditVendorCommand = new ViewModelAsyncCommand<VendorPaymentModel>(EditPayment);
+            _=GetVendorPayments();
         }
 
         private async Task EditPayment(VendorPaymentModel model)
         {
-            throw new NotImplementedException();
+            
         }
 
         public async Task HidePaymentForm(object model)
@@ -114,9 +123,15 @@ namespace VMA.MVVM.ViewModels.Menus
             _parentViewModel.CurrentChildView = this;
         }
 
-        private async Task ShowPaymentForm(object  model)
+        private async Task ShowPaymentForm(object model)
         {
             _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this);
+        }
+
+        private async Task GetVendorPayments()
+        {
+            var vendors = await _vendorPaymentBusinessLogic.GetAllVendorPayment().ConfigureAwait(true);
+            VendorsPayment = TempVendorsPayment = new ObservableCollection<VendorPaymentModel>(vendors);
         }
     }
 }
