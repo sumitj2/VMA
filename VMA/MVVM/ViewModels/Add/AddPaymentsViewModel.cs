@@ -93,8 +93,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(CanGoNext));
             }
         }
-
-
         public Visibility GSTTabVisible
         {
             get { return IsGSTDetailsVisible ? Visibility.Visible : Visibility.Collapsed; }
@@ -146,6 +144,16 @@ namespace VMA.MVVM.ViewModels.Add
             set { _comboxPaymentMethod = value; }
         }
 
+        
+
+        private async void GeneratePaymentCode(VendorDetailModel? vendorDetailModel)
+        {
+            var paymentCode=await _vendorPaymentBusinessLogic.GeneratePaymentCode(vendorDetailModel);
+            PaymentCode=paymentCode;
+        }
+        #endregion
+
+        #region Properties
         private VendorDetailModel _selectedVendorServiceDetails;
         public VendorDetailModel? SelectedVendorServiceDetails
         {
@@ -160,10 +168,18 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        private async void GeneratePaymentCode(VendorDetailModel? vendorDetailModel)
+        private string _paymentCode;
+
+        public string PaymentCode
         {
-            var paymentCode=await _vendorPaymentBusinessLogic.GeneratePaymentCode(vendorDetailModel);
+            get { return _paymentCode; }
+            set {
+                _paymentCode = value;
+                OnPropertyChanged(nameof(PaymentCode));
+            }
         }
+
+
         #endregion
 
         public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel,IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)

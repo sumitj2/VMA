@@ -59,8 +59,8 @@ BorderThickness="0"
                                     <TextBlock Text="Enter Payment Code"
                                                 Style="{StaticResource FormTextBlock}"/>
 
-                                    <TextBox x:Name="txtPaymentCode"
-                                                Text="{Binding VendorService ,UpdateSourceTrigger=PropertyChanged}"
+                                    <TextBox x:Name="txtPaymentCode" IsEnabled="False"
+                                                Text="{Binding PaymentCode ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
                                                 Style="{StaticResource FormTextBox}"
                                                 TextWrapping="Wrap"
                                                 AcceptsReturn="True"/>
