@@ -20,6 +20,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private SearchModel _selectComboItem;
         private string _searchValue;
         private IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
+        private IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         public SearchModel SelectComboItem
         {
             get { return _selectComboItem; }
@@ -97,7 +98,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand EditVendorCommand { get; }
         #endregion
-        public PaymentsViewModel(MainViewModel parentViewModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
+        public PaymentsViewModel(MainViewModel parentViewModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic)
         {
             ComboItem =
             [
@@ -106,6 +107,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 new(){NameSearch="Vendor Services Name",SearchId=3}
             ];
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
+            _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ShowPaymentForm);
             HideVendorFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
@@ -125,7 +127,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task ShowPaymentForm(object model)
         {
-            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this);
+            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this, _vendorDetailsBusinessLogic, SelectedVendorService);
         }
 
         private async Task GetVendorPayments()

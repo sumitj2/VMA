@@ -23,7 +23,7 @@ namespace VMA.MVVM.ViewModels
         private IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
         private IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         private IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
-
+        private IVenderPaymentNotesBusinessLogic _venderPaymentNotesBusinessLogic;
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -89,12 +89,13 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowSettingViewCommand { get; }
 
 
-        public MainViewModel(IUserBusinessLogic userBusinessLogic,IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic,IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
+        public MainViewModel(IUserBusinessLogic userBusinessLogic,IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic,IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
+            _venderPaymentNotesBusinessLogic=venderPaymentNotesBusinessLogic;
             // _currentUserAccount = new UserAccountModel();
 
             //Initialize command
@@ -136,7 +137,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowPaymentViewCommand(object obj)
         {
-            CurrentChildView = new PaymentsViewModel(this,_vendorPaymentBusinessLogic);
+            CurrentChildView = new PaymentsViewModel(this,_vendorPaymentBusinessLogic,_vendorDetailsBusinessLogic);
             Caption = "Payments";
             Icon = IconChar.Paypal;
         }
