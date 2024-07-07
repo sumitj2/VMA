@@ -51,7 +51,7 @@ namespace Database.VMA.Repositories
         }
         public async Task<IEnumerable<VenderPaymentNoteModel>> GetAllPaymentNotes()
         {
-            var repositoryResult = await _venderPaymentNotesRepository.GetAllVendorsPaymentNotes();
+            var repositoryResult = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetails();
             List<VenderPaymentNoteModel> paymentNoteModel = [];
             foreach (var paymentNote in repositoryResult)
             {
@@ -66,7 +66,15 @@ namespace Database.VMA.Repositories
                     PaymentNoteDate= paymentNote.PaymentNoteDate,
                     FkInvoiceId = paymentNote.FkInvoiceId,
                     FkVendorPaymentId = paymentNote.FkVendorPaymentId,
-                    NoteId=paymentNote.NoteId 
+                    NoteId=paymentNote.NoteId ,
+                    VendorPaymentId= paymentNote.VendorPaymentId,
+                    InvoiceParticulars= paymentNote.InvoiceParticulars,
+                    InvoiceNumber= paymentNote.InvoiceNumber,
+                    InvoiceId=paymentNote.InvoiceId,
+                    InvoiceDate= paymentNote.InvoiceDate,
+                    PaymentCode= paymentNote.PaymentCode,
+                    VendorServiceId= paymentNote.VendorServiceId,
+                    VendorServiceName= paymentNote.VendorServiceName
                 });
             }
             return paymentNoteModel;

@@ -1,5 +1,6 @@
 ﻿using Database.Abstraction.VMA.Contract;
 using Database.VMA.Entities;
+using Database.VMA.Entities.CustomEntities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,40 @@ namespace Database.VMA.Repositories
                 _context.VenderPaymentNotes.Update(result);
                 await _context.SaveChangesAsync();
             }
+        }
+        public async Task<List<PaymentNotesWithInvoiceServiceDetails>> GetAllPaymentDetailsWithServiceDetails()
+        {
+            var paymentNoteWithAllDetails = from paymentNote in _context.VenderPaymentNotes
+                                      join payment in _context.VendorPayments
+                                      on paymentNote.FkVendorPaymentId equals payment.VendorPaymentId
+                                      join invoice in _context.InvoiceDetais
+                                      on paymentNote.FkInvoiceId equals invoice.InvoiceId
+                                      join details in _context.VendorDetails
+                                      on payment.FkVendorDetailId equals details.VendorDetailId
+                                      join service in _context.VendorServices
+                                      on details.FkVendorServiceId equals service.VendorServiceId
+                                      select new PaymentNotesWithInvoiceServiceDetails
+                                      {
+                                          CreatedBy = paymentNote.CreatedBy,
+                                          CreatedDate = paymentNote.CreatedDate,
+                                          IsActive = paymentNote.IsActive,
+                                          LastUpdateBy = paymentNote.LastUpdateBy,
+                                          LastUpdatedDate = paymentNote.LastUpdatedDate,                                         
+                                          PaymentCode = payment.PaymentCode,                                          
+                                          VendorServiceId = service.VendorServiceId,
+                                          VendorServiceName = service.VendorServiceName,
+                                          FkInvoiceId = paymentNote.FkInvoiceId,
+                                          FkVendorPaymentId = paymentNote.FkVendorPaymentId,
+                                          InvoiceDate = invoice.InvoiceDate,
+                                          InvoiceId = invoice.InvoiceId,
+                                          InvoiceNumber = invoice.InvoiceNumber,
+                                          InvoiceParticulars = invoice.InvoiceParticulars,
+                                          NoteId = paymentNote.NoteId,
+                                          PaymentNoteDate = paymentNote.PaymentNoteDate,
+                                          PaymentNoteNo = paymentNote.PaymentNoteNo,
+                                          VendorPaymentId = payment.VendorPaymentId
+                                      };
+            return await paymentNoteWithAllDetails.ToListAsync();
         }
         public async Task<IEnumerable<VenderPaymentNote>> GetAllVendorsPaymentNotes()
         {
