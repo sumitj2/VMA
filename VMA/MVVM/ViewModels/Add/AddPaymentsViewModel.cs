@@ -20,6 +20,7 @@ namespace VMA.MVVM.ViewModels.Add
         private int _numbersOfTab = 1;
         private string _saveButtonName;
         private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
+        private readonly IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
         private readonly PaymentsViewModel _paymentViewModel;
         private bool isGSTDetailsVisible;
         private VendorPaymentModel _vendorPaymentModel;
@@ -154,12 +155,18 @@ namespace VMA.MVVM.ViewModels.Add
 
                 _selectedVendorServiceDetails = value;
                 OnPropertyChanged(nameof(SelectedVendorServiceDetails));
+                GeneratePaymentCode(_selectedVendorServiceDetails);
 
             }
         }
+
+        private async void GeneratePaymentCode(VendorDetailModel? vendorDetailModel)
+        {
+            var paymentCode=await _vendorPaymentBusinessLogic.GeneratePaymentCode(vendorDetailModel);
+        }
         #endregion
 
-        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel)
+        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel,IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
         {
             _vendorPaymentModel = vendorPaymentModel;
             if (_vendorPaymentModel != null)
@@ -171,6 +178,7 @@ namespace VMA.MVVM.ViewModels.Add
                 SaveButtonName = "Submit";
             }
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
+            _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
             _paymentViewModel = vendorViewModel;
             HidePaymentFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
             CallAync();

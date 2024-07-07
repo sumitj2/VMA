@@ -13,6 +13,42 @@ namespace Database.VMA.Repositories
             _vendorPaymentRepository = vendorPaymentRepository;
         }
 
+        public async Task<string> GeneratePaymentCode(VendorDetailModel? vendorDetailModel)
+        {
+            string paymentcode = "";
+            int counter = 1;
+            var res = await GetAllVendorPayment().ConfigureAwait(false);
+            var checkPaymentForService = res.Where(x => x.VendorServiceId == vendorDetailModel?.FkVendorServiceId);
+            if (!checkPaymentForService.Any())
+            {
+                paymentcode= string.Join("_", vendorDetailModel?.VendorServiceName?.Replace(" ",""), vendorDetailModel?.ServicePaymentType, counter);
+
+            }
+            else
+            {
+                //Get all payment code 
+                var paymentCode = checkPaymentForService.OrderBy(x => x.CreatedDate)?.FirstOrDefault()?.PaymentCode;
+
+                //Split payment code by "_"
+                var result = paymentCode?.Split("_");
+
+                //Get last number of splited value to increase counter
+                //0-ServiceName
+                //1-PaymentType
+                //2-Counter
+
+                if (result != null)
+                {
+                    paymentcode = string.Join("_", result[0], result[1], Convert.ToInt32(result[2]) + 1);
+                }
+                //Need to write logic on payment method
+            }
+
+            return paymentcode;
+        }
+
+
+
         public async Task AddVendorPayment(VendorPaymentModel VendorPaymentModel)
         {
             VendorPayment vendorPayment = new()
@@ -98,8 +134,8 @@ namespace Database.VMA.Repositories
                     VendorServiceName = data.VendorServiceName,
                     VendorServiceId = data.VendorServiceId,
                     ServiceSantionAmount = data.ServiceSantionAmount,
-                    ServicePaymentType = data.ServicePaymentType    
-                    
+                    ServicePaymentType = data.ServicePaymentType
+
                 });
             }
             return result;

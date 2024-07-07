@@ -14,5 +14,7 @@ namespace BusinessLogic.Abstraction.VMA.Contract
         Task<IEnumerable<VendorPaymentModel>> GetAllVendorPayment();
         Task<VendorPaymentModel?> GetVendorPaymentById(int vendorDetailId);
         Task RemoveVendorPayment(VendorPaymentModel VendorPaymentEntity);
+
+        Task<string> GeneratePaymentCode(VendorDetailModel? vendorDetailModel);
     }
 }

@@ -127,7 +127,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task ShowPaymentForm(object model)
         {
-            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this, _vendorDetailsBusinessLogic, SelectedVendorService);
+            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this, _vendorDetailsBusinessLogic, SelectedVendorService,_vendorPaymentBusinessLogic);
         }
 
         private async Task GetVendorPayments()
