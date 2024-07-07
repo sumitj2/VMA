@@ -44,4 +44,10 @@ public partial class VendorPayment
     public DateTime? LastUpdatedDate { get; set; }
 
     public int? FkVendorDetailId { get; set; }
+
+    public string? PaymentCode { get; set; }
+
+    public bool? VendorPaymentIsTdsapplicable { get; set; }
+
+    public bool? IsPaymentForBranch { get; set; }
 }

@@ -16,9 +16,9 @@ public partial class VendorManagementDbContext : DbContext
 
     public virtual DbSet<GstcalculationMaster> GstcalculationMasters { get; set; }
 
-    public virtual DbSet<InvoiceDetails> InvoiceDetails { get; set; }
+    public virtual DbSet<InvoiceDetails> InvoiceDetais { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }   
+    public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<VenderPaymentNote> VenderPaymentNotes { get; set; }
 
@@ -34,7 +34,7 @@ public partial class VendorManagementDbContext : DbContext
     {
         modelBuilder.Entity<GstcalculationMaster>(entity =>
         {
-            entity.HasKey(e => e.SrNo).HasName("PK__GSTCalcu__C3A4D3AC16260118");
+            entity.HasKey(e => e.SrNo).HasName("PK__GSTCalcu__C3A4D3AC5B70F040");
 
             entity.ToTable("GSTCalculationMaster");
 
@@ -47,7 +47,7 @@ public partial class VendorManagementDbContext : DbContext
 
         modelBuilder.Entity<InvoiceDetails>(entity =>
         {
-            entity.HasKey(e => e.InvoiceId).HasName("PK__InvoiceD__D796AAD50EAC611D");
+            entity.HasKey(e => e.InvoiceId).HasName("PK__InvoiceD__D796AAD555BB4E41");
 
             entity.Property(e => e.InvoiceId).HasColumnName("InvoiceID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
@@ -57,14 +57,14 @@ public partial class VendorManagementDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User__3214EC07BCA98F85");
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC07873836C4");
 
             entity.ToTable("User");
         });
 
         modelBuilder.Entity<VenderPaymentNote>(entity =>
         {
-            entity.HasKey(e => e.NoteId).HasName("PK__VenderPa__EACE355FDA42FDBA");
+            entity.HasKey(e => e.NoteId).HasName("PK__VenderPa__EACE355F36DCCC81");
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.FkInvoiceId).HasColumnName("FK_InvoiceID");
@@ -75,19 +75,18 @@ public partial class VendorManagementDbContext : DbContext
 
         modelBuilder.Entity<Vendor>(entity =>
         {
-            entity.HasKey(e => e.VendorId).HasName("PK__Vendors__FC8618D326F0ADAD");
+            entity.HasKey(e => e.VendorId).HasName("PK__Vendors__FC8618D3821F1AA8");
 
             entity.Property(e => e.VendorId).HasColumnName("VendorID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.VendorGstnumber).HasColumnName("VendorGSTNumber");
             entity.Property(e => e.VendorIfsccode).HasColumnName("VendorIFSCCode");
-            entity.Property(e => e.VendorPan).HasColumnName("VendorPan");
         });
 
         modelBuilder.Entity<VendorDetail>(entity =>
         {
-            entity.HasKey(e => e.VendorDetailId).HasName("PK__VendorDe__6458FAB54E3DA7D0");
+            entity.HasKey(e => e.VendorDetailId).HasName("PK__VendorDe__6458FAB557042167");
 
             entity.Property(e => e.VendorDetailId).HasColumnName("VendorDetailID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
@@ -97,7 +96,7 @@ public partial class VendorManagementDbContext : DbContext
 
         modelBuilder.Entity<VendorPayment>(entity =>
         {
-            entity.HasKey(e => e.VendorPaymentId).HasName("PK__VendorPa__68C7C3D28732D498");
+            entity.HasKey(e => e.VendorPaymentId).HasName("PK__VendorPa__68C7C3D27687B87B");
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.FkVendorDetailId).HasColumnName("FK_VendorDetailID");
@@ -108,6 +107,7 @@ public partial class VendorManagementDbContext : DbContext
                 .HasColumnName("VendorPaymentCGST");
             entity.Property(e => e.VendorPaymentDate).HasColumnType("datetime");
             entity.Property(e => e.VendorPaymentIsGst).HasColumnName("VendorPaymentIsGST");
+            entity.Property(e => e.VendorPaymentIsTdsapplicable).HasColumnName("VendorPaymentIsTDSApplicable");
             entity.Property(e => e.VendorPaymentRtgsAmount).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.VendorPaymentSgst)
                 .HasColumnType("decimal(18, 0)")
@@ -121,7 +121,7 @@ public partial class VendorManagementDbContext : DbContext
 
         modelBuilder.Entity<VendorService>(entity =>
         {
-            entity.HasKey(e => e.VendorServiceId).HasName("PK__VendorSe__5116B960E050442B");
+            entity.HasKey(e => e.VendorServiceId).HasName("PK__VendorSe__5116B9608387AB63");
 
             entity.Property(e => e.VendorServiceId).HasColumnName("VendorServiceID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
