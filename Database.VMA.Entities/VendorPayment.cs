@@ -11,7 +11,7 @@ public partial class VendorPayment
 
     public DateTime? VendorPaymentDate { get; set; }
 
-    public DateTime? VendorPaymentAmount { get; set; }
+    public string? VendorPaymentAmount { get; set; }
 
     public bool? VendorPaymentIsGst { get; set; }
 

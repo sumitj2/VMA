@@ -15,7 +15,7 @@ public partial class VendorPaymentModel
 
     public DateTime? VendorPaymentDate { get; set; }
 
-    public DateTime? VendorPaymentAmount { get; set; }
+    public string? VendorPaymentAmount { get; set; }
 
     public bool? VendorPaymentIsGst { get; set; }
 
@@ -36,7 +36,9 @@ public partial class VendorPaymentModel
     public string? VendorPaymentNotesDetails { get; set; }
 
     public string? BankBranchName { get; set; }
+    public bool? VendorPaymentIsTdsapplicable { get; set; }
 
+    public bool? IsPaymentForBranch { get; set; }
     public DateTime? CreatedDate { get; set; }
 
     public string? CreatedBy { get; set; }

@@ -33,6 +33,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     isGSTDetailsVisible = value;
                     OnPropertyChanged(nameof(GSTTabVisible));
+                    VendorPaymentIsGst=true;
                 }
             }
         }
@@ -155,6 +156,24 @@ namespace VMA.MVVM.ViewModels.Add
 
         #region Properties
         private VendorDetailModel _selectedVendorServiceDetails;
+        private string _paymentCode;
+
+        private string? _vendorPaymentYear;
+        private DateTime? _vendorPaymentDate;
+        private string? _VendorPaymentAmount;
+        private bool? _vendorPaymentIsGst;
+        private decimal? _vendorPaymentCgst;
+        private decimal? _vendorPaymentSgst;
+        private int? _vendorPaymentTotalAmountPaid;
+        private int? _vendorPaymentUtrnumber;
+        private decimal? _vendorPaymentRtgsAmount;
+        private DateOnly? _vendorPaymentRtgsDate;
+        private bool? _vendorPaymentIsTdsapplicable;
+        private bool? _isPaymentForBranch;
+        private decimal? _vendorPaymentTdsamount;
+        private string? _vendorPaymentNotesDetails;
+        private string? _bankBranchName;
+
         public VendorDetailModel? SelectedVendorServiceDetails
         {
             get { return _selectedVendorServiceDetails; }
@@ -168,7 +187,6 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        private string _paymentCode;
 
         public string PaymentCode
         {
@@ -176,6 +194,153 @@ namespace VMA.MVVM.ViewModels.Add
             set {
                 _paymentCode = value;
                 OnPropertyChanged(nameof(PaymentCode));
+            }
+        }
+        public string? VendorPaymentYear
+        {
+            get { return _vendorPaymentYear; }
+            set
+            {
+                _vendorPaymentYear = value;
+                OnPropertyChanged(nameof(VendorPaymentYear));
+            }
+        }
+
+        public DateTime? VendorPaymentDate
+        {
+            get { return _vendorPaymentDate; }
+            set
+            {
+                _vendorPaymentDate = value;
+                OnPropertyChanged(nameof(VendorPaymentDate));
+            }
+        }
+
+        public string? VendorPaymentAmount
+        {
+            get { return _VendorPaymentAmount; }
+            set
+            {
+                _VendorPaymentAmount = value;
+                OnPropertyChanged(nameof(VendorPaymentAmount));
+            }
+        }
+
+        public bool? VendorPaymentIsGst
+        {
+            get { return _vendorPaymentIsGst; }
+            set
+            {
+                _vendorPaymentIsGst = value;
+                OnPropertyChanged(nameof(VendorPaymentIsGst));
+            }
+        }
+
+        public decimal? VendorPaymentCgst
+        {
+            get { return _vendorPaymentCgst; }
+            set
+            {
+                _vendorPaymentCgst = value;
+                OnPropertyChanged(nameof(VendorPaymentCgst));
+            }
+        }
+
+        public decimal? VendorPaymentSgst
+        {
+            get { return _vendorPaymentSgst; }
+            set
+            {
+                _vendorPaymentSgst = value;
+                OnPropertyChanged(nameof(VendorPaymentSgst));
+            }
+        }
+
+        public int? VendorPaymentTotalAmountPaid
+        {
+            get { return _vendorPaymentTotalAmountPaid; }
+            set
+            {
+                _vendorPaymentTotalAmountPaid = value;
+                OnPropertyChanged(nameof(VendorPaymentTotalAmountPaid));
+            }
+        }
+
+        public int? VendorPaymentUtrnumber
+        {
+            get { return _vendorPaymentUtrnumber; }
+            set
+            {
+                _vendorPaymentUtrnumber = value;
+                OnPropertyChanged(nameof(VendorPaymentUtrnumber));
+            }
+        }
+
+        public decimal? VendorPaymentRtgsAmount
+        {
+            get { return _vendorPaymentRtgsAmount; }
+            set
+            {
+                _vendorPaymentRtgsAmount = value;
+                OnPropertyChanged(nameof(VendorPaymentRtgsAmount));
+            }
+        }
+
+        public DateOnly? VendorPaymentRtgsDate
+        {
+            get { return _vendorPaymentRtgsDate; }
+            set
+            {
+                _vendorPaymentRtgsDate = value;
+                OnPropertyChanged(nameof(VendorPaymentRtgsDate));
+            }
+        }
+        public bool? VendorPaymentIsTdsapplicable
+        {
+            get { return _vendorPaymentIsTdsapplicable; }
+            set
+            {
+                _vendorPaymentIsTdsapplicable = value;
+                OnPropertyChanged(nameof(VendorPaymentIsTdsapplicable));
+            }
+        }
+
+        public bool? IsPaymentForBranch
+        {
+            get { return _isPaymentForBranch; }
+            set
+            {
+                _isPaymentForBranch = value;
+                OnPropertyChanged(nameof(IsPaymentForBranch));
+            }
+        }
+        public decimal? VendorPaymentTdsamount
+        {
+            get { return _vendorPaymentTdsamount; }
+            set
+            {
+                _vendorPaymentTdsamount = value;
+                OnPropertyChanged(nameof(VendorPaymentTdsamount));
+            }
+        }
+
+        public string? VendorPaymentNotesDetails
+        {
+            get { return _vendorPaymentNotesDetails; }
+            set
+            {
+                _vendorPaymentNotesDetails = value;
+                OnPropertyChanged(nameof(VendorPaymentNotesDetails));
+            }
+        }
+
+        public string? BankBranchName
+        {
+            get { return _bankBranchName; }
+            set
+            {
+                _bankBranchName = value;
+                OnPropertyChanged(nameof(BankBranchName));
             }
         }
 
@@ -197,7 +362,18 @@ namespace VMA.MVVM.ViewModels.Add
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
             _paymentViewModel = vendorViewModel;
             HidePaymentFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
+            SubmitCommand = new ViewModelAsyncCommand<VendorPaymentModel>(SubmitPaymentDetails, ValidatePAymentDetails);
             CallAync();
+        }
+
+        private bool ValidatePAymentDetails()
+        {
+            return true;
+        }
+
+        private async Task SubmitPaymentDetails(VendorPaymentModel model)
+        {
+          
         }
 
         public async Task HidePaymentForm(object model)

@@ -100,8 +100,7 @@ public partial class VendorManagementDbContext : DbContext
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.FkVendorDetailId).HasColumnName("FK_VendorDetailID");
-            entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
-            entity.Property(e => e.VendorPaymentAmount).HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");            
             entity.Property(e => e.VendorPaymentCgst)
                 .HasColumnType("decimal(18, 0)")
                 .HasColumnName("VendorPaymentCGST");
