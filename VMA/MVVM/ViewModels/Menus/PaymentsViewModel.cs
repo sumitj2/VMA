@@ -95,7 +95,7 @@ namespace VMA.MVVM.ViewModels.Menus
         public ICommand AddShowVendorFormCommand { get; }
 
         public ICommand UpdateVendorFormCommand { get; }
-        public ICommand HideVendorFormCommand { get; }
+        public ICommand HidePaymentFormCommand { get; }
 
         public ICommand EditPaymentCommand { get; }
         #endregion
@@ -111,7 +111,7 @@ namespace VMA.MVVM.ViewModels.Menus
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ShowPaymentForm);
-            HideVendorFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
+            HidePaymentFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
             EditPaymentCommand = new ViewModelAsyncCommand<VendorPaymentModel>(EditPayment);
             _=GetVendorPayments();
         }
