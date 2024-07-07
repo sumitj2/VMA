@@ -146,7 +146,7 @@ namespace VMA.MVVM.ViewModels.Add
         }
 
         private SearchModel _selectPaymentType;
-        public SearchModel SelectPaymentType
+        public SearchModel? SelectPaymentType
         {
             get { return _selectPaymentType; }
             set { _selectPaymentType = value; }
@@ -177,7 +177,7 @@ namespace VMA.MVVM.ViewModels.Add
         }
 
         private VendorServiceModel _selectedVendorDetailService;
-        public VendorServiceModel SelectedVendorDetailService
+        public VendorServiceModel? SelectedVendorDetailService
         {
             get { return _selectedVendorDetailService; }
             set
@@ -254,7 +254,20 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task ClearFormFields(VendorDetailModel model)
         {
+            await Task.Run(() =>
+            {
+                ServiceSantionedBy = "";
+                ServiceStartDate = DateOnly.MinValue;
+                ServiceEndDate = DateOnly.MinValue;
+                ServiceSantionAmount = "";
+                RatePerUnit = "";
+                QuantityOfUnit = 0;
+                ServiceType = "";
+                VendorDetailCategory = "";
+                SelectedVendorDetailService = null;
+                SelectPaymentType = null;
 
+            });
         }
 
         private bool ValidateVendorServiceDetails()
@@ -276,13 +289,13 @@ namespace VMA.MVVM.ViewModels.Add
                     ServiceType = ServiceType,
                     VendorDetailCategory = VendorDetailCategory,
                     ServiceStartDate = ServiceStartDate,
-                    ServicePaymentType = SelectPaymentType.NameSearch,
-                    VendorServiceName = SelectedVendorDetailService.VendorServiceName,
-                    FkVendorServiceId = SelectedVendorDetailService.FkVendorId,
-                    VendorServiceId = SelectedVendorDetailService.VendorServiceId,
+                    ServicePaymentType = SelectPaymentType?.NameSearch,
+                    VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
+                    FkVendorServiceId = SelectedVendorDetailService?.FkVendorId,
+                    VendorServiceId = SelectedVendorDetailService != null ? SelectedVendorDetailService.VendorServiceId : 0,
                     ServiceSantionedBy = ServiceSantionedBy,
                     LastUpdateBy = UserAccountModel.Username
-                   
+
                 };
                 await _vendorDetailsBusinessLogic.EditUpdateVendorDetails(vendorModel);
 
@@ -301,10 +314,10 @@ namespace VMA.MVVM.ViewModels.Add
                     ServiceType = ServiceType,
                     VendorDetailCategory = VendorDetailCategory,
                     ServiceStartDate = ServiceStartDate,
-                    ServicePaymentType = SelectPaymentType.NameSearch,
-                    VendorServiceName = SelectedVendorDetailService.VendorServiceName,
-                    FkVendorServiceId = SelectedVendorDetailService.FkVendorId,
-                    VendorServiceId = SelectedVendorDetailService.VendorServiceId,
+                    ServicePaymentType = SelectPaymentType?.NameSearch,
+                    VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
+                    FkVendorServiceId = SelectedVendorDetailService?.FkVendorId,
+                    VendorServiceId = SelectedVendorDetailService != null ? SelectedVendorDetailService.VendorServiceId : 0,
                     ServiceSantionedBy = ServiceSantionedBy
 
                 };
@@ -341,25 +354,26 @@ namespace VMA.MVVM.ViewModels.Add
             if (_vendorDetailViewModel != null)
             {
                 ServiceSantionedBy = _vendorDetailViewModel.ServiceSantionedBy ?? "";
-                ServiceStartDate = (DateOnly)_vendorDetailViewModel.ServiceStartDate;
-                ServiceEndDate = (DateOnly)_vendorDetailViewModel.ServiceEndDate;
+                ServiceStartDate = _vendorDetailViewModel.ServiceStartDate!=null ? (DateOnly)_vendorDetailViewModel.ServiceStartDate : DateOnly.MinValue;
+                ServiceEndDate = _vendorDetailViewModel.ServiceEndDate!=null ? (DateOnly)_vendorDetailViewModel.ServiceEndDate : DateOnly.MinValue;
                 ServiceSantionAmount = _vendorDetailViewModel.ServiceSantionAmount ?? "";
                 RatePerUnit = _vendorDetailViewModel.RatePerUnit ?? "";
                 QuantityOfUnit = _vendorDetailViewModel.QuantityOfUnit ?? 0;
                 ServiceType = _vendorDetailViewModel.ServiceType ?? "";
                 VendorDetailCategory = _vendorDetailViewModel.VendorDetailCategory ?? "";
                 var paymentMethod = ComboxPaymentMethods.ToList().Find(x => x.NameSearch == _vendorDetailViewModel.ServicePaymentType);
-               
+
                 //to-do Edit button payment method is not updated need to check
                 if (paymentMethod != null)
-                    SelectPaymentType = ComboxPaymentMethods[1];//ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentMethod)];
-
-
-                var vendorID = VendorDetailServices.ToList().Find(x => x.VendorServiceId == _vendorDetailViewModel.VendorServiceId);
-
-                if (vendorID != null)
                 {
-                    SelectedVendorDetailService = VendorDetailServices[VendorDetailServices.IndexOf(vendorID)];
+                    SelectPaymentType = ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentMethod)];
+                }
+
+                var vendorService = VendorDetailServices.ToList().Find(x => x.VendorServiceId == _vendorDetailViewModel.VendorServiceId);
+
+                if (vendorService != null)
+                {
+                    SelectedVendorDetailService = VendorDetailServices[VendorDetailServices.IndexOf(vendorService)];
 
                 }
             }
