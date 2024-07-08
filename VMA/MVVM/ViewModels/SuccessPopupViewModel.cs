@@ -79,13 +79,13 @@ namespace VMA.MVVM.ViewModels
             TypeOfNotification = notificationType;
             Header = notificationType.ToString();
 
-            Window window = (Window)Activator.CreateInstance(typeof(SuccessPopup));
-            window.Show();
+            Window window = (Window)Activator.CreateInstance(typeof(SuccessPopup))!;
+            window?.Show();
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(2); // Set the interval to 2 seconds
+            timer.Interval = TimeSpan.FromSeconds(5); // Set the interval to 2 seconds
             timer.Tick += (s, args) =>
             {
-                window.Close(); // Close the popup
+                window?.Close(); // Close the popup
                 timer.Stop(); // Stop the timer
             };
 

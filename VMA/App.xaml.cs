@@ -57,6 +57,11 @@ namespace VMA
             services.AddSingleton<IVenderPaymentNotesBusinessLogic, VenderPaymentNotesBusinesslogic>();
             services.AddSingleton<IVenderPaymentNotesRepository, VenderPaymentNotesRepository>();
 
+            services.AddSingleton<IInvoiceDetailsBusinessLogic, InvoiceDetailsBusinessLogic>();
+            services.AddSingleton<IInvoiceDetailsRepository, InvoiceDetailsRepository>();
+
+            //services.AddSingleton(x =>new VenderPaymentNotesBusinesslogic(x.GetRequiredService<IVenderPaymentNotesRepository>(),
+            //                                                              x.GetRequiredService<IInvoiceDetailsBusinessLogic>()));
             //Register services and view models
             services.AddSingleton(x => new LoginViewModel(x.GetRequiredService<IUserBusinessLogic>()));
             services.AddSingleton(x => new LoginView(x.GetRequiredService<LoginViewModel>()));
@@ -76,7 +81,7 @@ namespace VMA
             // Configure Serilog
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.File("logs\\log-.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.File("d:\\llogs", rollingInterval: RollingInterval.Minute)
                 .CreateLogger();
 
             // Handle UI thread exceptions

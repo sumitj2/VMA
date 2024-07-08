@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
+using Database.Abstraction.VMA.Contract;
 using Database.VMA.Entities;
 using Database.VMA.Repositories;
 using System;
@@ -9,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
 
 namespace VMA.MVVM.ViewModels.Add
@@ -20,6 +22,7 @@ namespace VMA.MVVM.ViewModels.Add
         private string _saveButtonName;
         private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         private readonly IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
+        private readonly IVenderPaymentNotesBusinessLogic _venderPaymentNotesBusinessLogic;
         private readonly PaymentNotesViewModel _paymentNotesViewModel;
 
         public string SaveButtonName
@@ -105,7 +108,6 @@ namespace VMA.MVVM.ViewModels.Add
         private DateTime? _InvoiceDate;
         private string? _InvoiceParticulars;
 
-
         public string? PaymentNoteNo
         {
             get
@@ -118,7 +120,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(PaymentNoteNo));
             }
         }
-
         public DateTime? PaymentNoteDate
         {
             get
@@ -143,7 +144,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(InvoiceNumber));
             }
         }
-
         public DateTime? InvoiceDate
         {
             get
@@ -156,7 +156,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(InvoiceDate));
             }
         }
-
         public string? InvoiceParticulars
         {
             get
@@ -169,7 +168,6 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(InvoiceParticulars));
             }
         }
-
 
         private VendorDetailModel? _selectedVendorServiceDetails;
         public VendorDetailModel? SelectedVendorServiceDetails
@@ -185,8 +183,8 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        private VendorDetailModel? _SelectedVendorPaymentCode;
-        public VendorDetailModel? SelectedVendorPaymentCode
+        private VendorPaymentModel? _SelectedVendorPaymentCode;
+        public VendorPaymentModel? SelectedVendorPaymentCode
         {
             get { return _SelectedVendorPaymentCode; }
             set
@@ -199,14 +197,14 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-
         #endregion
+
         private void AddPaymentItemInCombo(VendorDetailModel selectedVendorServiceDetails)
         {
             _=LoadVendorServicePayment(selectedVendorServiceDetails.VendorDetailId);
         }
 
-        public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
+        public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
         {
             _paymentNotesViewModel = paymentNotesViewModel;
             
@@ -220,9 +218,56 @@ namespace VMA.MVVM.ViewModels.Add
             }
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _vendorPaymentBusinessLogic= vendorPaymentBusinessLogic;
-            HidePaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(HidePaymentNoteForm);
-            _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
+            _venderPaymentNotesBusinessLogic= venderPaymentNotesBusinessLogic;
+            HidePaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(HidePaymentNoteForm);            
+            SubmitCommand =new  ViewModelAsyncCommand<VenderPaymentNoteModel>(SubmitPaymentNote,ValidatePaymentNote);
             CallAync();
+        }
+
+        private bool ValidatePaymentNote()
+        {
+            return true; 
+        }
+
+        private async Task SubmitPaymentNote(VenderPaymentNoteModel model)
+        {
+            if (SaveButtonName == "Update")
+            {
+                VenderPaymentNoteModel payment = new()
+                {
+                   
+                    //LastUpdateBy = UserAccountModel.Username,
+                    //VendorPaymentId = _vendorPaymentModel.VendorPaymentId,
+                    //IsActive = true,
+                    //NoteId = 
+                };
+                await _venderPaymentNotesBusinessLogic.EditUpdatePaymentNotes(payment);
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully");
+            }
+            else
+            {
+                VenderPaymentNoteModel paymentNote = new()
+                {
+                    PaymentNoteNo = PaymentNoteNo,
+                    PaymentNoteDate=PaymentNoteDate,
+                    InvoiceNumber = InvoiceNumber,
+                    InvoiceDate = InvoiceDate,
+                    InvoiceParticulars = InvoiceParticulars,
+                    PaymentCode = SelectedVendorPaymentCode?.PaymentCode,                   
+                    VendorServiceName=SelectedVendorServiceDetails?.VendorServiceName,
+                    FkVendorPaymentId= SelectedVendorPaymentCode?.VendorPaymentId,                    
+                    CreatedBy = UserAccountModel.Username,
+                    CreatedDate = DateTime.UtcNow,
+                    IsActive = true
+                };
+                await _venderPaymentNotesBusinessLogic.AddPaymentNotes(paymentNote);
+
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully");
+            }
+
+            await HidePaymentNoteForm(this);
         }
 
         private async void CallAync()
@@ -246,7 +291,7 @@ namespace VMA.MVVM.ViewModels.Add
             if (SelectedTabIndex < _numbersOfTab)
                 SelectedTabIndex++;
         }
-        private async Task HidePaymentNoteForm(VenderPaymentNoteModel model)
+        private async Task HidePaymentNoteForm(object model)
         {
             await _paymentNotesViewModel.HidePaymentNotesForm(this);
         }

@@ -8,13 +8,26 @@ namespace Database.VMA.Repositories
     public class VenderPaymentNotesBusinesslogic : IVenderPaymentNotesBusinessLogic
     {
         private IVenderPaymentNotesRepository _venderPaymentNotesRepository;
-        public VenderPaymentNotesBusinesslogic(IVenderPaymentNotesRepository venderPaymentNotesRepository)
+        private IInvoiceDetailsBusinessLogic _invoiceDetailsBusinessLogic;
+        public VenderPaymentNotesBusinesslogic(IVenderPaymentNotesRepository venderPaymentNotesRepository,IInvoiceDetailsBusinessLogic invoiceDetailsBusinessLogic)
         {
             _venderPaymentNotesRepository = venderPaymentNotesRepository;
+            _invoiceDetailsBusinessLogic = invoiceDetailsBusinessLogic;
         }
 
         public async Task AddPaymentNotes(VenderPaymentNoteModel paymentNotesModel)
         {
+            InvoiceDetailsModel invoiceDetailsModel = new()
+            {
+                InvoiceDate = paymentNotesModel.InvoiceDate,
+                InvoiceNumber = paymentNotesModel.InvoiceNumber,
+                InvoiceParticulars=paymentNotesModel.InvoiceParticulars,
+                CreatedBy = paymentNotesModel.CreatedBy,
+                CreatedDate = paymentNotesModel.CreatedDate,
+                IsActive = paymentNotesModel.IsActive,
+                
+            };
+            int invoiceID =await _invoiceDetailsBusinessLogic.AddInvoice(invoiceDetailsModel);
             VenderPaymentNote vendorEntity = new()
             {
                 CreatedBy = paymentNotesModel.CreatedBy,
@@ -22,11 +35,12 @@ namespace Database.VMA.Repositories
                 IsActive = paymentNotesModel.IsActive,
                 LastUpdateBy = paymentNotesModel.LastUpdateBy,
                 LastUpdatedDate = DateTime.Now,
-                FkInvoiceId = paymentNotesModel.FkInvoiceId,
+                FkInvoiceId = invoiceID,
                 FkVendorPaymentId = paymentNotesModel.FkVendorPaymentId,
                 NoteId = paymentNotesModel.NoteId,
                 PaymentNoteDate = paymentNotesModel.PaymentNoteDate,
-                PaymentNoteNo= paymentNotesModel.PaymentNoteNo                
+                PaymentNoteNo = paymentNotesModel.PaymentNoteNo,
+               
             };
             await _venderPaymentNotesRepository.AddVendorPaymentNotes(vendorEntity);
         }

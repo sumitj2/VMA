@@ -120,7 +120,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task ShowPaymentNotesForm(VenderPaymentNoteModel model)
         {
-            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this,_vendorDetailsBusinessLogic,_vendorPaymentBusinessLogic);
+            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this,_vendorDetailsBusinessLogic,_vendorPaymentBusinessLogic,_venderPaymentNotesBusinessLogic);
 
         }
 

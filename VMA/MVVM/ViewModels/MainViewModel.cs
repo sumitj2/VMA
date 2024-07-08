@@ -24,6 +24,7 @@ namespace VMA.MVVM.ViewModels
         private IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         private IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
         private IVenderPaymentNotesBusinessLogic _venderPaymentNotesBusinessLogic;
+        private IInvoiceDetailsBusinessLogic _invoiceDetailsBusinessLogic;
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -89,13 +90,13 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowSettingViewCommand { get; }
 
 
-        public MainViewModel(IUserBusinessLogic userBusinessLogic,IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic,IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
+        public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
-            _venderPaymentNotesBusinessLogic=venderPaymentNotesBusinessLogic;
+            _venderPaymentNotesBusinessLogic = venderPaymentNotesBusinessLogic;
             // _currentUserAccount = new UserAccountModel();
 
             //Initialize command
@@ -111,7 +112,7 @@ namespace VMA.MVVM.ViewModels
             //Default view
             ExecuteShowHomeViewCommand(null);
             _ = LoadCurrentUserData();
-            _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
+            _vendorServiceBusinessLogic = vendorServiceBusinessLogic;            
         }
 
         private void ExecuteShowSettingViewCommand(object obj)
@@ -130,35 +131,35 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecutePaymentNoteViewCommand(object obj)
         {
-            CurrentChildView = new PaymentNotesViewModel(this,_venderPaymentNotesBusinessLogic,_vendorDetailsBusinessLogic,_vendorPaymentBusinessLogic);
+            CurrentChildView = new PaymentNotesViewModel(this, _venderPaymentNotesBusinessLogic, _vendorDetailsBusinessLogic, _vendorPaymentBusinessLogic);
             Caption = "Payment Notes";
             Icon = IconChar.NoteSticky;
         }
 
         private void ExecuteShowPaymentViewCommand(object obj)
         {
-            CurrentChildView = new PaymentsViewModel(this,_vendorPaymentBusinessLogic,_vendorDetailsBusinessLogic);
+            CurrentChildView = new PaymentsViewModel(this, _vendorPaymentBusinessLogic, _vendorDetailsBusinessLogic);
             Caption = "Payments";
             Icon = IconChar.Paypal;
         }
 
         private void ExecuteShowDetailedInfoViewCommand(object obj)
         {
-            CurrentChildView = new DetailedInfoViewModel(this, _vendorDetailsBusinessLogic,_vendorServiceBusinessLogic);
+            CurrentChildView = new DetailedInfoViewModel(this, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic);
             Caption = "Detailed Info";
             Icon = IconChar.InfoCircle;
         }
 
         private void ExecuteShowProductServicesViewCommand(object obj)
         {
-            CurrentChildView = new ProductServicesViewModel(_vendorServiceBusinessLogic,_vendorBusinessLogic,this);
+            CurrentChildView = new ProductServicesViewModel(_vendorServiceBusinessLogic, _vendorBusinessLogic, this);
             Caption = "Products Services";
             Icon = IconChar.ProductHunt;
         }
 
         private void ExecuteShowVendorViewCommand(object obj)
         {
-            CurrentChildView = new VendorViewModel(_vendorBusinessLogic,this);
+            CurrentChildView = new VendorViewModel(_vendorBusinessLogic, this);
             Caption = "Vendors";
             Icon = IconChar.UserGroup;
         }

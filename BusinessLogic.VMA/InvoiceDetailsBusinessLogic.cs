@@ -17,7 +17,7 @@ namespace Database.VMA.Repositories
         {
             _invoiceDetailsRepository = invoiceDetailsRepository;
         }
-        public async Task AddInvoice(InvoiceDetailsModel invoiceDetailModel)
+        public async Task<int> AddInvoice(InvoiceDetailsModel invoiceDetailModel)
         {
             InvoiceDetails invoiceDetailsEntity = new InvoiceDetails()
             {
@@ -31,7 +31,7 @@ namespace Database.VMA.Repositories
                 LastUpdateBy = invoiceDetailModel.LastUpdateBy,
                 LastUpdatedDate = invoiceDetailModel.LastUpdatedDate
             };
-            await _invoiceDetailsRepository.AddInvoice(invoiceDetailsEntity);
+            return await _invoiceDetailsRepository.AddInvoice(invoiceDetailsEntity);
         }
         public async Task EditUpdateInvoice(InvoiceDetailsModel invoiceDetailModel)
         {

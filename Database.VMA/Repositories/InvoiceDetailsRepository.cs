@@ -16,10 +16,11 @@ namespace Database.VMA.Repositories
         {
                 _context = context; 
         }
-        public async Task AddInvoice(InvoiceDetails InvoiceDetailsEntity)
+        public async Task<int> AddInvoice(InvoiceDetails InvoiceDetailsEntity)
         {
             await _context.AddAsync(InvoiceDetailsEntity).ConfigureAwait(true);
             await _context.SaveChangesAsync();
+            return InvoiceDetailsEntity.InvoiceId;
         }
         public async Task EditUpdateInvoice(InvoiceDetails InvoiceDetailsEntity)
         {
