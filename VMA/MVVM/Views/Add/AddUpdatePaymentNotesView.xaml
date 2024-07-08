@@ -59,7 +59,7 @@
                                                Margin="20,20,230,0"/>
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
                                               ItemsSource="{Binding VendorsPayment}"   
-                                              SelectedItem="{Binding Path=SelectComboItem}"  
+                                              SelectedItem="{Binding SelectedVendorPaymentCode}"  
                                               DisplayMemberPath="PaymentCode"  
                                               Name="PAyment" 
                                               Grid.Row="1" 
@@ -80,13 +80,14 @@
                                         Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtPaymentNoteNo"
-                                     Text="{Binding VendorName ,UpdateSourceTrigger=PropertyChanged}"
+                                     Text="{Binding PaymentNoteNo ,UpdateSourceTrigger=PropertyChanged}"
                                       Style="{StaticResource FormTextBox}"/>
 
                                     <TextBlock Text="Payment Note Date"
                                        Style="{StaticResource FormTextBlock}"/>
 
-                                    <DatePicker Name="paymentNoteDate"></DatePicker>
+                                    <DatePicker Name="paymentNoteDate"
+                                                Text="{Binding  PaymentNoteDate ,UpdateSourceTrigger=LostFocus,Mode=TwoWay}"/>                                    
 
                                 </StackPanel>
 
@@ -114,23 +115,23 @@
                                        Style="{StaticResource FormTextBlock}"
                                        Margin="20,20,0,0"/>
 
-                                    <TextBox x:Name="txtVendorPan"
-                                       Text="{Binding VendorPAN,UpdateSourceTrigger=PropertyChanged}"                                         
+                                    <TextBox x:Name="txtInvoiceNumber"
+                                       Text="{Binding InvoiceNumber,UpdateSourceTrigger=PropertyChanged}"                                         
                                        Style="{StaticResource FormTextBox}"/>
 
                                     <TextBlock Text="Invoice Date"
                                        Style="{StaticResource FormTextBlock}"
                                        Margin="20,20,0,0"/>
 
-                                    <TextBox x:Name="txtVendorBankName"
-                                       Text="{Binding VendorBankName ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                       Style="{StaticResource FormTextBox}"/>
+                                    
+                                    <DatePicker Name="invoiceDate"
+                                                Text="{Binding  InvoiceDate ,UpdateSourceTrigger=LostFocus,Mode=TwoWay}"/>
 
                                     <TextBlock Text="Invoice Particular"
                                        Style="{StaticResource FormTextBlock}"/>
 
-                                    <TextBox x:Name="txtVendorAccountNumber"
-                                       Text="{Binding VendorAccountNumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                    <TextBox x:Name="txtInvoicePArticular"
+                                       Text="{Binding InvoiceParticulars ,UpdateSourceTrigger=PropertyChanged}"                                         
                                       Style="{StaticResource FormTextBox}"/>
 
 

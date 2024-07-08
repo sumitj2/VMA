@@ -97,7 +97,81 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
-        private VendorDetailModel _selectedVendorServiceDetails;
+        #region Properties
+
+        private string? _PaymentNoteNo;
+        private DateTime? _PaymentNoteDate;
+        private string? _InvoiceNumber;
+        private DateTime? _InvoiceDate;
+        private string? _InvoiceParticulars;
+
+
+        public string? PaymentNoteNo
+        {
+            get
+            {
+                return _PaymentNoteNo;
+            }
+            set
+            {
+                _PaymentNoteNo = value;
+                OnPropertyChanged(nameof(PaymentNoteNo));
+            }
+        }
+
+        public DateTime? PaymentNoteDate
+        {
+            get
+            {
+                return _PaymentNoteDate;
+            }
+            set
+            {
+                _PaymentNoteDate = value;
+                OnPropertyChanged(nameof(PaymentNoteDate));
+            }
+        }
+        public string? InvoiceNumber
+        {
+            get
+            {
+                return _InvoiceNumber;
+            }
+            set
+            {
+                _InvoiceNumber = value;
+                OnPropertyChanged(nameof(InvoiceNumber));
+            }
+        }
+
+        public DateTime? InvoiceDate
+        {
+            get
+            {
+                return _InvoiceDate;
+            }
+            set
+            {
+                _InvoiceDate = value;
+                OnPropertyChanged(nameof(InvoiceDate));
+            }
+        }
+
+        public string? InvoiceParticulars
+        {
+            get
+            {
+                return _InvoiceParticulars;
+            }
+            set
+            {
+                _InvoiceParticulars = value;
+                OnPropertyChanged(nameof(InvoiceParticulars));
+            }
+        }
+
+
+        private VendorDetailModel? _selectedVendorServiceDetails;
         public VendorDetailModel? SelectedVendorServiceDetails
         {
             get { return _selectedVendorServiceDetails; }
@@ -111,6 +185,22 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
+        private VendorDetailModel? _SelectedVendorPaymentCode;
+        public VendorDetailModel? SelectedVendorPaymentCode
+        {
+            get { return _SelectedVendorPaymentCode; }
+            set
+            {
+
+                _SelectedVendorPaymentCode = value;
+                OnPropertyChanged(nameof(SelectedVendorPaymentCode));
+                
+
+            }
+        }
+
+
+        #endregion
         private void AddPaymentItemInCombo(VendorDetailModel selectedVendorServiceDetails)
         {
             _=LoadVendorServicePayment(selectedVendorServiceDetails.VendorDetailId);
