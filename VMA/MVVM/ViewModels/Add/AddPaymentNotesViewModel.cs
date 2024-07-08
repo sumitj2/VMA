@@ -1,6 +1,10 @@
-﻿using BusinessLogic.Abstraction.VMA.Models;
+﻿using BusinessLogic.Abstraction.VMA.Contract;
+using BusinessLogic.Abstraction.VMA.Models;
+using Database.VMA.Entities;
+using Database.VMA.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,19 +15,175 @@ namespace VMA.MVVM.ViewModels.Add
 {
     public class AddPaymentNotesViewModel : ViewModelBase
     {
+        private int _selectedTabIndex;
+        private int _numbersOfTab = 1;
+        private string _saveButtonName;
+        private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
+        private readonly IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
         private readonly PaymentNotesViewModel _paymentNotesViewModel;
-        public ICommand HidePaymentNotesFormCommand { get; }
 
-        public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel)
+        public string SaveButtonName
         {
-            _paymentNotesViewModel = paymentNotesViewModel;
-            HidePaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(HidePaymentNoteForm);
+            get => _saveButtonName;
+
+            set
+            {
+                _saveButtonName = value;
+                OnPropertyChanged(nameof(SaveButtonName));
+            }
+        }
+        public int SelectedTabIndex
+        {
+            get => _selectedTabIndex;
+            set
+            {
+                _selectedTabIndex = value;
+                OnPropertyChanged(nameof(SelectedTabIndex));
+                OnPropertyChanged(nameof(CanGoBack));
+                OnPropertyChanged(nameof(CanGoNext));
+            }
         }
 
+        #region Observable collections for Combo box
+        private ObservableCollection<VendorDetailModel> _vendorDetails;
+        private ObservableCollection<SearchModel> _comboxPaymentMethod;
+        private ObservableCollection<VendorPaymentModel> _vendorsPayment;
+        private ObservableCollection<VendorPaymentModel> _tempvendorsPayment;
+
+        public ObservableCollection<VendorDetailModel> VendorServiceDetails
+        {
+            get { return _vendorDetails; }
+            set
+            {
+                _vendorDetails = value;
+                OnPropertyChanged(nameof(VendorServiceDetails));
+            }
+        }
+        
+
+        public ObservableCollection<VendorPaymentModel> VendorsPayment
+        {
+            get { return _vendorsPayment; }
+            set
+            {
+                _vendorsPayment = value;
+                OnPropertyChanged(nameof(VendorsPayment));
+            }
+        }
+
+        public ObservableCollection<VendorPaymentModel> TempVendorsPayment
+        {
+            get { return _tempvendorsPayment; }
+            set
+            {
+                _tempvendorsPayment = value;
+                OnPropertyChanged(nameof(TempVendorsPayment));
+            }
+        }
+        public ObservableCollection<SearchModel> ComboxPaymentMethods
+        {
+            get { return _comboxPaymentMethod; }
+            set { _comboxPaymentMethod = value; }
+        }
+
+        #endregion
+
+        #region Command
+        public ICommand BackCommand { get; set; }
+        public ICommand NextCommand { get; set; }
+        public ICommand HidePaymentNotesFormCommand { get; }
+        public ICommand SubmitCommand { get; }
+        public ICommand ClearFormCommand { get; }
+
+        #endregion
+
+        private VendorDetailModel _selectedVendorServiceDetails;
+        public VendorDetailModel? SelectedVendorServiceDetails
+        {
+            get { return _selectedVendorServiceDetails; }
+            set
+            {
+
+                _selectedVendorServiceDetails = value;
+                OnPropertyChanged(nameof(SelectedVendorServiceDetails));
+                AddPaymentItemInCombo(SelectedVendorServiceDetails);
+
+            }
+        }
+
+        private void AddPaymentItemInCombo(VendorDetailModel selectedVendorServiceDetails)
+        {
+            _=LoadVendorServicePayment(selectedVendorServiceDetails.VendorDetailId);
+        }
+
+        public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
+        {
+            _paymentNotesViewModel = paymentNotesViewModel;
+            
+            if (_paymentNotesViewModel != null)
+            {
+                SaveButtonName = "Update";
+            }
+            else
+            {
+                SaveButtonName = "Submit";
+            }
+            _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
+            _vendorPaymentBusinessLogic= vendorPaymentBusinessLogic;
+            HidePaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(HidePaymentNoteForm);
+            _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
+            CallAync();
+        }
+
+        private async void CallAync()
+        {
+            await MainTask();
+        }
+        public async Task MainTask()
+        {
+            await LoadVendorServiceDetails();
+            ///await LoadVendorServicePayment();
+            await PopulateValues();
+        }
+        private void CanGoBack(object obj)
+        {
+            if (SelectedTabIndex < 0)
+                SelectedTabIndex--;
+        }
+
+        private void CanGoNext(object obj)
+        {
+            if (SelectedTabIndex < _numbersOfTab)
+                SelectedTabIndex++;
+        }
         private async Task HidePaymentNoteForm(VenderPaymentNoteModel model)
         {
             await _paymentNotesViewModel.HidePaymentNotesForm(this);
         }
 
+        private async Task PopulateValues()
+        {
+           
+        }
+
+        /// <summary>
+        /// Combobox load item with Vendor Details 
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadVendorServiceDetails()
+        {
+            var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
+            VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails);
+        }
+
+        /// <summary>
+        /// Load all payment to get show conditionly on combo box on service selected
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadVendorServicePayment(int id)
+        {
+            var vendors = await _vendorPaymentBusinessLogic.GetAllVendorPayment().ConfigureAwait(true);
+            VendorsPayment = TempVendorsPayment = new ObservableCollection<VendorPaymentModel>(vendors.Where(x=>x.FkVendorDetailId==id));
+        }
     }
 }

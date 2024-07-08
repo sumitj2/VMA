@@ -16,7 +16,9 @@ namespace VMA.MVVM.ViewModels.Menus
 {
     public class PaymentNotesViewModel : ViewModelBase
     {
+        private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         private readonly IVenderPaymentNotesBusinessLogic _venderPaymentNotesBusinessLogic;
+        private readonly IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
         private readonly MainViewModel _parentViewModel;
         private VenderPaymentNoteModel _selectedVendor;
         private SearchModel _selectComboItem;
@@ -99,9 +101,11 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand EditPaymentNotesFormCommand { get; }
         #endregion
-        public PaymentNotesViewModel(MainViewModel parentViewModel,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
+        public PaymentNotesViewModel(MainViewModel parentViewModel,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
         {
             _venderPaymentNotesBusinessLogic=venderPaymentNotesBusinessLogic;
+            _vendorDetailsBusinessLogic=vendorDetailsBusinessLogic; 
+            _vendorPaymentBusinessLogic=vendorPaymentBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowPaymentNoteFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(ShowPaymentNotesForm);
             HidePaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(HidePaymentNotesForm);
@@ -116,7 +120,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task ShowPaymentNotesForm(VenderPaymentNoteModel model)
         {
-            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this);
+            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this,_vendorDetailsBusinessLogic,_vendorPaymentBusinessLogic);
 
         }
 

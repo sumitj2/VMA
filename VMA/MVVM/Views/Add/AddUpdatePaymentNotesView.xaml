@@ -2,7 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" d:DataContext="{d:DesignInstance Type=add:AddPaymentNotesViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Border CornerRadius="10"                    
@@ -38,10 +38,10 @@
                                        Margin="20,20,230,0"/>
 
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
-                                              ItemsSource="{Binding Path=ComboItem}"   
-                                              SelectedItem="{Binding Path=SelectComboItem}"  
-                                              DisplayMemberPath="NameSearch"  
-                                              Name="VendorServices" 
+                                              ItemsSource="{Binding VendorServiceDetails}"   
+                                              SelectedItem="{Binding SelectedVendorServiceDetails}"  
+                                              DisplayMemberPath="VendorServiceName"  
+                                              Name="ServiceDetails"                                               
                                               Grid.Row="1" 
                                               Width="239" 
                                               Height="30" 
@@ -58,10 +58,10 @@
                                                Style="{StaticResource FormTextBlock}"
                                                Margin="20,20,230,0"/>
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
-                                              ItemsSource="{Binding Path=ComboItem}"   
+                                              ItemsSource="{Binding VendorsPayment}"   
                                               SelectedItem="{Binding Path=SelectComboItem}"  
-                                              DisplayMemberPath="NameSearch"  
-                                              Name="PaymentCode" 
+                                              DisplayMemberPath="PaymentCode"  
+                                              Name="PAyment" 
                                               Grid.Row="1" 
                                               Width="239" 
                                               Height="30" 

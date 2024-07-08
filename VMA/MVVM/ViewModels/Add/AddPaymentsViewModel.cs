@@ -145,14 +145,7 @@ namespace VMA.MVVM.ViewModels.Add
             get { return _comboxPaymentMethod; }
             set { _comboxPaymentMethod = value; }
         }
-
-
-
-        private async void GeneratePaymentCode(VendorDetailModel? vendorDetailModel)
-        {
-            var paymentCode = await _vendorPaymentBusinessLogic.GeneratePaymentCode(vendorDetailModel);
-            PaymentCode = paymentCode;
-        }
+        
         #endregion
 
         #region Properties
@@ -336,40 +329,7 @@ namespace VMA.MVVM.ViewModels.Add
 
 
         #endregion
-
-        private async Task PopulateValues()
-        {
-            if (_vendorPaymentModel != null)
-            {
-                ///need to code to set no if resceive false
-                ///need to add binding for no
-                PaymentCode = _vendorPaymentModel.PaymentCode;
-                VendorPaymentYear=_vendorPaymentModel.VendorPaymentYear;
-                VendorPaymentDate= _vendorPaymentModel.VendorPaymentDate;
-                VendorPaymentAmount= _vendorPaymentModel.VendorPaymentAmount;
-                IsGSTDetailsVisible = (bool)_vendorPaymentModel.VendorPaymentIsGst;
-                VendorPaymentCgst= _vendorPaymentModel.VendorPaymentCgst;
-                VendorPaymentSgst= _vendorPaymentModel.VendorPaymentSgst;
-                VendorPaymentTotalAmountPaid = _vendorPaymentModel.VendorPaymentTotalAmountPaid;
-                VendorPaymentUtrnumber=_vendorPaymentModel.VendorPaymentUtrnumber;
-                VendorPaymentRtgsAmount= _vendorPaymentModel.VendorPaymentRtgsAmount;
-                VendorPaymentRtgsDate = _vendorPaymentModel.VendorPaymentRtgsDate;
-                IsTDSTextBoxVisible=(bool)_vendorPaymentModel.VendorPaymentIsTdsapplicable;
-                IsBranchNameVisible = (bool)_vendorPaymentModel.IsPaymentForBranch;
-                VendorPaymentTdsamount = _vendorPaymentModel.VendorPaymentTdsamount;
-                VendorPaymentNotesDetails= _vendorPaymentModel.VendorPaymentNotesDetails;
-                BankBranchName = _vendorPaymentModel.BankBranchName;
-               
-                 var vendorID = VendorServiceDetails.ToList().Find(x => x.VendorDetailId == _vendorPaymentModel?.FkVendorDetailId);
-
-                if (vendorID != null)
-                {
-                    SelectedVendorServiceDetails = VendorServiceDetails[VendorServiceDetails.IndexOf(vendorID)];
-                }
-            }
-
-        }
-
+        
         public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
         {
             _vendorPaymentModel = vendorPaymentModel;
@@ -388,6 +348,43 @@ namespace VMA.MVVM.ViewModels.Add
             SubmitCommand = new ViewModelAsyncCommand<VendorPaymentModel>(SubmitPaymentDetails, ValidatePAymentDetails);
             ClearFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ClearPaymentForm);
             CallAync();
+        }
+        private async Task PopulateValues()
+        {
+            if (_vendorPaymentModel != null)
+            {
+                ///need to code to set no if resceive false
+                ///need to add binding for no
+                PaymentCode = _vendorPaymentModel.PaymentCode;
+                VendorPaymentYear = _vendorPaymentModel.VendorPaymentYear;
+                VendorPaymentDate = _vendorPaymentModel.VendorPaymentDate;
+                VendorPaymentAmount = _vendorPaymentModel.VendorPaymentAmount;
+                IsGSTDetailsVisible = (bool)_vendorPaymentModel.VendorPaymentIsGst;
+                VendorPaymentCgst = _vendorPaymentModel.VendorPaymentCgst;
+                VendorPaymentSgst = _vendorPaymentModel.VendorPaymentSgst;
+                VendorPaymentTotalAmountPaid = _vendorPaymentModel.VendorPaymentTotalAmountPaid;
+                VendorPaymentUtrnumber = _vendorPaymentModel.VendorPaymentUtrnumber;
+                VendorPaymentRtgsAmount = _vendorPaymentModel.VendorPaymentRtgsAmount;
+                VendorPaymentRtgsDate = _vendorPaymentModel.VendorPaymentRtgsDate;
+                IsTDSTextBoxVisible = (bool)_vendorPaymentModel.VendorPaymentIsTdsapplicable;
+                IsBranchNameVisible = (bool)_vendorPaymentModel.IsPaymentForBranch;
+                VendorPaymentTdsamount = _vendorPaymentModel.VendorPaymentTdsamount;
+                VendorPaymentNotesDetails = _vendorPaymentModel.VendorPaymentNotesDetails;
+                BankBranchName = _vendorPaymentModel.BankBranchName;
+
+                var vendorID = VendorServiceDetails.ToList().Find(x => x.VendorDetailId == _vendorPaymentModel?.FkVendorDetailId);
+
+                if (vendorID != null)
+                {
+                    SelectedVendorServiceDetails = VendorServiceDetails[VendorServiceDetails.IndexOf(vendorID)];
+                }
+            }
+
+        }
+        private async void GeneratePaymentCode(VendorDetailModel? vendorDetailModel)
+        {
+            var paymentCode = await _vendorPaymentBusinessLogic.GeneratePaymentCode(vendorDetailModel);
+            PaymentCode = paymentCode;
         }
 
         private async Task ClearPaymentForm(VendorPaymentModel model)
@@ -525,8 +522,6 @@ namespace VMA.MVVM.ViewModels.Add
         {
             var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
             VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails);
-
-
         }
 
     }

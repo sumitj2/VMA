@@ -130,7 +130,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecutePaymentNoteViewCommand(object obj)
         {
-            CurrentChildView = new PaymentNotesViewModel(this,_venderPaymentNotesBusinessLogic);
+            CurrentChildView = new PaymentNotesViewModel(this,_venderPaymentNotesBusinessLogic,_vendorDetailsBusinessLogic,_vendorPaymentBusinessLogic);
             Caption = "Payment Notes";
             Icon = IconChar.NoteSticky;
         }

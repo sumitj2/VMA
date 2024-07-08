@@ -42,6 +42,7 @@ namespace Database.VMA.Repositories
                                             on payment.FkVendorDetailId equals details.VendorDetailId
                                             join service in _context.VendorServices
                                             on details.FkVendorServiceId equals service.VendorServiceId
+                                            where paymentNote.IsActive==true
                                             select new PaymentNotesWithInvoiceServiceDetails
                                             {
                                                 CreatedBy = paymentNote.CreatedBy,
