@@ -245,7 +245,7 @@ namespace VMA.MVVM.ViewModels.Add
             _vendorViewModel = parentViewModel;
             HideVendorFormCommand = new ViewModelAsyncCommand<VendorModel>(HideVendorForm);
             SubmitCommand = new ViewModelAsyncCommand<VendorModel>(SaveVendor, ValidateVendor);
-            ClearFormCommand = new ViewModelAsyncCommand<VendorModel>(ClearValues);            
+            ClearFormCommand = new ViewModelAsyncCommand<VendorModel>(ClearValues);
         }
 
         private bool ValidateVendor()
@@ -326,7 +326,8 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorIfsccode = _vendorIfsccode,
                     VendorPhoneNo = _vendorPhoneNo,
                     VendorPinCode = _vendorPinCode,
-                    CreatedBy = UserAccountModel.Username,
+                    LastUpdateBy = UserAccountModel.Username,
+                    LastUpdatedDate = DateTime.UtcNow,
                     VendorGstnumber = _vendorGstnumber,
                     VendorId = SelectedVendor.VendorId,
                     VendorPan = _vendorPAN
@@ -350,6 +351,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorPhoneNo = _vendorPhoneNo,
                     VendorPinCode = _vendorPinCode,
                     CreatedBy = UserAccountModel.Username,
+                    CreatedDate = DateTime.UtcNow,
                     VendorGstnumber = _vendorGstnumber,
                     VendorPan = _vendorPAN
                 };

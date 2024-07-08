@@ -38,31 +38,31 @@ namespace Database.VMA.Repositories
 
         public async Task<List<VendorDetailsWithService>> GetVendorDetailsWithService()
         {
-            var productsWithVendors = from service in _context.VendorServices
-                                      join vendor in _context.VendorDetails
-                                      on service.VendorServiceId equals vendor.FkVendorServiceId
+            var productsWithVendors = from vendorDetail in _context.VendorDetails
+                                      join service in _context.VendorServices
+                                      on  vendorDetail.FkVendorServiceId equals service.VendorServiceId
                                       where service.IsActive == true
                                       select new VendorDetailsWithService
-                                      {                                          
-                                          CreatedBy = vendor.CreatedBy,
-                                          CreatedDate = vendor.CreatedDate,
-                                          IsActive = vendor.IsActive,
-                                          LastUpdateBy = vendor.LastUpdateBy,
-                                          LastUpdatedDate = vendor.LastUpdatedDate,
+                                      {
+                                          CreatedBy = vendorDetail.CreatedBy,
+                                          CreatedDate = vendorDetail.CreatedDate,
+                                          IsActive = vendorDetail.IsActive,
+                                          LastUpdateBy = vendorDetail.LastUpdateBy,
+                                          LastUpdatedDate = vendorDetail.LastUpdatedDate,
                                           VendorServiceId = service.VendorServiceId,
                                           VendorServiceName = service.VendorServiceName,
-                                          FkVendorServiceId=vendor.FkVendorServiceId,
-                                          QuantityOfUnit=vendor.QuantityOfUnit,
-                                          RatePerUnit=vendor.RatePerUnit,
-                                          ServiceEndDate = vendor.ServiceEndDate,
-                                          ServicePaymentType=vendor.ServicePaymentType,
-                                          ServiceSantionAmount=vendor.ServiceSantionAmount,
-                                          ServiceSantionedBy=vendor.ServiceSantionedBy,
-                                          ServiceStartDate=vendor.ServiceStartDate, 
-                                          ServiceType=vendor.ServiceType,
-                                          VendorDetailCategory = vendor.VendorDetailCategory,
-                                          VendorDetailId=vendor.VendorDetailId,
-                                         
+                                          FkVendorServiceId = vendorDetail.FkVendorServiceId,
+                                          QuantityOfUnit = vendorDetail.QuantityOfUnit,
+                                          RatePerUnit = vendorDetail.RatePerUnit,
+                                          ServiceEndDate = vendorDetail.ServiceEndDate,
+                                          ServicePaymentType = vendorDetail.ServicePaymentType,
+                                          ServiceSantionAmount = vendorDetail.ServiceSantionAmount,
+                                          ServiceSantionedBy = vendorDetail.ServiceSantionedBy,
+                                          ServiceStartDate = vendorDetail.ServiceStartDate,
+                                          ServiceType = vendorDetail.ServiceType,
+                                          VendorDetailCategory = vendorDetail.VendorDetailCategory,
+                                          VendorDetailId = vendorDetail.VendorDetailId,
+
                                       };
             return await productsWithVendors.ToListAsync();
         }

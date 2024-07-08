@@ -291,10 +291,12 @@ namespace VMA.MVVM.ViewModels.Add
                     ServiceStartDate = ServiceStartDate,
                     ServicePaymentType = SelectPaymentType?.NameSearch,
                     VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
-                    FkVendorServiceId = SelectedVendorDetailService?.FkVendorId,
+                    FkVendorServiceId = SelectedVendorDetailService?.VendorServiceId,
                     VendorServiceId = SelectedVendorDetailService != null ? SelectedVendorDetailService.VendorServiceId : 0,
                     ServiceSantionedBy = ServiceSantionedBy,
-                    LastUpdateBy = UserAccountModel.Username
+                    LastUpdateBy = UserAccountModel.Username,
+                    LastUpdatedDate=DateTime.UtcNow,
+                    VendorDetailId= _vendorDetailViewModel.VendorDetailId
 
                 };
                 await _vendorDetailsBusinessLogic.EditUpdateVendorDetails(vendorModel);
@@ -307,6 +309,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     IsActive = true,
                     CreatedBy = UserAccountModel.Username,
+                    CreatedDate=DateTime.UtcNow,
                     QuantityOfUnit = QuantityOfUnit,
                     ServiceSantionAmount = ServiceSantionAmount,
                     ServiceEndDate = ServiceEndDate,
@@ -316,7 +319,7 @@ namespace VMA.MVVM.ViewModels.Add
                     ServiceStartDate = ServiceStartDate,
                     ServicePaymentType = SelectPaymentType?.NameSearch,
                     VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
-                    FkVendorServiceId = SelectedVendorDetailService?.FkVendorId,
+                    FkVendorServiceId = SelectedVendorDetailService?.VendorServiceId,
                     VendorServiceId = SelectedVendorDetailService != null ? SelectedVendorDetailService.VendorServiceId : 0,
                     ServiceSantionedBy = ServiceSantionedBy
 

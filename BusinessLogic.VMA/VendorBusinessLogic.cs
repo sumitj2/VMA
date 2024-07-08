@@ -21,12 +21,8 @@ namespace Database.VMA.Repositories
         public async Task AddVendor(VendorModel vendorModel)
         {
             Vendor vendorEntity = new()
-            {
-                CreatedBy = vendorModel.CreatedBy,
-                CreatedDate = DateTime.UtcNow,
-                IsActive = true,
-                LastUpdateBy = vendorModel.LastUpdateBy,
-                LastUpdatedDate = DateTime.UtcNow,
+            {                
+                IsActive = true,                
                 VendorAccountNumber = vendorModel.VendorAccountNumber,
                 VendorName = vendorModel.VendorName,
                 VendorAddress = vendorModel.VendorAddress,

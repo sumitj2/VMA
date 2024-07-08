@@ -145,7 +145,7 @@ namespace VMA.MVVM.ViewModels.Add
             get { return _comboxPaymentMethod; }
             set { _comboxPaymentMethod = value; }
         }
-        
+
         #endregion
 
         #region Properties
@@ -329,7 +329,7 @@ namespace VMA.MVVM.ViewModels.Add
 
 
         #endregion
-        
+
         public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
         {
             _vendorPaymentModel = vendorPaymentModel;
@@ -355,22 +355,22 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 ///need to code to set no if resceive false
                 ///need to add binding for no
-                PaymentCode = _vendorPaymentModel.PaymentCode;
-                VendorPaymentYear = _vendorPaymentModel.VendorPaymentYear;
-                VendorPaymentDate = _vendorPaymentModel.VendorPaymentDate;
-                VendorPaymentAmount = _vendorPaymentModel.VendorPaymentAmount;
-                IsGSTDetailsVisible = (bool)_vendorPaymentModel.VendorPaymentIsGst;
-                VendorPaymentCgst = _vendorPaymentModel.VendorPaymentCgst;
-                VendorPaymentSgst = _vendorPaymentModel.VendorPaymentSgst;
-                VendorPaymentTotalAmountPaid = _vendorPaymentModel.VendorPaymentTotalAmountPaid;
-                VendorPaymentUtrnumber = _vendorPaymentModel.VendorPaymentUtrnumber;
-                VendorPaymentRtgsAmount = _vendorPaymentModel.VendorPaymentRtgsAmount;
-                VendorPaymentRtgsDate = _vendorPaymentModel.VendorPaymentRtgsDate;
-                IsTDSTextBoxVisible = (bool)_vendorPaymentModel.VendorPaymentIsTdsapplicable;
-                IsBranchNameVisible = (bool)_vendorPaymentModel.IsPaymentForBranch;
-                VendorPaymentTdsamount = _vendorPaymentModel.VendorPaymentTdsamount;
-                VendorPaymentNotesDetails = _vendorPaymentModel.VendorPaymentNotesDetails;
-                BankBranchName = _vendorPaymentModel.BankBranchName;
+                PaymentCode = _vendorPaymentModel?.PaymentCode??"";
+                VendorPaymentYear = _vendorPaymentModel?.VendorPaymentYear;
+                VendorPaymentDate = _vendorPaymentModel?.VendorPaymentDate;
+                VendorPaymentAmount = _vendorPaymentModel?.VendorPaymentAmount;
+                IsGSTDetailsVisible = _vendorPaymentModel?.VendorPaymentIsGst!=null ? (bool)_vendorPaymentModel.VendorPaymentIsGst:false;
+                VendorPaymentCgst = _vendorPaymentModel?.VendorPaymentCgst;
+                VendorPaymentSgst = _vendorPaymentModel?.VendorPaymentSgst;
+                VendorPaymentTotalAmountPaid = _vendorPaymentModel?.VendorPaymentTotalAmountPaid;
+                VendorPaymentUtrnumber = _vendorPaymentModel?.VendorPaymentUtrnumber;
+                VendorPaymentRtgsAmount = _vendorPaymentModel?.VendorPaymentRtgsAmount;
+                VendorPaymentRtgsDate = _vendorPaymentModel?.VendorPaymentRtgsDate;
+                IsTDSTextBoxVisible = _vendorPaymentModel?.VendorPaymentIsTdsapplicable != null ? (bool)_vendorPaymentModel.VendorPaymentIsTdsapplicable : false;
+                IsBranchNameVisible = _vendorPaymentModel?.IsPaymentForBranch != null ? (bool)_vendorPaymentModel.IsPaymentForBranch : false;
+                VendorPaymentTdsamount = _vendorPaymentModel?.VendorPaymentTdsamount;
+                VendorPaymentNotesDetails = _vendorPaymentModel?.VendorPaymentNotesDetails;
+                BankBranchName = _vendorPaymentModel?.BankBranchName;
 
                 var vendorID = VendorServiceDetails.ToList().Find(x => x.VendorDetailId == _vendorPaymentModel?.FkVendorDetailId);
 
@@ -400,14 +400,14 @@ namespace VMA.MVVM.ViewModels.Add
             VendorPaymentIsTdsapplicable = false;
             VendorPaymentRtgsDate = DateOnly.MinValue;
             VendorPaymentSgst = 0;
-            VendorPaymentTdsamount = 0;           
+            VendorPaymentTdsamount = 0;
             VendorPaymentRtgsAmount = 0;
-            VendorPaymentUtrnumber = 0;            
+            VendorPaymentUtrnumber = 0;
             VendorPaymentTotalAmountPaid = 0;
             VendorPaymentYear = "";
             IsGSTDetailsVisible = false;
             IsBranchNameVisible = false;
-            IsTDSTextBoxVisible=false;
+            IsTDSTextBoxVisible = false;
         }
 
         private bool ValidatePAymentDetails()
@@ -512,7 +512,7 @@ namespace VMA.MVVM.ViewModels.Add
             if (SelectedTabIndex < _numbersOfTab)
                 SelectedTabIndex++;
         }
-        
+
 
         /// <summary>
         /// Combobox load item with Vendor Details 
