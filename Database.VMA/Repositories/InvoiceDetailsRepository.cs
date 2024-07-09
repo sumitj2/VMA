@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Database.VMA.Repositories
 {
-    public class InvoiceDetailsRepository: IInvoiceDetailsRepository
+    public class InvoiceDetailsRepository : IInvoiceDetailsRepository
     {
         private readonly VendorManagementDbContext _context;
         public InvoiceDetailsRepository(VendorManagementDbContext context)
         {
-                _context = context; 
+            _context = context;
         }
         public async Task<int> AddInvoice(InvoiceDetails InvoiceDetailsEntity)
         {
@@ -24,12 +24,17 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdateInvoice(InvoiceDetails InvoiceDetailsEntity)
         {
-            var result = await GetInvoiceById(InvoiceDetailsEntity.InvoiceId);
-            if (result != null)
+            var existingEntity = _context.InvoiceDetails.Find(InvoiceDetailsEntity.InvoiceId);
+            if (existingEntity == null)
             {
-                _context.InvoiceDetails.Update(result);
-                await _context.SaveChangesAsync();
+                _context.Attach(InvoiceDetailsEntity);
             }
+            else
+            {
+                _context.Entry(existingEntity).CurrentValues.SetValues(InvoiceDetailsEntity);
+            }
+            await _context.SaveChangesAsync();
+
         }
         public async Task<IEnumerable<InvoiceDetails>> GetAllInvoices()
         {

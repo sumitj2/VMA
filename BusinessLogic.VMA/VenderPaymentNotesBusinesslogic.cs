@@ -46,21 +46,28 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdatePaymentNotes(VenderPaymentNoteModel paymentNotesModel)
         {
-            VenderPaymentNote paymentNoteEntity = new()
-            {
-                CreatedBy = paymentNotesModel?.CreatedBy,
-                CreatedDate = paymentNotesModel?.CreatedDate,
-                IsActive = paymentNotesModel?.IsActive,
-                LastUpdateBy = paymentNotesModel?.LastUpdateBy,
-                LastUpdatedDate = paymentNotesModel?.LastUpdatedDate,
-                PaymentNoteNo= paymentNotesModel?.PaymentNoteNo,
-                PaymentNoteDate= paymentNotesModel?.PaymentNoteDate,
-                NoteId=paymentNotesModel!.NoteId,
-                FkVendorPaymentId= paymentNotesModel?.FkVendorPaymentId,
-                FkInvoiceId=paymentNotesModel?.FkInvoiceId,
+            var invocieEntity = await _invoiceDetailsBusinessLogic.GetInvoiceById(paymentNotesModel.InvoiceId);
+            var paymentNotesEntity= await _venderPaymentNotesRepository.GetVendorsPaymentNoteById(paymentNotesModel.NoteId);
+            
+            invocieEntity.InvoiceDate = paymentNotesModel.InvoiceDate;
+            invocieEntity.InvoiceNumber = paymentNotesModel.InvoiceNumber;
+            invocieEntity.InvoiceParticulars = paymentNotesModel.InvoiceParticulars;
+            invocieEntity.LastUpdateBy = paymentNotesModel.LastUpdateBy;
+            invocieEntity.LastUpdatedDate = paymentNotesModel.LastUpdatedDate;
+            invocieEntity.IsActive = paymentNotesModel.IsActive;            
+            await _invoiceDetailsBusinessLogic.EditUpdateInvoice(invocieEntity);
+
+            paymentNotesEntity.LastUpdateBy = paymentNotesModel?.LastUpdateBy;
+            paymentNotesEntity.LastUpdatedDate = paymentNotesModel?.LastUpdatedDate;
+            paymentNotesEntity.IsActive = paymentNotesModel?.IsActive;           
+            paymentNotesEntity.PaymentNoteNo = paymentNotesModel?.PaymentNoteNo;
+            paymentNotesEntity.PaymentNoteDate = paymentNotesModel?.PaymentNoteDate;
+            paymentNotesEntity.NoteId = paymentNotesModel!.NoteId;
+            paymentNotesEntity.FkVendorPaymentId = paymentNotesModel?.FkVendorPaymentId;
+            paymentNotesEntity.FkInvoiceId = paymentNotesModel?.FkInvoiceId;
                
-            };
-            await _venderPaymentNotesRepository.EditUpdateVendorPaymentNotes(paymentNoteEntity);
+            
+            await _venderPaymentNotesRepository.EditUpdateVendorPaymentNotes(paymentNotesEntity);
 
         }
         public async Task<IEnumerable<VenderPaymentNoteModel>> GetAllPaymentNotes()

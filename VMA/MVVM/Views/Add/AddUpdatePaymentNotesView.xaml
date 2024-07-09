@@ -40,6 +40,7 @@
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
                                               ItemsSource="{Binding VendorServiceDetails}"   
                                               SelectedItem="{Binding SelectedVendorServiceDetails}"  
+                                              Visibility="{Binding HideServiceSelectComboBox}"
                                               DisplayMemberPath="VendorServiceName"  
                                               Name="ServiceDetails"                                               
                                               Grid.Row="1" 
@@ -54,14 +55,20 @@
                                               Foreground="{StaticResource plainTextColor3}"
                                               BorderBrush="{StaticResource plainTextColor3}"
                                               BorderThickness="0,0,0,1" />
+                                    <TextBox x:Name="txtBoxServiceOfCombo"
+                                             Text="{Binding TextBoxServiceName ,UpdateSourceTrigger=PropertyChanged}"
+                                             IsEnabled="False"
+                                             Style="{StaticResource FormTextBox}"
+                                              />
                                     <TextBlock Text="Select Payment Code"
                                                Style="{StaticResource FormTextBlock}"
                                                Margin="20,20,230,0"/>
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
                                               ItemsSource="{Binding VendorsPayment}"   
                                               SelectedItem="{Binding SelectedVendorPaymentCode}"  
+                                              Visibility="{Binding HidePaymentCodeComboBox}"
                                               DisplayMemberPath="PaymentCode"  
-                                              Name="PAyment" 
+                                              Name="PaymentCode" 
                                               Grid.Row="1" 
                                               Width="239" 
                                               Height="30" 
@@ -74,26 +81,31 @@
                                               Foreground="{StaticResource plainTextColor3}"
                                               BorderBrush="{StaticResource plainTextColor3}"
                                               BorderThickness="0,0,0,1" />
+                                    <TextBox x:Name="txtBoxPaymentCodeOfCombo"
+                                              Text="{Binding TextBoxPaymentCodeName ,UpdateSourceTrigger=PropertyChanged}"
+                                              IsEnabled="False"
+                                              Style="{StaticResource FormTextBox}"/>
 
 
-                                    <TextBlock Text="Payment Note Number"
-                                        Style="{StaticResource FormTextBlock}"/>
-
-                                    <TextBox x:Name="txtPaymentNoteNo"
-                                     Text="{Binding PaymentNoteNo ,UpdateSourceTrigger=PropertyChanged}"
-                                      Style="{StaticResource FormTextBox}"/>
-
-                                    <TextBlock Text="Payment Note Date"
-                                       Style="{StaticResource FormTextBlock}"/>
-
-                                    <DatePicker Name="paymentNoteDate"
-                                                Text="{Binding  PaymentNoteDate ,UpdateSourceTrigger=LostFocus,Mode=TwoWay}"/>                                    
+                                                                      
 
                                 </StackPanel>
 
                                 <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
-                                       Orientation="Vertical">
-                                   
+                                            Orientation="Vertical">
+                                    
+                                    <TextBlock Text="Payment Note Number"
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtPaymentNoteNo"
+                                             Text="{Binding PaymentNoteNo ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"/>
+
+                                    <TextBlock Text="Payment Note Date"
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <DatePicker Name="paymentNoteDate"
+                                                Text="{Binding  PaymentNoteDate ,UpdateSourceTrigger=LostFocus,Mode=TwoWay}"/>
 
                                 </StackPanel>
 
@@ -164,7 +176,7 @@
                     Foreground="White"
                     VerticalAlignment="Top"/>
                 <Button Style="{StaticResource vendorCancelButton}"
-                    Command="{Binding HideVendorFormCommand}"                            
+                    Command="{Binding HidePaymentNotesFormCommand}"                            
                     Content="Cancel"                            
                     FontSize="12"
                     FontFamily="Montserrat"

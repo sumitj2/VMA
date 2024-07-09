@@ -47,6 +47,15 @@ namespace Database.VMA.Repositories
                 LastUpdateBy = invoiceDetailModel.LastUpdateBy,
                 LastUpdatedDate = invoiceDetailModel.LastUpdatedDate
             };
+            try
+            {
+                await _invoiceDetailsRepository.EditUpdateInvoice(invoiceDetailsEntity);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
             await _invoiceDetailsRepository.EditUpdateInvoice(invoiceDetailsEntity);
         }
         public async Task<IEnumerable<InvoiceDetailsModel>> GetAllInvoices()

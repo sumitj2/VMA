@@ -354,7 +354,7 @@ namespace VMA.MVVM.ViewModels.Add
             if (_vendorPaymentModel != null)
             {
                 ///need to code to set no if resceive false
-                ///need to add binding for no
+                ///need to add binding for no radio button
                 PaymentCode = _vendorPaymentModel?.PaymentCode??"";
                 VendorPaymentYear = _vendorPaymentModel?.VendorPaymentYear;
                 VendorPaymentDate = _vendorPaymentModel?.VendorPaymentDate;

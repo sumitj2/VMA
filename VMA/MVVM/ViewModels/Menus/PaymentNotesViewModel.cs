@@ -101,6 +101,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand EditPaymentNotesFormCommand { get; }
         #endregion
+
         public PaymentNotesViewModel(MainViewModel parentViewModel,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
         {
             _venderPaymentNotesBusinessLogic=venderPaymentNotesBusinessLogic;
@@ -112,15 +113,15 @@ namespace VMA.MVVM.ViewModels.Menus
             EditPaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(EditPaymentNoteForm);
             _=GetPaymentsNote();
         }
-
         private async Task EditPaymentNoteForm(VenderPaymentNoteModel model)
         {
-            
+            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
+            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this, _vendorDetailsBusinessLogic,_vendorPaymentBusinessLogic,_venderPaymentNotesBusinessLogic,model);
         }
-
+        
         private async Task ShowPaymentNotesForm(VenderPaymentNoteModel model)
         {
-            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this,_vendorDetailsBusinessLogic,_vendorPaymentBusinessLogic,_venderPaymentNotesBusinessLogic);
+            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this,_vendorDetailsBusinessLogic,_vendorPaymentBusinessLogic,_venderPaymentNotesBusinessLogic,null);
 
         }
 
