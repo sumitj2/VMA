@@ -140,7 +140,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowPaymentViewCommand(object obj)
         {
-            CurrentChildView = new PaymentsViewModel(this, _vendorPaymentBusinessLogic, _vendorDetailsBusinessLogic);
+            CurrentChildView = new PaymentsViewModel(this, _vendorPaymentBusinessLogic, _vendorDetailsBusinessLogic, _gstcalculationMasterBusinessLogic);
             Caption = "Payments";
             Icon = IconChar.Paypal;
         }

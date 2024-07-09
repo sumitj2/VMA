@@ -22,6 +22,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private string _searchValue;
         private IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
         private IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
+        private IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
         public SearchModel SelectComboItem
         {
             get { return _selectComboItem; }
@@ -99,7 +100,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand EditPaymentCommand { get; }
         #endregion
-        public PaymentsViewModel(MainViewModel parentViewModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic)
+        public PaymentsViewModel(MainViewModel parentViewModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic)
         {
             ComboItem =
             [
@@ -109,6 +110,7 @@ namespace VMA.MVVM.ViewModels.Menus
             ];
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
+            _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic; 
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ShowPaymentForm);
             HidePaymentFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
@@ -119,7 +121,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private async Task EditPayment(VendorPaymentModel model)
         {
             SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
-            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this,_vendorDetailsBusinessLogic, model, _vendorPaymentBusinessLogic);
+            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this,_vendorDetailsBusinessLogic, model, _vendorPaymentBusinessLogic, _gstcalculationMasterBusinessLogic);
         }
 
         public async Task HidePaymentForm(object model)
@@ -129,7 +131,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task ShowPaymentForm(object model)
         {
-            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this, _vendorDetailsBusinessLogic, SelectedVendorService,_vendorPaymentBusinessLogic);
+            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this, _vendorDetailsBusinessLogic, SelectedVendorService,_vendorPaymentBusinessLogic, _gstcalculationMasterBusinessLogic);
         }
 
         private async Task GetVendorPayments()

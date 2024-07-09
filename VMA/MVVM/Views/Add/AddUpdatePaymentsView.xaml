@@ -222,19 +222,29 @@ BorderThickness="0"
                                 <StackPanel x:Name="GetGSTPercentage" Grid.Column="1"
                                             Orientation="Vertical">
 
-                                    <TextBlock Text="CGST Percentage"                                           
+                                    <TextBlock Text="SGST Percentage"                                           
                                                Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtCSGS"
-                                             Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                             Style="{StaticResource FormTextBox}"/>
+                                             Text="{Binding Sgstpercentage ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"
+                                             IsEnabled="False"/>
                                     
-                                    <TextBlock Text="SGST Percentage"                                           
+                                    <TextBlock Text="CGST Percentage"                                           
                                                Style="{StaticResource FormTextBlock}"/>
                                     
                                     <TextBox x:Name="txtCGST"
-                                             Text="{Binding VendorGstnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                             Style="{StaticResource FormTextBox}"/>
+                                             Text="{Binding Cgstpercentage ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"
+                                             IsEnabled="False"/>
+
+                                    <TextBlock Text="ISGST Percentage"                                           
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtIGST"
+                                            Text="{Binding Igstpercentage ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                            Style="{StaticResource FormTextBox}"
+                                             IsEnabled="False"/>
                                 </StackPanel>
                             </Grid>
                         </AdornerDecorator>

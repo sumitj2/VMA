@@ -25,6 +25,7 @@ namespace VMA.MVVM.ViewModels.Add
         private readonly PaymentsViewModel _paymentViewModel;
         private bool isGSTDetailsVisible;
         private VendorPaymentModel _vendorPaymentModel;
+        private readonly IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
         public bool IsGSTDetailsVisible
         {
             get { return isGSTDetailsVisible; }
@@ -180,7 +181,41 @@ namespace VMA.MVVM.ViewModels.Add
 
             }
         }
+        private int _Cgstpercentage;
 
+        public int Cgstpercentage
+        {
+            get { return _Cgstpercentage; }
+            set
+            {
+                _Cgstpercentage = value;
+                OnPropertyChanged(nameof(Cgstpercentage));
+            }
+        }
+
+        private int _Sgstpercentage;
+
+        public int Sgstpercentage
+        {
+            get { return _Sgstpercentage; }
+            set
+            {
+                _Sgstpercentage = value;
+                OnPropertyChanged(nameof(Sgstpercentage));
+            }
+        }
+
+        private int _Igstpercentage;
+
+        public int Igstpercentage
+        {
+            get { return _Igstpercentage; }
+            set
+            {
+                _Igstpercentage = value;
+                OnPropertyChanged(nameof(Igstpercentage));
+            }
+        }
 
         public string PaymentCode
         {
@@ -330,7 +365,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
-        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
+        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic,IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic)
         {
             _vendorPaymentModel = vendorPaymentModel;
             if (_vendorPaymentModel != null)
@@ -347,7 +382,8 @@ namespace VMA.MVVM.ViewModels.Add
             HidePaymentFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
             SubmitCommand = new ViewModelAsyncCommand<VendorPaymentModel>(SubmitPaymentDetails, ValidatePAymentDetails);
             ClearFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ClearPaymentForm);
-            CallAync();
+            _gstcalculationMasterBusinessLogic= gstcalculationMasterBusinessLogic;
+                        CallAync();
         }
         private async Task PopulateValues()
         {
@@ -500,6 +536,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             await LoadVendorServiceDetails();
             await PopulateValues();
+            await LoadGSTDetails();
         }
         private void CanGoBack(object obj)
         {
@@ -522,6 +559,15 @@ namespace VMA.MVVM.ViewModels.Add
         {
             var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
             VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails);
+        }
+
+        private async Task LoadGSTDetails()
+        {
+            var gstDetails=await _gstcalculationMasterBusinessLogic.GetAllGstMaster().ConfigureAwait(true);
+            Cgstpercentage =Convert.ToInt32( gstDetails?.FirstOrDefault()?.CgstPercentage);
+            Sgstpercentage = Convert.ToInt32(gstDetails?.FirstOrDefault()?.SgstPercentage);
+            Igstpercentage = Convert.ToInt32(gstDetails?.FirstOrDefault()?.IgstPercentage);
+
         }
 
     }
