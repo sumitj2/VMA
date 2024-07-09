@@ -31,6 +31,7 @@ namespace Database.VMA.Repositories
                 SgstPercentage = GstcalculationMasterModel.SgstPercentage
             };
             await _gstcalculationMasterRepository.AddGstMaster(gstcalculationMasterEntity);
+
         }
         public async Task EditUpdateGst(GstcalculationMasterModel GstcalculationMasterModel)
         {

@@ -19,17 +19,22 @@ namespace Database.VMA.Repositories
 
         public async Task AddGstMaster(GstcalculationMaster GstcalculationMasterEntity)
         {
+            await _context.GstcalculationMasters.Where(x => x.IsActive == true).ExecuteUpdateAsync(e =>e.SetProperty(b=>b.IsActive,false));
             await _context.AddAsync(GstcalculationMasterEntity).ConfigureAwait(true);
             await _context.SaveChangesAsync();
         }
         public async Task EditUpdateGst(GstcalculationMaster GstcalculationMasterEntity)
         {
-            var result = await GetGstMasterById(GstcalculationMasterEntity.SrNo);
-            if (result != null)
+            var existingEntity = _context.GstcalculationMasters.Find(GstcalculationMasterEntity.SrNo);
+            if (existingEntity == null)
             {
-                _context.GstcalculationMasters.Update(result);
-                await _context.SaveChangesAsync();
+                _context.Attach(GstcalculationMasterEntity);
             }
+            else
+            {
+                _context.Entry(existingEntity).CurrentValues.SetValues(GstcalculationMasterEntity);
+            }
+            await _context.SaveChangesAsync();            
         }
         public async Task<IEnumerable<GstcalculationMaster>> GetAllGstMaster()
         {

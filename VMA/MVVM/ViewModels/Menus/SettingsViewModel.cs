@@ -26,7 +26,11 @@ namespace VMA.MVVM.ViewModels.Menus
         public int Cgstpercentage
         {
             get { return _Cgstpercentage; }
-            set { _Cgstpercentage = value; }
+            set
+            {
+                _Cgstpercentage = value;
+                OnPropertyChanged(nameof(Cgstpercentage));
+            }
         }
 
         private int _Sgstpercentage;
@@ -34,7 +38,9 @@ namespace VMA.MVVM.ViewModels.Menus
         public int Sgstpercentage
         {
             get { return _Sgstpercentage; }
-            set { _Sgstpercentage = value; }
+            set { _Sgstpercentage = value;
+                OnPropertyChanged(nameof(Sgstpercentage));
+            }
         }
 
         private int _Igstpercentage;
@@ -42,7 +48,9 @@ namespace VMA.MVVM.ViewModels.Menus
         public int Igstpercentage
         {
             get { return _Igstpercentage; }
-            set { _Igstpercentage = value; }
+            set { _Igstpercentage = value;
+                OnPropertyChanged(nameof(Igstpercentage));
+            }
         }
 
         #endregion
@@ -52,6 +60,7 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
             SubmitCommand = new ViewModelAsyncCommand<GstcalculationMasterModel>(SaveGst, ValidateGst);
+            _ = GetGSTDetails();
         }
 
         private bool ValidateGst()
