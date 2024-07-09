@@ -25,6 +25,7 @@ namespace VMA.MVVM.ViewModels
         private IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
         private IVenderPaymentNotesBusinessLogic _venderPaymentNotesBusinessLogic;
         private IInvoiceDetailsBusinessLogic _invoiceDetailsBusinessLogic;
+        private IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -90,7 +91,7 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowSettingViewCommand { get; }
 
 
-        public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
+        public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
@@ -112,12 +113,13 @@ namespace VMA.MVVM.ViewModels
             //Default view
             ExecuteShowHomeViewCommand(null);
             _ = LoadCurrentUserData();
-            _vendorServiceBusinessLogic = vendorServiceBusinessLogic;            
+            _vendorServiceBusinessLogic = vendorServiceBusinessLogic; 
+            _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
         }
 
         private void ExecuteShowSettingViewCommand(object obj)
         {
-            CurrentChildView = new SettingsViewModel();
+            CurrentChildView = new SettingsViewModel(_gstcalculationMasterBusinessLogic);
             Caption = "Settings";
             Icon = IconChar.Gears;
         }

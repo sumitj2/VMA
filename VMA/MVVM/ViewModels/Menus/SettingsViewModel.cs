@@ -48,8 +48,9 @@ namespace VMA.MVVM.ViewModels.Menus
         #endregion
 
         public ICommand SubmitCommand { get; }
-        public SettingsViewModel()
+        public SettingsViewModel(IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic)
         {
+            _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
             SubmitCommand = new ViewModelAsyncCommand<GstcalculationMasterModel>(SaveGst, ValidateGst);
         }
 
