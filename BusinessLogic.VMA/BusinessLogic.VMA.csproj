@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.2" />
+    <PackageReference Include="EPPlus" Version="7.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BusinessLogic.Abstraction.VMA\BusinessLogic.Abstraction.VMA.csproj" />
     <ProjectReference Include="..\Database.Abstraction.VMA\Database.Abstraction.VMA.csproj" />
   </ItemGroup>

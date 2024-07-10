@@ -16,6 +16,7 @@ namespace Database.Abstraction.VMA.Contract
         public Task<IEnumerable<VenderPaymentNote>> GetAllVendorsPaymentNotes();
         public Task<VenderPaymentNote?> GetVendorsPaymentNoteById(int vendorId);
         public Task RemoveVendorPaymentNote(VenderPaymentNote VenderPaymentNoteEntity);
-        Task<List<PaymentNotesWithInvoiceServiceDetails>> GetAllPaymentDetailsWithServiceDetails();
+        public Task<List<PaymentNotesWithInvoiceServiceDetails>> GetAllPaymentDetailsWithServiceDetails();
+        public Task<List<ExportPaymentNoteData>> GetAllPaymentDetailsWithServiceDetailsToExport();
     }
 }

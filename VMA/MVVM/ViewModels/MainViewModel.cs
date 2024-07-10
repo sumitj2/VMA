@@ -1,4 +1,5 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
+using BusinessLogic.VMA;
 using Database.VMA.Repositories;
 using FontAwesome.Sharp;
 using System;
@@ -26,6 +27,7 @@ namespace VMA.MVVM.ViewModels
         private IVenderPaymentNotesBusinessLogic _venderPaymentNotesBusinessLogic;
         private IInvoiceDetailsBusinessLogic _invoiceDetailsBusinessLogic;
         private IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
+        private IReportExportToExcelPaymentNote _reportExportToExcelPaymentNote;
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -91,13 +93,14 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowSettingViewCommand { get; }
 
 
-        public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic)
+        public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IReportExportToExcelPaymentNote reportExportToExcelPaymentNote)
         {
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
             _venderPaymentNotesBusinessLogic = venderPaymentNotesBusinessLogic;
+
             // _currentUserAccount = new UserAccountModel();
 
             //Initialize command
@@ -113,8 +116,9 @@ namespace VMA.MVVM.ViewModels
             //Default view
             ExecuteShowHomeViewCommand(null);
             _ = LoadCurrentUserData();
-            _vendorServiceBusinessLogic = vendorServiceBusinessLogic; 
+            _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
             _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
+            _reportExportToExcelPaymentNote = reportExportToExcelPaymentNote;
         }
 
         private void ExecuteShowSettingViewCommand(object obj)
@@ -126,7 +130,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowReportViewCommand(object obj)
         {
-            CurrentChildView = new ReportsViewModel();
+            CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote);
             Caption = "Reports";
             Icon = IconChar.File;
         }

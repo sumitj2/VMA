@@ -3,10 +3,53 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views"
+             xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" xmlns:menus="clr-namespace:VMA.MVVM.ViewModels.Menus" d:DataContext="{d:DesignInstance Type=menus:ReportsViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Border CornerRadius="10"                    
+     BorderThickness="0"
+         Background="white" Opacity="0.95">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
+                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="410"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <TabControl Style="{DynamicResource TabContorlStyle}"  Background="White">
+                    <TabItem Header="Export Payment Notes to Excel" Style="{DynamicResource TabItemStyle}" Height="39">
+                        <AdornerDecorator>
+                            <StackPanel Grid.Row="2" 
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,9">
+                                <Button Style="{StaticResource vendorSaveButton}"
+                                        Command="{Binding ExportPaymentNoteCommand}"                            
+                                        Content="Export"                            
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="0"
+                                        Foreground="White"
+                                        VerticalAlignment="Top"
+                                        />
+
+                            </StackPanel>
+                        </AdornerDecorator>
+                    </TabItem>
+                    
+                </TabControl>
+            </Grid>
+
             
-    </Grid>
+        </Grid>
+    </Border>
 </UserControl>

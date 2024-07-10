@@ -57,7 +57,7 @@
                                               BorderBrush="{StaticResource plainTextColor3}"
                                               BorderThickness="0,0,0,1" />
 
-                                    <TextBlock Text="Enter Service Category details"
+                                    <TextBlock Text="Enter Service Category details(Department)"
                                                Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtServieCategory"
@@ -65,7 +65,7 @@
                                              Style="{StaticResource FormTextBox}"
                                              TextWrapping="Wrap"
                                              AcceptsReturn="True"/>
-                                    <TextBlock Text="Service Type"
+                                    <TextBlock Text="Service Type(Type of expenditure)"
                                                Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtServieType"
