@@ -25,7 +25,7 @@ public partial class VendorPaymentModel
 
     public int? VendorPaymentTotalAmountPaid { get; set; }
 
-    public int? VendorPaymentUtrnumber { get; set; }
+    public string? VendorPaymentUtrnumber { get; set; }
 
     public decimal? VendorPaymentRtgsAmount { get; set; }
 

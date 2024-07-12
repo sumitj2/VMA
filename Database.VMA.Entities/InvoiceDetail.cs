@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Database.VMA.Entities;
 
-public partial class InvoiceDetails
+public partial class InvoiceDetail
 {
     public int InvoiceId { get; set; }
 

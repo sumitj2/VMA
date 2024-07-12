@@ -19,7 +19,7 @@ namespace Database.VMA.Repositories
         }
         public async Task<int> AddInvoice(InvoiceDetailsModel invoiceDetailModel)
         {
-            InvoiceDetails invoiceDetailsEntity = new InvoiceDetails()
+            InvoiceDetail invoiceDetailsEntity = new InvoiceDetail()
             {
                 CreatedBy = invoiceDetailModel.CreatedBy,
                 CreatedDate = invoiceDetailModel.CreatedDate,
@@ -35,7 +35,7 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdateInvoice(InvoiceDetailsModel invoiceDetailModel)
         {
-            InvoiceDetails invoiceDetailsEntity = new()
+            InvoiceDetail invoiceDetailsEntity = new()
             {
                 CreatedBy = invoiceDetailModel.CreatedBy,
                 CreatedDate = invoiceDetailModel.CreatedDate,
@@ -100,7 +100,7 @@ namespace Database.VMA.Repositories
 
         public async Task RemoveInvoice(InvoiceDetailsModel invoiceDetailModel)
         {
-            InvoiceDetails invoiceDetailsEntity=new InvoiceDetails()
+            InvoiceDetail invoiceDetailsEntity=new InvoiceDetail()
             {
                 LastUpdatedDate = invoiceDetailModel.LastUpdatedDate,
                 LastUpdateBy = invoiceDetailModel.LastUpdateBy,

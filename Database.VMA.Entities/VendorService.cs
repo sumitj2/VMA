@@ -19,5 +19,5 @@ public partial class VendorService
 
     public DateTime? LastUpdatedDate { get; set; }
 
-    public int? FkVendorId { get; set; }
+    public int FkVendorId { get; set; }
 }

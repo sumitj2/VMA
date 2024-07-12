@@ -21,7 +21,7 @@ namespace Database.VMA.Repositories
         {
             VendorService vendorService = new()
             {                
-                FkVendorId = vendorServiceModel.FkVendorId,
+                FkVendorId = (int)vendorServiceModel.FkVendorId,
                 CreatedBy = vendorServiceModel.CreatedBy,
                 CreatedDate = DateTime.Now,
                 IsActive = vendorServiceModel.IsActive,
@@ -37,7 +37,7 @@ namespace Database.VMA.Repositories
             {
                 CreatedBy=serviceModel?.CreatedBy,
                 CreatedDate=serviceModel?.CreatedDate,
-                FkVendorId=serviceModel?.FkVendorId,
+                FkVendorId= (int)(serviceModel?.FkVendorId),
                 IsActive=serviceModel?.IsActive,  
                 LastUpdateBy=serviceModel?.LastUpdateBy,
                 LastUpdatedDate=serviceModel?.LastUpdatedDate,    
@@ -94,7 +94,7 @@ namespace Database.VMA.Repositories
             {
                 CreatedBy = serviceModel?.CreatedBy,
                 CreatedDate = serviceModel?.CreatedDate,
-                FkVendorId = serviceModel?.FkVendorId,
+                FkVendorId = (int)(serviceModel?.FkVendorId),
                 IsActive = serviceModel?.IsActive,
                 LastUpdateBy = serviceModel?.LastUpdateBy,
                 LastUpdatedDate = serviceModel?.LastUpdatedDate,

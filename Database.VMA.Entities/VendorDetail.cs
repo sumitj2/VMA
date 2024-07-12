@@ -9,11 +9,17 @@ public partial class VendorDetail
 
     public string? VendorDetailCategory { get; set; }
 
+    public string DetailsYear { get; set; } = null!;
+
     public string? RatePerUnit { get; set; }
 
     public int? QuantityOfUnit { get; set; }
 
     public string? ServiceSantionAmount { get; set; }
+
+    public DateOnly? SantionedDate { get; set; }
+
+    public string? SantionedNoteNo { get; set; }
 
     public DateOnly? ServiceStartDate { get; set; }
 
@@ -25,6 +31,10 @@ public partial class VendorDetail
 
     public string? ServicePaymentType { get; set; }
 
+    public string? SantionedType { get; set; }
+
+    public bool? IsAmc { get; set; }
+
     public DateTime? CreatedDate { get; set; }
 
     public string? CreatedBy { get; set; }
@@ -35,5 +45,7 @@ public partial class VendorDetail
 
     public DateTime? LastUpdatedDate { get; set; }
 
-    public int? FkVendorServiceId { get; set; }
+    public int FkVendorServiceId { get; set; }
+
+    public int FkVendorId { get; set; }
 }

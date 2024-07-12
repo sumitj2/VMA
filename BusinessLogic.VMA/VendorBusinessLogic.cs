@@ -124,7 +124,7 @@ namespace Database.VMA.Repositories
             {
                 CreatedBy = serviceModel?.CreatedBy,
                 CreatedDate = serviceModel?.CreatedDate,
-                IsActive = serviceModel?.IsActive,
+                IsActive = (bool)serviceModel.IsActive,
                 LastUpdateBy = serviceModel?.LastUpdateBy,
                 LastUpdatedDate = serviceModel?.LastUpdatedDate,
                 VendorEmailId = serviceModel?.VendorEmailId,

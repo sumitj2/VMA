@@ -23,7 +23,7 @@ namespace Database.VMA.Repositories
                 LastUpdateBy = vendorDetailModel.LastUpdateBy,
                 LastUpdatedDate = DateTime.UtcNow,
                 QuantityOfUnit = vendorDetailModel.QuantityOfUnit,
-                FkVendorServiceId = vendorDetailModel.FkVendorServiceId,
+                FkVendorServiceId = (int)vendorDetailModel.FkVendorServiceId,
                 RatePerUnit = vendorDetailModel.RatePerUnit,
                 ServiceEndDate = vendorDetailModel.ServiceEndDate,
                 ServicePaymentType = vendorDetailModel.ServicePaymentType,
@@ -53,7 +53,7 @@ namespace Database.VMA.Repositories
                 detail.ServicePaymentType = vendorDetailModel.ServiceType;
                 detail.ServiceEndDate = vendorDetailModel.ServiceEndDate;
                 detail.RatePerUnit = vendorDetailModel.RatePerUnit;
-                detail.FkVendorServiceId = vendorDetailModel.FkVendorServiceId;
+                detail.FkVendorServiceId = (int)vendorDetailModel.FkVendorServiceId;
                 detail.QuantityOfUnit = vendorDetailModel.QuantityOfUnit;
 
 
@@ -126,7 +126,7 @@ namespace Database.VMA.Repositories
                 QuantityOfUnit = VendorPaymentModel.QuantityOfUnit,
                 CreatedBy = VendorPaymentModel.CreatedBy,
                 CreatedDate = VendorPaymentModel.CreatedDate,
-                FkVendorServiceId = VendorPaymentModel.FkVendorServiceId,
+                FkVendorServiceId = (int)VendorPaymentModel.FkVendorServiceId,
                 IsActive = VendorPaymentModel.IsActive,
                 LastUpdateBy = VendorPaymentModel.LastUpdateBy,
                 LastUpdatedDate = VendorPaymentModel.LastUpdatedDate,

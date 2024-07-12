@@ -7,6 +7,8 @@ public partial class GstcalculationMaster
 {
     public int SrNo { get; set; }
 
+    public string GstCategoryName { get; set; } = null!;
+
     public int? CgstPercentage { get; set; }
 
     public int? SgstPercentage { get; set; }

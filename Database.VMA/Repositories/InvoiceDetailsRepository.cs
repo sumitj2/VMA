@@ -16,13 +16,13 @@ namespace Database.VMA.Repositories
         {
             _context = context;
         }
-        public async Task<int> AddInvoice(InvoiceDetails InvoiceDetailsEntity)
+        public async Task<int> AddInvoice(InvoiceDetail InvoiceDetailsEntity)
         {
             await _context.AddAsync(InvoiceDetailsEntity).ConfigureAwait(true);
             await _context.SaveChangesAsync();
             return InvoiceDetailsEntity.InvoiceId;
         }
-        public async Task EditUpdateInvoice(InvoiceDetails InvoiceDetailsEntity)
+        public async Task EditUpdateInvoice(InvoiceDetail InvoiceDetailsEntity)
         {
             var existingEntity = _context.InvoiceDetails.Find(InvoiceDetailsEntity.InvoiceId);
             if (existingEntity == null)
@@ -36,16 +36,16 @@ namespace Database.VMA.Repositories
             await _context.SaveChangesAsync();
 
         }
-        public async Task<IEnumerable<InvoiceDetails>> GetAllInvoices()
+        public async Task<IEnumerable<InvoiceDetail>> GetAllInvoices()
         {
             return await _context.InvoiceDetails.Where(x => x.IsActive == true).ToListAsync();
         }
-        public async Task<InvoiceDetails?> GetInvoiceById(int invoiceId)
+        public async Task<InvoiceDetail?> GetInvoiceById(int invoiceId)
         {
             return await _context.InvoiceDetails.Where(x => x.IsActive == true && x.InvoiceId == invoiceId).FirstOrDefaultAsync();
         }
 
-        public async Task RemoveInvoice(InvoiceDetails invoiceDetails)
+        public async Task RemoveInvoice(InvoiceDetail invoiceDetails)
         {
             _context.InvoiceDetails.Remove(invoiceDetails);
             await _context.SaveChangesAsync();

@@ -160,7 +160,7 @@ namespace VMA.MVVM.ViewModels.Add
         private decimal? _vendorPaymentCgst;
         private decimal? _vendorPaymentSgst;
         private int? _vendorPaymentTotalAmountPaid;
-        private int? _vendorPaymentUtrnumber;
+        private string? _vendorPaymentUtrnumber;
         private decimal? _vendorPaymentRtgsAmount;
         private DateOnly? _vendorPaymentRtgsDate;
         private bool? _vendorPaymentIsTdsapplicable;
@@ -289,7 +289,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentTotalAmountPaid));
             }
         }
-        public int? VendorPaymentUtrnumber
+        public string? VendorPaymentUtrnumber
         {
             get { return _vendorPaymentUtrnumber; }
             set
@@ -438,7 +438,7 @@ namespace VMA.MVVM.ViewModels.Add
             VendorPaymentSgst = 0;
             VendorPaymentTdsamount = 0;
             VendorPaymentRtgsAmount = 0;
-            VendorPaymentUtrnumber = 0;
+            VendorPaymentUtrnumber = "";
             VendorPaymentTotalAmountPaid = 0;
             VendorPaymentYear = "";
             IsGSTDetailsVisible = false;
@@ -455,7 +455,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             if (SaveButtonName == "Update")
             {
-                VendorPaymentModel payment = new()
+                VendorPaymentModel payment =new VendorPaymentModel()
                 {
                     BankBranchName = BankBranchName,
                     IsPaymentForBranch = IsBranchNameVisible,

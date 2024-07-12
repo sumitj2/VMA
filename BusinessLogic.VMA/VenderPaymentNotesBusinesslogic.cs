@@ -35,10 +35,9 @@ namespace Database.VMA.Repositories
                 IsActive = paymentNotesModel.IsActive,
                 LastUpdateBy = paymentNotesModel.LastUpdateBy,
                 LastUpdatedDate = DateTime.Now,
-                FkInvoiceId = invoiceID,
-                FkVendorPaymentId = paymentNotesModel.FkVendorPaymentId,
+                
                 NoteId = paymentNotesModel.NoteId,
-                PaymentNoteDate = paymentNotesModel.PaymentNoteDate,
+                PaymentNoteDate = (DateTime)paymentNotesModel.PaymentNoteDate,
                 PaymentNoteNo = paymentNotesModel.PaymentNoteNo,
                
             };
@@ -61,10 +60,9 @@ namespace Database.VMA.Repositories
             paymentNotesEntity.LastUpdatedDate = paymentNotesModel?.LastUpdatedDate;
             paymentNotesEntity.IsActive = paymentNotesModel?.IsActive;           
             paymentNotesEntity.PaymentNoteNo = paymentNotesModel?.PaymentNoteNo;
-            paymentNotesEntity.PaymentNoteDate = paymentNotesModel?.PaymentNoteDate;
+            paymentNotesEntity.PaymentNoteDate = (DateTime)(paymentNotesModel?.PaymentNoteDate);
             paymentNotesEntity.NoteId = paymentNotesModel!.NoteId;
-            paymentNotesEntity.FkVendorPaymentId = paymentNotesModel?.FkVendorPaymentId;
-            paymentNotesEntity.FkInvoiceId = paymentNotesModel?.FkInvoiceId;
+           
                
             
             await _venderPaymentNotesRepository.EditUpdateVendorPaymentNotes(paymentNotesEntity);
@@ -85,8 +83,7 @@ namespace Database.VMA.Repositories
                     LastUpdatedDate = paymentNote.LastUpdatedDate,
                     PaymentNoteNo= paymentNote.PaymentNoteNo,
                     PaymentNoteDate= paymentNote.PaymentNoteDate,
-                    FkInvoiceId = paymentNote.FkInvoiceId,
-                    FkVendorPaymentId = paymentNote.FkVendorPaymentId,
+                    
                     NoteId=paymentNote.NoteId ,
                     VendorPaymentId= paymentNote.VendorPaymentId,
                     InvoiceParticulars= paymentNote.InvoiceParticulars,
@@ -110,8 +107,7 @@ namespace Database.VMA.Repositories
                 IsActive = repositoryResult?.IsActive,
                 LastUpdateBy = repositoryResult?.LastUpdateBy,
                 LastUpdatedDate = repositoryResult?.LastUpdatedDate,
-                FkInvoiceId= repositoryResult?.FkInvoiceId,
-                FkVendorPaymentId= repositoryResult?.FkVendorPaymentId, 
+              
                 NoteId=repositoryResult!.NoteId,
                 PaymentNoteDate = repositoryResult?.PaymentNoteDate,
                 PaymentNoteNo=repositoryResult?.PaymentNoteNo
@@ -129,9 +125,7 @@ namespace Database.VMA.Repositories
                 LastUpdateBy = paymentNoteModel?.LastUpdateBy,
                 LastUpdatedDate = paymentNoteModel?.LastUpdatedDate,
                 PaymentNoteNo = paymentNoteModel?.PaymentNoteNo,
-                PaymentNoteDate= paymentNoteModel?.PaymentNoteDate,
-                FkInvoiceId = paymentNoteModel?.FkInvoiceId,
-                FkVendorPaymentId = paymentNoteModel?.FkVendorPaymentId,
+                PaymentNoteDate= (DateTime)(paymentNoteModel?.PaymentNoteDate),
                 NoteId=paymentNoteModel!.NoteId
             };
 

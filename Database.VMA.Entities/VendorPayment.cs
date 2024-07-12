@@ -7,11 +7,13 @@ public partial class VendorPayment
 {
     public int VendorPaymentId { get; set; }
 
-    public string? VendorPaymentYear { get; set; }
+    public string? PaymentCode { get; set; }
 
-    public DateTime? VendorPaymentDate { get; set; }
+    public string PaymentYear { get; set; } = null!;
 
-    public string? VendorPaymentAmount { get; set; }
+    public DateTime VendorPaymentDate { get; set; }
+
+    public string VendorPaymentAmount { get; set; } = null!;
 
     public bool? VendorPaymentIsGst { get; set; }
 
@@ -21,15 +23,19 @@ public partial class VendorPayment
 
     public int? VendorPaymentTotalAmountPaid { get; set; }
 
-    public int? VendorPaymentUtrnumber { get; set; }
+    public string? VendorPaymentUtrnumber { get; set; }
 
     public decimal? VendorPaymentRtgsAmount { get; set; }
 
     public DateOnly? VendorPaymentRtgsDate { get; set; }
 
+    public bool? VendorPaymentIsTdsapplicable { get; set; }
+
     public decimal? VendorPaymentTdsamount { get; set; }
 
-    public string? VendorPaymentNotesDetails { get; set; }
+    public string? Notes { get; set; }
+
+    public bool? IsPaymentForBranch { get; set; }
 
     public string? BankBranchName { get; set; }
 
@@ -37,17 +43,15 @@ public partial class VendorPayment
 
     public string? CreatedBy { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public string? LastUpdateBy { get; set; }
 
     public DateTime? LastUpdatedDate { get; set; }
 
-    public int? FkVendorDetailId { get; set; }
+    public int FkVendorDetailId { get; set; }
 
-    public string? PaymentCode { get; set; }
+    public int FkInvoiceId { get; set; }
 
-    public bool? VendorPaymentIsTdsapplicable { get; set; }
-
-    public bool? IsPaymentForBranch { get; set; }
+    public int FkNoteId { get; set; }
 }

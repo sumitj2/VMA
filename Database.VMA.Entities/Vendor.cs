@@ -7,9 +7,9 @@ public partial class Vendor
 {
     public int VendorId { get; set; }
 
-    public string? VendorCode { get; set; }
+    public string VendorCode { get; set; } = null!;
 
-    public string? VendorName { get; set; }
+    public string VendorName { get; set; } = null!;
 
     public string? VendorAddress { get; set; }
 
@@ -31,7 +31,7 @@ public partial class Vendor
 
     public string? CreatedBy { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public string? LastUpdateBy { get; set; }
 

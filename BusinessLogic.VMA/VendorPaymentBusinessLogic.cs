@@ -56,23 +56,23 @@ namespace Database.VMA.Repositories
                 BankBranchName = VendorPaymentModel.BankBranchName,
                 CreatedBy = VendorPaymentModel.CreatedBy,
                 CreatedDate = DateTime.UtcNow,
-                FkVendorDetailId = VendorPaymentModel.FkVendorDetailId,
-                IsActive = VendorPaymentModel.IsActive,
+                FkVendorDetailId = (int)VendorPaymentModel.FkVendorDetailId,
+                IsActive = (bool)VendorPaymentModel.IsActive,
                 LastUpdateBy = VendorPaymentModel.LastUpdateBy,
                 LastUpdatedDate = DateTime.UtcNow,
                 VendorPaymentAmount = VendorPaymentModel.VendorPaymentAmount,
                 VendorPaymentCgst = VendorPaymentModel.VendorPaymentCgst,
-                VendorPaymentDate = VendorPaymentModel.VendorPaymentDate,
+                VendorPaymentDate = (DateTime)VendorPaymentModel.VendorPaymentDate,
                 VendorPaymentId = VendorPaymentModel.VendorPaymentId,
                 VendorPaymentIsGst = VendorPaymentModel.VendorPaymentIsGst,
-                VendorPaymentNotesDetails = VendorPaymentModel.VendorPaymentNotesDetails,
+                Notes = VendorPaymentModel.VendorPaymentNotesDetails,
                 VendorPaymentRtgsAmount = VendorPaymentModel.VendorPaymentRtgsAmount,
                 VendorPaymentRtgsDate = VendorPaymentModel.VendorPaymentRtgsDate,
                 VendorPaymentSgst = VendorPaymentModel.VendorPaymentSgst,
                 VendorPaymentTdsamount = VendorPaymentModel.VendorPaymentTdsamount,
                 VendorPaymentTotalAmountPaid = VendorPaymentModel.VendorPaymentTotalAmountPaid,
                 VendorPaymentUtrnumber = VendorPaymentModel.VendorPaymentUtrnumber,
-                VendorPaymentYear = VendorPaymentModel.VendorPaymentYear,
+                PaymentYear = VendorPaymentModel.VendorPaymentYear,
                 PaymentCode = VendorPaymentModel.PaymentCode
             };
             await _vendorPaymentRepository.AddVendorPayment(vendorPayment);
@@ -82,23 +82,23 @@ namespace Database.VMA.Repositories
             var entity = await _vendorPaymentRepository.GetVendorPaymentById(VendorPaymentEntity.VendorPaymentId);
             if (entity != null)
             {
-                entity.VendorPaymentYear = VendorPaymentEntity.VendorPaymentYear;
+                entity.PaymentYear = VendorPaymentEntity.VendorPaymentYear;
                 entity.VendorPaymentTotalAmountPaid = VendorPaymentEntity.VendorPaymentTotalAmountPaid;
                 entity.VendorPaymentUtrnumber = VendorPaymentEntity.VendorPaymentUtrnumber;
                 entity.VendorPaymentTdsamount = VendorPaymentEntity.VendorPaymentTdsamount;
                 entity.BankBranchName = VendorPaymentEntity.BankBranchName;
                 entity.CreatedBy = VendorPaymentEntity.CreatedBy;
                 entity.CreatedDate = VendorPaymentEntity.CreatedDate;
-                entity.FkVendorDetailId = VendorPaymentEntity.FkVendorDetailId;
-                entity.IsActive = VendorPaymentEntity.IsActive;
+                entity.FkVendorDetailId = (int)VendorPaymentEntity.FkVendorDetailId;
+                entity.IsActive = (bool)VendorPaymentEntity.IsActive;
                 entity.LastUpdateBy = VendorPaymentEntity.LastUpdateBy;
                 entity.LastUpdatedDate = VendorPaymentEntity.LastUpdatedDate;
                 entity.VendorPaymentAmount = VendorPaymentEntity.VendorPaymentAmount;
                 entity.VendorPaymentCgst = VendorPaymentEntity.VendorPaymentCgst;
-                entity.VendorPaymentDate = VendorPaymentEntity.VendorPaymentDate;
+                entity.VendorPaymentDate = (DateTime)VendorPaymentEntity.VendorPaymentDate;
                 entity.VendorPaymentId = VendorPaymentEntity.VendorPaymentId;
                 entity.VendorPaymentIsGst = VendorPaymentEntity.VendorPaymentIsGst;
-                entity.VendorPaymentNotesDetails = VendorPaymentEntity.VendorPaymentNotesDetails;
+                entity.Notes = VendorPaymentEntity.VendorPaymentNotesDetails;
                 entity.VendorPaymentRtgsAmount = VendorPaymentEntity.VendorPaymentRtgsAmount;
                 entity.VendorPaymentRtgsDate = VendorPaymentEntity.VendorPaymentRtgsDate;
                 entity.VendorPaymentSgst = VendorPaymentEntity.VendorPaymentSgst;
@@ -130,14 +130,14 @@ namespace Database.VMA.Repositories
                     VendorPaymentDate = data.VendorPaymentDate,
                     VendorPaymentId = data.VendorPaymentId,
                     VendorPaymentIsGst = data.VendorPaymentIsGst,
-                    VendorPaymentNotesDetails = data.VendorPaymentNotesDetails,
+                    VendorPaymentNotesDetails = data.Notes,
                     VendorPaymentRtgsAmount = data.VendorPaymentRtgsAmount,
                     VendorPaymentRtgsDate = data.VendorPaymentRtgsDate,
                     VendorPaymentSgst = data.VendorPaymentSgst,
                     VendorPaymentTdsamount = data.VendorPaymentTdsamount,
                     VendorPaymentTotalAmountPaid = data.VendorPaymentTotalAmountPaid,
                     VendorPaymentUtrnumber = data.VendorPaymentUtrnumber,
-                    VendorPaymentYear = data.VendorPaymentYear,
+                    VendorPaymentYear = data.PaymentYear,
                     VendorServiceName = data.VendorServiceName,
                     VendorServiceId = data.VendorServiceId,
                     ServiceSantionAmount = data.ServiceSantionAmount,
@@ -166,15 +166,14 @@ namespace Database.VMA.Repositories
                 VendorPaymentCgst = res?.VendorPaymentCgst,
                 VendorPaymentDate = res?.VendorPaymentDate,
                 VendorPaymentId = res!.VendorPaymentId,
-                VendorPaymentIsGst = res?.VendorPaymentIsGst,
-                VendorPaymentNotesDetails = res?.VendorPaymentNotesDetails,
+                VendorPaymentIsGst = res?.VendorPaymentIsGst,                
                 VendorPaymentRtgsAmount = res?.VendorPaymentRtgsAmount,
                 VendorPaymentRtgsDate = res?.VendorPaymentRtgsDate,
                 VendorPaymentSgst = res?.VendorPaymentSgst,
                 VendorPaymentTdsamount = res?.VendorPaymentTdsamount,
                 VendorPaymentTotalAmountPaid = res?.VendorPaymentTotalAmountPaid,
                 VendorPaymentUtrnumber = res?.VendorPaymentUtrnumber,
-                VendorPaymentYear = res?.VendorPaymentYear
+                VendorPaymentYear = res?.PaymentYear
             };
 
             return vendorPayment;
@@ -183,23 +182,23 @@ namespace Database.VMA.Repositories
         {
             VendorPayment vendorPayment = new()
             {
-                VendorPaymentYear = VendorPaymentModel.VendorPaymentYear,
+                PaymentYear = VendorPaymentModel.VendorPaymentYear,
                 VendorPaymentTotalAmountPaid = VendorPaymentModel.VendorPaymentTotalAmountPaid,
                 VendorPaymentUtrnumber = VendorPaymentModel.VendorPaymentUtrnumber,
                 VendorPaymentTdsamount = VendorPaymentModel.VendorPaymentTdsamount,
                 BankBranchName = VendorPaymentModel.BankBranchName,
                 CreatedBy = VendorPaymentModel.CreatedBy,
                 CreatedDate = VendorPaymentModel.CreatedDate,
-                FkVendorDetailId = VendorPaymentModel.FkVendorDetailId,
-                IsActive = VendorPaymentModel.IsActive,
+                FkVendorDetailId = (int)VendorPaymentModel.FkVendorDetailId,
+                IsActive = (bool)VendorPaymentModel.IsActive,
                 LastUpdateBy = VendorPaymentModel.LastUpdateBy,
                 LastUpdatedDate = VendorPaymentModel.LastUpdatedDate,
                 VendorPaymentAmount = VendorPaymentModel.VendorPaymentAmount,
                 VendorPaymentCgst = VendorPaymentModel.VendorPaymentCgst,
-                VendorPaymentDate = VendorPaymentModel.VendorPaymentDate,
+                VendorPaymentDate = (DateTime)VendorPaymentModel.VendorPaymentDate,
                 VendorPaymentId = VendorPaymentModel.VendorPaymentId,
                 VendorPaymentIsGst = VendorPaymentModel.VendorPaymentIsGst,
-                VendorPaymentNotesDetails = VendorPaymentModel.VendorPaymentNotesDetails,
+               
                 VendorPaymentRtgsAmount = VendorPaymentModel.VendorPaymentRtgsAmount,
                 VendorPaymentRtgsDate = VendorPaymentModel.VendorPaymentRtgsDate,
                 VendorPaymentSgst = VendorPaymentModel.VendorPaymentSgst

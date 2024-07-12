@@ -9,10 +9,10 @@ namespace Database.Abstraction.VMA.Contract
 {
     public interface IInvoiceDetailsRepository
     {
-        public Task<int> AddInvoice(InvoiceDetails InvoiceDetailsEntity);
-        public Task EditUpdateInvoice(InvoiceDetails InvoiceDetailsEntity);
-        public Task<IEnumerable<InvoiceDetails>> GetAllInvoices();
-        public Task<InvoiceDetails?> GetInvoiceById(int invoiceId);
-        public Task RemoveInvoice(InvoiceDetails invoiceDetails);
+        public Task<int> AddInvoice(InvoiceDetail InvoiceDetailsEntity);
+        public Task EditUpdateInvoice(InvoiceDetail InvoiceDetailsEntity);
+        public Task<IEnumerable<InvoiceDetail>> GetAllInvoices();
+        public Task<InvoiceDetail?> GetInvoiceById(int invoiceId);
+        public Task RemoveInvoice(InvoiceDetail invoiceDetails);
     }
 }

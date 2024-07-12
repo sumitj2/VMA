@@ -33,81 +33,82 @@ namespace Database.VMA.Repositories
         }
         public async Task<List<PaymentNotesWithInvoiceServiceDetails>> GetAllPaymentDetailsWithServiceDetails()
         {
-            var paymentNoteWithAllDetails = from paymentNote in _context.VenderPaymentNotes
-                                            join payment in _context.VendorPayments
-                                            on paymentNote.FkVendorPaymentId equals payment.VendorPaymentId
-                                            join invoice in _context.InvoiceDetails
-                                            on paymentNote.FkInvoiceId equals invoice.InvoiceId
-                                            join details in _context.VendorDetails
-                                            on payment.FkVendorDetailId equals details.VendorDetailId
-                                            join service in _context.VendorServices
-                                            on details.FkVendorServiceId equals service.VendorServiceId
-                                            where paymentNote.IsActive == true
-                                            select new PaymentNotesWithInvoiceServiceDetails
-                                            {
-                                                CreatedBy = paymentNote.CreatedBy,
-                                                CreatedDate = paymentNote.CreatedDate,
-                                                IsActive = paymentNote.IsActive,
-                                                LastUpdateBy = paymentNote.LastUpdateBy,
-                                                LastUpdatedDate = paymentNote.LastUpdatedDate,
-                                                PaymentCode = payment.PaymentCode,
-                                                VendorServiceId = service.VendorServiceId,
-                                                VendorServiceName = service.VendorServiceName,
-                                                FkInvoiceId = paymentNote.FkInvoiceId,
-                                                FkVendorPaymentId = paymentNote.FkVendorPaymentId,
-                                                InvoiceDate = invoice.InvoiceDate,
-                                                InvoiceId = invoice.InvoiceId,
-                                                InvoiceNumber = invoice.InvoiceNumber,
-                                                InvoiceParticulars = invoice.InvoiceParticulars,
-                                                NoteId = paymentNote.NoteId,
-                                                PaymentNoteDate = paymentNote.PaymentNoteDate,
-                                                PaymentNoteNo = paymentNote.PaymentNoteNo,
-                                                VendorPaymentId = payment.VendorPaymentId
-                                            };
-            return await paymentNoteWithAllDetails.ToListAsync();
+            //var paymentNoteWithAllDetails = from paymentNote in _context.VenderPaymentNotes
+            //                                join payment in _context.VendorPayments
+            //                                on paymentNote.FkVendorPaymentId equals payment.VendorPaymentId
+            //                                join invoice in _context.InvoiceDetails
+            //                                on paymentNote.FkInvoiceId equals invoice.InvoiceId
+            //                                join details in _context.VendorDetails
+            //                                on payment.FkVendorDetailId equals details.VendorDetailId
+            //                                join service in _context.VendorServices
+            //                                on details.FkVendorServiceId equals service.VendorServiceId
+            //                                where paymentNote.IsActive == true
+            //                                select new PaymentNotesWithInvoiceServiceDetails
+            //                                {
+            //                                    CreatedBy = paymentNote.CreatedBy,
+            //                                    CreatedDate = paymentNote.CreatedDate,
+            //                                    IsActive = paymentNote.IsActive,
+            //                                    LastUpdateBy = paymentNote.LastUpdateBy,
+            //                                    LastUpdatedDate = paymentNote.LastUpdatedDate,
+            //                                    PaymentCode = payment.PaymentCode,
+            //                                    VendorServiceId = service.VendorServiceId,
+            //                                    VendorServiceName = service.VendorServiceName,
+
+            //                                    InvoiceDate = invoice.InvoiceDate,
+            //                                    InvoiceId = invoice.InvoiceId,
+            //                                    InvoiceNumber = invoice.InvoiceNumber,
+            //                                    InvoiceParticulars = invoice.InvoiceParticulars,
+            //                                    NoteId = paymentNote.NoteId,
+            //                                    PaymentNoteDate = paymentNote.PaymentNoteDate,
+            //                                    PaymentNoteNo = paymentNote.PaymentNoteNo,
+            //                                    VendorPaymentId = payment.VendorPaymentId
+            //                                };
+            //return await paymentNoteWithAllDetails.ToListAsync();
+            return null;
         }
 
         public async Task<List<ExportPaymentNoteData>> GetAllPaymentDetailsWithServiceDetailsToExport()
         {
-            var paymentNoteWithAllDetails = from paymentNote in _context.VenderPaymentNotes
-                                            join payment in _context.VendorPayments
-                                            on paymentNote.FkVendorPaymentId equals payment.VendorPaymentId
-                                            join invoice in _context.InvoiceDetails
-                                            on paymentNote.FkInvoiceId equals invoice.InvoiceId
-                                            join details in _context.VendorDetails
-                                            on payment.FkVendorDetailId equals details.VendorDetailId
-                                            join service in _context.VendorServices
-                                            on details.FkVendorServiceId equals service.VendorServiceId
-                                            join vendor in _context.Vendors
-                                            on service.FkVendorId equals vendor.VendorId
-                                            where paymentNote.IsActive == true
-                                            select new ExportPaymentNoteData
-                                            {
+            //var paymentNoteWithAllDetails = from paymentNote in _context.VenderPaymentNotes
+            //                                join payment in _context.VendorPayments
+            //                                on paymentNote.NoteId equals payment.VendorPaymentId
+            //                                join invoice in _context.InvoiceDetails
+            //                                on paymentNote.FkInvoiceId equals invoice.InvoiceId
+            //                                join details in _context.VendorDetails
+            //                                on payment.FkVendorDetailId equals details.VendorDetailId
+            //                                join service in _context.VendorServices
+            //                                on details.FkVendorServiceId equals service.VendorServiceId
+            //                                join vendor in _context.Vendors
+            //                                on service.FkVendorId equals vendor.VendorId
+            //                                where paymentNote.IsActive == true
+            //                                select new ExportPaymentNoteData
+            //                                {
 
-                                                VendorServiceName = service.VendorServiceName,
+            //                                    VendorServiceName = service.VendorServiceName,
 
-                                                InvoiceDate = invoice.InvoiceDate,
+            //                                    InvoiceDate = invoice.InvoiceDate,
 
-                                                InvoiceNumber = invoice.InvoiceNumber,
-                                                InvoiceParticulars = invoice.InvoiceParticulars,
+            //                                    InvoiceNumber = invoice.InvoiceNumber,
+            //                                    InvoiceParticulars = invoice.InvoiceParticulars,
 
-                                                PaymentNoteDate = paymentNote.PaymentNoteDate,
-                                                PaymentNoteNo = paymentNote.PaymentNoteNo,
-                                                ServiceSantionAmount = details.ServiceSantionAmount,
-                                                ServiceSantionedBy = details.ServiceSantionedBy,
-                                                VendorPaymentYearRange = payment.VendorPaymentYear,
-                                                VendorPaymentUtrnumber = payment.VendorPaymentUtrnumber,
-                                                VendorDetailCategory = details.VendorDetailCategory,
-                                                ServiceType = details.ServiceType,
-                                                VendorPaymentAmount = payment.VendorPaymentAmount,
-                                                VendorPaymentRtgsAmount = payment.VendorPaymentRtgsAmount,
-                                                VendorPaymentTdsamount = payment.VendorPaymentTdsamount,
-                                                VendorPaymentRtgsDate = payment.VendorPaymentRtgsDate,
-                                                VendorName = vendor.VendorName
+            //                                    PaymentNoteDate = paymentNote.PaymentNoteDate,
+            //                                    PaymentNoteNo = paymentNote.PaymentNoteNo,
+            //                                    ServiceSantionAmount = details.ServiceSantionAmount,
+            //                                    ServiceSantionedBy = details.ServiceSantionedBy,
+            //                                    VendorPaymentYearRange = payment.VendorPaymentYear,
+            //                                    VendorPaymentUtrnumber = payment.VendorPaymentUtrnumber,
+            //                                    VendorDetailCategory = details.VendorDetailCategory,
+            //                                    ServiceType = details.ServiceType,
+            //                                    VendorPaymentAmount = payment.VendorPaymentAmount,
+            //                                    VendorPaymentRtgsAmount = payment.VendorPaymentRtgsAmount,
+            //                                    VendorPaymentTdsamount = payment.VendorPaymentTdsamount,
+            //                                    VendorPaymentRtgsDate = payment.VendorPaymentRtgsDate,
+            //                                    VendorName = vendor.VendorName
 
 
-                                            };
-            return await paymentNoteWithAllDetails.ToListAsync();
+            //                                };
+            //return await paymentNoteWithAllDetails.ToListAsync();
+            return null;
         }
         public async Task<IEnumerable<VenderPaymentNote>> GetAllVendorsPaymentNotes()
         {

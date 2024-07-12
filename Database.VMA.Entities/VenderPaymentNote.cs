@@ -7,9 +7,9 @@ public partial class VenderPaymentNote
 {
     public int NoteId { get; set; }
 
-    public string? PaymentNoteNo { get; set; }
+    public string PaymentNoteNo { get; set; } = null!;
 
-    public DateTime? PaymentNoteDate { get; set; }
+    public DateTime PaymentNoteDate { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 
@@ -21,7 +21,5 @@ public partial class VenderPaymentNote
 
     public DateTime? LastUpdatedDate { get; set; }
 
-    public int? FkVendorPaymentId { get; set; }
-
-    public int? FkInvoiceId { get; set; }
+    public int FkVendorId { get; set; }
 }
