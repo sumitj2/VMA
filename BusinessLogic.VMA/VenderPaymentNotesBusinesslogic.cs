@@ -52,19 +52,22 @@ namespace Database.VMA.Repositories
         {
             var repositoryResult = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetails().ConfigureAwait(true);
             List<VenderPaymentNoteModel> paymentNoteModel = [];
-            foreach (var paymentNote in repositoryResult)
+            if (repositoryResult != null)
             {
-                paymentNoteModel.Add(new VenderPaymentNoteModel()
+                foreach (var paymentNote in repositoryResult)
                 {
-                    CreatedBy = paymentNote.CreatedBy,
-                    CreatedDate = paymentNote.CreatedDate,
-                    IsActive = paymentNote.IsActive,
-                    LastUpdateBy = paymentNote.LastUpdateBy,
-                    LastUpdatedDate = paymentNote.LastUpdatedDate,
-                    PaymentNoteNo = paymentNote.PaymentNoteNo,
-                    PaymentNoteDate = paymentNote.PaymentNoteDate,
-                    NoteId = paymentNote.NoteId                   
-                });
+                    paymentNoteModel.Add(new VenderPaymentNoteModel()
+                    {
+                        CreatedBy = paymentNote.CreatedBy,
+                        CreatedDate = paymentNote.CreatedDate,
+                        IsActive = paymentNote.IsActive,
+                        LastUpdateBy = paymentNote.LastUpdateBy,
+                        LastUpdatedDate = paymentNote.LastUpdatedDate,
+                        PaymentNoteNo = paymentNote.PaymentNoteNo,
+                        PaymentNoteDate = paymentNote.PaymentNoteDate,
+                        NoteId = paymentNote.NoteId
+                    });
+                }
             }
             return paymentNoteModel;
         }

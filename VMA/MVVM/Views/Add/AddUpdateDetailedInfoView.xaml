@@ -34,6 +34,15 @@
 
                                 <StackPanel x:Name="CompanyDetails" Grid.Row="0"
                                     Orientation="Vertical">
+                                    <TextBlock Text="Service Year"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
+                                    <TextBox x:Name="txtServiceYear"
+                                               Text="{Binding VendorDetailCategory ,UpdateSourceTrigger=PropertyChanged}"
+                                               Style="{StaticResource FormTextBox}"
+                                               TextWrapping="Wrap"
+                                               AcceptsReturn="True"/>
+                                    
                                     <TextBlock Text="Select Service"
                                                Style="{StaticResource FormTextBlock}"
                                                Margin="20,20,230,0"/>
@@ -125,6 +134,39 @@
                                        Text="{Binding ServiceSantionAmount ,UpdateSourceTrigger=PropertyChanged}"                                         
                                        Style="{StaticResource FormTextBox}"/>
 
+                                    <TextBlock Text="Service Santioned Date"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
+
+                                    <DatePicker x:Name="txtserviceSantionedDate"
+                                                Text="{Binding ServiceStartDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361"                                         
+                                                 />
+                                    <TextBlock Text="Sandtioned Note Number"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,0,0"/>
+
+                                    <TextBox x:Name="txtSantionNoteNo"
+                                               Text="{Binding ServiceSantionedBy,UpdateSourceTrigger=PropertyChanged}"                                         
+                                               Style="{StaticResource FormTextBox}"/>
+
+
+                                </StackPanel>
+                                <StackPanel x:Name="CompanyDetai" Grid.Column="1"
+                                    Orientation="Vertical">
+
+                                    <TextBlock Text="Number Of Units Purchased"                                           
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtNumberOfUnitPurchased"
+                                             Text="{Binding QuantityOfUnit ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"/>
+
+                                    <TextBlock Text="Rate Per Units"                                           
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtRatePerUnit"
+                                               Text="{Binding RatePerUnit ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                               Style="{StaticResource FormTextBox}"/>
                                     <TextBlock Text="Select Payment Type: "
                                                Style="{StaticResource FormTextBlock}"
                                                Margin="20,20,230,0"/>
@@ -149,24 +191,13 @@
                                               BorderBrush="{StaticResource plainTextColor3}"
                                               BorderThickness="0,0,0,1" />
 
+                                    <TextBlock Text="Is AMC"
+                                               Style="{StaticResource FormTextBlock}"
+                                               />
 
-                                </StackPanel>
-                                <StackPanel x:Name="CompanyDetai" Grid.Column="1"
-                                    Orientation="Vertical">
+                                    <RadioButton x:Name="AMC_Yes" IsChecked="{Binding IsGSTDetailsVisible}" Margin="20,5,320,0" GroupName="AMC" >Yes</RadioButton>
+                                    <RadioButton x:Name="AMC_No" Margin="90,-15,250,0" GroupName="AMC" >No</RadioButton>
 
-                                    <TextBlock Text="Number Of Units Purchased"                                           
-                                               Style="{StaticResource FormTextBlock}"/>
-
-                                    <TextBox x:Name="txtNumberOfUnitPurchased"
-                                             Text="{Binding QuantityOfUnit ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                             Style="{StaticResource FormTextBox}"/>
-
-                                    <TextBlock Text="Rate Per Units"                                           
-                                               Style="{StaticResource FormTextBlock}"/>
-
-                                    <TextBox x:Name="txtRatePerUnit"
-                                               Text="{Binding RatePerUnit ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                               Style="{StaticResource FormTextBox}"/>
 
 
                                 </StackPanel>
