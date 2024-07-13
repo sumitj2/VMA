@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace Database.VMA.Entities.CustomEntities
 {
-    public class VendorDetailsWithService :VendorDetail
+    public class VendorDetailsWithService : VendorDetail
     {
         public int VendorServiceId { get; set; }
-
         public string? VendorServiceName { get; set; }
+        public int VendorId { get; set; }
+        public string VendorCode { get; set; } = null!;
+        public string VendorName { get; set; } = null!;
     }
 }

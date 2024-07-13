@@ -5,6 +5,15 @@ namespace BusinessLogic.Abstraction.VMA.Models;
 
 public partial class VendorDetailModel
 {
+    #region  Join
+    public int VendorServiceId { get; set; }
+    public string? VendorServiceName { get; set; }
+    public int VendorId { get; set; }
+    public string VendorCode { get; set; } = null!;
+    public string VendorName { get; set; } = null!;
+
+    #endregion
+
     public int VendorDetailId { get; set; }
 
     public string? VendorDetailCategory { get; set; }

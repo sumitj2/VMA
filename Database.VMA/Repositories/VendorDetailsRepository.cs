@@ -41,6 +41,8 @@ namespace Database.VMA.Repositories
             var productsWithVendors = from vendorDetail in _context.VendorDetails
                                       join service in _context.VendorServices
                                       on  vendorDetail.FkVendorServiceId equals service.VendorServiceId
+                                      join vendor in _context.Vendors
+                                      on vendorDetail.FkVendorId equals vendor.VendorId
                                       where service.IsActive == true
                                       select new VendorDetailsWithService
                                       {
@@ -62,7 +64,15 @@ namespace Database.VMA.Repositories
                                           ServiceType = vendorDetail.ServiceType,
                                           VendorDetailCategory = vendorDetail.VendorDetailCategory,
                                           VendorDetailId = vendorDetail.VendorDetailId,
-
+                                          FkVendorId = vendorDetail.FkVendorId,
+                                          DetailsYear = vendorDetail.DetailsYear,
+                                          IsAmc = vendorDetail.IsAmc,
+                                          SantionedDate = vendorDetail.SantionedDate,   
+                                          SantionedNoteNo = vendorDetail.SantionedNoteNo,
+                                          SantionedType = vendorDetail.SantionedType,
+                                          VendorCode = vendor.VendorCode,
+                                          VendorId = vendor.VendorId,
+                                          VendorName=vendor.VendorName
                                       };
             return await productsWithVendors.ToListAsync();
         }

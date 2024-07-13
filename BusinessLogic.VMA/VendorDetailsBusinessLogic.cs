@@ -63,27 +63,42 @@ namespace Database.VMA.Repositories
         public async Task<IEnumerable<VendorDetailModel>> GetAllVendorDetails()
         {
             var repositoryResult = await _vendorDetailsRepository.GetVendorDetailsWithService();
-            IList<VendorDetailModel> result = new List<VendorDetailModel>();
-            foreach (var data in repositoryResult)
+            IList<VendorDetailModel> result = [];
+            if (repositoryResult != null)
             {
-                result.Add(new VendorDetailModel()
+                foreach (var data in repositoryResult)
                 {
-                    RatePerUnit = data.RatePerUnit,
-                    ServiceType = data.ServiceType,
-                    ServiceSantionAmount = data.ServiceSantionAmount,
-                    ServicePaymentType = data.ServicePaymentType,
-                    ServiceEndDate = data.ServiceEndDate,
-                    VendorDetailId = data.VendorDetailId,
-                    QuantityOfUnit = data.QuantityOfUnit,
-                    CreatedBy = data.CreatedBy,
-                    CreatedDate = DateTime.UtcNow,
-                    FkVendorServiceId = data.FkVendorServiceId,
-                    IsActive = true,
-                    ServiceSantionedBy = data.ServiceSantionedBy,
-                    ServiceStartDate = data.ServiceStartDate,
-                    VendorDetailCategory = data.VendorDetailCategory
-
-                });
+                    result.Add(new VendorDetailModel()
+                    {
+                        RatePerUnit = data.RatePerUnit,
+                        ServiceType = data.ServiceType,
+                        ServiceSantionAmount = data.ServiceSantionAmount,
+                        ServicePaymentType = data.ServicePaymentType,
+                        ServiceEndDate = data.ServiceEndDate,
+                        VendorDetailId = data.VendorDetailId,
+                        QuantityOfUnit = data.QuantityOfUnit,
+                        CreatedBy = data.CreatedBy,
+                        CreatedDate = DateTime.UtcNow,
+                        FkVendorServiceId = data.FkVendorServiceId,
+                        IsActive = true,
+                        ServiceSantionedBy = data.ServiceSantionedBy,
+                        ServiceStartDate = data.ServiceStartDate,
+                        VendorDetailCategory = data.VendorDetailCategory,
+                        VendorName = data.VendorName,
+                        VendorId = data.VendorId,
+                        VendorCode = data.VendorCode,
+                        SantionedType = data.SantionedType,
+                        SantionedNoteNo = data.SantionedNoteNo,
+                        SantionedDate = data.SantionedDate,
+                        IsAmc = data.IsAmc,
+                        DetailsYear = data.DetailsYear,
+                        FkVendorId = data.FkVendorId,
+                        LastUpdateBy = data.LastUpdateBy,
+                        LastUpdatedDate = data.LastUpdatedDate,
+                        VendorServiceId = data.VendorServiceId,
+                        VendorServiceName = data.VendorServiceName
+                    });
+                }
             }
             return result;
         }
