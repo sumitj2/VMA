@@ -24,7 +24,7 @@ BorderThickness="0"
 
             <Grid Grid.Row="0">
                 <TabControl Style="{DynamicResource TabContorlStyle}" SelectedIndex="{Binding SelectedTabIndex}" Background="White">
-                    <TabItem Header="Payment Details" Style="{DynamicResource TabItemStyle}" Height="39">
+                    <TabItem Header="Service Selection" Style="{DynamicResource TabItemStyle}" Height="39">
                         <AdornerDecorator>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
@@ -33,10 +33,44 @@ BorderThickness="0"
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel x:Name="PaymentDetails" Grid.Row="0"
-                                Orientation="Vertical">
+                                            Orientation="Vertical">
+                                    <TextBlock Text="Payment for Year "
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtPaymentYearRange"
+                                              Text="{Binding VendorPaymentYear ,UpdateSourceTrigger=PropertyChanged}"
+                                              Style="{StaticResource FormTextBox}"
+                                              TextWrapping="Wrap"
+                                              AcceptsReturn="True"/>
+
+                                    <TextBlock Text="Select Vendor"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,15,230,0"/>
+
+                                    <ComboBox Style="{StaticResource vendorCombobox}"                              
+                                              ItemsSource="{Binding Vendors}"   
+                                              SelectedItem="{Binding SelectedVendor, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="VendorName" 
+                                              SelectedValuePath="VendorId"
+                                              SelectedValue="{Binding SelectedVendor.VendorId, Mode=TwoWay}"
+                                              Name="searchCriteria" 
+                                              Grid.Row="1" 
+                                              Width="239" 
+                                              Height="30" 
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              Margin="0,-20,10,30"
+                                              Background="Transparent"
+                                              FontWeight="Medium"
+                                              FontFamily="Montserrat"                            
+                                              Foreground="{StaticResource plainTextColor3}"
+                                              BorderBrush="{StaticResource plainTextColor3}"
+                                              BorderThickness="0,0,0,1" />
+
+
                                     <TextBlock Text="Select Service"
                                                Style="{StaticResource FormTextBlock}"
-                                               Margin="20,20,230,0"/>
+                                               Margin="20,10,230,0"/>
 
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
                                               ItemsSource="{Binding VendorServiceDetails}"   
@@ -48,7 +82,7 @@ BorderThickness="0"
                                               Height="30" 
                                               VerticalContentAlignment="Center"
                                               HorizontalAlignment="Right"
-                                              Margin="0,-20,10,40"
+                                              Margin="0,-30,10,30"
                                               Background="Transparent"
                                               FontWeight="Medium"
                                               FontFamily="Montserrat"                            
@@ -56,72 +90,10 @@ BorderThickness="0"
                                               BorderBrush="{StaticResource plainTextColor3}"
                                               BorderThickness="0,0,0,1" />
 
-                                    <TextBlock Text="Enter Payment Code"
-                                                Style="{StaticResource FormTextBlock}"/>
-
-                                    <TextBox x:Name="txtPaymentCode" IsEnabled="False"
-                                                Text="{Binding PaymentCode ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
-                                                Style="{StaticResource FormTextBox}"
-                                                TextWrapping="Wrap"
-                                                AcceptsReturn="True"/>
-
-                                    <TextBlock Text="Enter Payment Year Range"
-                                           Style="{StaticResource FormTextBlock}"/>
-
-                                    <TextBox x:Name="txtPaymentYearRange"
-                                         Text="{Binding VendorPaymentYear ,UpdateSourceTrigger=PropertyChanged}"
-                                         Style="{StaticResource FormTextBox}"
-                                         TextWrapping="Wrap"
-                                         AcceptsReturn="True"/>
-
-                                    <TextBlock Text="Enter Payment Date"
-                                           Style="{StaticResource FormTextBlock}"/>
-
-                                    <DatePicker x:Name="paymentDate"
-                                         Text="{Binding VendorPaymentDate ,UpdateSourceTrigger=LostFocus,Mode=TwoWay}"/>
-
-                                    <TextBlock Text="Total Amount Paid"
-                                               Style="{StaticResource FormTextBlock}"/>
-
-                                    <TextBox x:Name="txtTotalAmtPaid"
-                                             Text="{Binding VendorPaymentAmount ,UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource FormTextBox}"  AcceptsReturn="True"/>
-
                                 </StackPanel>
 
                                 <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
-                                   Orientation="Vertical">
-                                   
-                                    <TextBlock Text="Is GST Applicable"
-                                                   Style="{StaticResource FormTextBlock}"
-                                                   Margin="20,20,230,0"/>
-
-                                    <RadioButton x:Name="GST_Yes" IsChecked="{Binding IsGSTDetailsVisible}" Margin="20,5,320,0" GroupName="GST" >Yes</RadioButton>
-                                    <RadioButton x:Name="GST_No" Margin="90,-15,250,0" GroupName="GST" >No</RadioButton>
-
-
-                                    <TextBlock Text="Is TDS Applicable"
-                                    Style="{StaticResource FormTextBlock}"/>
-
-                                    <RadioButton  x:Name="TDS_Yes" IsChecked="{Binding IsTDSTextBoxVisible}" Margin="20,5,0,0" GroupName="TDS" >Yes</RadioButton>
-                                    <RadioButton  x:Name="TDS_No" Margin="90,-15,250,0" GroupName="TDS" >No</RadioButton>
-
-                                    <TextBlock Text="Is This Payment for Branch"
-                                               Style="{StaticResource FormTextBlock}"/>
-
-                                    <RadioButton  x:Name="Branch_Yes" IsChecked="{Binding IsBranchNameVisible}" Margin="20,5,0,0" GroupName="branch" >Yes</RadioButton>
-                                    <RadioButton  x:Name="Branch_No" Margin="90,-15,250,0" GroupName="branch" >No</RadioButton>
-
-                                    <TextBlock Text="Enter Branch Name"
-                                               Visibility="{Binding TextBlockBranchNameVisibility}"
-                                               Style="{StaticResource FormTextBlock}"/>
-                                    
-                                    <TextBox x:Name="txtBranchName"
-                                             Visibility="{Binding TextBoxBranchNameVisibility}"
-                                             Text="{Binding BankBranchName ,UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource FormTextBox}"
-                                             TextWrapping="Wrap"
-                                             AcceptsReturn="True"/>
+                                            Orientation="Vertical">
 
                                     <TextBlock Text="Note Related to Payment"                                               
                                                Style="{StaticResource FormTextBlock}"/>
@@ -138,56 +110,100 @@ BorderThickness="0"
                         </AdornerDecorator>
                     </TabItem>
 
-                    <TabItem Header="RTGS Details" Style="{DynamicResource TabItemStyle}" Height="39">
+
+                    <TabItem Header="Payment Details" Style="{DynamicResource TabItemStyle}" Height="39">
                         <AdornerDecorator>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="400"/>
                                     <ColumnDefinition Width="400"/>
                                 </Grid.ColumnDefinitions>
-                                
-                                <StackPanel x:Name="RTGSDetails" 
-                                            Grid.Row="0"
-                                            Orientation="Vertical">
-                                    
-                                        <TextBlock Text="RTGS Date"
-                                                   Style="{StaticResource FormTextBlock}"
-                                                   Margin="20,20,0,0"/>
 
-                                        <DatePicker x:Name="RTGSDate" 
-                                                    Text="{Binding VendorPaymentRtgsDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361"                                         
-                                                    />
+                                <StackPanel x:Name="PaymentDetail" Grid.Row="0"
+                                Orientation="Vertical">
+                                   
 
-                                        <TextBlock Text="RTGS Amount"
-                                                   Style="{StaticResource FormTextBlock}"
-                                                   Margin="20,20,0,0"/>
+                                    <TextBlock Text="Enter Payment Date"
+                                           Style="{StaticResource FormTextBlock}"/>
 
-                                        <TextBox x:Name="txtSantionedAmount"
-                                                 Text="{Binding VendorPaymentRtgsAmount ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                                 Style="{StaticResource FormTextBox}"/>
+                                    <DatePicker x:Name="paymentDate"
+                                         Text="{Binding VendorPaymentDate ,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Width="353"/>
 
-                                         <TextBlock Text="UTR Number"                                           
-                                                    Style="{StaticResource FormTextBlock}"/>
-
-                                         <TextBox x:Name="txtUTRNumber"
-                                                  Text="{Binding VendorPaymentUtrnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                                  Style="{StaticResource FormTextBox}"/>
-                                </StackPanel>
-                                
-                                <StackPanel x:Name="RTGSDetailTDS" Grid.Column="1"
-                                Orientation="Vertical">                                    
-
-                                    <TextBlock Text="TDS Amout"  
-                                               Visibility="{Binding TextBlockVisibility}" 
+                                    <TextBlock Text="Total Amount Paid(Non-taxable)"
                                                Style="{StaticResource FormTextBlock}"/>
 
-                                    <TextBox x:Name="txtTDSAmount"
-                                             Visibility="{Binding TextBoxVisibility}" 
-                                             Text="{Binding VendorPaymentTdsamount ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                             Style="{StaticResource FormTextBox}"/>
+                                    <TextBox x:Name="txtTotalAmtPaid"
+                                             Text="{Binding VendorPaymentAmount ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"  AcceptsReturn="True"/>
+                                    <TextBlock Text="Total Amount Including Tax"
+                                               Style="{StaticResource FormTextBlock}"/>
 
+                                    <TextBox x:Name="txtTotalAmtIncludingTax"
+                                             Text="{Binding VendorPaymentAmount ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"  AcceptsReturn="True"/>
 
                                 </StackPanel>
+
+                                <StackPanel x:Name="CompanyDetail" Grid.Column="1"
+                                   Orientation="Vertical">
+
+                                    <TextBlock Text="Is GST Applicable"
+                                                   Style="{StaticResource FormTextBlock}"
+                                                   Margin="20,20,230,0"/>
+
+                                    <RadioButton x:Name="GST_Yes" IsChecked="{Binding IsGSTDetailsVisible}" Margin="20,5,320,0" GroupName="GST" >Yes</RadioButton>
+                                    <RadioButton x:Name="GST_No" Margin="90,-15,250,0" GroupName="GST" >No</RadioButton>
+
+                                    <TextBlock Text="Select GST Category"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,15,230,0"
+                                               Visibility="{Binding TextBoxGSTCategoryVisibility}"/>
+                                    <ComboBox Style="{StaticResource vendorCombobox}"                              
+                                              Visibility="{Binding ComboBoxGSTCategoryVisibility}"
+                                              ItemsSource="{Binding Vendors}"   
+                                              SelectedItem="{Binding SelectedVendor, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="VendorName" 
+                                              SelectedValuePath="VendorId"
+                                              SelectedValue="{Binding SelectedVendor.VendorId, Mode=TwoWay}"
+                                              Name="GSTCategory" 
+                                              Grid.Row="1" 
+                                              Width="229" 
+                                              Height="30" 
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              Margin="0,-20,15,10"
+                                              Background="Transparent"
+                                              FontWeight="Medium"
+                                              FontFamily="Montserrat"                            
+                                              Foreground="{StaticResource plainTextColor3}"
+                                              BorderBrush="{StaticResource plainTextColor3}"
+                                              BorderThickness="0,0,0,1" />
+
+                                    <TextBlock Text="Is TDS Applicable"
+                                    Style="{StaticResource FormTextBlock}"/>
+
+                                    <RadioButton  x:Name="TDS_Yes" IsChecked="{Binding IsTDSTextBoxVisible}" Margin="20,5,320,0" GroupName="TDS" >Yes</RadioButton>
+                                    <RadioButton  x:Name="TDS_No" Margin="90,-15,250,0" GroupName="TDS" >No</RadioButton>
+
+                                    <TextBlock Text="Is This Payment for Branch"
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <RadioButton  x:Name="Branch_Yes" IsChecked="{Binding IsBranchNameVisible}" Margin="20,5,320,0" GroupName="branch" >Yes</RadioButton>
+                                    <RadioButton  x:Name="Branch_No" Margin="90,-15,250,0" GroupName="branch" >No</RadioButton>
+
+                                    <TextBlock Text="Enter Branch Name"
+                                               Visibility="{Binding TextBlockBranchNameVisibility}"
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtBranchName"
+                                             Visibility="{Binding TextBoxBranchNameVisibility}"
+                                             Text="{Binding BankBranchName ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True"/>                                  
+
+                                </StackPanel>
+
                             </Grid>
                         </AdornerDecorator>
                     </TabItem>
@@ -217,38 +233,150 @@ BorderThickness="0"
                                     <TextBox x:Name="txtSGSTAmount"
                                              Text="{Binding VendorPaymentSgst ,UpdateSourceTrigger=PropertyChanged}"                                         
                                              Style="{StaticResource FormTextBox}"/>
+
+                                    <TextBlock Text="IGST Amount"                                           
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtIGSTAmount"
+                                             Text="{Binding VendorPaymentSgst ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"/>
+
+                                    <TextBlock Text="Total GST Amount"                                           
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtTotalGSTAmount"
+                                             Text="{Binding VendorPaymentSgst ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"/>
                                 </StackPanel>
 
                                 <StackPanel x:Name="GetGSTPercentage" Grid.Column="1"
-                                            Orientation="Vertical">
+                                            Orientation="Vertical">                                 
 
-                                    <TextBlock Text="SGST Percentage"                                           
-                                               Style="{StaticResource FormTextBlock}"/>
-
-                                    <TextBox x:Name="txtCSGS"
-                                             Text="{Binding Sgstpercentage ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                             Style="{StaticResource FormTextBox}"
-                                             IsEnabled="False"/>
-                                    
                                     <TextBlock Text="CGST Percentage"                                           
                                                Style="{StaticResource FormTextBlock}"/>
-                                    
+
                                     <TextBox x:Name="txtCGST"
                                              Text="{Binding Cgstpercentage ,UpdateSourceTrigger=PropertyChanged}"                                         
                                              Style="{StaticResource FormTextBox}"
                                              IsEnabled="False"/>
 
-                                    <TextBlock Text="ISGST Percentage"                                           
+                                    <TextBlock Text="SGST Percentage"                                           
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtSGST"
+                                             Text="{Binding Sgstpercentage ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"
+                                             IsEnabled="False"/>
+
+                                    <TextBlock Text="IGST Percentage"                                           
                                                Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtIGST"
-                                            Text="{Binding Igstpercentage ,UpdateSourceTrigger=PropertyChanged}"                                         
-                                            Style="{StaticResource FormTextBox}"
+                                             Text="{Binding Igstpercentage ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"
                                              IsEnabled="False"/>
                                 </StackPanel>
                             </Grid>
                         </AdornerDecorator>
                     </TabItem>
+
+                    <TabItem Header="Invoice Details" Style="{DynamicResource TabItemStyle}" Height="39">
+                        <AdornerDecorator>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel x:Name="CompanyGSTAndBankDetails" 
+                                            Grid.Row="0"
+                                            Orientation="Vertical">
+                                    <TextBlock Text="Invoice Number"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,0,0"/>
+
+                                    <TextBox x:Name="txtInvoiceNumber"
+                                             Text="{Binding InvoiceNumber,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"/>
+
+                                    <TextBlock Text="Invoice Date"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,0,0"/>
+
+
+                                    <DatePicker Name="invoiceDate"
+                             Text="{Binding  InvoiceDate ,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Width="359"/>
+
+                                    <TextBlock Text="Invoice Particular"
+                    Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtInvoicePArticular"
+                    Text="{Binding InvoiceParticulars ,UpdateSourceTrigger=PropertyChanged}"                                         
+                   Style="{StaticResource FormTextBox}"/>
+
+
+
+                                </StackPanel>
+                                <StackPanel x:Name="CompanyDetai" Grid.Column="1"
+                 Orientation="Vertical"/>
+                            </Grid>
+                        </AdornerDecorator>
+                    </TabItem>
+
+                    <TabItem Header="RTGS Details" Style="{DynamicResource TabItemStyle}" Height="39">
+                        <AdornerDecorator>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel x:Name="RTGSDetails" 
+                                            Grid.Row="0"
+                                            Orientation="Vertical">
+
+                                    <TextBlock Text="RTGS Date"
+                                                   Style="{StaticResource FormTextBlock}"
+                                                   Margin="20,20,0,0"/>
+
+                                    <DatePicker x:Name="RTGSDate" 
+                                                    Text="{Binding VendorPaymentRtgsDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361"                                         
+                                                    />
+
+                                    <TextBlock Text="RTGS Amount"
+                                                   Style="{StaticResource FormTextBlock}"
+                                                   Margin="20,20,0,0"/>
+
+                                    <TextBox x:Name="txtSantionedAmount"
+                                                 Text="{Binding VendorPaymentRtgsAmount ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                                 Style="{StaticResource FormTextBox}"/>
+
+                                    <TextBlock Text="UTR Number"                                           
+                                                    Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtUTRNumber"
+                                                  Text="{Binding VendorPaymentUtrnumber ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                                  Style="{StaticResource FormTextBox}"/>
+                                </StackPanel>
+
+                                <StackPanel x:Name="RTGSDetailTDS" Grid.Column="1"
+                                Orientation="Vertical">
+
+                                    <TextBlock Text="TDS Amout"  
+                                               Visibility="{Binding TextBlockVisibility}" 
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtTDSAmount"
+                                             Visibility="{Binding TextBoxVisibility}" 
+                                             Text="{Binding VendorPaymentTdsamount ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                             Style="{StaticResource FormTextBox}"/>
+
+
+                                </StackPanel>
+                            </Grid>
+                        </AdornerDecorator>
+                    </TabItem>
+
+                   
                 </TabControl>
             </Grid>
 

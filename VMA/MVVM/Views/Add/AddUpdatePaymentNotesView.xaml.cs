@@ -23,6 +23,6 @@ namespace VMA.MVVM.Views.Add
         public AddUpdatePaymentNotesView()
         {
             InitializeComponent();
-        }
+        }        
     }
 }

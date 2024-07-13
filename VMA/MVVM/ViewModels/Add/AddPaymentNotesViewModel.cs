@@ -148,18 +148,41 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        private bool _IsComboBoxPaymentCodeVisible;
+        //private bool _IsComboBoxPaymentCodeVisible;
 
-        public bool IsComboBoxPaymentCodeVisible
+        //public bool IsComboBoxPaymentCodeVisible
+        //{
+        //    get { return _IsComboBoxPaymentCodeVisible; }
+        //    set
+        //    {
+        //        _IsComboBoxPaymentCodeVisible = value;
+        //        OnPropertyChanged(nameof(HidePaymentCodeComboBox));
+        //    }
+        //}
+
+        private bool _IsTextBoxServiceVisible;
+
+        public bool IsTextBoxServiceVisible
         {
-            get { return _IsComboBoxPaymentCodeVisible; }
+            get { return _IsTextBoxServiceVisible; }
             set
             {
-                _IsComboBoxPaymentCodeVisible = value;
-                OnPropertyChanged(nameof(HidePaymentCodeComboBox));
+                _IsTextBoxServiceVisible = value;
+                OnPropertyChanged(nameof(HideSelectedService));
             }
         }
 
+        private bool _IsTextBoxSelectedVendorVisible;
+
+        public bool IsTextBoxSelectedVendorVisible
+        {
+            get { return _IsTextBoxSelectedVendorVisible; }
+            set
+            {
+                _IsTextBoxSelectedVendorVisible = value;
+                OnPropertyChanged(nameof(HideSelectedVendor));
+            }
+        }
 
 
         #endregion
@@ -260,13 +283,23 @@ namespace VMA.MVVM.ViewModels.Add
         {
             _ = LoadVendorServicePayment(selectedVendorServiceDetails?.VendorDetailId);
         }
-        public Visibility HidePaymentCodeComboBox
-        {
-            get { return IsComboBoxPaymentCodeVisible ? Visibility.Visible : Visibility.Collapsed; }
-        }
+        //public Visibility HidePaymentCodeComboBox
+        //{
+        //    get { return IsComboBoxPaymentCodeVisible ? Visibility.Visible : Visibility.Collapsed; }
+        //}
         public Visibility HideServiceSelectComboBox
         {
             get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideSelectedVendor
+        {
+            get { return IsTextBoxSelectedVendorVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideSelectedService
+        {
+            get { return IsTextBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
         }
         public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, VenderPaymentNoteModel? editPaymentNote)
         {
@@ -274,14 +307,18 @@ namespace VMA.MVVM.ViewModels.Add
             _editPaymentNote = editPaymentNote;
             if (_editPaymentNote != null)
             {
-                IsComboBoxPaymentCodeVisible = false;
+               // IsComboBoxPaymentCodeVisible = false;
                 IsComboBoxServiceVisible = false;
+                IsTextBoxSelectedVendorVisible = true;
+                IsTextBoxServiceVisible = true;
                 SaveButtonName = "Update";
             }
             else
             {
-                IsComboBoxPaymentCodeVisible = true;
+              //  IsComboBoxPaymentCodeVisible = true;
                 IsComboBoxServiceVisible = true;
+                IsTextBoxSelectedVendorVisible = false;
+                IsTextBoxServiceVisible = false;
                 SaveButtonName = "Submit";
             }
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;

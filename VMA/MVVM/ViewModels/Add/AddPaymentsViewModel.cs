@@ -35,6 +35,9 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     isGSTDetailsVisible = value;
                     OnPropertyChanged(nameof(GSTTabVisible));
+                    OnPropertyChanged(nameof(TextBoxGSTCategoryVisibility));
+                    OnPropertyChanged(nameof(ComboBoxGSTCategoryVisibility));
+
                     VendorPaymentIsGst = true;
                 }
             }
@@ -116,6 +119,16 @@ namespace VMA.MVVM.ViewModels.Add
         public Visibility TextBlockBranchNameVisibility
         {
             get { return IsBranchNameVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility TextBoxGSTCategoryVisibility
+        {
+            get { return IsGSTDetailsVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility ComboBoxGSTCategoryVisibility
+        {
+            get { return IsGSTDetailsVisible ? Visibility.Visible : Visibility.Collapsed; }
         }
 
         #region Command
