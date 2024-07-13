@@ -151,7 +151,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowDetailedInfoViewCommand(object obj)
         {
-            CurrentChildView = new DetailedInfoViewModel(this, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic);
+            CurrentChildView = new DetailedInfoViewModel(this, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic);
             Caption = "Detailed Info";
             Icon = IconChar.InfoCircle;
         }

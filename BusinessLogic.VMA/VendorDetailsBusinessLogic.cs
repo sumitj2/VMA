@@ -20,8 +20,6 @@ namespace Database.VMA.Repositories
                 CreatedBy = vendorDetailModel.CreatedBy,
                 CreatedDate = DateTime.UtcNow,
                 IsActive = vendorDetailModel.IsActive,
-                LastUpdateBy = vendorDetailModel.LastUpdateBy,
-                LastUpdatedDate = DateTime.UtcNow,
                 QuantityOfUnit = vendorDetailModel.QuantityOfUnit,
                 FkVendorServiceId = (int)vendorDetailModel.FkVendorServiceId,
                 RatePerUnit = vendorDetailModel.RatePerUnit,
@@ -32,7 +30,12 @@ namespace Database.VMA.Repositories
                 ServiceStartDate = vendorDetailModel.ServiceStartDate,
                 ServiceType = vendorDetailModel.ServiceType,
                 VendorDetailCategory = vendorDetailModel.VendorDetailCategory,
-
+                VendorDetailId = vendorDetailModel.VendorDetailId,
+                DetailsYear = vendorDetailModel.DetailsYear,
+                FkVendorId = vendorDetailModel.FkVendorId,
+                IsAmc = vendorDetailModel.IsAmc,
+                SantionedDate = vendorDetailModel.SantionedDate,
+                SantionedNoteNo = vendorDetailModel.SantionedNoteNo,
             };
             await _vendorDetailsRepository.AddVendorDetails(vendorDetailEntity);
         }
@@ -55,7 +58,12 @@ namespace Database.VMA.Repositories
                 detail.RatePerUnit = vendorDetailModel.RatePerUnit;
                 detail.FkVendorServiceId = (int)vendorDetailModel.FkVendorServiceId;
                 detail.QuantityOfUnit = vendorDetailModel.QuantityOfUnit;
-
+                detail.SantionedDate = vendorDetailModel.SantionedDate;
+                detail.FkVendorId = vendorDetailModel.FkVendorId;
+                detail.VendorDetailCategory = vendorDetailModel?.VendorDetailCategory;
+                detail.FkVendorId = vendorDetailModel.VendorId;
+                detail.IsAmc = vendorDetailModel.IsAmc;
+                detail.SantionedNoteNo = vendorDetailModel?.SantionedNoteNo;
 
                 await _vendorDetailsRepository.EditUpdateVendorDetail(detail);
             }
