@@ -7,10 +7,9 @@ public partial class VendorModel
 {
     public int VendorId { get; set; }
 
-    public string? VendorCode { get; set; }
+    public string VendorCode { get; set; } = null!;
 
-    public string? VendorName { get; set; }
-    public string? VendorPan { get; set; }
+    public string VendorName { get; set; } = null!;
 
     public string? VendorAddress { get; set; }
 
@@ -32,9 +31,11 @@ public partial class VendorModel
 
     public string? CreatedBy { get; set; }
 
-    public bool? IsActive { get; set; }
+    public bool IsActive { get; set; }
 
     public string? LastUpdateBy { get; set; }
 
     public DateTime? LastUpdatedDate { get; set; }
+
+    public string? VendorPan { get; set; }
 }

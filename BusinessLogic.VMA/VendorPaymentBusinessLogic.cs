@@ -16,33 +16,33 @@ namespace Database.VMA.Repositories
         public async Task<string> GeneratePaymentCode(VendorDetailModel? vendorDetailModel)
         {
             string paymentcode = "";
-            int counter = 1;
-            var res = await GetAllVendorPayment().ConfigureAwait(false);
-            var checkPaymentForService = res.Where(x => x.VendorServiceId == vendorDetailModel?.FkVendorServiceId);
-            if (!checkPaymentForService.Any())
-            {
-                paymentcode = string.Join("_", vendorDetailModel?.VendorServiceName?.Replace(" ", ""), vendorDetailModel?.ServicePaymentType, counter);
+            //int counter = 1;
+            //var res = await GetAllVendorPayment().ConfigureAwait(false);
+            //var checkPaymentForService = res.Where(x => x.VendorServiceId == vendorDetailModel?.FkVendorServiceId);
+            //if (!checkPaymentForService.Any())
+            //{
+            //    paymentcode = string.Join("_", vendorDetailModel?.VendorServiceName?.Replace(" ", ""), vendorDetailModel?.ServicePaymentType, counter);
 
-            }
-            else
-            {
-                //Get all payment code 
-                var paymentCode = checkPaymentForService.OrderBy(x => x.CreatedDate)?.FirstOrDefault()?.PaymentCode;
+            //}
+            //else
+            //{
+            //    //Get all payment code 
+            //    var paymentCode = checkPaymentForService.OrderBy(x => x.CreatedDate)?.FirstOrDefault()?.PaymentCode;
 
-                //Split payment code by "_"
-                var result = paymentCode?.Split("_");
+            //    //Split payment code by "_"
+            //    var result = paymentCode?.Split("_");
 
-                //Get last number of splited value to increase counter
-                //0-ServiceName
-                //1-PaymentType
-                //2-Counter
+            //    //Get last number of splited value to increase counter
+            //    //0-ServiceName
+            //    //1-PaymentType
+            //    //2-Counter
 
-                if (result != null)
-                {
-                    paymentcode = string.Join("_", result[0], result[1], Convert.ToInt32(result[2]) + 1);
-                }
-                //Need to write logic on payment method
-            }
+            //    if (result != null)
+            //    {
+            //        paymentcode = string.Join("_", result[0], result[1], Convert.ToInt32(result[2]) + 1);
+            //    }
+            //    //Need to write logic on payment method
+            //}
 
             return paymentcode;
         }
@@ -65,14 +65,14 @@ namespace Database.VMA.Repositories
                 VendorPaymentDate = (DateTime)VendorPaymentModel.VendorPaymentDate,
                 VendorPaymentId = VendorPaymentModel.VendorPaymentId,
                 VendorPaymentIsGst = VendorPaymentModel.VendorPaymentIsGst,
-                Notes = VendorPaymentModel.VendorPaymentNotesDetails,
+                Notes = VendorPaymentModel.Notes,
                 VendorPaymentRtgsAmount = VendorPaymentModel.VendorPaymentRtgsAmount,
                 VendorPaymentRtgsDate = VendorPaymentModel.VendorPaymentRtgsDate,
                 VendorPaymentSgst = VendorPaymentModel.VendorPaymentSgst,
                 VendorPaymentTdsamount = VendorPaymentModel.VendorPaymentTdsamount,
                 VendorPaymentTotalAmountPaid = VendorPaymentModel.VendorPaymentTotalAmountPaid,
                 VendorPaymentUtrnumber = VendorPaymentModel.VendorPaymentUtrnumber,
-                PaymentYear = VendorPaymentModel.VendorPaymentYear,
+                PaymentYear = VendorPaymentModel.PaymentYear,
                 PaymentCode = VendorPaymentModel.PaymentCode
             };
             await _vendorPaymentRepository.AddVendorPayment(vendorPayment);
@@ -82,7 +82,7 @@ namespace Database.VMA.Repositories
             var entity = await _vendorPaymentRepository.GetVendorPaymentById(VendorPaymentEntity.VendorPaymentId);
             if (entity != null)
             {
-                entity.PaymentYear = VendorPaymentEntity.VendorPaymentYear;
+                entity.PaymentYear = VendorPaymentEntity.PaymentYear;
                 entity.VendorPaymentTotalAmountPaid = VendorPaymentEntity.VendorPaymentTotalAmountPaid;
                 entity.VendorPaymentUtrnumber = VendorPaymentEntity.VendorPaymentUtrnumber;
                 entity.VendorPaymentTdsamount = VendorPaymentEntity.VendorPaymentTdsamount;
@@ -98,7 +98,7 @@ namespace Database.VMA.Repositories
                 entity.VendorPaymentDate = (DateTime)VendorPaymentEntity.VendorPaymentDate;
                 entity.VendorPaymentId = VendorPaymentEntity.VendorPaymentId;
                 entity.VendorPaymentIsGst = VendorPaymentEntity.VendorPaymentIsGst;
-                entity.Notes = VendorPaymentEntity.VendorPaymentNotesDetails;
+                entity.Notes = VendorPaymentEntity.Notes;
                 entity.VendorPaymentRtgsAmount = VendorPaymentEntity.VendorPaymentRtgsAmount;
                 entity.VendorPaymentRtgsDate = VendorPaymentEntity.VendorPaymentRtgsDate;
                 entity.VendorPaymentSgst = VendorPaymentEntity.VendorPaymentSgst;
@@ -106,9 +106,8 @@ namespace Database.VMA.Repositories
                 entity.IsPaymentForBranch = VendorPaymentEntity.IsPaymentForBranch;
                 entity.VendorPaymentIsTdsapplicable = VendorPaymentEntity.VendorPaymentIsTdsapplicable;
 
-            }
-
-            await _vendorPaymentRepository.EditUpdateVendorPayment(entity);
+                await _vendorPaymentRepository.EditUpdateVendorPayment(entity);
+            }            
         }
         public async Task<IEnumerable<VendorPaymentModel>> GetAllVendorPayment()
         {
@@ -130,18 +129,16 @@ namespace Database.VMA.Repositories
                     VendorPaymentDate = data.VendorPaymentDate,
                     VendorPaymentId = data.VendorPaymentId,
                     VendorPaymentIsGst = data.VendorPaymentIsGst,
-                    VendorPaymentNotesDetails = data.Notes,
+                    Notes = data.Notes,
                     VendorPaymentRtgsAmount = data.VendorPaymentRtgsAmount,
                     VendorPaymentRtgsDate = data.VendorPaymentRtgsDate,
                     VendorPaymentSgst = data.VendorPaymentSgst,
                     VendorPaymentTdsamount = data.VendorPaymentTdsamount,
                     VendorPaymentTotalAmountPaid = data.VendorPaymentTotalAmountPaid,
                     VendorPaymentUtrnumber = data.VendorPaymentUtrnumber,
-                    VendorPaymentYear = data.PaymentYear,
-                    VendorServiceName = data.VendorServiceName,
-                    VendorServiceId = data.VendorServiceId,
-                    ServiceSantionAmount = data.ServiceSantionAmount,
-                    ServicePaymentType = data.ServicePaymentType,
+                    PaymentYear = data.PaymentYear,
+                    FkInvoiceId = data.FkInvoiceId,
+                    FkNoteId=data.FkNoteId,
                     PaymentCode = data.PaymentCode,
                     IsPaymentForBranch = data.IsPaymentForBranch,
                     VendorPaymentIsTdsapplicable = data.VendorPaymentIsTdsapplicable
@@ -158,13 +155,13 @@ namespace Database.VMA.Repositories
                 BankBranchName = res?.BankBranchName,
                 CreatedBy = res?.CreatedBy,
                 CreatedDate = res?.CreatedDate,
-                FkVendorDetailId = res?.FkVendorDetailId,
-                IsActive = res?.IsActive,
+                FkVendorDetailId = res.FkVendorDetailId,
+                IsActive = res.IsActive,
                 LastUpdateBy = res?.LastUpdateBy,
                 LastUpdatedDate = res?.LastUpdatedDate,
-                VendorPaymentAmount = res?.VendorPaymentAmount,
+                VendorPaymentAmount = res.VendorPaymentAmount,
                 VendorPaymentCgst = res?.VendorPaymentCgst,
-                VendorPaymentDate = res?.VendorPaymentDate,
+                VendorPaymentDate = res.VendorPaymentDate,
                 VendorPaymentId = res!.VendorPaymentId,
                 VendorPaymentIsGst = res?.VendorPaymentIsGst,                
                 VendorPaymentRtgsAmount = res?.VendorPaymentRtgsAmount,
@@ -173,7 +170,7 @@ namespace Database.VMA.Repositories
                 VendorPaymentTdsamount = res?.VendorPaymentTdsamount,
                 VendorPaymentTotalAmountPaid = res?.VendorPaymentTotalAmountPaid,
                 VendorPaymentUtrnumber = res?.VendorPaymentUtrnumber,
-                VendorPaymentYear = res?.PaymentYear
+                PaymentYear = res.PaymentYear
             };
 
             return vendorPayment;
@@ -182,7 +179,7 @@ namespace Database.VMA.Repositories
         {
             VendorPayment vendorPayment = new()
             {
-                PaymentYear = VendorPaymentModel.VendorPaymentYear,
+                PaymentYear = VendorPaymentModel.PaymentYear,
                 VendorPaymentTotalAmountPaid = VendorPaymentModel.VendorPaymentTotalAmountPaid,
                 VendorPaymentUtrnumber = VendorPaymentModel.VendorPaymentUtrnumber,
                 VendorPaymentTdsamount = VendorPaymentModel.VendorPaymentTdsamount,

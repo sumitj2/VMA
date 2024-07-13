@@ -78,7 +78,7 @@ namespace Database.VMA.Repositories
             {
                 CreatedBy=repositoryResult?.CreatedBy,
                 CreatedDate=repositoryResult?.CreatedDate,
-                FkVendorId=repositoryResult?.FkVendorId,
+                FkVendorId=repositoryResult.FkVendorId,
                 IsActive=repositoryResult?.IsActive,  
                 LastUpdateBy=repositoryResult?.LastUpdateBy,
                 LastUpdatedDate=repositoryResult?.LastUpdatedDate,    

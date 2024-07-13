@@ -365,7 +365,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
-        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic,IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic)
+        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic)
         {
             _vendorPaymentModel = vendorPaymentModel;
             if (_vendorPaymentModel != null)
@@ -382,8 +382,8 @@ namespace VMA.MVVM.ViewModels.Add
             HidePaymentFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
             SubmitCommand = new ViewModelAsyncCommand<VendorPaymentModel>(SubmitPaymentDetails, ValidatePAymentDetails);
             ClearFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ClearPaymentForm);
-            _gstcalculationMasterBusinessLogic= gstcalculationMasterBusinessLogic;
-                        CallAync();
+            _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
+            CallAync();
         }
         private async Task PopulateValues()
         {
@@ -391,11 +391,11 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 ///need to code to set no if resceive false
                 ///need to add binding for no radio button
-                PaymentCode = _vendorPaymentModel?.PaymentCode??"";
-                VendorPaymentYear = _vendorPaymentModel?.VendorPaymentYear;
+                PaymentCode = _vendorPaymentModel?.PaymentCode ?? "";
+                VendorPaymentYear = _vendorPaymentModel?.PaymentYear;
                 VendorPaymentDate = _vendorPaymentModel?.VendorPaymentDate;
                 VendorPaymentAmount = _vendorPaymentModel?.VendorPaymentAmount;
-                IsGSTDetailsVisible = _vendorPaymentModel?.VendorPaymentIsGst!=null ? (bool)_vendorPaymentModel.VendorPaymentIsGst:false;
+                IsGSTDetailsVisible = _vendorPaymentModel?.VendorPaymentIsGst != null ? (bool)_vendorPaymentModel.VendorPaymentIsGst : false;
                 VendorPaymentCgst = _vendorPaymentModel?.VendorPaymentCgst;
                 VendorPaymentSgst = _vendorPaymentModel?.VendorPaymentSgst;
                 VendorPaymentTotalAmountPaid = _vendorPaymentModel?.VendorPaymentTotalAmountPaid;
@@ -405,7 +405,7 @@ namespace VMA.MVVM.ViewModels.Add
                 IsTDSTextBoxVisible = _vendorPaymentModel?.VendorPaymentIsTdsapplicable != null ? (bool)_vendorPaymentModel.VendorPaymentIsTdsapplicable : false;
                 IsBranchNameVisible = _vendorPaymentModel?.IsPaymentForBranch != null ? (bool)_vendorPaymentModel.IsPaymentForBranch : false;
                 VendorPaymentTdsamount = _vendorPaymentModel?.VendorPaymentTdsamount;
-                VendorPaymentNotesDetails = _vendorPaymentModel?.VendorPaymentNotesDetails;
+                VendorPaymentNotesDetails = _vendorPaymentModel?.Notes;
                 BankBranchName = _vendorPaymentModel?.BankBranchName;
 
                 var vendorID = VendorServiceDetails.ToList().Find(x => x.VendorDetailId == _vendorPaymentModel?.FkVendorDetailId);
@@ -455,29 +455,28 @@ namespace VMA.MVVM.ViewModels.Add
         {
             if (SaveButtonName == "Update")
             {
-                VendorPaymentModel payment =new VendorPaymentModel()
+                VendorPaymentModel payment = new VendorPaymentModel()
                 {
                     BankBranchName = BankBranchName,
                     IsPaymentForBranch = IsBranchNameVisible,
                     PaymentCode = PaymentCode,
-                    VendorPaymentAmount = VendorPaymentAmount,
+                    VendorPaymentAmount = VendorPaymentAmount ?? "",
                     VendorPaymentCgst = VendorPaymentCgst,
-                    VendorPaymentDate = VendorPaymentDate,
+                    VendorPaymentDate = Convert.ToDateTime(VendorPaymentDate),
                     VendorPaymentIsGst = IsGSTDetailsVisible,
-                    VendorPaymentNotesDetails = VendorPaymentNotesDetails,
+                    Notes = VendorPaymentNotesDetails,
                     VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
                     VendorPaymentRtgsDate = VendorPaymentRtgsDate,
                     VendorPaymentSgst = VendorPaymentSgst,
                     VendorPaymentTdsamount = VendorPaymentTdsamount,
-                    VendorServiceName = SelectedVendorServiceDetails?.VendorServiceName,
-                    ServicePaymentType = SelectedVendorServiceDetails?.ServicePaymentType,
+
                     VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
                     VendorPaymentUtrnumber = VendorPaymentUtrnumber,
-                    VendorServiceId = SelectedVendorServiceDetails.VendorServiceId,
+
                     VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
-                    VendorPaymentYear = VendorPaymentYear,
-                    ServiceSantionAmount = SelectedVendorServiceDetails?.ServiceSantionAmount,
-                    FkVendorDetailId = SelectedVendorServiceDetails?.VendorDetailId,
+                    PaymentYear = VendorPaymentYear,
+
+                    FkVendorDetailId = SelectedVendorServiceDetails.VendorDetailId,
                     LastUpdateBy = UserAccountModel.Username,
                     VendorPaymentId = _vendorPaymentModel.VendorPaymentId,
                     IsActive = true
@@ -495,22 +494,20 @@ namespace VMA.MVVM.ViewModels.Add
                     PaymentCode = PaymentCode,
                     VendorPaymentAmount = VendorPaymentAmount,
                     VendorPaymentCgst = VendorPaymentCgst,
-                    VendorPaymentDate = VendorPaymentDate,
+                    VendorPaymentDate = Convert.ToDateTime(VendorPaymentDate),
                     VendorPaymentIsGst = IsGSTDetailsVisible,
-                    VendorPaymentNotesDetails = VendorPaymentNotesDetails,
+                    Notes = VendorPaymentNotesDetails,
                     VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
                     VendorPaymentRtgsDate = VendorPaymentRtgsDate,
                     VendorPaymentSgst = VendorPaymentSgst,
                     VendorPaymentTdsamount = VendorPaymentTdsamount,
-                    VendorServiceName = SelectedVendorServiceDetails?.VendorServiceName,
-                    ServicePaymentType = SelectedVendorServiceDetails?.ServicePaymentType,
+
                     VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
                     VendorPaymentUtrnumber = VendorPaymentUtrnumber,
-                    VendorServiceId = SelectedVendorServiceDetails.VendorServiceId,
+
                     VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
-                    VendorPaymentYear = VendorPaymentYear,
-                    ServiceSantionAmount = SelectedVendorServiceDetails?.ServiceSantionAmount,
-                    FkVendorDetailId = SelectedVendorServiceDetails?.VendorDetailId,
+                    PaymentYear = VendorPaymentYear,
+
                     CreatedBy = UserAccountModel.Username,
                     IsActive = true
                 };
@@ -563,8 +560,8 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task LoadGSTDetails()
         {
-            var gstDetails=await _gstcalculationMasterBusinessLogic.GetAllGstMaster().ConfigureAwait(true);
-            Cgstpercentage =Convert.ToInt32( gstDetails?.FirstOrDefault()?.CgstPercentage);
+            var gstDetails = await _gstcalculationMasterBusinessLogic.GetAllGstMaster().ConfigureAwait(true);
+            Cgstpercentage = Convert.ToInt32(gstDetails?.FirstOrDefault()?.CgstPercentage);
             Sgstpercentage = Convert.ToInt32(gstDetails?.FirstOrDefault()?.SgstPercentage);
             Igstpercentage = Convert.ToInt32(gstDetails?.FirstOrDefault()?.IgstPercentage);
 

@@ -21,8 +21,8 @@ namespace Database.VMA.Repositories
         public async Task AddVendor(VendorModel vendorModel)
         {
             Vendor vendorEntity = new()
-            {                
-                IsActive = true,                
+            {
+                IsActive = true,
                 VendorAccountNumber = vendorModel.VendorAccountNumber,
                 VendorName = vendorModel.VendorName,
                 VendorAddress = vendorModel.VendorAddress,
@@ -34,13 +34,13 @@ namespace Database.VMA.Repositories
                 VendorIfsccode = vendorModel.VendorIfsccode,
                 VendorPhoneNo = vendorModel.VendorPhoneNo,
                 VendorPinCode = vendorModel.VendorPinCode,
-                VendorPan= vendorModel.VendorPan
+                VendorPan = vendorModel.VendorPan
             };
             await _vendorRepository.AddVendors(vendorEntity);
         }
         public async Task EditUpdateVendor(VendorModel vendorModel)
         {
-            var vendorEntity=await _vendorRepository.GetVendorsById(vendorModel.VendorId);
+            var vendorEntity = await _vendorRepository.GetVendorsById(vendorModel.VendorId);
             if (vendorEntity != null)
             {
                 vendorEntity.IsActive = true;
@@ -57,7 +57,7 @@ namespace Database.VMA.Repositories
                 vendorEntity.VendorCode = vendorModel?.VendorCode;
                 vendorEntity.VendorEmailId = vendorModel?.VendorEmailId;
                 vendorEntity.VendorName = vendorModel?.VendorName;
-                vendorEntity.VendorPan= vendorModel?.VendorPan;
+                vendorEntity.VendorPan = vendorModel?.VendorPan;
                 await _vendorRepository.EditUpdateVendors(vendorEntity);
             }
         }
@@ -85,7 +85,7 @@ namespace Database.VMA.Repositories
                     VendorIfsccode = vendor.VendorIfsccode,
                     VendorPhoneNo = vendor.VendorPhoneNo,
                     VendorPinCode = vendor.VendorPinCode,
-                    VendorPan=vendor.VendorPan,
+                    VendorPan = vendor.VendorPan,
                 });
             }
             return services;
@@ -98,10 +98,10 @@ namespace Database.VMA.Repositories
             {
                 CreatedBy = repositoryResult?.CreatedBy,
                 CreatedDate = repositoryResult?.CreatedDate,
-                IsActive = repositoryResult?.IsActive,
+                IsActive = Convert.ToBoolean(repositoryResult?.IsActive),
                 LastUpdateBy = repositoryResult?.LastUpdateBy,
                 LastUpdatedDate = repositoryResult?.LastUpdatedDate,
-                VendorName = repositoryResult?.VendorName,
+                VendorName = repositoryResult?.VendorName != null ? repositoryResult.VendorName : "",
                 VendorPinCode = repositoryResult?.VendorPinCode,
                 VendorPhoneNo = repositoryResult?.VendorPhoneNo,
                 VendorIfsccode = repositoryResult?.VendorIfsccode,
@@ -110,9 +110,9 @@ namespace Database.VMA.Repositories
                 VendorAccountNumber = repositoryResult?.VendorAccountNumber,
                 VendorAddress = repositoryResult?.VendorAddress,
                 VendorBankName = repositoryResult?.VendorBankName,
-                VendorCode = repositoryResult?.VendorCode,
+                VendorCode = repositoryResult?.VendorCode != null ? repositoryResult.VendorCode : "",
                 VendorEmailId = repositoryResult?.VendorEmailId,
-                VendorPan=repositoryResult?.VendorPan,
+                VendorPan = repositoryResult?.VendorPan,
 
             };
             return vendorModel;
@@ -124,18 +124,18 @@ namespace Database.VMA.Repositories
             {
                 CreatedBy = serviceModel?.CreatedBy,
                 CreatedDate = serviceModel?.CreatedDate,
-                IsActive = (bool)serviceModel.IsActive,
+                IsActive = Convert.ToBoolean(serviceModel?.IsActive),
                 LastUpdateBy = serviceModel?.LastUpdateBy,
                 LastUpdatedDate = serviceModel?.LastUpdatedDate,
                 VendorEmailId = serviceModel?.VendorEmailId,
-                VendorCode = serviceModel?.VendorCode,
+                VendorCode = serviceModel?.VendorCode != null ? serviceModel.VendorCode : "",
                 VendorBankName = serviceModel?.VendorBankName,
                 VendorAddress = serviceModel?.VendorAddress,
                 VendorAccountNumber = serviceModel?.VendorAccountNumber,
                 VendorGstnumber = serviceModel?.VendorGstnumber,
                 VendorId = serviceModel!.VendorId,
                 VendorIfsccode = serviceModel?.VendorIfsccode,
-                VendorName = serviceModel?.VendorName,
+                VendorName = serviceModel?.VendorName != null ? serviceModel.VendorName : "",
                 VendorPhoneNo = serviceModel?.VendorPhoneNo,
                 VendorPinCode = serviceModel?.VendorPinCode
             };

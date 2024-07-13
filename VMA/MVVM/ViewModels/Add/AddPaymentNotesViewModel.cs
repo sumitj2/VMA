@@ -301,23 +301,13 @@ namespace VMA.MVVM.ViewModels.Add
         {
             if (SaveButtonName == "Update")
             {
-                VenderPaymentNoteModel payment = new()
+                VenderPaymentNoteModel payment = new VenderPaymentNoteModel()
                 {
                     LastUpdateBy = UserAccountModel.Username,
-                    VendorPaymentId = _editPaymentNote.VendorPaymentId,
                     IsActive = true,
                     PaymentNoteNo = PaymentNoteNo,
-                    PaymentNoteDate = PaymentNoteDate,
-                    InvoiceNumber = InvoiceNumber,
-                    InvoiceDate = InvoiceDate,
-                    InvoiceParticulars = InvoiceParticulars,
-                    PaymentCode = _editPaymentNote.PaymentCode,
-                    VendorServiceName = _editPaymentNote?.VendorServiceName,
-                    FkVendorPaymentId = _editPaymentNote?.VendorPaymentId,
-                    NoteId = _editPaymentNote.NoteId,
-                    InvoiceId = _editPaymentNote.InvoiceId,
-                    FkInvoiceId = _editPaymentNote?.InvoiceId,
-                    
+                    PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
+                    NoteId = _editPaymentNote.NoteId
                 };
                 await _venderPaymentNotesBusinessLogic.EditUpdatePaymentNotes(payment);
 
@@ -325,16 +315,10 @@ namespace VMA.MVVM.ViewModels.Add
             }
             else
             {
-                VenderPaymentNoteModel paymentNote = new()
+                VenderPaymentNoteModel paymentNote = new VenderPaymentNoteModel()
                 {
                     PaymentNoteNo = PaymentNoteNo,
-                    PaymentNoteDate = PaymentNoteDate,
-                    InvoiceNumber = InvoiceNumber,
-                    InvoiceDate = InvoiceDate,
-                    InvoiceParticulars = InvoiceParticulars,
-                    PaymentCode = SelectedVendorPaymentCode?.PaymentCode,
-                    VendorServiceName = SelectedVendorServiceDetails?.VendorServiceName,
-                    FkVendorPaymentId = SelectedVendorPaymentCode?.VendorPaymentId,
+                    PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),                   
                     CreatedBy = UserAccountModel.Username,
                     CreatedDate = DateTime.UtcNow,
                     IsActive = true
@@ -380,11 +364,11 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 PaymentNoteNo = _editPaymentNote.PaymentNoteNo;
                 PaymentNoteDate = _editPaymentNote.PaymentNoteDate;
-                InvoiceDate = _editPaymentNote.InvoiceDate;
-                InvoiceNumber = _editPaymentNote.InvoiceNumber;
-                InvoiceParticulars = _editPaymentNote.InvoiceParticulars;
-                TextBoxPaymentCodeName = _editPaymentNote.PaymentCode;
-                TextBoxServiceName = _editPaymentNote.VendorServiceName;
+                //InvoiceDate = _editPaymentNote.InvoiceDate;
+                //InvoiceNumber = _editPaymentNote.InvoiceNumber;
+                //InvoiceParticulars = _editPaymentNote.InvoiceParticulars;
+                //TextBoxPaymentCodeName = _editPaymentNote.PaymentCode;
+                //TextBoxServiceName = _editPaymentNote.VendorServiceName;
 
 
 

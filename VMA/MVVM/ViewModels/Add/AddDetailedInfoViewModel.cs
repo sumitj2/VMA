@@ -290,9 +290,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorDetailCategory = VendorDetailCategory,
                     ServiceStartDate = ServiceStartDate,
                     ServicePaymentType = SelectPaymentType?.NameSearch,
-                    VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
-                    FkVendorServiceId = SelectedVendorDetailService?.VendorServiceId,
-                    VendorServiceId = SelectedVendorDetailService != null ? SelectedVendorDetailService.VendorServiceId : 0,
+                  
                     ServiceSantionedBy = ServiceSantionedBy,
                     LastUpdateBy = UserAccountModel.Username,
                     LastUpdatedDate=DateTime.UtcNow,
@@ -317,10 +315,7 @@ namespace VMA.MVVM.ViewModels.Add
                     ServiceType = ServiceType,
                     VendorDetailCategory = VendorDetailCategory,
                     ServiceStartDate = ServiceStartDate,
-                    ServicePaymentType = SelectPaymentType?.NameSearch,
-                    VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
-                    FkVendorServiceId = SelectedVendorDetailService?.VendorServiceId,
-                    VendorServiceId = SelectedVendorDetailService != null ? SelectedVendorDetailService.VendorServiceId : 0,
+                    ServicePaymentType = SelectPaymentType?.NameSearch,                    
                     ServiceSantionedBy = ServiceSantionedBy
 
                 };
@@ -356,7 +351,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             if (_vendorDetailViewModel != null)
             {
-                ServiceSantionedBy = _vendorDetailViewModel.ServiceSantionedBy ?? "";
+                ServiceSantionedBy = _vendorDetailViewModel?.ServiceSantionedBy ?? "";
                 ServiceStartDate = _vendorDetailViewModel.ServiceStartDate!=null ? (DateOnly)_vendorDetailViewModel.ServiceStartDate : DateOnly.MinValue;
                 ServiceEndDate = _vendorDetailViewModel.ServiceEndDate!=null ? (DateOnly)_vendorDetailViewModel.ServiceEndDate : DateOnly.MinValue;
                 ServiceSantionAmount = _vendorDetailViewModel.ServiceSantionAmount ?? "";
@@ -372,13 +367,13 @@ namespace VMA.MVVM.ViewModels.Add
                     SelectPaymentType = ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentMethod)];
                 }
 
-                var vendorService = VendorDetailServices.ToList().Find(x => x.VendorServiceId == _vendorDetailViewModel.VendorServiceId);
+                //var vendorService = VendorDetailServices.ToList().Find(x => x.VendorServiceId == _vendorDetailViewModel.VendorServiceId);
 
-                if (vendorService != null)
-                {
-                    SelectedVendorDetailService = VendorDetailServices[VendorDetailServices.IndexOf(vendorService)];
+                //if (vendorService != null)
+                //{
+                //    SelectedVendorDetailService = VendorDetailServices[VendorDetailServices.IndexOf(vendorService)];
 
-                }
+                //}
             }
         }
 

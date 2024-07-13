@@ -40,7 +40,7 @@ namespace Database.VMA.Repositories
         {
             var detail = await _vendorDetailsRepository.GetVendorDetailsId(vendorDetailModel.VendorDetailId);
             if (detail != null)
-            {               
+            {
                 detail.IsActive = true;
                 detail.LastUpdateBy = vendorDetailModel.LastUpdateBy;
                 detail.LastUpdatedDate = DateTime.UtcNow;
@@ -78,12 +78,11 @@ namespace Database.VMA.Repositories
                     CreatedBy = data.CreatedBy,
                     CreatedDate = DateTime.UtcNow,
                     FkVendorServiceId = data.FkVendorServiceId,
-                    IsActive =true,                    
+                    IsActive = true,
                     ServiceSantionedBy = data.ServiceSantionedBy,
                     ServiceStartDate = data.ServiceStartDate,
-                    VendorDetailCategory = data.VendorDetailCategory,
-                    VendorServiceId = data.VendorServiceId,
-                    VendorServiceName = data.VendorServiceName
+                    VendorDetailCategory = data.VendorDetailCategory
+
                 });
             }
             return result;
@@ -101,7 +100,7 @@ namespace Database.VMA.Repositories
                 LastUpdatedDate = res?.LastUpdatedDate,
                 LastUpdateBy = res?.LastUpdateBy,
                 IsActive = res?.IsActive,
-                FkVendorServiceId = res?.FkVendorServiceId,
+                FkVendorServiceId = res.FkVendorServiceId,
                 CreatedDate = res?.CreatedDate,
                 CreatedBy = res?.CreatedBy,
                 QuantityOfUnit = res?.QuantityOfUnit,

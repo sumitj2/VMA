@@ -9,7 +9,7 @@ namespace Database.VMA.Repositories
     {
         private IVenderPaymentNotesRepository _venderPaymentNotesRepository;
         private IInvoiceDetailsBusinessLogic _invoiceDetailsBusinessLogic;
-        public VenderPaymentNotesBusinesslogic(IVenderPaymentNotesRepository venderPaymentNotesRepository,IInvoiceDetailsBusinessLogic invoiceDetailsBusinessLogic)
+        public VenderPaymentNotesBusinesslogic(IVenderPaymentNotesRepository venderPaymentNotesRepository, IInvoiceDetailsBusinessLogic invoiceDetailsBusinessLogic)
         {
             _venderPaymentNotesRepository = venderPaymentNotesRepository;
             _invoiceDetailsBusinessLogic = invoiceDetailsBusinessLogic;
@@ -17,17 +17,6 @@ namespace Database.VMA.Repositories
 
         public async Task AddPaymentNotes(VenderPaymentNoteModel paymentNotesModel)
         {
-            InvoiceDetailsModel invoiceDetailsModel = new()
-            {
-                InvoiceDate = paymentNotesModel.InvoiceDate,
-                InvoiceNumber = paymentNotesModel.InvoiceNumber,
-                InvoiceParticulars=paymentNotesModel.InvoiceParticulars,
-                CreatedBy = paymentNotesModel.CreatedBy,
-                CreatedDate = paymentNotesModel.CreatedDate,
-                IsActive = paymentNotesModel.IsActive,
-                
-            };
-            int invoiceID =await _invoiceDetailsBusinessLogic.AddInvoice(invoiceDetailsModel);
             VenderPaymentNote vendorEntity = new()
             {
                 CreatedBy = paymentNotesModel.CreatedBy,
@@ -35,38 +24,29 @@ namespace Database.VMA.Repositories
                 IsActive = paymentNotesModel.IsActive,
                 LastUpdateBy = paymentNotesModel.LastUpdateBy,
                 LastUpdatedDate = DateTime.Now,
-                
+
                 NoteId = paymentNotesModel.NoteId,
                 PaymentNoteDate = (DateTime)paymentNotesModel.PaymentNoteDate,
                 PaymentNoteNo = paymentNotesModel.PaymentNoteNo,
-               
+
             };
             await _venderPaymentNotesRepository.AddVendorPaymentNotes(vendorEntity);
         }
         public async Task EditUpdatePaymentNotes(VenderPaymentNoteModel paymentNotesModel)
         {
-            var invocieEntity = await _invoiceDetailsBusinessLogic.GetInvoiceById(paymentNotesModel.InvoiceId);
-            var paymentNotesEntity= await _venderPaymentNotesRepository.GetVendorsPaymentNoteById(paymentNotesModel.NoteId);
-            
-            invocieEntity.InvoiceDate = paymentNotesModel.InvoiceDate;
-            invocieEntity.InvoiceNumber = paymentNotesModel.InvoiceNumber;
-            invocieEntity.InvoiceParticulars = paymentNotesModel.InvoiceParticulars;
-            invocieEntity.LastUpdateBy = paymentNotesModel.LastUpdateBy;
-            invocieEntity.LastUpdatedDate = paymentNotesModel.LastUpdatedDate;
-            invocieEntity.IsActive = paymentNotesModel.IsActive;            
-            await _invoiceDetailsBusinessLogic.EditUpdateInvoice(invocieEntity);
+            var paymentNotesEntity = await _venderPaymentNotesRepository.GetVendorsPaymentNoteById(paymentNotesModel.NoteId);
 
-            paymentNotesEntity.LastUpdateBy = paymentNotesModel?.LastUpdateBy;
-            paymentNotesEntity.LastUpdatedDate = paymentNotesModel?.LastUpdatedDate;
-            paymentNotesEntity.IsActive = paymentNotesModel?.IsActive;           
-            paymentNotesEntity.PaymentNoteNo = paymentNotesModel?.PaymentNoteNo;
-            paymentNotesEntity.PaymentNoteDate = (DateTime)(paymentNotesModel?.PaymentNoteDate);
-            paymentNotesEntity.NoteId = paymentNotesModel!.NoteId;
-           
-               
-            
-            await _venderPaymentNotesRepository.EditUpdateVendorPaymentNotes(paymentNotesEntity);
+            if (paymentNotesEntity != null)
+            {
 
+                paymentNotesEntity.LastUpdateBy = paymentNotesModel?.LastUpdateBy;
+                paymentNotesEntity.LastUpdatedDate = paymentNotesModel?.LastUpdatedDate;
+                paymentNotesEntity.IsActive = paymentNotesModel?.IsActive;
+                paymentNotesEntity.PaymentNoteNo = paymentNotesModel?.PaymentNoteNo != null ? paymentNotesModel.PaymentNoteNo : "";
+                paymentNotesEntity.PaymentNoteDate =Convert.ToDateTime(paymentNotesModel?.PaymentNoteDate);
+                paymentNotesEntity.NoteId = paymentNotesModel!.NoteId;
+                await _venderPaymentNotesRepository.EditUpdateVendorPaymentNotes(paymentNotesEntity);
+            }
         }
         public async Task<IEnumerable<VenderPaymentNoteModel>> GetAllPaymentNotes()
         {
@@ -81,18 +61,9 @@ namespace Database.VMA.Repositories
                     IsActive = paymentNote.IsActive,
                     LastUpdateBy = paymentNote.LastUpdateBy,
                     LastUpdatedDate = paymentNote.LastUpdatedDate,
-                    PaymentNoteNo= paymentNote.PaymentNoteNo,
-                    PaymentNoteDate= paymentNote.PaymentNoteDate,
-                    
-                    NoteId=paymentNote.NoteId ,
-                    VendorPaymentId= paymentNote.VendorPaymentId,
-                    InvoiceParticulars= paymentNote.InvoiceParticulars,
-                    InvoiceNumber= paymentNote.InvoiceNumber,
-                    InvoiceId=paymentNote.InvoiceId,
-                    InvoiceDate= paymentNote.InvoiceDate,
-                    PaymentCode= paymentNote.PaymentCode,
-                    VendorServiceId= paymentNote.VendorServiceId,
-                    VendorServiceName= paymentNote.VendorServiceName
+                    PaymentNoteNo = paymentNote.PaymentNoteNo,
+                    PaymentNoteDate = paymentNote.PaymentNoteDate,
+                    NoteId = paymentNote.NoteId                   
                 });
             }
             return paymentNoteModel;
@@ -107,10 +78,9 @@ namespace Database.VMA.Repositories
                 IsActive = repositoryResult?.IsActive,
                 LastUpdateBy = repositoryResult?.LastUpdateBy,
                 LastUpdatedDate = repositoryResult?.LastUpdatedDate,
-              
-                NoteId=repositoryResult!.NoteId,
-                PaymentNoteDate = repositoryResult?.PaymentNoteDate,
-                PaymentNoteNo=repositoryResult?.PaymentNoteNo
+                NoteId = repositoryResult!.NoteId,
+                PaymentNoteDate = repositoryResult.PaymentNoteDate,
+                PaymentNoteNo = repositoryResult.PaymentNoteNo
             };
             return vendorModel;
 
@@ -124,9 +94,9 @@ namespace Database.VMA.Repositories
                 IsActive = paymentNoteModel?.IsActive,
                 LastUpdateBy = paymentNoteModel?.LastUpdateBy,
                 LastUpdatedDate = paymentNoteModel?.LastUpdatedDate,
-                PaymentNoteNo = paymentNoteModel?.PaymentNoteNo,
-                PaymentNoteDate= (DateTime)(paymentNoteModel?.PaymentNoteDate),
-                NoteId=paymentNoteModel!.NoteId
+                PaymentNoteNo = paymentNoteModel?.PaymentNoteNo!=null?paymentNoteModel.PaymentNoteNo:"",
+                PaymentNoteDate =Convert.ToDateTime(paymentNoteModel?.PaymentNoteDate),
+                NoteId = paymentNoteModel!.NoteId
             };
 
             await _venderPaymentNotesRepository.RemoveVendorPaymentNote(paymentNoteEntity);

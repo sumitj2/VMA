@@ -10,7 +10,7 @@ public partial class VendorServiceModel
     public string? VendorCode { get; set; }
 
     public string? VendorName { get; set; }
-
+  
     public int VendorServiceId { get; set; }
 
     public string? VendorServiceName { get; set; }
@@ -25,5 +25,5 @@ public partial class VendorServiceModel
 
     public DateTime? LastUpdatedDate { get; set; }
 
-    public int? FkVendorId { get; set; }
+    public int FkVendorId { get; set; }
 }
