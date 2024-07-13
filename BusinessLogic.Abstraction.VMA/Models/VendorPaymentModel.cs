@@ -54,4 +54,5 @@ public partial class VendorPaymentModel
     public int FkInvoiceId { get; set; }
 
     public int FkNoteId { get; set; }
+    public int FKGSTMasterSrNo { get; set; }
 }

@@ -104,6 +104,7 @@ public partial class VendorManagementDbContext : DbContext
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.FkInvoiceId).HasColumnName("FK_InvoiceID");
             entity.Property(e => e.FkNoteId).HasColumnName("FK_NoteId");
+            entity.Property(e => e.FKGSTMasterSrNo).HasColumnName("FK_GSTMasterSrNo");
             entity.Property(e => e.FkVendorDetailId).HasColumnName("FK_VendorDetailID");
             entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.PaymentYear).HasMaxLength(20);
