@@ -48,6 +48,7 @@
                                                Margin="20,20,230,0"/>
 
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
+                                              Visibility="{Binding HideVendorSelectComboBox}"
                                               ItemsSource="{Binding VendorModels}"   
                                               SelectedItem="{Binding SelectedVendorModel, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
                                               DisplayMemberPath="VendorName" 
@@ -65,12 +66,20 @@
                                               Foreground="{StaticResource plainTextColor3}"
                                               BorderBrush="{StaticResource plainTextColor3}"
                                               BorderThickness="0,0,0,1" />
+                                    <TextBox x:Name="txtVendor"
+                                             Text="{Binding SelectedVendorName ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             Visibility="{Binding HideSelectedVendor}"
+                                             AcceptsReturn="True"
+                                             IsEnabled="False"/>
 
                                     <TextBlock Text="Select Service"
                                                Style="{StaticResource FormTextBlock}"
                                                Margin="20,20,230,0"/>
 
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
+                                              Visibility="{Binding HideServiceSelectComboBox}"
                                               ItemsSource="{Binding VendorDetailServices}"   
                                               SelectedItem="{Binding SelectedVendorDetailService, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
                                               DisplayMemberPath="VendorServiceName" 
@@ -89,7 +98,13 @@
                                               BorderBrush="{StaticResource plainTextColor3}"
                                               BorderThickness="0,0,0,1" />
 
-                                   
+                                    <TextBox x:Name="txtVendorService"
+                                             Text="{Binding SelctedVendorServiceName ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             Visibility="{Binding HideSelectedService}"
+                                             AcceptsReturn="True"
+                                             IsEnabled="False"/>
 
                                 </StackPanel>
 

@@ -5,9 +5,12 @@ using Database.VMA.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
@@ -226,6 +229,29 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
+        private string _selectedVendorName;
+
+        public string SelectedVendorName
+        {
+            get { return _selectedVendorName; }
+            set
+            {
+                _selectedVendorName = value;
+                OnPropertyChanged(nameof(SelectedVendorName));
+            }
+        }
+        private string _selctedVendorServiceName;
+
+        public string SelctedVendorServiceName
+        {
+            get { return _selctedVendorServiceName; }
+            set
+            {
+                _selctedVendorServiceName = value;
+                OnPropertyChanged(nameof(SelctedVendorServiceName));
+            }
+        }
+
 
         #endregion
 
@@ -318,10 +344,18 @@ namespace VMA.MVVM.ViewModels.Add
             ClearFormCommand = new ViewModelAsyncCommand<VendorDetailModel>(ClearFormFields);
             if (_vendorDetailViewModel != null)
             {
+                IsComboBoxVendorVisible = false;
+                IsComboBoxServiceVisible = false;
+                IsTextBoxSelectedVendorVisible = true;
+                IsTextBoxServiceVisible = true;
                 SaveButtonName = "Update";
             }
             else
             {
+                IsComboBoxVendorVisible = true;
+                IsComboBoxServiceVisible = true;
+                IsTextBoxSelectedVendorVisible = false;
+                IsTextBoxServiceVisible = false;
                 SaveButtonName = "Submit";
             }
             _detailedInfoViewModel = detailedInfoViewModel;
@@ -372,16 +406,16 @@ namespace VMA.MVVM.ViewModels.Add
                     DetailsYear = ServiceYear,
                     IsAmc = IsAmcYes != true ? false : true,
                     SantionedDate = SantionedDate,
-                    VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
-                    VendorName = SelectedVendorModel.VendorName,
+                    VendorServiceName = _vendorDetailViewModel.VendorServiceName,
+                    VendorName = _vendorDetailViewModel.VendorName,
                     SantionedNoteNo = SantionedNoteNo,
-                    VendorServiceId = SelectedVendorDetailService.VendorServiceId,
-                    FkVendorId = SelectedVendorModel.VendorId,
-                    FkVendorServiceId = SelectedVendorDetailService.VendorServiceId,
-                    VendorId = SelectedVendorModel.VendorId,
-                    VendorCode = SelectedVendorModel.VendorCode,
+                    VendorServiceId = _vendorDetailViewModel.VendorServiceId,
+                    FkVendorId = _vendorDetailViewModel.VendorId,
+                    FkVendorServiceId = _vendorDetailViewModel.VendorServiceId,
+                    VendorId = _vendorDetailViewModel.VendorId,
+                    VendorCode = _vendorDetailViewModel.VendorCode,
                     LastUpdateBy = UserAccountModel.Username,
-                    VendorDetailId = model.VendorDetailId,
+                    VendorDetailId = _vendorDetailViewModel.VendorDetailId,
                     LastUpdatedDate = DateTime.UtcNow,
 
                 };
@@ -465,7 +499,7 @@ namespace VMA.MVVM.ViewModels.Add
                 ServiceType = _vendorDetailViewModel?.ServiceType ?? "";
                 VendorDetailCategory = _vendorDetailViewModel?.VendorDetailCategory ?? "";
                 SantionedNoteNo = _vendorDetailViewModel?.SantionedNoteNo ?? "";
-                bool amc = _vendorDetailViewModel?.IsAmc??false;
+                bool amc = _vendorDetailViewModel?.IsAmc ?? false;
                 if (amc)
                 {
                     IsAmcYes = true;
@@ -474,24 +508,8 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     IsAmcNo = true;
                 }
-                var paymentMethod = ComboxPaymentMethods.ToList().Find(x => x.NameSearch == _vendorDetailViewModel?.ServicePaymentType);
-
-                //to-do Edit button payment method is not updated need to check
-                if (paymentMethod != null)
-                {
-                    SelectPaymentType = ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentMethod)];
-                }
-
-               var vendor = VendorModels.ToList().Find(x => x.VendorId == _vendorDetailViewModel?.VendorId);
-
-                if (vendor != null)
-                {
-                    SelectedVendorModel = VendorModels[VendorModels.IndexOf(vendor)];
-                    _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
-                    var service= VendorDetailServices.ToList().Find(x => x.VendorServiceId == _vendorDetailViewModel?.VendorServiceId);
-                    SelectedVendorDetailService = VendorDetailServices[VendorDetailServices.IndexOf(service)];
-
-                }
+                SelctedVendorServiceName = _vendorDetailViewModel?.VendorServiceName ?? "";
+                SelectedVendorName = _vendorDetailViewModel?.VendorName ?? "";
             }
         }
 
@@ -526,5 +544,75 @@ namespace VMA.MVVM.ViewModels.Add
             await _detailedInfoViewModel.HideDetailInfoForm(this).ConfigureAwait(true);
         }
 
+
+        private bool _IsComboBoxServiceVisible;
+
+        public bool IsComboBoxServiceVisible
+        {
+            get { return _IsComboBoxServiceVisible; }
+            set
+            {
+                _IsComboBoxServiceVisible = value;
+                OnPropertyChanged(nameof(HideServiceSelectComboBox));
+            }
+        }
+
+        private bool _IsComboBoxVendorVisible;
+
+        public bool IsComboBoxVendorVisible
+        {
+            get { return _IsComboBoxVendorVisible; }
+            set
+            {
+                _IsComboBoxVendorVisible = value;
+                OnPropertyChanged(nameof(HideVendorSelectComboBox));
+            }
+        }
+
+
+        private bool _IsTextBoxServiceVisible;
+
+        public bool IsTextBoxServiceVisible
+        {
+            get { return _IsTextBoxServiceVisible; }
+            set
+            {
+                _IsTextBoxServiceVisible = value;
+                OnPropertyChanged(nameof(HideSelectedService));
+            }
+        }
+
+        private bool _IsTextBoxSelectedVendorVisible;
+
+        public bool IsTextBoxSelectedVendorVisible
+        {
+            get { return _IsTextBoxSelectedVendorVisible; }
+            set
+            {
+                _IsTextBoxSelectedVendorVisible = value;
+                OnPropertyChanged(nameof(HideSelectedVendor));
+            }
+        }
+
+        public Visibility HideSelectedVendor
+        {
+            get { return IsTextBoxSelectedVendorVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideSelectedService
+        {
+            get { return IsTextBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideServiceSelectComboBox
+        {
+            get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideVendorSelectComboBox
+        {
+            get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
     }
+
 }
