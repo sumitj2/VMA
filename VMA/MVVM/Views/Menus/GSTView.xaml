@@ -107,12 +107,12 @@
             CellStyle="{DynamicResource DataGridCellStyle1}" 
             ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
             RowStyle="{DynamicResource DataGridRowStyle1}" 
-            ItemsSource="{Binding Vendors,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
+            ItemsSource="{Binding GSTMaster,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="GST Category" Binding="{Binding VendorCode}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="IGST %" Binding="{Binding VendorName}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="CGST %" Binding="{Binding VendorPan}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="SGST %" Binding="{Binding VendorPhoneNo}" IsReadOnly="True" Width="auto"/>                    
+                    <DataGridTextColumn Header="GST Category" Binding="{Binding GstCategoryName}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="IGST %" Binding="{Binding IgstPercentage}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="CGST %" Binding="{Binding CgstPercentage}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="SGST %" Binding="{Binding SgstPercentage}" IsReadOnly="True" Width="auto"/>                    
                     <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
