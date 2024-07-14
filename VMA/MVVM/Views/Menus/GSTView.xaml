@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views.Menus" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:local="clr-namespace:VMA.MVVM.Views.Menus" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:menus="clr-namespace:VMA.MVVM.ViewModels.Menus" d:DataContext="{d:DesignInstance Type=menus:GSTViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
@@ -87,7 +87,7 @@
 
             <Button Grid.Column="1"
                 Style="{StaticResource vendorAddButton}"
-                Command="{Binding AddShowVendorFormCommand}"                            
+                Command="{Binding AddShowGSTFormCommand}"                            
                 Content="Add"                            
                 FontSize="12"
                 FontFamily="Montserrat"
@@ -109,17 +109,10 @@
             RowStyle="{DynamicResource DataGridRowStyle1}" 
             ItemsSource="{Binding Vendors,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Vendor Code" Binding="{Binding VendorCode}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Vendor Name" Binding="{Binding VendorName}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Vendor PAN" Binding="{Binding VendorPan}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Phone No" Binding="{Binding VendorPhoneNo}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Email Id" Binding="{Binding VendorEmailId}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Address"  Binding="{Binding VendorAddress}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Pin Code" Binding="{Binding VendorPinCode}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Bank Name" Binding="{Binding VendorBankName}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Account Number" Binding="{Binding VendorAccountNumber}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="IFSC Code" Binding="{Binding VendorIfsccode}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="GST Number" Binding="{Binding VendorGstnumber}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="GST Category" Binding="{Binding VendorCode}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="IGST %" Binding="{Binding VendorName}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="CGST %" Binding="{Binding VendorPan}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="SGST %" Binding="{Binding VendorPhoneNo}" IsReadOnly="True" Width="auto"/>                    
                     <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

@@ -7,12 +7,37 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using VMA.MVVM.Models;
+using VMA.MVVM.ViewModels.Menus;
 
 namespace VMA.MVVM.ViewModels.Add
 {
     public class AddUpdateGSTMasterViewModel : ViewModelBase
     {
         private readonly IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
+        private readonly GSTViewModel _parentViewMode;
+        public AddUpdateGSTMasterViewModel(IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic,GSTViewModel parentViewMode)
+        {
+            _gstcalculationMasterBusinessLogic= gstcalculationMasterBusinessLogic;
+            _parentViewMode = parentViewMode;
+            HideVendorFormCommand = new ViewModelAsyncCommand<VendorModel>(HideVendorForm);
+            SubmitCommand = new ViewModelAsyncCommand<VendorModel>(SaveVendor, ValidateVendor);
+            ClearFormCommand = new ViewModelAsyncCommand<VendorModel>(ClearValues);
+        }
+
+        private async Task ClearValues(VendorModel model)
+        {
+           
+        }
+
+        private bool ValidateVendor()
+        {
+            return true;
+        }
+
+        private async Task SaveVendor(VendorModel model)
+        {
+           
+        }
 
         #region Properties
 
@@ -54,13 +79,23 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
+        #region Command
+       
+        public ICommand HideGSTFormCommand { get; }
         public ICommand SubmitCommand { get; }
+        public ICommand ClearFormCommand { get; }
+        public ICommand HideVendorFormCommand { get; }
 
+        #endregion        
+
+        private async Task HideVendorForm(object obj)
+        {
+            await _parentViewMode.HideGSTForm(this);
+        }
         private bool ValidateGst()
         {
             return true;
         }
-
         private async Task SaveGst(object model)
         {
             GstcalculationMasterModel gstcalculationMaster = new()

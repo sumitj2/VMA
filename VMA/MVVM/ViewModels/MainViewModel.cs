@@ -125,7 +125,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowGSTViewCommand(object t)
         {
-            CurrentChildView = new GSTViewModel(_gstcalculationMasterBusinessLogic);
+            CurrentChildView = new GSTViewModel(_gstcalculationMasterBusinessLogic,this);
             Caption = "GTS Master";
             Icon = IconChar.RankingStar;
         }

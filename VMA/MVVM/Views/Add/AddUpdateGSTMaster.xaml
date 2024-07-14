@@ -30,7 +30,7 @@ BorderThickness="0"
                     </Grid.ColumnDefinitions>
 
                     <StackPanel x:Name="CompanyDetails" Grid.Row="0"
-                                Orientation="Vertical">
+                                Orientation="Vertical" VerticalAlignment="Center">
 
                         <TextBlock Text="Enter Category Name"
                    Style="{StaticResource FormTextBlock}"/>
@@ -94,8 +94,8 @@ BorderThickness="0"
                         BorderThickness="0"
                         Foreground="White"
                         VerticalAlignment="Top"/>
-                <!--<Button Style="{StaticResource vendorCancelButton}"
-                        Command="{Binding HideDetailInfoFormCommand}"                            
+                <Button Style="{StaticResource vendorCancelButton}"
+                        Command="{Binding c}"                            
                         Content="Cancel"                            
                         FontSize="12"
                         FontFamily="Montserrat"
@@ -111,7 +111,7 @@ BorderThickness="0"
                         Cursor="Hand"
                         BorderThickness="0"
                         Foreground="White"
-                        VerticalAlignment="Top"/>-->
+                        VerticalAlignment="Top"/>
 
 
             </StackPanel>

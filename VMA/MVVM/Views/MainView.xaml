@@ -70,8 +70,13 @@
             <addViews:AddUpdatePaymentNotesView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModelAdd:GSTViewModel}">
+        <DataTemplate DataType="{x:Type viewModel:GSTViewModel}">
             <local1:GSTView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModelAdd:AddUpdateGSTMasterViewModel}">
+            <addViews:AddUpdateGSTMaster/>
+
         </DataTemplate>
     </Window.Resources>
     
