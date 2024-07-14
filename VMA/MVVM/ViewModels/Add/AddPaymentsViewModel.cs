@@ -158,6 +158,17 @@ namespace VMA.MVVM.ViewModels.Add
 
         #region Observable collections for Combo box
 
+        private ObservableCollection<GstcalculationMasterModel> _GSTDetails;
+        public ObservableCollection<GstcalculationMasterModel> GSTDetails
+        {
+            get { return _GSTDetails; }
+            set
+            {
+                _GSTDetails = value;
+                OnPropertyChanged(nameof(GSTDetails));
+            }
+        }
+
         private ObservableCollection<VendorDetailModel> _VendorServiceDetails;
 
         public ObservableCollection<VendorDetailModel> VendorServiceDetails
@@ -223,6 +234,21 @@ namespace VMA.MVVM.ViewModels.Add
                     _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
                     PaymentNoteNo = "";
                 }
+            }
+        }
+
+        private GstcalculationMasterModel _SelectedGSTModel;
+        public GstcalculationMasterModel SelectedGSTModel
+        {
+            get { return _SelectedGSTModel; }
+            set
+            {
+                _SelectedGSTModel = value;
+
+                OnPropertyChanged(nameof(SelectedGSTModel));
+                Cgstpercentage = SelectedGSTModel?.CgstPercentage ?? 0;
+                Sgstpercentage = SelectedGSTModel?.SgstPercentage ?? 0;
+                Igstpercentage = SelectedGSTModel?.IgstPercentage ?? 0;
             }
         }
 
@@ -681,10 +707,7 @@ namespace VMA.MVVM.ViewModels.Add
         private async Task LoadGSTDetails()
         {
             var gstDetails = await _gstcalculationMasterBusinessLogic.GetAllGstMaster().ConfigureAwait(true);
-            Cgstpercentage = Convert.ToInt32(gstDetails?.FirstOrDefault()?.CgstPercentage);
-            Sgstpercentage = Convert.ToInt32(gstDetails?.FirstOrDefault()?.SgstPercentage);
-            Igstpercentage = Convert.ToInt32(gstDetails?.FirstOrDefault()?.IgstPercentage);
-
+            GSTDetails = new ObservableCollection<GstcalculationMasterModel>(gstDetails);
         }
 
 
@@ -694,7 +717,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             var vendorServiceDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorId(vendorId).ConfigureAwait(true);
             // VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails.Where(x => x.VendorId == vendorId));
-            PaymentNoteNo = vendorServiceDetails.PaymentNoteNo;
+            PaymentNoteNo = vendorServiceDetails?.PaymentNoteNo ?? "";
         }
 
         /// <summary>
