@@ -20,9 +20,6 @@ namespace VMA.MVVM.ViewModels.Add
 {
     public class AddUpdateVendorViewModel : ViewModelBase
     {
-        private string? TryGetMessageInt(int id) => "";
-        private string? TryGetMessageString(string name) => "";
-
         private readonly IVendorBusinessLogic _vendorbusinessLogic;
         private readonly VendorViewModel _vendorViewModel;
         private int _selectedTabIndex;

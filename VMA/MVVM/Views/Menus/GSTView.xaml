@@ -113,21 +113,21 @@
                     <DataGridTextColumn Header="IGST %" Binding="{Binding IgstPercentage}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="CGST %" Binding="{Binding CgstPercentage}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="SGST %" Binding="{Binding SgstPercentage}" IsReadOnly="True" Width="auto"/>                    
-                    <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                    <!--<DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditVendorCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" >
+                                    --><!--<Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditVendorCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding}" >
                                         <iconPacks:PackIconMaterial Kind="PencilOutline" Width="12" Height="12" VerticalAlignment="Center" />
-                                    </Button>
+                                    </Button>-->
                                     <!--<Button Style="{StaticResource gridRemoveButton}">
                                 <iconPacks:PackIconMaterial Kind="DeleteOutline" Width="12" Height="12" VerticalAlignment="Center"  />
-                            </Button>-->
+                            </Button>--><!--
                                 </StackPanel>
 
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
+                    </DataGridTemplateColumn>-->
 
                 </DataGrid.Columns>
             </DataGrid>

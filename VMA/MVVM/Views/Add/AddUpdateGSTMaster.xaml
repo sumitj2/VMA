@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views.Add"
+             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" d:DataContext="{d:DesignInstance Type=add:AddUpdateGSTMasterViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Border CornerRadius="10"                    
@@ -36,7 +36,7 @@ BorderThickness="0"
                    Style="{StaticResource FormTextBlock}"/>
 
                         <TextBox x:Name="txtCategoryName"
-                                 Text="{Binding GSTCategoryName ,UpdateSourceTrigger=PropertyChanged}"
+                                 Text="{Binding GSTCategory ,UpdateSourceTrigger=PropertyChanged}"
                                  Style="{StaticResource FormTextBox}"
                                  TextWrapping="Wrap"
                                  AcceptsReturn="True"/>
@@ -95,7 +95,7 @@ BorderThickness="0"
                         Foreground="White"
                         VerticalAlignment="Top"/>
                 <Button Style="{StaticResource vendorCancelButton}"
-                        Command="{Binding c}"                            
+                        Command="{Binding HideGSDetailsTFormCommand}"                            
                         Content="Cancel"                            
                         FontSize="12"
                         FontFamily="Montserrat"

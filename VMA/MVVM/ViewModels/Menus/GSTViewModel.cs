@@ -108,10 +108,10 @@ namespace VMA.MVVM.ViewModels.Menus
             
         }
 
-        public Task HideGSTForm(object model)
+        public async Task HideGSTForm(object model)
         {
             _parentViewModel.CurrentChildView = this;
-            return Task.CompletedTask;
+            await Task.Run(GetGSTMaster).ConfigureAwait(true);
         }
         private async Task GetGSTMaster()
         {

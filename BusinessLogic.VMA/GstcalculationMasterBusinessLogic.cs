@@ -21,14 +21,13 @@ namespace Database.VMA.Repositories
         {
             GstcalculationMaster gstcalculationMasterEntity = new GstcalculationMaster()
             {
+                GstCategoryName =  GstcalculationMasterModel.GstCategoryName,
+                SgstPercentage = GstcalculationMasterModel.SgstPercentage,
                 CgstPercentage = GstcalculationMasterModel.CgstPercentage,
+                IgstPercentage = GstcalculationMasterModel.IgstPercentage,
                 CreatedBy = GstcalculationMasterModel.CreatedBy,
                 CreatedDate = GstcalculationMasterModel.CreatedDate,
-                IgstPercentage = GstcalculationMasterModel.IgstPercentage,
-                IsActive = GstcalculationMasterModel.IsActive,
-                LastUpdateBy = GstcalculationMasterModel.LastUpdateBy,
-                LastUpdatedDate = GstcalculationMasterModel.LastUpdatedDate,
-                SgstPercentage = GstcalculationMasterModel.SgstPercentage
+                IsActive = GstcalculationMasterModel.IsActive
             };
             await _gstcalculationMasterRepository.AddGstMaster(gstcalculationMasterEntity);
 
@@ -64,7 +63,8 @@ namespace Database.VMA.Repositories
                     IgstPercentage = gstmasterEntity.IgstPercentage,
                     IsActive = gstmasterEntity.IsActive,
                     LastUpdateBy = gstmasterEntity.LastUpdateBy,
-                    SgstPercentage = gstmasterEntity.SgstPercentage
+                    SgstPercentage = gstmasterEntity.SgstPercentage,
+                    GstCategoryName=gstmasterEntity.GstCategoryName
                 });
             }
             return GstcalculationMasterModel;

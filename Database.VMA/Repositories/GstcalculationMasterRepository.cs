@@ -19,7 +19,6 @@ namespace Database.VMA.Repositories
 
         public async Task AddGstMaster(GstcalculationMaster GstcalculationMasterEntity)
         {
-            await _context.GstcalculationMasters.Where(x => x.IsActive == true).ExecuteUpdateAsync(e =>e.SetProperty(b=>b.IsActive,false));
             await _context.AddAsync(GstcalculationMasterEntity).ConfigureAwait(true);
             await _context.SaveChangesAsync();
         }
@@ -34,7 +33,7 @@ namespace Database.VMA.Repositories
             {
                 _context.Entry(existingEntity).CurrentValues.SetValues(GstcalculationMasterEntity);
             }
-            await _context.SaveChangesAsync();            
+            await _context.SaveChangesAsync();
         }
         public async Task<IEnumerable<GstcalculationMaster>> GetAllGstMaster()
         {

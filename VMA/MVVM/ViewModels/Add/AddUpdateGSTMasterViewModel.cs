@@ -15,18 +15,21 @@ namespace VMA.MVVM.ViewModels.Add
     {
         private readonly IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
         private readonly GSTViewModel _parentViewMode;
-        public AddUpdateGSTMasterViewModel(IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic,GSTViewModel parentViewMode)
+        public AddUpdateGSTMasterViewModel(IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, GSTViewModel parentViewMode)
         {
-            _gstcalculationMasterBusinessLogic= gstcalculationMasterBusinessLogic;
+            _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
             _parentViewMode = parentViewMode;
-            HideVendorFormCommand = new ViewModelAsyncCommand<VendorModel>(HideVendorForm);
-            SubmitCommand = new ViewModelAsyncCommand<VendorModel>(SaveVendor, ValidateVendor);
+            HideGSDetailsTFormCommand = new ViewModelAsyncCommand<VendorModel>(HideGSTForm);
+            SubmitCommand = new ViewModelAsyncCommand<VendorModel>(SaveGSTDetails, ValidateVendor);
             ClearFormCommand = new ViewModelAsyncCommand<VendorModel>(ClearValues);
         }
 
         private async Task ClearValues(VendorModel model)
         {
-           
+            GSTCategory = "";
+            Igstpercentage = 0;
+            Cgstpercentage = 0;
+            Sgstpercentage = 0;
         }
 
         private bool ValidateVendor()
@@ -34,12 +37,38 @@ namespace VMA.MVVM.ViewModels.Add
             return true;
         }
 
-        private async Task SaveVendor(VendorModel model)
+        private async Task SaveGSTDetails(VendorModel model)
         {
-           
+            GstcalculationMasterModel gstcalculationMaster = new()
+            {
+                GstCategoryName = GSTCategory,
+                CgstPercentage = Cgstpercentage,
+                IgstPercentage = Igstpercentage,
+                SgstPercentage = Sgstpercentage,
+                CreatedBy = UserAccountModel.Username,
+                LastUpdateBy = UserAccountModel.Username,
+                LastUpdatedDate = DateTime.UtcNow,
+                CreatedDate = DateTime.UtcNow,
+                IsActive = true,
+            };
+            await _gstcalculationMasterBusinessLogic.AddGstMaster(gstcalculationMaster);
+            _=HideGSTForm(this);
         }
 
         #region Properties
+
+        private string _GSTCategory;
+
+        public string GSTCategory
+        {
+            get { return _GSTCategory; }
+            set
+            {
+                _GSTCategory = value;
+                OnPropertyChanged(nameof(GSTCategory));
+            }
+        }
+
 
         private int _Cgstpercentage;
 
@@ -80,15 +109,14 @@ namespace VMA.MVVM.ViewModels.Add
         #endregion
 
         #region Command
-       
-        public ICommand HideGSTFormCommand { get; }
+
         public ICommand SubmitCommand { get; }
         public ICommand ClearFormCommand { get; }
-        public ICommand HideVendorFormCommand { get; }
+        public ICommand HideGSDetailsTFormCommand { get; }
 
         #endregion        
 
-        private async Task HideVendorForm(object obj)
+        private async Task HideGSTForm(object obj)
         {
             await _parentViewMode.HideGSTForm(this);
         }
@@ -96,29 +124,6 @@ namespace VMA.MVVM.ViewModels.Add
         {
             return true;
         }
-        private async Task SaveGst(object model)
-        {
-            GstcalculationMasterModel gstcalculationMaster = new()
-            {
-                CgstPercentage = Cgstpercentage,
-                IgstPercentage = Igstpercentage,
-                SgstPercentage = Sgstpercentage,
-                CreatedBy = UserAccountModel.Username,
-                LastUpdateBy = UserAccountModel.Username,
-                LastUpdatedDate = DateTime.UtcNow,
-                CreatedDate = DateTime.UtcNow,
-                IsActive = true,
-            };
-            await _gstcalculationMasterBusinessLogic.AddGstMaster(gstcalculationMaster);
-        }
-
-        public async Task GetGSTDetails()
-        {
-            var latestGST = await _gstcalculationMasterBusinessLogic.GetAllGstMaster();
-            Cgstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.CgstPercentage);
-            Sgstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.SgstPercentage);
-            Igstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.IgstPercentage);
-
-        }
+       
     }
 }
