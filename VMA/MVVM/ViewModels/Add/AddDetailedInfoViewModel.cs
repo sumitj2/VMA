@@ -514,7 +514,7 @@ namespace VMA.MVVM.ViewModels.Add
         }
 
 
-        #region Combobox
+        #region Combobox load vendors and services on combo box selection 
 
         /// <summary>
         /// Combobox load Vendor Service Name on selection of Vendor
@@ -544,6 +544,7 @@ namespace VMA.MVVM.ViewModels.Add
             await _detailedInfoViewModel.HideDetailInfoForm(this).ConfigureAwait(true);
         }
 
+        #region Combo box Vendor Service Visibility setting on Add and edit
 
         private bool _IsComboBoxServiceVisible;
 
@@ -612,7 +613,8 @@ namespace VMA.MVVM.ViewModels.Add
         public Visibility HideVendorSelectComboBox
         {
             get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
-        }
+        } 
+        #endregion
     }
 
 }

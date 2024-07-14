@@ -136,53 +136,53 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        private bool _IsComboBoxServiceVisible;
+        //private bool _IsComboBoxServiceVisible;
 
-        public bool IsComboBoxServiceVisible
-        {
-            get { return _IsComboBoxServiceVisible; }
-            set
-            {
-                _IsComboBoxServiceVisible = value;
-                OnPropertyChanged(nameof(HideServiceSelectComboBox));
-            }
-        }
+        //public bool IsComboBoxServiceVisible
+        //{
+        //    get { return _IsComboBoxServiceVisible; }
+        //    set
+        //    {
+        //        _IsComboBoxServiceVisible = value;
+        //        OnPropertyChanged(nameof(HideServiceSelectComboBox));
+        //    }
+        //}
 
-        private bool _IsComboBoxPaymentCodeVisible;
+        //private bool _IsComboBoxPaymentCodeVisible;
 
-        public bool IsComboBoxPaymentCodeVisible
-        {
-            get { return _IsComboBoxPaymentCodeVisible; }
-            set
-            {
-                _IsComboBoxPaymentCodeVisible = value;
-                OnPropertyChanged(nameof(HidePaymentCodeComboBox));
-            }
-        }
+        //public bool IsComboBoxPaymentCodeVisible
+        //{
+        //    get { return _IsComboBoxPaymentCodeVisible; }
+        //    set
+        //    {
+        //        _IsComboBoxPaymentCodeVisible = value;
+        //        OnPropertyChanged(nameof(HidePaymentCodeComboBox));
+        //    }
+        //}
 
-        private bool _IsTextBoxServiceVisible;
+        //private bool _IsTextBoxServiceVisible;
 
-        public bool IsTextBoxServiceVisible
-        {
-            get { return _IsTextBoxServiceVisible; }
-            set
-            {
-                _IsTextBoxServiceVisible = value;
-                OnPropertyChanged(nameof(HideSelectedService));
-            }
-        }
+        //public bool IsTextBoxServiceVisible
+        //{
+        //    get { return _IsTextBoxServiceVisible; }
+        //    set
+        //    {
+        //        _IsTextBoxServiceVisible = value;
+        //        OnPropertyChanged(nameof(HideSelectedService));
+        //    }
+        //}
 
-        private bool _IsTextBoxSelectedVendorVisible;
+        //private bool _IsTextBoxSelectedVendorVisible;
 
-        public bool IsTextBoxSelectedVendorVisible
-        {
-            get { return _IsTextBoxSelectedVendorVisible; }
-            set
-            {
-                _IsTextBoxSelectedVendorVisible = value;
-                OnPropertyChanged(nameof(HideSelectedVendor));
-            }
-        }
+        //public bool IsTextBoxSelectedVendorVisible
+        //{
+        //    get { return _IsTextBoxSelectedVendorVisible; }
+        //    set
+        //    {
+        //        _IsTextBoxSelectedVendorVisible = value;
+        //        OnPropertyChanged(nameof(HideSelectedVendor));
+        //    }
+        //}
 
 
         #endregion
@@ -277,37 +277,61 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
+
+        private string _selectedVendorName;
+
+        public string SelectedVendorName
+        {
+            get { return _selectedVendorName; }
+            set
+            {
+                _selectedVendorName = value;
+                OnPropertyChanged(nameof(SelectedVendorName));
+            }
+        }
+        private string _selctedVendorServiceName;
+
+        public string SelctedVendorServiceName
+        {
+            get { return _selctedVendorServiceName; }
+            set
+            {
+                _selctedVendorServiceName = value;
+                OnPropertyChanged(nameof(SelctedVendorServiceName));
+            }
+        }
+
         #endregion
 
         private void AddPaymentItemInCombo(VendorDetailModel? selectedVendorServiceDetails)
         {
             _ = LoadVendorServicePayment(selectedVendorServiceDetails?.VendorDetailId);
         }
-        public Visibility HidePaymentCodeComboBox
-        {
-            get { return IsComboBoxPaymentCodeVisible ? Visibility.Visible : Visibility.Collapsed; }
-        }
-        public Visibility HideServiceSelectComboBox
-        {
-            get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
-        }
+        //public Visibility HidePaymentCodeComboBox
+        //{
+        //    get { return IsComboBoxPaymentCodeVisible ? Visibility.Visible : Visibility.Collapsed; }
+        //}
+        //public Visibility HideServiceSelectComboBox
+        //{
+        //    get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        //}
 
-        public Visibility HideSelectedVendor
-        {
-            get { return IsTextBoxSelectedVendorVisible ? Visibility.Visible : Visibility.Collapsed; }
-        }
+        //public Visibility HideSelectedVendor
+        //{
+        //    get { return IsTextBoxSelectedVendorVisible ? Visibility.Visible : Visibility.Collapsed; }
+        //}
 
-        public Visibility HideSelectedService
-        {
-            get { return IsTextBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
-        }
+        //public Visibility HideSelectedService
+        //{
+        //    get { return IsTextBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        //}
         public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, VenderPaymentNoteModel? editPaymentNote)
         {
             _paymentNotesViewModel = paymentNotesViewModel;
             _editPaymentNote = editPaymentNote;
             if (_editPaymentNote != null)
             {
-                IsComboBoxPaymentCodeVisible = false;
+                IsComboBoxVendorVisible = false;
                 IsComboBoxServiceVisible = false;
                 IsTextBoxSelectedVendorVisible = true;
                 IsTextBoxServiceVisible = true;
@@ -315,7 +339,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             else
             {
-                IsComboBoxPaymentCodeVisible = true;
+                IsComboBoxVendorVisible = true;
                 IsComboBoxServiceVisible = true;
                 IsTextBoxSelectedVendorVisible = false;
                 IsTextBoxServiceVisible = false;
@@ -439,5 +463,102 @@ namespace VMA.MVVM.ViewModels.Add
                 VendorsPayment = TempVendorsPayment = new ObservableCollection<VendorPaymentModel>(vendors.Where(x => x.FkVendorDetailId == id));
             }
         }
+        #region Combobox load vendors and services on combo box selection 
+
+        /// <summary>
+        /// Combobox load Vendor Service Name on selection of Vendor
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadVendorServiceDetails(int vendorId)
+        {
+            //var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
+
+            //VendorDetailServices = new ObservableCollection<VendorServiceModel>(vendorServiceDetails.Where(x => x.FkVendorId == vendorId));
+        }
+
+        /// <summary>
+        /// Combo box load vendors
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadVendors()
+        {
+            //var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
+            //VendorModels = new ObservableCollection<VendorModel>(vendors);
+        }
+
+        #endregion
+
+
+        #region Vendor and Service Combo box
+
+        private bool _IsComboBoxServiceVisible;
+
+        public bool IsComboBoxServiceVisible
+        {
+            get { return _IsComboBoxServiceVisible; }
+            set
+            {
+                _IsComboBoxServiceVisible = value;
+                OnPropertyChanged(nameof(HideServiceSelectComboBox));
+            }
+        }
+
+        private bool _IsComboBoxVendorVisible;
+
+        public bool IsComboBoxVendorVisible
+        {
+            get { return _IsComboBoxVendorVisible; }
+            set
+            {
+                _IsComboBoxVendorVisible = value;
+                OnPropertyChanged(nameof(HideVendorSelectComboBox));
+            }
+        }
+
+
+        private bool _IsTextBoxServiceVisible;
+
+        public bool IsTextBoxServiceVisible
+        {
+            get { return _IsTextBoxServiceVisible; }
+            set
+            {
+                _IsTextBoxServiceVisible = value;
+                OnPropertyChanged(nameof(HideSelectedService));
+            }
+        }
+
+        private bool _IsTextBoxSelectedVendorVisible;
+
+        public bool IsTextBoxSelectedVendorVisible
+        {
+            get { return _IsTextBoxSelectedVendorVisible; }
+            set
+            {
+                _IsTextBoxSelectedVendorVisible = value;
+                OnPropertyChanged(nameof(HideSelectedVendor));
+            }
+        }
+
+        public Visibility HideSelectedVendor
+        {
+            get { return IsTextBoxSelectedVendorVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideSelectedService
+        {
+            get { return IsTextBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideServiceSelectComboBox
+        {
+            get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideVendorSelectComboBox
+        {
+            get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+        #endregion
     }
 }
