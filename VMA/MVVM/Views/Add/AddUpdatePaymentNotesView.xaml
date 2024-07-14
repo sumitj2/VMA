@@ -35,46 +35,48 @@
                                     Orientation="Vertical">
                                     <TextBlock Text="Select Vendor"
                                                Style="{StaticResource FormTextBlock}"
-                                               Margin="20,20,230,0"/>
+                                               Margin="22,20,230,0"/>
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
-                                              ItemsSource="{Binding VendorsPayment}"   
-                                              SelectedItem="{Binding SelectedVendorPaymentCode}"  
                                               Visibility="{Binding HideVendorSelectComboBox}"
-                                              DisplayMemberPath="PaymentCode"  
-                                              Name="PaymentCode" 
+                                              ItemsSource="{Binding VendorModels}"   
+                                              SelectedItem="{Binding SelectedVendorModel, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="VendorName" 
+                                              SelectedValuePath="VendorId"
+                                              SelectedValue="{Binding SelectedVendorDetailService.VendorId, Mode=TwoWay}"
                                               Grid.Row="1" 
                                               Width="239" 
                                               Height="30" 
                                               VerticalContentAlignment="Center"
                                               HorizontalAlignment="Right"
-                                              Margin="0,-20,10,25"
+                                              Margin="0,-20,10,0"
                                               Background="Transparent"
                                               FontWeight="Medium"
                                               FontFamily="Montserrat"                            
                                               Foreground="{StaticResource plainTextColor3}"
                                               BorderBrush="{StaticResource plainTextColor3}"
-                                              BorderThickness="0,0,0,1"  />
+                                              BorderThickness="0,0,0,1" />
                                     <TextBox x:Name="txtBoxVendor"
                                              Text="{Binding SelectedVendorName ,UpdateSourceTrigger=PropertyChanged}"
                                              Visibility="{Binding HideSelectedVendor}"
                                              IsEnabled="False"
                                              Style="{StaticResource FormTextBox}"/>
-                                    <TextBlock Text="Select Sevice"
+                                    <!--<TextBlock Text="Select Sevice"
                                        Style="{StaticResource FormTextBlock}"
-                                       Margin="20,20,230,0"/>
+                                       Margin="20,20,230,0"/>-->
 
-                                    <ComboBox Style="{StaticResource vendorCombobox}"                              
-                                              ItemsSource="{Binding VendorServiceDetails}"   
-                                              SelectedItem="{Binding SelectedVendorServiceDetails}"  
+                                    <!--<ComboBox Style="{StaticResource vendorCombobox}"                              
                                               Visibility="{Binding HideServiceSelectComboBox}"
-                                              DisplayMemberPath="VendorServiceName"  
-                                              Name="ServiceDetails"                                               
+                                              ItemsSource="{Binding VendorServiceDetails}"   
+                                              SelectedItem="{Binding SelectedVendorDetailService, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="VendorServiceName" 
+                                              SelectedValuePath="VendorServiceId"
+                                              SelectedValue="{Binding SelectedVendorDetailService.VendorServiceId, Mode=TwoWay}"
                                               Grid.Row="1" 
                                               Width="239" 
                                               Height="30" 
                                               VerticalContentAlignment="Center"
                                               HorizontalAlignment="Right"
-                                              Margin="0,-20,10,25"
+                                              Margin="0,-20,10,40"
                                               Background="Transparent"
                                               FontWeight="Medium"
                                               FontFamily="Montserrat"                            
@@ -86,7 +88,7 @@
                                              Visibility="{Binding HideSelectedService}"
                                              IsEnabled="False"
                                              Style="{StaticResource FormTextBox}"
-                                              />
+                                              />-->
                                     
                                     <TextBlock Text="Payment Note Number"
                                                Style="{StaticResource FormTextBlock}"/>
@@ -99,7 +101,7 @@
                                                Style="{StaticResource FormTextBlock}"/>
 
                                     <DatePicker Name="paymentNoteDate"
-                                                Text="{Binding  PaymentNoteDate ,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Height="29" Width="357"/>
+                                                Text="{Binding  PaymentNoteDate ,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Margin="20" Height="29" Width="357"/>
 
 
 

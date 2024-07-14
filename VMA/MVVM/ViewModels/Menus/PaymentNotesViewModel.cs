@@ -18,7 +18,7 @@ namespace VMA.MVVM.ViewModels.Menus
     {
         private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         private readonly IVenderPaymentNotesBusinessLogic _venderPaymentNotesBusinessLogic;
-        private readonly IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
+        private readonly IVendorBusinessLogic _vendorBusinessLogic;
         private readonly MainViewModel _parentViewModel;
         private VenderPaymentNoteModel _selectedVendor;
         private SearchModel _selectComboItem;
@@ -102,11 +102,11 @@ namespace VMA.MVVM.ViewModels.Menus
         public ICommand EditPaymentNotesFormCommand { get; }
         #endregion
 
-        public PaymentNotesViewModel(MainViewModel parentViewModel,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic)
+        public PaymentNotesViewModel(MainViewModel parentViewModel,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorBusinessLogic vendorBusinessLogic)
         {
             _venderPaymentNotesBusinessLogic=venderPaymentNotesBusinessLogic;
             _vendorDetailsBusinessLogic=vendorDetailsBusinessLogic; 
-            _vendorPaymentBusinessLogic=vendorPaymentBusinessLogic;
+            _vendorBusinessLogic=vendorBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowPaymentNoteFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(ShowPaymentNotesForm);
             HidePaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(HidePaymentNotesForm);
@@ -116,12 +116,12 @@ namespace VMA.MVVM.ViewModels.Menus
         private async Task EditPaymentNoteForm(VenderPaymentNoteModel model)
         {
             SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
-            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this, _vendorDetailsBusinessLogic,_vendorPaymentBusinessLogic,_venderPaymentNotesBusinessLogic,model);
+            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this, _vendorDetailsBusinessLogic,_vendorBusinessLogic,_venderPaymentNotesBusinessLogic,model);
         }
         
         private async Task ShowPaymentNotesForm(VenderPaymentNoteModel model)
         {
-            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this,_vendorDetailsBusinessLogic,_vendorPaymentBusinessLogic,_venderPaymentNotesBusinessLogic,null);
+            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this,_vendorDetailsBusinessLogic,_vendorBusinessLogic,_venderPaymentNotesBusinessLogic,null);
 
         }
 

@@ -22,13 +22,10 @@ namespace Database.VMA.Repositories
                 CreatedBy = paymentNotesModel.CreatedBy,
                 CreatedDate = DateTime.Now,
                 IsActive = paymentNotesModel.IsActive,
-                LastUpdateBy = paymentNotesModel.LastUpdateBy,
-                LastUpdatedDate = DateTime.Now,
-
                 NoteId = paymentNotesModel.NoteId,
                 PaymentNoteDate = (DateTime)paymentNotesModel.PaymentNoteDate,
                 PaymentNoteNo = paymentNotesModel.PaymentNoteNo,
-
+                FkVendorId=paymentNotesModel.FkVendorId
             };
             await _venderPaymentNotesRepository.AddVendorPaymentNotes(vendorEntity);
         }
@@ -38,13 +35,13 @@ namespace Database.VMA.Repositories
 
             if (paymentNotesEntity != null)
             {
-
                 paymentNotesEntity.LastUpdateBy = paymentNotesModel?.LastUpdateBy;
                 paymentNotesEntity.LastUpdatedDate = paymentNotesModel?.LastUpdatedDate;
                 paymentNotesEntity.IsActive = paymentNotesModel?.IsActive;
                 paymentNotesEntity.PaymentNoteNo = paymentNotesModel?.PaymentNoteNo != null ? paymentNotesModel.PaymentNoteNo : "";
                 paymentNotesEntity.PaymentNoteDate =Convert.ToDateTime(paymentNotesModel?.PaymentNoteDate);
                 paymentNotesEntity.NoteId = paymentNotesModel!.NoteId;
+                paymentNotesEntity.FkVendorId=paymentNotesModel.FkVendorId;
                 await _venderPaymentNotesRepository.EditUpdateVendorPaymentNotes(paymentNotesEntity);
             }
         }
@@ -65,7 +62,12 @@ namespace Database.VMA.Repositories
                         LastUpdatedDate = paymentNote.LastUpdatedDate,
                         PaymentNoteNo = paymentNote.PaymentNoteNo,
                         PaymentNoteDate = paymentNote.PaymentNoteDate,
-                        NoteId = paymentNote.NoteId
+                        NoteId = paymentNote.NoteId,
+                        VendorId = paymentNote.VendorId,
+                        VendorName = paymentNote.VendorName,
+                        FkVendorId = paymentNote.VendorId,
+                        VendorServiceId = paymentNote.VendorServiceId,
+                        VendorServiceName= paymentNote.VendorServiceName
                     });
                 }
             }

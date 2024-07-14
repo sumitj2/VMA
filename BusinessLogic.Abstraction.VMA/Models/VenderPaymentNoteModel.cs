@@ -5,6 +5,13 @@ namespace BusinessLogic.Abstraction.VMA.Models;
 
 public partial class VenderPaymentNoteModel
 {
+    #region Join
+    public int VendorServiceId { get; set; }
+    public string? VendorServiceName { get; set; }
+    public int VendorId { get; set; }
+    public string? VendorName { get; set; }
+
+    #endregion
     public int NoteId { get; set; }
 
     public string PaymentNoteNo { get; set; } = null!;
