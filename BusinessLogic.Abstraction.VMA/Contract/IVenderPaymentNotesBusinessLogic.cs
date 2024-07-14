@@ -12,7 +12,7 @@ namespace BusinessLogic.Abstraction.VMA.Contract
         public Task AddPaymentNotes(VenderPaymentNoteModel paymentNotesModel);
         public Task EditUpdatePaymentNotes(VenderPaymentNoteModel paymentNotesModel);
         public Task<IEnumerable<VenderPaymentNoteModel>> GetAllPaymentNotes();
-        public Task<VenderPaymentNoteModel?> GetPaymentNoteById(int vendorId);
+        public Task<VenderPaymentNoteModel?> GetPaymentNoteByVendorId(int vendorId);
         public Task RemovePaymentNote(VenderPaymentNoteModel paymentNoteModel);
     }
 }

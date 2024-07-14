@@ -24,7 +24,7 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdateVendorPaymentNotes(VenderPaymentNote VenderPaymentNoteEntity)
         {
-            var result = await GetVendorsPaymentNoteById(VenderPaymentNoteEntity.NoteId);
+            var result = await GetVendorsPaymentNoteByIVendorId(VenderPaymentNoteEntity.NoteId);
             if (result != null)
             {
                 _context.VenderPaymentNotes.Update(result);
@@ -109,9 +109,9 @@ namespace Database.VMA.Repositories
         {
             return await _context.VenderPaymentNotes.Where(x => x.IsActive == true).ToListAsync();
         }
-        public async Task<VenderPaymentNote?> GetVendorsPaymentNoteById(int vendorId)
+        public async Task<VenderPaymentNote?> GetVendorsPaymentNoteByIVendorId(int vendorId)
         {
-            return await _context.VenderPaymentNotes.Where(x => x.IsActive == true && x.NoteId == vendorId).FirstOrDefaultAsync();
+            return await _context.VenderPaymentNotes.Where(x => x.IsActive == true && x.FkVendorId == vendorId).FirstOrDefaultAsync();
         }
 
         public async Task RemoveVendorPaymentNote(VenderPaymentNote VenderPaymentNoteEntity)

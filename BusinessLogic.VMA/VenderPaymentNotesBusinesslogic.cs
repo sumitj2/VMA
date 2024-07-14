@@ -31,7 +31,7 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdatePaymentNotes(VenderPaymentNoteModel paymentNotesModel)
         {
-            var paymentNotesEntity = await _venderPaymentNotesRepository.GetVendorsPaymentNoteById(paymentNotesModel.NoteId);
+            var paymentNotesEntity = await _venderPaymentNotesRepository.GetVendorsPaymentNoteByIVendorId(paymentNotesModel.NoteId);
 
             if (paymentNotesEntity != null)
             {
@@ -73,9 +73,9 @@ namespace Database.VMA.Repositories
             }
             return paymentNoteModel;
         }
-        public async Task<VenderPaymentNoteModel?> GetPaymentNoteById(int vendorId)
+        public async Task<VenderPaymentNoteModel?> GetPaymentNoteByVendorId(int vendorId)
         {
-            var repositoryResult = await _venderPaymentNotesRepository.GetVendorsPaymentNoteById(vendorId);
+            var repositoryResult = await _venderPaymentNotesRepository.GetVendorsPaymentNoteByIVendorId(vendorId);
             VenderPaymentNoteModel vendorModel = new()
             {
                 CreatedBy = repositoryResult?.CreatedBy,

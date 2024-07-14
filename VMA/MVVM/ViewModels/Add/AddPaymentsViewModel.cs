@@ -26,6 +26,8 @@ namespace VMA.MVVM.ViewModels.Add
         private bool isGSTDetailsVisible;
         private VendorPaymentModel _vendorPaymentModel;
         private readonly IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
+        private readonly IVendorBusinessLogic _vendorBusinessLogic;
+        private readonly IVenderPaymentNotesBusinessLogic _venderPaymentNotesBusinessLogic;
         public bool IsGSTDetailsVisible
         {
             get { return isGSTDetailsVisible; }
@@ -141,18 +143,10 @@ namespace VMA.MVVM.ViewModels.Add
         #endregion
 
         #region Observable collections
-        private ObservableCollection<VendorDetailModel> _vendorDetails;
+
         private ObservableCollection<SearchModel> _comboxPaymentMethod;
 
-        public ObservableCollection<VendorDetailModel> VendorServiceDetails
-        {
-            get { return _vendorDetails; }
-            set
-            {
-                _vendorDetails = value;
-                OnPropertyChanged(nameof(VendorServiceDetails));
-            }
-        }
+
 
         public ObservableCollection<SearchModel> ComboxPaymentMethods
         {
@@ -162,8 +156,97 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
+        #region Observable collections for Combo box
+
+        private ObservableCollection<VendorDetailModel> _VendorServiceDetails;
+
+        public ObservableCollection<VendorDetailModel> VendorServiceDetails
+        {
+            get { return _VendorServiceDetails; }
+            set
+            {
+                _VendorServiceDetails = value;
+                OnPropertyChanged(nameof(VendorServiceDetails));
+            }
+        }
+
+        private ObservableCollection<VendorModel> _vendorModels;
+        public ObservableCollection<VendorModel> VendorModels
+        {
+            get { return _vendorModels; }
+            set
+            {
+                _vendorModels = value;
+                OnPropertyChanged(nameof(VendorModels));
+            }
+        }
+        #endregion
+
         #region Properties
-        private VendorDetailModel _selectedVendorServiceDetails;
+
+        #region TextBox Properties
+
+
+        private string _TextBoxServiceName;
+        public string TextBoxServiceName
+        {
+            get { return _TextBoxServiceName; }
+            set
+            {
+                _TextBoxServiceName = value;
+                OnPropertyChanged(nameof(TextBoxServiceName));
+            }
+        }
+
+        private string _TextBoxPaymentCodeName;
+        public string TextBoxPaymentCodeName
+        {
+            get { return _TextBoxPaymentCodeName; }
+            set
+            {
+                _TextBoxPaymentCodeName = value;
+                OnPropertyChanged(nameof(TextBoxPaymentCodeName));
+            }
+        }
+
+        private VendorModel _SelectedVendorModel;
+        public VendorModel SelectedVendorModel
+        {
+            get { return _SelectedVendorModel; }
+            set
+            {
+                _SelectedVendorModel = value;
+
+                if (SelectedVendorModel != null)
+                {
+                    OnPropertyChanged(nameof(SelectedVendorModel));
+                    _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
+                    PaymentNoteNo = "";
+                }
+            }
+        }
+
+        private VendorDetailModel _SelectedVendorDetailService;
+
+        public VendorDetailModel SelectedVendorDetailService
+        {
+            get { return _SelectedVendorDetailService; }
+            set
+            {
+                _SelectedVendorDetailService = value;
+                if (SelectedVendorDetailService != null)
+                {
+                    OnPropertyChanged(nameof(SelectedVendorDetailService));
+
+                    LoadVendorPaymentNotes(SelectedVendorDetailService.VendorId);
+                    // PaymentNoteNo= SelectedVendorDetailService.notr
+                }
+            }
+        }
+
+        #endregion
+
+        //private VendorDetailModel _selectedVendorServiceDetails;
         private string _paymentCode;
 
         private string? _vendorPaymentYear;
@@ -182,18 +265,31 @@ namespace VMA.MVVM.ViewModels.Add
         private string? _vendorPaymentNotesDetails;
         private string? _bankBranchName;
 
-        public VendorDetailModel? SelectedVendorServiceDetails
+        private string _paymentNoteNo;
+
+        public string PaymentNoteNo
         {
-            get { return _selectedVendorServiceDetails; }
+            get { return _paymentNoteNo; }
             set
             {
-
-                _selectedVendorServiceDetails = value;
-                OnPropertyChanged(nameof(SelectedVendorServiceDetails));
-                GeneratePaymentCode(_selectedVendorServiceDetails);
-
+                _paymentNoteNo = value;
+                OnPropertyChanged(nameof(PaymentNoteNo));
             }
         }
+
+
+        //public VendorDetailModel? SelectedVendorServiceDetails
+        //{
+        //    get { return _selectedVendorServiceDetails; }
+        //    set
+        //    {
+
+        //        _selectedVendorServiceDetails = value;
+        //        OnPropertyChanged(nameof(SelectedVendorServiceDetails));
+        //        GeneratePaymentCode(_selectedVendorServiceDetails);
+
+        //    }
+        //}
         private int _Cgstpercentage;
 
         public int Cgstpercentage
@@ -378,19 +474,29 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
-        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic)
+        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
         {
             _vendorPaymentModel = vendorPaymentModel;
             if (_vendorPaymentModel != null)
             {
+                IsComboBoxVendorVisible = false;
+                IsComboBoxServiceVisible = false;
+                IsTextBoxSelectedVendorVisible = true;
+                IsTextBoxServiceVisible = true;
                 SaveButtonName = "Update";
             }
             else
             {
+                IsComboBoxVendorVisible = true;
+                IsComboBoxServiceVisible = true;
+                IsTextBoxSelectedVendorVisible = false;
+                IsTextBoxServiceVisible = false;
                 SaveButtonName = "Submit";
             }
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
+            _vendorBusinessLogic = vendorBusinessLogic;
+            _venderPaymentNotesBusinessLogic = venderPaymentNotesBusinessLogic;
             _paymentViewModel = vendorViewModel;
             HidePaymentFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
             SubmitCommand = new ViewModelAsyncCommand<VendorPaymentModel>(SubmitPaymentDetails, ValidatePAymentDetails);
@@ -421,12 +527,12 @@ namespace VMA.MVVM.ViewModels.Add
                 VendorPaymentNotesDetails = _vendorPaymentModel?.Notes;
                 BankBranchName = _vendorPaymentModel?.BankBranchName;
 
-                var vendorID = VendorServiceDetails.ToList().Find(x => x.VendorDetailId == _vendorPaymentModel?.FkVendorDetailId);
+                //var vendorID = VendorServiceDetails.ToList().Find(x => x.VendorDetailId == _vendorPaymentModel?.FkVendorDetailId);
 
-                if (vendorID != null)
-                {
-                    SelectedVendorServiceDetails = VendorServiceDetails[VendorServiceDetails.IndexOf(vendorID)];
-                }
+                //if (vendorID != null)
+                //{
+                //    SelectedVendorServiceDetails = VendorServiceDetails[VendorServiceDetails.IndexOf(vendorID)];
+                //}
             }
 
         }
@@ -489,7 +595,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
                     PaymentYear = VendorPaymentYear,
 
-                    FkVendorDetailId = SelectedVendorServiceDetails.VendorDetailId,
+                    // FkVendorDetailId = SelectedVendorServiceDetails.VendorDetailId,
                     LastUpdateBy = UserAccountModel.Username,
                     VendorPaymentId = _vendorPaymentModel.VendorPaymentId,
                     IsActive = true
@@ -544,7 +650,8 @@ namespace VMA.MVVM.ViewModels.Add
         }
         public async Task MainTask()
         {
-            await LoadVendorServiceDetails();
+            // await LoadVendorServiceDetails();
+            await LoadVendors();
             await PopulateValues();
             await LoadGSTDetails();
         }
@@ -561,15 +668,15 @@ namespace VMA.MVVM.ViewModels.Add
         }
 
 
-        /// <summary>
-        /// Combobox load item with Vendor Details 
-        /// </summary>
-        /// <returns></returns>
-        private async Task LoadVendorServiceDetails()
-        {
-            var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
-            VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails);
-        }
+        ///// <summary>
+        ///// Combobox load item with Vendor Details 
+        ///// </summary>
+        ///// <returns></returns>
+        //private async Task LoadVendorServiceDetails()
+        //{
+        //    var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
+        //    VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails);
+        //}
 
         private async Task LoadGSTDetails()
         {
@@ -579,6 +686,110 @@ namespace VMA.MVVM.ViewModels.Add
             Igstpercentage = Convert.ToInt32(gstDetails?.FirstOrDefault()?.IgstPercentage);
 
         }
+
+
+        #region Combobox load vendors and services on combo box selection 
+
+        private async Task LoadVendorPaymentNotes(int vendorId)
+        {
+            var vendorServiceDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorId(vendorId).ConfigureAwait(true);
+            // VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails.Where(x => x.VendorId == vendorId));
+            PaymentNoteNo = vendorServiceDetails.PaymentNoteNo;
+        }
+
+        /// <summary>
+        /// Combobox load Vendor Service Name on selection of Vendor
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadVendorServiceDetails(int vendorId)
+        {
+            var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
+            VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails.Where(x => x.VendorId == vendorId));
+        }
+
+        /// <summary>
+        /// Combo box load vendors
+        /// </summary>
+        /// <returns></returns>
+        private async Task LoadVendors()
+        {
+            var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
+            VendorModels = new ObservableCollection<VendorModel>(vendors);
+        }
+
+        #endregion
+
+        #region Vendor and Service Combo box
+
+        private bool _IsComboBoxServiceVisible;
+
+        public bool IsComboBoxServiceVisible
+        {
+            get { return _IsComboBoxServiceVisible; }
+            set
+            {
+                _IsComboBoxServiceVisible = value;
+                OnPropertyChanged(nameof(HideServiceSelectComboBox));
+            }
+        }
+
+        private bool _IsComboBoxVendorVisible;
+
+        public bool IsComboBoxVendorVisible
+        {
+            get { return _IsComboBoxVendorVisible; }
+            set
+            {
+                _IsComboBoxVendorVisible = value;
+                OnPropertyChanged(nameof(HideVendorSelectComboBox));
+            }
+        }
+
+
+        private bool _IsTextBoxServiceVisible;
+
+        public bool IsTextBoxServiceVisible
+        {
+            get { return _IsTextBoxServiceVisible; }
+            set
+            {
+                _IsTextBoxServiceVisible = value;
+                OnPropertyChanged(nameof(HideSelectedService));
+            }
+        }
+
+        private bool _IsTextBoxSelectedVendorVisible;
+
+        public bool IsTextBoxSelectedVendorVisible
+        {
+            get { return _IsTextBoxSelectedVendorVisible; }
+            set
+            {
+                _IsTextBoxSelectedVendorVisible = value;
+                OnPropertyChanged(nameof(HideSelectedVendor));
+            }
+        }
+
+        public Visibility HideSelectedVendor
+        {
+            get { return IsTextBoxSelectedVendorVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideSelectedService
+        {
+            get { return IsTextBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideServiceSelectComboBox
+        {
+            get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideVendorSelectComboBox
+        {
+            get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+        #endregion
 
     }
 }
