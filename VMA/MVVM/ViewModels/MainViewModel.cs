@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using VMA.MVVM.Models;
+using VMA.MVVM.ViewModels.Add;
 using VMA.MVVM.ViewModels.Menus;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
@@ -91,6 +92,7 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowPaymentNoteViewCommand { get; }
         public ICommand ShowReportViewCommand { get; }
         public ICommand ShowSettingViewCommand { get; }
+        public ICommand ShowGSTViewCommand { get; }
 
 
         public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IReportExportToExcelPaymentNote reportExportToExcelPaymentNote)
@@ -112,7 +114,7 @@ namespace VMA.MVVM.ViewModels
             ShowPaymentNoteViewCommand = new ViewModelCommand(ExecutePaymentNoteViewCommand);
             ShowReportViewCommand = new ViewModelCommand(ExecuteShowReportViewCommand);
             ShowSettingViewCommand = new ViewModelCommand(ExecuteShowSettingViewCommand);
-
+            ShowGSTViewCommand = new ViewModelCommand(ExecuteShowGSTViewCommand);
             //Default view
             ExecuteShowHomeViewCommand(null);
             _ = LoadCurrentUserData();
@@ -121,9 +123,16 @@ namespace VMA.MVVM.ViewModels
             _reportExportToExcelPaymentNote = reportExportToExcelPaymentNote;
         }
 
+        private void ExecuteShowGSTViewCommand(object t)
+        {
+            CurrentChildView = new GSTViewModel(_gstcalculationMasterBusinessLogic);
+            Caption = "GTS Master";
+            Icon = IconChar.RankingStar;
+        }
+
         private void ExecuteShowSettingViewCommand(object obj)
         {
-            CurrentChildView = new SettingsViewModel(_gstcalculationMasterBusinessLogic);
+            CurrentChildView = new SettingsViewModel();
             Caption = "Settings";
             Icon = IconChar.Gears;
         }

@@ -15,9 +15,7 @@ namespace VMA.MVVM.ViewModels.Menus
     public class SettingsViewModel : ViewModelBase
     {
 
-        private readonly IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
-
-
+       
 
         #region Properties
 
@@ -55,13 +53,15 @@ namespace VMA.MVVM.ViewModels.Menus
 
         #endregion
 
-        public ICommand SubmitCommand { get; }
-        public SettingsViewModel(IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic)
+        public SettingsViewModel()
         {
-            _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
-            SubmitCommand = new ViewModelAsyncCommand<GstcalculationMasterModel>(SaveGst, ValidateGst);
-            _ = GetGSTDetails();
+            
+           // SubmitCommand = new ViewModelAsyncCommand<GstcalculationMasterModel>(SaveGst, ValidateGst);
+            //_ = GetGSTDetails();
         }
+
+        public ICommand SubmitCommand { get; }
+        
 
         private bool ValidateGst()
         {
@@ -70,28 +70,28 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task SaveGst(object model)
         {
-            GstcalculationMasterModel gstcalculationMaster = new()
-            {
-                CgstPercentage = Cgstpercentage,
-                IgstPercentage = Igstpercentage,
-                SgstPercentage = Sgstpercentage,
-                CreatedBy = UserAccountModel.Username,
-                LastUpdateBy = UserAccountModel.Username,
-                LastUpdatedDate = DateTime.UtcNow,
-                CreatedDate = DateTime.UtcNow,
-                IsActive = true,
-            };
-            await _gstcalculationMasterBusinessLogic.AddGstMaster(gstcalculationMaster);
+            //GstcalculationMasterModel gstcalculationMaster = new()
+            //{
+            //    CgstPercentage = Cgstpercentage,
+            //    IgstPercentage = Igstpercentage,
+            //    SgstPercentage = Sgstpercentage,
+            //    CreatedBy = UserAccountModel.Username,
+            //    LastUpdateBy = UserAccountModel.Username,
+            //    LastUpdatedDate = DateTime.UtcNow,
+            //    CreatedDate = DateTime.UtcNow,
+            //    IsActive = true,
+            //};
+            //await _gstcalculationMasterBusinessLogic.AddGstMaster(gstcalculationMaster);
         }
 
-        public async Task GetGSTDetails()
-        {
-            var latestGST = await _gstcalculationMasterBusinessLogic.GetAllGstMaster();
-            Cgstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.CgstPercentage);
-            Sgstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.SgstPercentage);
-            Igstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.IgstPercentage);
+        //public async Task GetGSTDetails()
+        //{
+        //    var latestGST = await _gstcalculationMasterBusinessLogic.GetAllGstMaster();
+        //    Cgstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.CgstPercentage);
+        //    Sgstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.SgstPercentage);
+        //    Igstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.IgstPercentage);
 
 
-        }
+        //}
     }
 }

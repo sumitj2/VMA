@@ -8,7 +8,7 @@
         xmlns:viewModel="clr-namespace:VMA.MVVM.ViewModels.Menus" 
         xmlns:viewmodels="clr-namespace:VMA.MVVM.ViewModels"
         xmlns:viewModelAdd="clr-namespace:VMA.MVVM.ViewModels.Add"
-        xmlns:addViews="clr-namespace:VMA.MVVM.Views.Add"
+        xmlns:addViews="clr-namespace:VMA.MVVM.Views.Add" xmlns:local1="clr-namespace:VMA.MVVM.Views.Menus"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
         Title="MainWindowView" Height="650" Width="860"
@@ -68,6 +68,10 @@
 
         <DataTemplate DataType="{x:Type viewModelAdd:AddPaymentNotesViewModel}">
             <addViews:AddUpdatePaymentNotesView/>
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModelAdd:GSTViewModel}">
+            <local1:GSTView/>
         </DataTemplate>
     </Window.Resources>
     
@@ -182,7 +186,16 @@
                             <TextBlock Text="Reports" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
-
+                    
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color8}"
+                                 Command="{Binding ShowGSTViewCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:IconImage Icon="RankingStar" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="GST Master" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color9}"
                                  Command="{Binding ShowSettingViewCommand}">
