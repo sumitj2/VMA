@@ -3,17 +3,28 @@ using System.Collections.Generic;
 
 namespace BusinessLogic.Abstraction.VMA.Models;
 
-public partial class VendorPaymentModel
+public partial class VendorPaymentModel :InvoiceDetailsModel
 {
+    #region Join
+    public int NoteId { get; set; }
+    public string PaymentNoteNo { get; set; } = null!;
+    public int? VendorId { get; set; }
+    public string? VendorName { get; set; }
+    public int? VendorServiceId { get; set; }
+    public string? VendorServiceName { get; set; }
+    public string? ServiceSantionAmount { get; set; }
+    public string? ServicePaymentType { get; set; }  
+
+    #endregion
     public int VendorPaymentId { get; set; }
 
     public string? PaymentCode { get; set; }
 
     public string PaymentYear { get; set; } = null!;
 
-    public DateTime VendorPaymentDate { get; set; }
+    public DateOnly VendorPaymentDate { get; set; }
 
-    public string VendorPaymentAmount { get; set; } = null!;
+    public decimal? VendorPaymentAmount { get; set; }
 
     public bool? VendorPaymentIsGst { get; set; }
 
@@ -21,7 +32,9 @@ public partial class VendorPaymentModel
 
     public decimal? VendorPaymentSgst { get; set; }
 
-    public int? VendorPaymentTotalAmountPaid { get; set; }
+    public decimal? VendorPaymentIgst { get; set; }
+
+    public decimal? VendorPaymentTotalAmountPaid { get; set; }
 
     public string? VendorPaymentUtrnumber { get; set; }
 
@@ -54,5 +67,6 @@ public partial class VendorPaymentModel
     public int FkInvoiceId { get; set; }
 
     public int FkNoteId { get; set; }
-    public int FKGSTMasterSrNo { get; set; }
+
+    public int FkGstmasterSrNo { get; set; }
 }

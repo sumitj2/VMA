@@ -23,11 +23,16 @@ namespace VMA.MVVM.ViewModels.Add
         private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         private readonly IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
         private readonly PaymentsViewModel _paymentViewModel;
-        private bool isGSTDetailsVisible;
+
         private VendorPaymentModel _vendorPaymentModel;
         private readonly IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
         private readonly IVendorBusinessLogic _vendorBusinessLogic;
         private readonly IVenderPaymentNotesBusinessLogic _venderPaymentNotesBusinessLogic;
+
+        #region Radio buttons   
+
+        //Yes
+        private bool isGSTDetailsVisible;
         public bool IsGSTDetailsVisible
         {
             get { return isGSTDetailsVisible; }
@@ -39,14 +44,26 @@ namespace VMA.MVVM.ViewModels.Add
                     OnPropertyChanged(nameof(GSTTabVisible));
                     OnPropertyChanged(nameof(TextBoxGSTCategoryVisibility));
                     OnPropertyChanged(nameof(ComboBoxGSTCategoryVisibility));
-
-                    VendorPaymentIsGst = true;
+                    OnPropertyChanged(nameof(IsGSTDetailsVisible));
+                    //VendorPaymentIsGst = true;
                 }
             }
         }
 
-        private bool isTDSTextBoxVisible;
+        //No
+        private bool isGSTDetailsNotVisible;
+        public bool IsGSTDetailsNotVisible
+        {
+            get { return isGSTDetailsNotVisible; }
+            set
+            {
+                isGSTDetailsNotVisible = value;
+                OnPropertyChanged(nameof(IsGSTDetailsNotVisible));
+            }
+        }
 
+        //Yes
+        private bool isTDSTextBoxVisible;
         public bool IsTDSTextBoxVisible
         {
             get { return isTDSTextBoxVisible; }
@@ -57,13 +74,29 @@ namespace VMA.MVVM.ViewModels.Add
                     isTDSTextBoxVisible = value;
                     OnPropertyChanged(nameof(TextBoxVisibility));
                     OnPropertyChanged(nameof(TextBlockVisibility));
-
+                    OnPropertyChanged(nameof(IsTDSTextBoxVisible));
                 }
             }
         }
 
-        private bool isBranchNameVisible;
+        //No
+        private bool isTDSTextBoxNotVisible;
+        public bool IsTDSTextBoxNotVisible
+        {
+            get { return isTDSTextBoxNotVisible; }
+            set
+            {
+                if (isTDSTextBoxNotVisible != value)
+                {
+                    isTDSTextBoxNotVisible = value;
+                    OnPropertyChanged(nameof(IsTDSTextBoxNotVisible));
+                    OnPropertyChanged(nameof(IsTDSTextBoxNotVisible));
+                }
+            }
+        }
 
+        //Yes
+        private bool isBranchNameVisible;
         public bool IsBranchNameVisible
         {
             get { return isBranchNameVisible; }
@@ -75,10 +108,27 @@ namespace VMA.MVVM.ViewModels.Add
                     isBranchNameVisible = value;
                     OnPropertyChanged(nameof(TextBoxBranchNameVisibility));
                     OnPropertyChanged(nameof(TextBlockBranchNameVisibility));
-
+                    OnPropertyChanged(nameof(IsBranchNameVisible));
                 }
             }
         }
+
+        //No
+        private bool isBranchNameNotVisible;
+        public bool IsBranchNameNotVisible
+        {
+            get { return isBranchNameNotVisible; }
+            set
+            {
+                if (isBranchNameNotVisible != value)
+                {
+                    isBranchNameNotVisible = value;
+                    OnPropertyChanged(nameof(IsBranchNameNotVisible));
+                }
+            }
+        }
+
+        #endregion
 
         public string SaveButtonName
         {
@@ -146,8 +196,6 @@ namespace VMA.MVVM.ViewModels.Add
 
         private ObservableCollection<SearchModel> _comboxPaymentMethod;
 
-
-
         public ObservableCollection<SearchModel> ComboxPaymentMethods
         {
             get { return _comboxPaymentMethod; }
@@ -157,6 +205,17 @@ namespace VMA.MVVM.ViewModels.Add
         #endregion
 
         #region Observable collections for Combo box
+
+        private VenderPaymentNoteModel _paymentNoteDetails;
+        public VenderPaymentNoteModel PaymentNoteDetails
+        {
+            get { return _paymentNoteDetails; }
+            set
+            {
+                _paymentNoteDetails = value;
+                OnPropertyChanged(nameof(PaymentNoteDetails));
+            }
+        }
 
         private ObservableCollection<GstcalculationMasterModel> _GSTDetails;
         public ObservableCollection<GstcalculationMasterModel> GSTDetails
@@ -198,25 +257,25 @@ namespace VMA.MVVM.ViewModels.Add
         #region TextBox Properties
 
 
-        private string _TextBoxServiceName;
-        public string TextBoxServiceName
+        private string _SelctedVendorServiceName;
+        public string SelctedVendorServiceName
         {
-            get { return _TextBoxServiceName; }
+            get { return _SelctedVendorServiceName; }
             set
             {
-                _TextBoxServiceName = value;
-                OnPropertyChanged(nameof(TextBoxServiceName));
+                _SelctedVendorServiceName = value;
+                OnPropertyChanged(nameof(SelctedVendorServiceName));
             }
         }
 
-        private string _TextBoxPaymentCodeName;
-        public string TextBoxPaymentCodeName
+        private string _SelectedVendorName;
+        public string SelectedVendorName
         {
-            get { return _TextBoxPaymentCodeName; }
+            get { return _SelectedVendorName; }
             set
             {
-                _TextBoxPaymentCodeName = value;
-                OnPropertyChanged(nameof(TextBoxPaymentCodeName));
+                _SelectedVendorName = value;
+                OnPropertyChanged(nameof(SelectedVendorName));
             }
         }
 
@@ -244,11 +303,13 @@ namespace VMA.MVVM.ViewModels.Add
             set
             {
                 _SelectedGSTModel = value;
-
                 OnPropertyChanged(nameof(SelectedGSTModel));
-                Cgstpercentage = SelectedGSTModel?.CgstPercentage ?? 0;
-                Sgstpercentage = SelectedGSTModel?.SgstPercentage ?? 0;
-                Igstpercentage = SelectedGSTModel?.IgstPercentage ?? 0;
+                if (SelectedGSTModel != null)
+                {
+                    Cgstpercentage = SelectedGSTModel.CgstPercentage;
+                    Sgstpercentage = SelectedGSTModel.SgstPercentage;
+                    Igstpercentage = SelectedGSTModel.IgstPercentage;
+                }
             }
         }
 
@@ -264,7 +325,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
 
-                    LoadVendorPaymentNotes(SelectedVendorDetailService.VendorId);
+                    _ = LoadVendorPaymentNotes(SelectedVendorDetailService.VendorId);
                     // PaymentNoteNo= SelectedVendorDetailService.notr
                 }
             }
@@ -272,27 +333,18 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
-        //private VendorDetailModel _selectedVendorServiceDetails;
-        private string _paymentCode;
-
         private string? _vendorPaymentYear;
-        private DateTime? _vendorPaymentDate;
-        private string? _VendorPaymentAmount;
-        private bool? _vendorPaymentIsGst;
-        private decimal? _vendorPaymentCgst;
-        private decimal? _vendorPaymentSgst;
-        private int? _vendorPaymentTotalAmountPaid;
-        private string? _vendorPaymentUtrnumber;
-        private decimal? _vendorPaymentRtgsAmount;
-        private DateOnly? _vendorPaymentRtgsDate;
-        private bool? _vendorPaymentIsTdsapplicable;
-        private bool? _isPaymentForBranch;
-        private decimal? _vendorPaymentTdsamount;
-        private string? _vendorPaymentNotesDetails;
-        private string? _bankBranchName;
+        public string? VendorPaymentYear
+        {
+            get { return _vendorPaymentYear; }
+            set
+            {
+                _vendorPaymentYear = value;
+                OnPropertyChanged(nameof(VendorPaymentYear));
+            }
+        }
 
         private string _paymentNoteNo;
-
         public string PaymentNoteNo
         {
             get { return _paymentNoteNo; }
@@ -302,6 +354,294 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(PaymentNoteNo));
             }
         }
+
+        private string? _vendorPaymentNotesDetails;
+        public string? VendorPaymentNotesDetails
+        {
+            get { return _vendorPaymentNotesDetails; }
+            set
+            {
+                _vendorPaymentNotesDetails = value;
+                OnPropertyChanged(nameof(VendorPaymentNotesDetails));
+            }
+        }
+
+        private DateOnly? _vendorPaymentDate;
+        public DateOnly? VendorPaymentDate
+        {
+            get { return _vendorPaymentDate; }
+            set
+            {
+                _vendorPaymentDate = value;
+                OnPropertyChanged(nameof(VendorPaymentDate));
+            }
+        }
+
+        //Non Taxable
+        private decimal? _VendorPaymentAmount;
+        public decimal? VendorPaymentAmount
+        {
+            get { return _VendorPaymentAmount; }
+            set
+            {
+                _VendorPaymentAmount = value;
+                OnPropertyChanged(nameof(VendorPaymentAmount));
+            }
+        }
+
+        //With Tax
+        private decimal? _vendorPaymentTotalAmountPaid;
+        public decimal? VendorPaymentTotalAmountPaid
+        {
+            get { return _vendorPaymentTotalAmountPaid; }
+            set
+            {
+                _vendorPaymentTotalAmountPaid = value;
+                OnPropertyChanged(nameof(VendorPaymentTotalAmountPaid));
+            }
+        }
+
+        private string? _bankBranchName;
+        public string? BankBranchName
+        {
+            get { return _bankBranchName; }
+            set
+            {
+                _bankBranchName = value;
+                OnPropertyChanged(nameof(BankBranchName));
+            }
+        }
+
+        #region GST Tab
+
+        //CGST
+        private decimal? _vendorPaymentCgst;
+        public decimal? VendorPaymentCgst
+        {
+            get { return _vendorPaymentCgst; }
+            set
+            {
+                _vendorPaymentCgst = value;
+                OnPropertyChanged(nameof(VendorPaymentCgst));
+            }
+        }
+
+        //SGST
+        private decimal? _vendorPaymentSgst;
+        public decimal? VendorPaymentSgst
+        {
+            get { return _vendorPaymentSgst; }
+            set
+            {
+                _vendorPaymentSgst = value;
+                OnPropertyChanged(nameof(VendorPaymentSgst));
+            }
+        }
+
+        //IGST
+        private decimal? _vendorPaymentIgst;
+        public decimal? VendorPaymentIgst
+        {
+            get { return _vendorPaymentIgst; }
+            set
+            {
+                _vendorPaymentIgst = value;
+                OnPropertyChanged(nameof(VendorPaymentIgst));
+            }
+        }
+
+        //GST Total
+        private double? _GSTTotal;
+        public double? GSTTotal
+        {
+            get { return _GSTTotal; }
+            set
+            {
+                _GSTTotal = (double?)(VendorPaymentCgst + VendorPaymentSgst + VendorPaymentIgst);
+                OnPropertyChanged(nameof(GSTTotal));
+            }
+        }
+
+        #region GST_Tab % from Combo Box selection
+
+        private int? _Cgstpercentage;
+
+        public int? Cgstpercentage
+        {
+            get { return _Cgstpercentage; }
+            set
+            {
+                _Cgstpercentage = value;
+                OnPropertyChanged(nameof(Cgstpercentage));
+            }
+        }
+
+        private int? _Sgstpercentage;
+
+        public int? Sgstpercentage
+        {
+            get { return _Sgstpercentage; }
+            set
+            {
+                _Sgstpercentage = value;
+                OnPropertyChanged(nameof(Sgstpercentage));
+            }
+        }
+
+        private int? _Igstpercentage;
+
+        public int? Igstpercentage
+        {
+            get { return _Igstpercentage; }
+            set
+            {
+                _Igstpercentage = value;
+                OnPropertyChanged(nameof(Igstpercentage));
+            }
+        }
+        #endregion
+
+        #endregion
+
+        #region Invoice Tab
+
+        private string? _InvoiceNumber;
+        public string? InvoiceNumber
+        {
+            get
+            {
+                return _InvoiceNumber;
+            }
+            set
+            {
+                _InvoiceNumber = value;
+                OnPropertyChanged(nameof(InvoiceNumber));
+            }
+        }
+
+        private DateTime? _InvoiceDate;
+        public DateTime? InvoiceDate
+        {
+            get
+            {
+                return _InvoiceDate;
+            }
+            set
+            {
+                _InvoiceDate = value;
+                OnPropertyChanged(nameof(InvoiceDate));
+            }
+        }
+
+        private string? _InvoiceParticulars;
+        public string? InvoiceParticulars
+        {
+            get
+            {
+                return _InvoiceParticulars;
+            }
+            set
+            {
+                _InvoiceParticulars = value;
+                OnPropertyChanged(nameof(InvoiceParticulars));
+            }
+        }
+
+        #endregion
+
+        #region RTGS Details
+
+        private DateOnly? _vendorPaymentRtgsDate;
+        public DateOnly? VendorPaymentRtgsDate
+        {
+            get { return _vendorPaymentRtgsDate; }
+            set
+            {
+                _vendorPaymentRtgsDate = value;
+                OnPropertyChanged(nameof(VendorPaymentRtgsDate));
+            }
+        }
+
+        private decimal? _vendorPaymentRtgsAmount;
+        public decimal? VendorPaymentRtgsAmount
+        {
+            get { return _vendorPaymentRtgsAmount; }
+            set
+            {
+                _vendorPaymentRtgsAmount = value;
+                OnPropertyChanged(nameof(VendorPaymentRtgsAmount));
+            }
+        }
+
+        private string? _vendorPaymentUtrnumber;
+        public string? VendorPaymentUtrnumber
+        {
+            get { return _vendorPaymentUtrnumber; }
+            set
+            {
+                _vendorPaymentUtrnumber = value;
+                OnPropertyChanged(nameof(VendorPaymentUtrnumber));
+            }
+        }
+
+        private decimal? _vendorPaymentTdsamount;
+        public decimal? VendorPaymentTdsamount
+        {
+            get { return _vendorPaymentTdsamount; }
+            set
+            {
+                _vendorPaymentTdsamount = value;
+                OnPropertyChanged(nameof(VendorPaymentTdsamount));
+            }
+        }
+
+        #endregion
+
+        //private string _paymentCode;
+        //public string PaymentCode
+        //{
+        //    get { return _paymentCode; }
+        //    set
+        //    {
+        //        _paymentCode = value;
+        //        OnPropertyChanged(nameof(PaymentCode));
+        //    }
+        //}
+
+        //private bool? _vendorPaymentIsTdsapplicable;
+        //public bool? VendorPaymentIsTdsapplicable
+        //{
+        //    get { return _vendorPaymentIsTdsapplicable; }
+        //    set
+        //    {
+        //        _vendorPaymentIsTdsapplicable = value;
+        //        OnPropertyChanged(nameof(VendorPaymentIsTdsapplicable));
+        //    }
+        //}
+
+        //private bool? _isPaymentForBranch;
+        //public bool? IsPaymentForBranch
+        //{
+        //    get { return _isPaymentForBranch; }
+        //    set
+        //    {
+        //        _isPaymentForBranch = value;
+        //        OnPropertyChanged(nameof(IsPaymentForBranch));
+        //    }
+        //}
+
+        //private bool? _vendorPaymentIsGst;
+        //public bool? VendorPaymentIsGst
+        //{
+        //    get { return _vendorPaymentIsGst; }
+        //    set
+        //    {
+        //        _vendorPaymentIsGst = value;
+        //        OnPropertyChanged(nameof(VendorPaymentIsGst));
+        //    }
+        //}
+
+        //private VendorDetailModel _selectedVendorServiceDetails;
 
 
         //public VendorDetailModel? SelectedVendorServiceDetails
@@ -316,188 +656,6 @@ namespace VMA.MVVM.ViewModels.Add
 
         //    }
         //}
-        private int _Cgstpercentage;
-
-        public int Cgstpercentage
-        {
-            get { return _Cgstpercentage; }
-            set
-            {
-                _Cgstpercentage = value;
-                OnPropertyChanged(nameof(Cgstpercentage));
-            }
-        }
-
-        private int _Sgstpercentage;
-
-        public int Sgstpercentage
-        {
-            get { return _Sgstpercentage; }
-            set
-            {
-                _Sgstpercentage = value;
-                OnPropertyChanged(nameof(Sgstpercentage));
-            }
-        }
-
-        private int _Igstpercentage;
-
-        public int Igstpercentage
-        {
-            get { return _Igstpercentage; }
-            set
-            {
-                _Igstpercentage = value;
-                OnPropertyChanged(nameof(Igstpercentage));
-            }
-        }
-
-        public string PaymentCode
-        {
-            get { return _paymentCode; }
-            set
-            {
-                _paymentCode = value;
-                OnPropertyChanged(nameof(PaymentCode));
-            }
-        }
-        public string? VendorPaymentYear
-        {
-            get { return _vendorPaymentYear; }
-            set
-            {
-                _vendorPaymentYear = value;
-                OnPropertyChanged(nameof(VendorPaymentYear));
-            }
-        }
-        public DateTime? VendorPaymentDate
-        {
-            get { return _vendorPaymentDate; }
-            set
-            {
-                _vendorPaymentDate = value;
-                OnPropertyChanged(nameof(VendorPaymentDate));
-            }
-        }
-        public string? VendorPaymentAmount
-        {
-            get { return _VendorPaymentAmount; }
-            set
-            {
-                _VendorPaymentAmount = value;
-                OnPropertyChanged(nameof(VendorPaymentAmount));
-            }
-        }
-        public bool? VendorPaymentIsGst
-        {
-            get { return _vendorPaymentIsGst; }
-            set
-            {
-                _vendorPaymentIsGst = value;
-                OnPropertyChanged(nameof(VendorPaymentIsGst));
-            }
-        }
-        public decimal? VendorPaymentCgst
-        {
-            get { return _vendorPaymentCgst; }
-            set
-            {
-                _vendorPaymentCgst = value;
-                OnPropertyChanged(nameof(VendorPaymentCgst));
-            }
-        }
-        public decimal? VendorPaymentSgst
-        {
-            get { return _vendorPaymentSgst; }
-            set
-            {
-                _vendorPaymentSgst = value;
-                OnPropertyChanged(nameof(VendorPaymentSgst));
-            }
-        }
-        public int? VendorPaymentTotalAmountPaid
-        {
-            get { return _vendorPaymentTotalAmountPaid; }
-            set
-            {
-                _vendorPaymentTotalAmountPaid = value;
-                OnPropertyChanged(nameof(VendorPaymentTotalAmountPaid));
-            }
-        }
-        public string? VendorPaymentUtrnumber
-        {
-            get { return _vendorPaymentUtrnumber; }
-            set
-            {
-                _vendorPaymentUtrnumber = value;
-                OnPropertyChanged(nameof(VendorPaymentUtrnumber));
-            }
-        }
-        public decimal? VendorPaymentRtgsAmount
-        {
-            get { return _vendorPaymentRtgsAmount; }
-            set
-            {
-                _vendorPaymentRtgsAmount = value;
-                OnPropertyChanged(nameof(VendorPaymentRtgsAmount));
-            }
-        }
-        public DateOnly? VendorPaymentRtgsDate
-        {
-            get { return _vendorPaymentRtgsDate; }
-            set
-            {
-                _vendorPaymentRtgsDate = value;
-                OnPropertyChanged(nameof(VendorPaymentRtgsDate));
-            }
-        }
-        public bool? VendorPaymentIsTdsapplicable
-        {
-            get { return _vendorPaymentIsTdsapplicable; }
-            set
-            {
-                _vendorPaymentIsTdsapplicable = value;
-                OnPropertyChanged(nameof(VendorPaymentIsTdsapplicable));
-            }
-        }
-        public bool? IsPaymentForBranch
-        {
-            get { return _isPaymentForBranch; }
-            set
-            {
-                _isPaymentForBranch = value;
-                OnPropertyChanged(nameof(IsPaymentForBranch));
-            }
-        }
-        public decimal? VendorPaymentTdsamount
-        {
-            get { return _vendorPaymentTdsamount; }
-            set
-            {
-                _vendorPaymentTdsamount = value;
-                OnPropertyChanged(nameof(VendorPaymentTdsamount));
-            }
-        }
-        public string? VendorPaymentNotesDetails
-        {
-            get { return _vendorPaymentNotesDetails; }
-            set
-            {
-                _vendorPaymentNotesDetails = value;
-                OnPropertyChanged(nameof(VendorPaymentNotesDetails));
-            }
-        }
-        public string? BankBranchName
-        {
-            get { return _bankBranchName; }
-            set
-            {
-                _bankBranchName = value;
-                OnPropertyChanged(nameof(BankBranchName));
-            }
-        }
-
-
         #endregion
 
         public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
@@ -536,49 +694,62 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 ///need to code to set no if resceive false
                 ///need to add binding for no radio button
-                PaymentCode = _vendorPaymentModel?.PaymentCode ?? "";
+               // PaymentCode = _vendorPaymentModel?.PaymentCode ?? "";
                 VendorPaymentYear = _vendorPaymentModel?.PaymentYear;
+                SelectedVendorName = _vendorPaymentModel?.VendorName ?? "";
+                SelctedVendorServiceName = _vendorPaymentModel?.VendorServiceName ?? "";
                 VendorPaymentDate = _vendorPaymentModel?.VendorPaymentDate;
                 VendorPaymentAmount = _vendorPaymentModel?.VendorPaymentAmount;
-                IsGSTDetailsVisible = _vendorPaymentModel?.VendorPaymentIsGst != null ? (bool)_vendorPaymentModel.VendorPaymentIsGst : false;
+
+                IsGSTDetailsVisible = _vendorPaymentModel?.VendorPaymentIsGst != null ? (bool)_vendorPaymentModel.VendorPaymentIsGst : IsGSTDetailsNotVisible;
                 VendorPaymentCgst = _vendorPaymentModel?.VendorPaymentCgst;
                 VendorPaymentSgst = _vendorPaymentModel?.VendorPaymentSgst;
+                VendorPaymentIgst = _vendorPaymentModel?.VendorPaymentIgst;
+                GSTTotal = (double?)(VendorPaymentCgst + VendorPaymentSgst + VendorPaymentIgst);
                 VendorPaymentTotalAmountPaid = _vendorPaymentModel?.VendorPaymentTotalAmountPaid;
-                VendorPaymentUtrnumber = _vendorPaymentModel?.VendorPaymentUtrnumber;
-                VendorPaymentRtgsAmount = _vendorPaymentModel?.VendorPaymentRtgsAmount;
-                VendorPaymentRtgsDate = _vendorPaymentModel?.VendorPaymentRtgsDate;
-                IsTDSTextBoxVisible = _vendorPaymentModel?.VendorPaymentIsTdsapplicable != null ? (bool)_vendorPaymentModel.VendorPaymentIsTdsapplicable : false;
-                IsBranchNameVisible = _vendorPaymentModel?.IsPaymentForBranch != null ? (bool)_vendorPaymentModel.IsPaymentForBranch : false;
-                VendorPaymentTdsamount = _vendorPaymentModel?.VendorPaymentTdsamount;
+
+                IsTDSTextBoxVisible = _vendorPaymentModel?.VendorPaymentIsTdsapplicable != null ? (bool)_vendorPaymentModel.VendorPaymentIsTdsapplicable : isTDSTextBoxNotVisible;
+                IsBranchNameVisible = _vendorPaymentModel?.IsPaymentForBranch != null ? (bool)_vendorPaymentModel.IsPaymentForBranch : isBranchNameNotVisible;
                 VendorPaymentNotesDetails = _vendorPaymentModel?.Notes;
                 BankBranchName = _vendorPaymentModel?.BankBranchName;
 
-                //var vendorID = VendorServiceDetails.ToList().Find(x => x.VendorDetailId == _vendorPaymentModel?.FkVendorDetailId);
+                VendorPaymentUtrnumber = _vendorPaymentModel?.VendorPaymentUtrnumber;
+                VendorPaymentRtgsAmount = _vendorPaymentModel?.VendorPaymentRtgsAmount;
+                VendorPaymentRtgsDate = _vendorPaymentModel?.VendorPaymentRtgsDate;
+                VendorPaymentTdsamount = _vendorPaymentModel?.VendorPaymentTdsamount;
 
-                //if (vendorID != null)
-                //{
-                //    SelectedVendorServiceDetails = VendorServiceDetails[VendorServiceDetails.IndexOf(vendorID)];
-                //}
+                InvoiceNumber = _vendorPaymentModel?.InvoiceNumber;
+                InvoiceParticulars = _vendorPaymentModel?.InvoiceParticulars;
+                InvoiceDate = _vendorPaymentModel?.InvoiceDate;
+
+                PaymentNoteNo = _vendorPaymentModel?.PaymentNoteNo;
+
+                var gstSrNo = GSTDetails.ToList().Find(x => x.SrNo == _vendorPaymentModel?.FkGstmasterSrNo);
+
+                if (gstSrNo != null)
+                {
+                    SelectedGSTModel = GSTDetails[GSTDetails.IndexOf(gstSrNo)];
+                }
             }
 
         }
-        private async void GeneratePaymentCode(VendorDetailModel? vendorDetailModel)
-        {
-            var paymentCode = await _vendorPaymentBusinessLogic.GeneratePaymentCode(vendorDetailModel);
-            PaymentCode = paymentCode;
-        }
+        //private async void GeneratePaymentCode(VendorDetailModel? vendorDetailModel)
+        //{
+        //    var paymentCode = await _vendorPaymentBusinessLogic.GeneratePaymentCode(vendorDetailModel);
+        //    PaymentCode = paymentCode;
+        //}
 
         private async Task ClearPaymentForm(VendorPaymentModel model)
         {
             BankBranchName = "";
-            IsPaymentForBranch = false;
-            PaymentCode = "";
-            VendorPaymentAmount = "";
+            //IsPaymentForBranch = false;
+            //PaymentCode = "";
+            VendorPaymentAmount = 0;
             VendorPaymentCgst = 0;
-            VendorPaymentDate = DateTime.MaxValue;
-            VendorPaymentIsGst = false;
+            VendorPaymentDate = DateOnly.MinValue;
+            //VendorPaymentIsGst = false;
             VendorPaymentNotesDetails = "";
-            VendorPaymentIsTdsapplicable = false;
+            // VendorPaymentIsTdsapplicable = false;
             VendorPaymentRtgsDate = DateOnly.MinValue;
             VendorPaymentSgst = 0;
             VendorPaymentTdsamount = 0;
@@ -602,29 +773,40 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 VendorPaymentModel payment = new VendorPaymentModel()
                 {
-                    BankBranchName = BankBranchName,
-                    IsPaymentForBranch = IsBranchNameVisible,
-                    PaymentCode = PaymentCode,
-                    VendorPaymentAmount = VendorPaymentAmount ?? "",
-                    VendorPaymentCgst = VendorPaymentCgst,
-                    VendorPaymentDate = Convert.ToDateTime(VendorPaymentDate),
-                    VendorPaymentIsGst = IsGSTDetailsVisible,
+                    PaymentYear = VendorPaymentYear,
+                    FkNoteId = _vendorPaymentModel.NoteId,
                     Notes = VendorPaymentNotesDetails,
-                    VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
-                    VendorPaymentRtgsDate = VendorPaymentRtgsDate,
-                    VendorPaymentSgst = VendorPaymentSgst,
-                    VendorPaymentTdsamount = VendorPaymentTdsamount,
 
+                    VendorPaymentDate = (DateOnly)VendorPaymentDate,
+                    VendorPaymentAmount = (decimal?)VendorPaymentAmount,
+                    VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
+
+                    VendorPaymentIsGst = IsGSTDetailsVisible,
+                    FkGstmasterSrNo = IsGSTDetailsVisible ? SelectedGSTModel.SrNo : 0,
+                    VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
+                    IsPaymentForBranch = IsBranchNameVisible,
+                    BankBranchName = IsBranchNameVisible ? BankBranchName : "",
+
+                    VendorPaymentCgst = IsGSTDetailsVisible ? VendorPaymentCgst : 0,
+                    VendorPaymentSgst = IsGSTDetailsVisible ? VendorPaymentSgst : 0,
+                    VendorPaymentIgst = IsGSTDetailsVisible ? VendorPaymentIgst : 0,
+
+                    InvoiceDate = InvoiceDate,
+                    InvoiceNumber = InvoiceNumber,
+                    InvoiceParticulars = InvoiceParticulars,
+
+                    PaymentCode = "",
+
+                    VendorPaymentRtgsDate = VendorPaymentRtgsDate,
                     VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
                     VendorPaymentUtrnumber = VendorPaymentUtrnumber,
+                    VendorPaymentTdsamount = IsTDSTextBoxVisible ? VendorPaymentTdsamount : 0,
 
-                    VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
-                    PaymentYear = VendorPaymentYear,
-
-                    // FkVendorDetailId = SelectedVendorServiceDetails.VendorDetailId,
                     LastUpdateBy = UserAccountModel.Username,
+                    LastUpdatedDate = DateTime.UtcNow,
                     VendorPaymentId = _vendorPaymentModel.VendorPaymentId,
-                    IsActive = true
+                    IsActive = true,
+                    FkVendorDetailId = _vendorPaymentModel.FkVendorDetailId,
                 };
                 await _vendorPaymentBusinessLogic.EditUpdateVendorPayment(payment);
 
@@ -634,27 +816,39 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 VendorPaymentModel payment = new()
                 {
-                    BankBranchName = BankBranchName,
-                    IsPaymentForBranch = IsBranchNameVisible,
-                    PaymentCode = PaymentCode,
-                    VendorPaymentAmount = VendorPaymentAmount,
-                    VendorPaymentCgst = VendorPaymentCgst,
-                    VendorPaymentDate = Convert.ToDateTime(VendorPaymentDate),
-                    VendorPaymentIsGst = IsGSTDetailsVisible,
+                    PaymentYear = VendorPaymentYear,
+                    FkNoteId = PaymentNoteDetails.NoteId,//
+                    FkVendorDetailId = SelectedVendorDetailService.VendorDetailId,
                     Notes = VendorPaymentNotesDetails,
-                    VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
-                    VendorPaymentRtgsDate = VendorPaymentRtgsDate,
-                    VendorPaymentSgst = VendorPaymentSgst,
-                    VendorPaymentTdsamount = VendorPaymentTdsamount,
 
+                    VendorPaymentDate = (DateOnly)VendorPaymentDate,
+                    VendorPaymentAmount = (decimal?)VendorPaymentAmount,
+                    VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
+
+                    VendorPaymentIsGst = IsGSTDetailsVisible,
+                    FkGstmasterSrNo = SelectedGSTModel != null ? SelectedGSTModel.SrNo : 0,
+                    VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
+                    IsPaymentForBranch = IsBranchNameVisible,
+                    BankBranchName = IsBranchNameVisible ? BankBranchName : null,
+
+                    VendorPaymentCgst = IsGSTDetailsVisible ? VendorPaymentCgst : 0,
+                    VendorPaymentSgst = IsGSTDetailsVisible ? VendorPaymentSgst : 0,
+                    VendorPaymentIgst = IsGSTDetailsVisible ? VendorPaymentIgst : 0,
+
+                    InvoiceDate = InvoiceDate,
+                    InvoiceNumber = InvoiceNumber,
+                    InvoiceParticulars = InvoiceParticulars,
+
+                    PaymentCode = "",
+
+                    VendorPaymentRtgsDate = VendorPaymentRtgsDate,
                     VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
                     VendorPaymentUtrnumber = VendorPaymentUtrnumber,
-
-                    VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
-                    PaymentYear = VendorPaymentYear,
+                    VendorPaymentTdsamount = IsTDSTextBoxVisible ? VendorPaymentTdsamount : 0,
 
                     CreatedBy = UserAccountModel.Username,
-                    IsActive = true
+                    CreatedDate = DateTime.UtcNow,
+                    IsActive = true,
                 };
                 await _vendorPaymentBusinessLogic.AddVendorPayment(payment);
 
@@ -677,9 +871,10 @@ namespace VMA.MVVM.ViewModels.Add
         public async Task MainTask()
         {
             // await LoadVendorServiceDetails();
+            await LoadGSTDetails();
             await LoadVendors();
             await PopulateValues();
-            await LoadGSTDetails();
+
         }
         private void CanGoBack(object obj)
         {
@@ -715,9 +910,12 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task LoadVendorPaymentNotes(int vendorId)
         {
-            var vendorServiceDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorId(vendorId).ConfigureAwait(true);
-            // VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails.Where(x => x.VendorId == vendorId));
-            PaymentNoteNo = vendorServiceDetails?.PaymentNoteNo ?? "";
+            var paymentNotesDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorId(vendorId).ConfigureAwait(true);
+            if (paymentNotesDetails != null)
+            {
+                PaymentNoteDetails = paymentNotesDetails;
+                PaymentNoteNo = paymentNotesDetails?.PaymentNoteNo ?? "";
+            }
         }
 
         /// <summary>

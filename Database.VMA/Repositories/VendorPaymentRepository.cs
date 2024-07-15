@@ -34,6 +34,12 @@ namespace Database.VMA.Repositories
                                       on payment.FkVendorDetailId equals details.VendorDetailId
                                       join service in _context.VendorServices
                                       on details.FkVendorServiceId equals service.VendorServiceId
+                                      join vendor in _context.Vendors
+                                      on details.FkVendorId equals vendor.VendorId
+                                      join invoice in _context.InvoiceDetails
+                                      on payment.FkInvoiceId equals invoice.InvoiceId
+                                      join paymentNote in _context.VenderPaymentNotes
+                                      on payment.FkNoteId equals paymentNote.NoteId
                                       select new VendorPaymentWithService
                                       {
                                           CreatedBy = payment.CreatedBy,
@@ -62,8 +68,19 @@ namespace Database.VMA.Repositories
                                           ServicePaymentType = details.ServicePaymentType,
                                           ServiceSantionAmount = details.ServiceSantionAmount,
                                           VendorServiceId = service.VendorServiceId,
-                                          VendorServiceName = service.VendorServiceName
-
+                                          VendorServiceName = service.VendorServiceName,
+                                          FkInvoiceId= payment.FkInvoiceId,
+                                          FkGstmasterSrNo = payment.FkGstmasterSrNo,
+                                          VendorId=vendor.VendorId,
+                                          FkNoteId= payment.FkNoteId,
+                                          VendorName=vendor.VendorName,
+                                          VendorPaymentIgst = payment.VendorPaymentIgst,
+                                          InvoiceDate=invoice.InvoiceDate,
+                                          InvoiceId=invoice.InvoiceId,
+                                          InvoiceNumber=invoice.InvoiceNumber,
+                                          InvoiceParticulars = invoice.InvoiceParticulars,
+                                          NoteId= paymentNote.NoteId,
+                                          PaymentNoteNo = paymentNote.PaymentNoteNo 
                                       };
             return await productsWithVendors.ToListAsync();
         }

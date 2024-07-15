@@ -109,11 +109,13 @@
                 RowStyle="{DynamicResource DataGridRowStyle1}" 
                 ItemsSource="{Binding VendorsPayment,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="Payment Year" Binding="{Binding PaymentYear}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Vendor Name" Binding="{Binding VendorName}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Service Name" Binding="{Binding VendorServiceName}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Payment Code" Binding="{Binding PaymentCode}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Payment Year" Binding="{Binding VendorPaymentYear}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="PaymentNoteNo" Binding="{Binding PaymentNoteNo}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Payment Date" Binding="{Binding VendorPaymentDate}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Payment Amount" Binding="{Binding VendorPaymentAmount}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Non Taxable Amount" Binding="{Binding VendorPaymentAmount}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Taxable Amount" Binding="{Binding VendorPaymentTotalAmountPaid}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Branch Name"  Binding="{Binding BankBranchName}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="RTGS Date" Binding="{Binding VendorPaymentRtgsDate}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="RTGS Amount" Binding="{Binding VendorPaymentRtgsAmount}" IsReadOnly="True" Width="auto"/>
@@ -121,6 +123,10 @@
                     <DataGridTextColumn Header="TDS Amount" Binding="{Binding VendorPaymentTdsamount}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="CGST" Binding="{Binding VendorPaymentCgst}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="SGST" Binding="{Binding VendorPaymentSgst}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="IGST" Binding="{Binding VendorPaymentIgst}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Invoice Number" Binding="{Binding InvoiceNumber}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Invoice Date" Binding="{Binding InvoiceDate}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Invoice Particular" Binding="{Binding InvoiceParticulars}" IsReadOnly="True" Width="auto"/>
                     <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

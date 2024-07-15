@@ -99,19 +99,22 @@ public partial class VendorManagementDbContext : DbContext
 
         modelBuilder.Entity<VendorPayment>(entity =>
         {
-            entity.HasKey(e => e.VendorPaymentId).HasName("PK__VendorPa__68C7C3D20C7588B7");
+            entity.HasKey(e => e.VendorPaymentId).HasName("PK__VendorPa__68C7C3D296A2B8CF");
 
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.FkGstmasterSrNo).HasColumnName("FK_GSTMasterSrNo");
             entity.Property(e => e.FkInvoiceId).HasColumnName("FK_InvoiceID");
             entity.Property(e => e.FkNoteId).HasColumnName("FK_NoteId");
-            entity.Property(e => e.FKGSTMasterSrNo).HasColumnName("FK_GSTMasterSrNo");
             entity.Property(e => e.FkVendorDetailId).HasColumnName("FK_VendorDetailID");
             entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.PaymentYear).HasMaxLength(20);
+            entity.Property(e => e.VendorPaymentAmount).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.VendorPaymentCgst)
                 .HasColumnType("decimal(18, 0)")
                 .HasColumnName("VendorPaymentCGST");
-            entity.Property(e => e.VendorPaymentDate).HasColumnType("datetime");
+            entity.Property(e => e.VendorPaymentIgst)
+                .HasColumnType("decimal(18, 0)")
+                .HasColumnName("VendorPaymentIGST");
             entity.Property(e => e.VendorPaymentIsGst).HasColumnName("VendorPaymentIsGST");
             entity.Property(e => e.VendorPaymentIsTdsapplicable).HasColumnName("VendorPaymentIsTDSApplicable");
             entity.Property(e => e.VendorPaymentRtgsAmount).HasColumnType("decimal(18, 0)");
@@ -121,6 +124,7 @@ public partial class VendorManagementDbContext : DbContext
             entity.Property(e => e.VendorPaymentTdsamount)
                 .HasColumnType("decimal(18, 0)")
                 .HasColumnName("VendorPaymentTDSAmount");
+            entity.Property(e => e.VendorPaymentTotalAmountPaid).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.VendorPaymentUtrnumber).HasColumnName("VendorPaymentUTRNumber");
         });
 
