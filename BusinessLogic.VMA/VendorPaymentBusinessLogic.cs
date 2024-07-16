@@ -53,8 +53,16 @@ namespace Database.VMA.Repositories
 
         public async Task AddVendorPayment(VendorPaymentModel VendorPaymentModel)
         {
-
-            var invoiceId = await _invoiceDetailsBusinessLogic.AddInvoice(VendorPaymentModel);
+            InvoiceDetailsModel invoiceDetailsModel = new InvoiceDetailsModel() 
+            {
+                CreatedBy = VendorPaymentModel.CreatedBy,
+                CreatedDate = DateTime.UtcNow,
+                IsActive=true,
+                InvoiceDate = VendorPaymentModel.InvoiceDate,
+                InvoiceNumber = VendorPaymentModel.InvoiceNumber,
+                InvoiceParticulars=VendorPaymentModel.InvoiceParticulars                
+            };
+            var invoiceId = await _invoiceDetailsBusinessLogic.AddInvoice(invoiceDetailsModel);
             VendorPayment vendorPayment = new()
             {
                 BankBranchName = VendorPaymentModel.BankBranchName,
@@ -84,37 +92,64 @@ namespace Database.VMA.Repositories
                 IsPaymentForBranch = VendorPaymentModel.IsPaymentForBranch,
                 VendorPaymentIgst = VendorPaymentModel.VendorPaymentIgst,
                 FkInvoiceId = invoiceId
+
             };
             await _vendorPaymentRepository.AddVendorPayment(vendorPayment);
         }
         public async Task EditUpdateVendorPayment(VendorPaymentModel VendorPaymentEntity)
         {
             var entity = await _vendorPaymentRepository.GetVendorPaymentById(VendorPaymentEntity.VendorPaymentId);
+            var invoiceEntity = await _invoiceDetailsBusinessLogic.GetInvoiceById(VendorPaymentEntity.InvoiceId);
+
+            if (invoiceEntity != null)
+            {
+                invoiceEntity.InvoiceParticulars = VendorPaymentEntity.InvoiceParticulars;
+                invoiceEntity.InvoiceNumber = VendorPaymentEntity.InvoiceNumber;
+                invoiceEntity.InvoiceDate = VendorPaymentEntity.InvoiceDate;
+                invoiceEntity.LastUpdateBy = VendorPaymentEntity.LastUpdateBy;
+                invoiceEntity.LastUpdatedDate = VendorPaymentEntity.LastUpdatedDate;
+                invoiceEntity.IsActive = true;
+
+                await _invoiceDetailsBusinessLogic.EditUpdateInvoice(invoiceEntity);
+            }
+
             if (entity != null)
             {
                 entity.PaymentYear = VendorPaymentEntity.PaymentYear;
+                entity.FkNoteId = VendorPaymentEntity.FkNoteId;
+                entity.FkVendorDetailId = VendorPaymentEntity.FkVendorDetailId;
+                entity.Notes = VendorPaymentEntity.Notes;
+
+                entity.VendorPaymentDate = VendorPaymentEntity.VendorPaymentDate;
+                entity.VendorPaymentAmount = VendorPaymentEntity.VendorPaymentAmount;
                 entity.VendorPaymentTotalAmountPaid = VendorPaymentEntity.VendorPaymentTotalAmountPaid;
-                entity.VendorPaymentUtrnumber = VendorPaymentEntity.VendorPaymentUtrnumber;
-                entity.VendorPaymentTdsamount = VendorPaymentEntity.VendorPaymentTdsamount;
+
+                entity.VendorPaymentIsGst = VendorPaymentEntity.VendorPaymentIsGst;
+                entity.FkGstmasterSrNo = VendorPaymentEntity.FkGstmasterSrNo;
+                entity.VendorPaymentIsTdsapplicable = VendorPaymentEntity.VendorPaymentIsTdsapplicable;
+                entity.IsPaymentForBranch = VendorPaymentEntity.IsPaymentForBranch;
                 entity.BankBranchName = VendorPaymentEntity.BankBranchName;
+
+                entity.VendorPaymentSgst = VendorPaymentEntity.VendorPaymentSgst;
+                entity.VendorPaymentCgst = VendorPaymentEntity.VendorPaymentCgst;
+                entity.VendorPaymentIgst = VendorPaymentEntity.VendorPaymentIgst;
+
+                entity.VendorPaymentTdsamount = VendorPaymentEntity.VendorPaymentTdsamount;
+                entity.VendorPaymentUtrnumber = VendorPaymentEntity.VendorPaymentUtrnumber;
+                entity.VendorPaymentRtgsAmount = VendorPaymentEntity.VendorPaymentRtgsAmount;
+                entity.VendorPaymentRtgsDate = VendorPaymentEntity.VendorPaymentRtgsDate;
+
                 entity.CreatedBy = VendorPaymentEntity.CreatedBy;
                 entity.CreatedDate = VendorPaymentEntity.CreatedDate;
-                entity.FkVendorDetailId = (int)VendorPaymentEntity.FkVendorDetailId;
+               
+
+                entity.VendorPaymentId = VendorPaymentEntity.VendorPaymentId;
+                entity.PaymentCode = VendorPaymentEntity.PaymentCode;
+                entity.FkInvoiceId = (int)VendorPaymentEntity.InvoiceId;
+
                 entity.IsActive = (bool)VendorPaymentEntity.IsActive;
                 entity.LastUpdateBy = VendorPaymentEntity.LastUpdateBy;
                 entity.LastUpdatedDate = VendorPaymentEntity.LastUpdatedDate;
-                entity.VendorPaymentAmount = VendorPaymentEntity.VendorPaymentAmount;
-                entity.VendorPaymentCgst = VendorPaymentEntity.VendorPaymentCgst;
-                entity.VendorPaymentDate = VendorPaymentEntity.VendorPaymentDate;
-                entity.VendorPaymentId = VendorPaymentEntity.VendorPaymentId;
-                entity.VendorPaymentIsGst = VendorPaymentEntity.VendorPaymentIsGst;
-                entity.Notes = VendorPaymentEntity.Notes;
-                entity.VendorPaymentRtgsAmount = VendorPaymentEntity.VendorPaymentRtgsAmount;
-                entity.VendorPaymentRtgsDate = VendorPaymentEntity.VendorPaymentRtgsDate;
-                entity.VendorPaymentSgst = VendorPaymentEntity.VendorPaymentSgst;
-                entity.PaymentCode = VendorPaymentEntity.PaymentCode;
-                entity.IsPaymentForBranch = VendorPaymentEntity.IsPaymentForBranch;
-                entity.VendorPaymentIsTdsapplicable = VendorPaymentEntity.VendorPaymentIsTdsapplicable;
 
                 await _vendorPaymentRepository.EditUpdateVendorPayment(entity);
             }
@@ -165,7 +200,7 @@ namespace Database.VMA.Repositories
                     VendorServiceId = data.VendorServiceId,
                     VendorServiceName = data.VendorServiceName,
                     PaymentNoteNo = data.PaymentNoteNo,
-                    NoteId =data.NoteId
+                    NoteId = data.NoteId
                 });
             }
             return result;

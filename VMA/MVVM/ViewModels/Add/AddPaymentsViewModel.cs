@@ -692,9 +692,6 @@ namespace VMA.MVVM.ViewModels.Add
         {
             if (_vendorPaymentModel != null)
             {
-                ///need to code to set no if resceive false
-                ///need to add binding for no radio button
-               // PaymentCode = _vendorPaymentModel?.PaymentCode ?? "";
                 VendorPaymentYear = _vendorPaymentModel?.PaymentYear;
                 SelectedVendorName = _vendorPaymentModel?.VendorName ?? "";
                 SelctedVendorServiceName = _vendorPaymentModel?.VendorServiceName ?? "";
@@ -702,6 +699,7 @@ namespace VMA.MVVM.ViewModels.Add
                 VendorPaymentAmount = _vendorPaymentModel?.VendorPaymentAmount;
 
                 IsGSTDetailsVisible = _vendorPaymentModel?.VendorPaymentIsGst != null ? (bool)_vendorPaymentModel.VendorPaymentIsGst : IsGSTDetailsNotVisible;
+                IsGSTDetailsNotVisible = !IsGSTDetailsVisible ? true : false;
                 VendorPaymentCgst = _vendorPaymentModel?.VendorPaymentCgst;
                 VendorPaymentSgst = _vendorPaymentModel?.VendorPaymentSgst;
                 VendorPaymentIgst = _vendorPaymentModel?.VendorPaymentIgst;
@@ -709,7 +707,9 @@ namespace VMA.MVVM.ViewModels.Add
                 VendorPaymentTotalAmountPaid = _vendorPaymentModel?.VendorPaymentTotalAmountPaid;
 
                 IsTDSTextBoxVisible = _vendorPaymentModel?.VendorPaymentIsTdsapplicable != null ? (bool)_vendorPaymentModel.VendorPaymentIsTdsapplicable : isTDSTextBoxNotVisible;
+                IsTDSTextBoxNotVisible = !IsTDSTextBoxVisible ? true : false;
                 IsBranchNameVisible = _vendorPaymentModel?.IsPaymentForBranch != null ? (bool)_vendorPaymentModel.IsPaymentForBranch : isBranchNameNotVisible;
+                IsBranchNameNotVisible = !IsBranchNameVisible ? true : false;
                 VendorPaymentNotesDetails = _vendorPaymentModel?.Notes;
                 BankBranchName = _vendorPaymentModel?.BankBranchName;
 
@@ -807,6 +807,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorPaymentId = _vendorPaymentModel.VendorPaymentId,
                     IsActive = true,
                     FkVendorDetailId = _vendorPaymentModel.FkVendorDetailId,
+                    InvoiceId = _vendorPaymentModel.InvoiceId,
                 };
                 await _vendorPaymentBusinessLogic.EditUpdateVendorPayment(payment);
 

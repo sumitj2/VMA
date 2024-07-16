@@ -47,15 +47,7 @@ namespace Database.VMA.Repositories
                 LastUpdateBy = invoiceDetailModel.LastUpdateBy,
                 LastUpdatedDate = invoiceDetailModel.LastUpdatedDate
             };
-            try
-            {
-                await _invoiceDetailsRepository.EditUpdateInvoice(invoiceDetailsEntity);
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+           
             await _invoiceDetailsRepository.EditUpdateInvoice(invoiceDetailsEntity);
         }
         public async Task<IEnumerable<InvoiceDetailsModel>> GetAllInvoices()
@@ -83,19 +75,22 @@ namespace Database.VMA.Repositories
         public async Task<InvoiceDetailsModel?> GetInvoiceById(int invoiceId)
         {
             var res = await _invoiceDetailsRepository.GetInvoiceById(invoiceId);
-            InvoiceDetailsModel invoiceDetailsModel = new InvoiceDetailsModel() 
+            if (res != null)
             {
-                IsActive = res?.IsActive,
-                InvoiceParticulars  =res?.InvoiceParticulars,
-                InvoiceNumber=res?.InvoiceNumber,
-                InvoiceId=res!.InvoiceId,
-                InvoiceDate=res!.InvoiceDate,
-                CreatedBy=res?.CreatedBy,
-                CreatedDate=res!.CreatedDate,
-                LastUpdateBy=res?.LastUpdateBy,
-                LastUpdatedDate=res?.LastUpdatedDate
-            };
-            return invoiceDetailsModel; 
+                InvoiceDetailsModel invoiceDetailsModel = new InvoiceDetailsModel()
+                {
+                    IsActive = res?.IsActive,
+                    InvoiceParticulars = res?.InvoiceParticulars,
+                    InvoiceNumber = res?.InvoiceNumber,
+                    InvoiceId = res!.InvoiceId,
+                    InvoiceDate = res!.InvoiceDate,
+                    CreatedBy = res?.CreatedBy,
+                    CreatedDate = res!.CreatedDate,
+                    LastUpdateBy = res?.LastUpdateBy,
+                    LastUpdatedDate = res?.LastUpdatedDate
+                };
+            }
+            return null; 
         }
 
         public async Task RemoveInvoice(InvoiceDetailsModel invoiceDetailModel)
