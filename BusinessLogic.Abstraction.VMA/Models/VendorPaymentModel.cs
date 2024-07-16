@@ -12,7 +12,7 @@ public partial class VendorPaymentModel :InvoiceDetailsModel
     public string? VendorName { get; set; }
     public int? VendorServiceId { get; set; }
     public string? VendorServiceName { get; set; }
-    public string? ServiceSantionAmount { get; set; }
+    public decimal? ServiceSantionAmount { get; set; }
     public string? ServicePaymentType { get; set; }  
 
     #endregion

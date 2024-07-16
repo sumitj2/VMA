@@ -136,8 +136,8 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        private string _serviceSantionAmount;
-        public string ServiceSantionAmount
+        private decimal? _serviceSantionAmount;
+        public decimal? ServiceSantionAmount
         {
             get
             {
@@ -371,7 +371,7 @@ namespace VMA.MVVM.ViewModels.Add
                 ServiceSantionedBy = "";
                 ServiceStartDate = DateOnly.MinValue;
                 ServiceEndDate = DateOnly.MinValue;
-                ServiceSantionAmount = "";
+                ServiceSantionAmount = 0;
                 RatePerUnit = "";
                 QuantityOfUnit = 0;
                 ServiceType = "";
@@ -493,7 +493,7 @@ namespace VMA.MVVM.ViewModels.Add
                 ServiceSantionedBy = _vendorDetailViewModel?.ServiceSantionedBy ?? "";
                 ServiceStartDate = _vendorDetailViewModel?.ServiceStartDate != null ? (DateOnly)_vendorDetailViewModel.ServiceStartDate : DateOnly.MinValue;
                 ServiceEndDate = _vendorDetailViewModel?.ServiceEndDate != null ? (DateOnly)_vendorDetailViewModel.ServiceEndDate : DateOnly.MinValue;
-                ServiceSantionAmount = _vendorDetailViewModel?.ServiceSantionAmount ?? "";
+                ServiceSantionAmount = _vendorDetailViewModel?.ServiceSantionAmount ?? 0;
                 RatePerUnit = _vendorDetailViewModel?.RatePerUnit ?? "";
                 QuantityOfUnit = _vendorDetailViewModel?.QuantityOfUnit ?? 0;
                 ServiceType = _vendorDetailViewModel?.ServiceType ?? "";
@@ -613,7 +613,7 @@ namespace VMA.MVVM.ViewModels.Add
         public Visibility HideVendorSelectComboBox
         {
             get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
-        } 
+        }
         #endregion
     }
 

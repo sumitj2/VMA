@@ -17,7 +17,7 @@ namespace Database.VMA.Repositories
 
         public async Task AddPaymentNotes(VenderPaymentNoteModel paymentNotesModel)
         {
-            VenderPaymentNote vendorEntity = new()
+            VendorPaymentNote vendorEntity = new()
             {
                 CreatedBy = paymentNotesModel.CreatedBy,
                 CreatedDate = DateTime.Now,
@@ -92,7 +92,7 @@ namespace Database.VMA.Repositories
         }
         public async Task RemovePaymentNote(VenderPaymentNoteModel paymentNoteModel)
         {
-            VenderPaymentNote paymentNoteEntity = new()
+            VendorPaymentNote paymentNoteEntity = new()
             {
                 CreatedBy = paymentNoteModel?.CreatedBy,
                 CreatedDate = paymentNoteModel?.CreatedDate,

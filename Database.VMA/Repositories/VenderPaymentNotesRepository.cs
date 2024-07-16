@@ -17,23 +17,23 @@ namespace Database.VMA.Repositories
         {
             _context = context;
         }
-        public async Task AddVendorPaymentNotes(VenderPaymentNote VenderPaymentNoteEntity)
+        public async Task AddVendorPaymentNotes(VendorPaymentNote VenderPaymentNoteEntity)
         {
             await _context.AddAsync(VenderPaymentNoteEntity).ConfigureAwait(true);
             await _context.SaveChangesAsync();
         }
-        public async Task EditUpdateVendorPaymentNotes(VenderPaymentNote VenderPaymentNoteEntity)
+        public async Task EditUpdateVendorPaymentNotes(VendorPaymentNote VenderPaymentNoteEntity)
         {
             var result = await GetVendorsPaymentNoteByIVendorId(VenderPaymentNoteEntity.NoteId);
             if (result != null)
             {
-                _context.VenderPaymentNotes.Update(result);
+                _context.VendorPaymentNotes.Update(result);
                 await _context.SaveChangesAsync();
             }
         }
         public async Task<List<PaymentNotesWithInvoiceServiceDetails>> GetAllPaymentDetailsWithServiceDetails()
         {
-            var paymentNoteWithAllDetails = from paymentNote in _context.VenderPaymentNotes
+            var paymentNoteWithAllDetails = from paymentNote in _context.VendorPaymentNotes
                                             join vendor in _context.Vendors
                                             on paymentNote.FkVendorId equals vendor.VendorId
                                             join vendorService in _context.VendorServices
@@ -105,18 +105,18 @@ namespace Database.VMA.Repositories
             //return await paymentNoteWithAllDetails.ToListAsync();
             return null;
         }
-        public async Task<IEnumerable<VenderPaymentNote>> GetAllVendorsPaymentNotes()
+        public async Task<IEnumerable<VendorPaymentNote>> GetAllVendorsPaymentNotes()
         {
-            return await _context.VenderPaymentNotes.Where(x => x.IsActive == true).ToListAsync();
+            return await _context.VendorPaymentNotes.Where(x => x.IsActive == true).ToListAsync();
         }
-        public async Task<VenderPaymentNote?> GetVendorsPaymentNoteByIVendorId(int vendorId)
+        public async Task<VendorPaymentNote?> GetVendorsPaymentNoteByIVendorId(int vendorId)
         {
-            return await _context.VenderPaymentNotes.Where(x => x.IsActive == true && x.FkVendorId == vendorId).FirstOrDefaultAsync();
+            return await _context.VendorPaymentNotes.Where(x => x.IsActive == true && x.FkVendorId == vendorId).FirstOrDefaultAsync();
         }
 
-        public async Task RemoveVendorPaymentNote(VenderPaymentNote VenderPaymentNoteEntity)
+        public async Task RemoveVendorPaymentNote(VendorPaymentNote VenderPaymentNoteEntity)
         {
-            _context.VenderPaymentNotes.Remove(VenderPaymentNoteEntity);
+            _context.VendorPaymentNotes.Remove(VenderPaymentNoteEntity);
             await _context.SaveChangesAsync();
         }
     }

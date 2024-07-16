@@ -20,15 +20,19 @@ public partial class VendorManagementDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<VenderPaymentNote> VenderPaymentNotes { get; set; }
-
     public virtual DbSet<Vendor> Vendors { get; set; }
 
     public virtual DbSet<VendorDetail> VendorDetails { get; set; }
 
     public virtual DbSet<VendorPayment> VendorPayments { get; set; }
 
+    public virtual DbSet<VendorPaymentNote> VendorPaymentNotes { get; set; }
+
     public virtual DbSet<VendorService> VendorServices { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("server=SUMITSLAPTOP\\SQLEXPRESS;Database=VendorManagementDB2;Trusted_Connection=true;Encrypt=false");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -63,16 +67,6 @@ public partial class VendorManagementDbContext : DbContext
             entity.ToTable("User");
         });
 
-        modelBuilder.Entity<VenderPaymentNote>(entity =>
-        {
-            entity.HasKey(e => e.NoteId).HasName("PK__VenderPa__EACE355F3C6447DF");
-
-            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
-            entity.Property(e => e.FkVendorId).HasColumnName("FK_VendorID");
-            entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
-            entity.Property(e => e.PaymentNoteDate).HasColumnType("datetime");
-        });
-
         modelBuilder.Entity<Vendor>(entity =>
         {
             entity.HasKey(e => e.VendorId).HasName("PK__Vendors__FC8618D31F71923A");
@@ -86,7 +80,7 @@ public partial class VendorManagementDbContext : DbContext
 
         modelBuilder.Entity<VendorDetail>(entity =>
         {
-            entity.HasKey(e => e.VendorDetailId).HasName("PK__VendorDe__6458FAB5A0BE2E7B");
+            entity.HasKey(e => e.VendorDetailId).HasName("PK__VendorDe__6458FAB5198C8DA0");
 
             entity.Property(e => e.VendorDetailId).HasColumnName("VendorDetailID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
@@ -95,6 +89,7 @@ public partial class VendorManagementDbContext : DbContext
             entity.Property(e => e.FkVendorServiceId).HasColumnName("FK_VendorServiceID");
             entity.Property(e => e.IsAmc).HasColumnName("IsAMC");
             entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.ServiceSantionAmount).HasColumnType("decimal(18, 0)");
         });
 
         modelBuilder.Entity<VendorPayment>(entity =>
@@ -126,6 +121,16 @@ public partial class VendorManagementDbContext : DbContext
                 .HasColumnName("VendorPaymentTDSAmount");
             entity.Property(e => e.VendorPaymentTotalAmountPaid).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.VendorPaymentUtrnumber).HasColumnName("VendorPaymentUTRNumber");
+        });
+
+        modelBuilder.Entity<VendorPaymentNote>(entity =>
+        {
+            entity.HasKey(e => e.NoteId).HasName("PK__VendorPa__EACE355F54B084AC");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.FkVendorId).HasColumnName("FK_VendorID");
+            entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.PaymentNoteDate).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<VendorService>(entity =>

@@ -24,7 +24,7 @@ public partial class VendorDetailModel
 
     public int? QuantityOfUnit { get; set; }
 
-    public string? ServiceSantionAmount { get; set; }
+    public decimal? ServiceSantionAmount { get; set; }
 
     public DateOnly? SantionedDate { get; set; }
 

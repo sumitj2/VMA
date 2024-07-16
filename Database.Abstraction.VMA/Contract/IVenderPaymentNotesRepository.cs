@@ -11,11 +11,11 @@ namespace Database.Abstraction.VMA.Contract
     public interface IVenderPaymentNotesRepository
     {
 
-        public Task AddVendorPaymentNotes(VenderPaymentNote VenderPaymentNoteEntity);
-        public Task EditUpdateVendorPaymentNotes(VenderPaymentNote VenderPaymentNoteEntity);
-        public Task<IEnumerable<VenderPaymentNote>> GetAllVendorsPaymentNotes();
-        public Task<VenderPaymentNote?> GetVendorsPaymentNoteByIVendorId(int vendorId);
-        public Task RemoveVendorPaymentNote(VenderPaymentNote VenderPaymentNoteEntity);
+        public Task AddVendorPaymentNotes(VendorPaymentNote VenderPaymentNoteEntity);
+        public Task EditUpdateVendorPaymentNotes(VendorPaymentNote VenderPaymentNoteEntity);
+        public Task<IEnumerable<VendorPaymentNote>> GetAllVendorsPaymentNotes();
+        public Task<VendorPaymentNote?> GetVendorsPaymentNoteByIVendorId(int vendorId);
+        public Task RemoveVendorPaymentNote(VendorPaymentNote VenderPaymentNoteEntity);
         public Task<List<PaymentNotesWithInvoiceServiceDetails>> GetAllPaymentDetailsWithServiceDetails();
         public Task<List<ExportPaymentNoteData>> GetAllPaymentDetailsWithServiceDetailsToExport();
     }

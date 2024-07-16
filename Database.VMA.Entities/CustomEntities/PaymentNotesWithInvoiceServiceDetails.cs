@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Database.VMA.Entities.CustomEntities
 {
-    public class PaymentNotesWithInvoiceServiceDetails : VenderPaymentNote
+    public class PaymentNotesWithInvoiceServiceDetails : VendorPaymentNote
     {
 
         public int VendorServiceId { get; set; }

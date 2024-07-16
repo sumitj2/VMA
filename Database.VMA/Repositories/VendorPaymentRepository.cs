@@ -38,7 +38,7 @@ namespace Database.VMA.Repositories
                                       on details.FkVendorId equals vendor.VendorId
                                       join invoice in _context.InvoiceDetails
                                       on payment.FkInvoiceId equals invoice.InvoiceId
-                                      join paymentNote in _context.VenderPaymentNotes
+                                      join paymentNote in _context.VendorPaymentNotes
                                       on payment.FkNoteId equals paymentNote.NoteId
                                       select new VendorPaymentWithService
                                       {
