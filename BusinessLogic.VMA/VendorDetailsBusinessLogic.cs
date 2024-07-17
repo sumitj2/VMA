@@ -53,7 +53,7 @@ namespace Database.VMA.Repositories
                 detail.ServiceStartDate = vendorDetailModel.ServiceStartDate;
                 detail.ServiceSantionedBy = vendorDetailModel.ServiceSantionedBy;
                 detail.ServiceSantionAmount = vendorDetailModel.ServiceSantionAmount;
-                detail.ServicePaymentType = vendorDetailModel.ServiceType;
+                detail.ServicePaymentType = vendorDetailModel.ServicePaymentType;
                 detail.ServiceEndDate = vendorDetailModel.ServiceEndDate;
                 detail.RatePerUnit = vendorDetailModel.RatePerUnit;
                 detail.FkVendorServiceId = (int)vendorDetailModel.FkVendorServiceId;

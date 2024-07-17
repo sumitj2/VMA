@@ -16,5 +16,6 @@ namespace Database.Abstraction.VMA.Contract
         public Task<VendorPayment?> GetVendorPaymentById(int vendorDetailId);
         public Task RemoveVendorPayment(VendorPayment VendorPaymentEntity);
         public Task<List<VendorPaymentWithService>> GetAllPaymentDetailsWithServiceDetails();
+        public Task<List<VendorPaymentWithService>> GetPaymentDetailsWithServiceDetailsByVednorDetailId(int? vendorDetailId);
     }
 }

@@ -2,6 +2,7 @@
 using BusinessLogic.Abstraction.VMA.Models;
 using Database.VMA.Entities;
 using Database.VMA.Repositories;
+using DocumentFormat.OpenXml.Drawing.Charts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -254,7 +255,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         #region Properties
 
-        #region TextBox Properties
+        #region Combo box Value TextBox Properties
 
 
         private string _SelctedVendorServiceName;
@@ -304,14 +305,10 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _SelectedGSTModel = value;
                 OnPropertyChanged(nameof(SelectedGSTModel));
-                if (SelectedGSTModel != null)
-                {
-                    Cgstpercentage = SelectedGSTModel.CgstPercentage;
-                    Sgstpercentage = SelectedGSTModel.SgstPercentage;
-                    Igstpercentage = SelectedGSTModel.IgstPercentage;
-                }
+                CalculateGST();
             }
         }
+
 
         private VendorDetailModel _SelectedVendorDetailService;
 
@@ -326,7 +323,7 @@ namespace VMA.MVVM.ViewModels.Add
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
 
                     _ = LoadVendorPaymentNotes(SelectedVendorDetailService.VendorId);
-                    // PaymentNoteNo= SelectedVendorDetailService.notr
+                    GetAmountToBepaid();
                 }
             }
         }
@@ -597,65 +594,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
-        //private string _paymentCode;
-        //public string PaymentCode
-        //{
-        //    get { return _paymentCode; }
-        //    set
-        //    {
-        //        _paymentCode = value;
-        //        OnPropertyChanged(nameof(PaymentCode));
-        //    }
-        //}
 
-        //private bool? _vendorPaymentIsTdsapplicable;
-        //public bool? VendorPaymentIsTdsapplicable
-        //{
-        //    get { return _vendorPaymentIsTdsapplicable; }
-        //    set
-        //    {
-        //        _vendorPaymentIsTdsapplicable = value;
-        //        OnPropertyChanged(nameof(VendorPaymentIsTdsapplicable));
-        //    }
-        //}
-
-        //private bool? _isPaymentForBranch;
-        //public bool? IsPaymentForBranch
-        //{
-        //    get { return _isPaymentForBranch; }
-        //    set
-        //    {
-        //        _isPaymentForBranch = value;
-        //        OnPropertyChanged(nameof(IsPaymentForBranch));
-        //    }
-        //}
-
-        //private bool? _vendorPaymentIsGst;
-        //public bool? VendorPaymentIsGst
-        //{
-        //    get { return _vendorPaymentIsGst; }
-        //    set
-        //    {
-        //        _vendorPaymentIsGst = value;
-        //        OnPropertyChanged(nameof(VendorPaymentIsGst));
-        //    }
-        //}
-
-        //private VendorDetailModel _selectedVendorServiceDetails;
-
-
-        //public VendorDetailModel? SelectedVendorServiceDetails
-        //{
-        //    get { return _selectedVendorServiceDetails; }
-        //    set
-        //    {
-
-        //        _selectedVendorServiceDetails = value;
-        //        OnPropertyChanged(nameof(SelectedVendorServiceDetails));
-        //        GeneratePaymentCode(_selectedVendorServiceDetails);
-
-        //    }
-        //}
         #endregion
 
         public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
@@ -733,11 +672,6 @@ namespace VMA.MVVM.ViewModels.Add
             }
 
         }
-        //private async void GeneratePaymentCode(VendorDetailModel? vendorDetailModel)
-        //{
-        //    var paymentCode = await _vendorPaymentBusinessLogic.GeneratePaymentCode(vendorDetailModel);
-        //    PaymentCode = paymentCode;
-        //}
 
         private async Task ClearPaymentForm(VendorPaymentModel model)
         {
@@ -890,16 +824,31 @@ namespace VMA.MVVM.ViewModels.Add
         }
 
 
-        ///// <summary>
-        ///// Combobox load item with Vendor Details 
-        ///// </summary>
-        ///// <returns></returns>
-        //private async Task LoadVendorServiceDetails()
-        //{
-        //    var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
-        //    VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails);
-        //}
+        private void CalculateGST()
+        {
+            if (SelectedGSTModel != null)
+            {
+                Cgstpercentage = SelectedGSTModel.CgstPercentage;
+                Sgstpercentage = SelectedGSTModel.SgstPercentage;
+                Igstpercentage = SelectedGSTModel.IgstPercentage;
+            }
 
+            VendorPaymentCgst = (VendorPaymentAmount * Cgstpercentage) / 100;
+            VendorPaymentIgst = (VendorPaymentAmount * Igstpercentage) / 100;
+            VendorPaymentSgst = (VendorPaymentAmount * Sgstpercentage) / 100;
+
+            GSTTotal = Convert.ToDouble(VendorPaymentCgst + VendorPaymentIgst + VendorPaymentSgst);
+            VendorPaymentTotalAmountPaid = Convert.ToDecimal(GSTTotal + Convert.ToDouble(VendorPaymentAmount));
+
+        }
+        private async void GetAmountToBepaid()
+        {
+            string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
+            decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
+            int? vendorDetaillID = SelectedVendorDetailService?.VendorDetailId;
+            var res = await _vendorPaymentBusinessLogic.GetAmoutToBePaidDetails(vendorDetaillID, santionedAmt, paymentType).ConfigureAwait(true);
+            VendorPaymentAmount = res?.TotalPaymentNotTaxable;
+        }
         private async Task LoadGSTDetails()
         {
             var gstDetails = await _gstcalculationMasterBusinessLogic.GetAllGstMaster().ConfigureAwait(true);

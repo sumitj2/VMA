@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" d:DataContext="{d:DesignInstance Type=add:AddPaymentNotesViewModel}"
+             xmlns:local="clr-namespace:VMA.MVVM.Views.Add" xmlns:add="clr-namespace:VMA.MVVM.ViewModels.Add" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" d:DataContext="{d:DesignInstance Type=add:AddPaymentsViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Border CornerRadius="10"                    
@@ -153,14 +153,14 @@ BorderThickness="0"
                                     <TextBlock Text="Total Amount Paid(Non-taxable)"
                                                Style="{StaticResource FormTextBlock}"/>
 
-                                    <TextBox x:Name="txtTotalAmtPaid"
+                                    <TextBox x:Name="txtTotalAmtPaid" IsEnabled="False"
                                              Text="{Binding VendorPaymentAmount ,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource FormTextBox}"  AcceptsReturn="True"/>
                                     <TextBlock Text="Total Amount Including Tax"
                                                Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtTotalAmtIncludingTax"
-                                             Text="{Binding VendorPaymentTotalAmountPaid ,UpdateSourceTrigger=PropertyChanged}"
+                                             Text="{Binding VendorPaymentTotalAmountPaid ,UpdateSourceTrigger=PropertyChanged}" IsEnabled="False"
                                              Style="{StaticResource FormTextBox}"  AcceptsReturn="True"/>
 
                                 </StackPanel>

@@ -48,19 +48,121 @@ namespace Database.VMA.Repositories
 
             return paymentcode;
         }
+        private async Task CalculateGTS()
+        {
+        }
 
+        public async Task<VendorPayments?> GetAmoutToBePaidDetails(int? VendorDetailId, decimal? ServiceSantionAmount, string? paymentType)
+        {
+            VendorPayments? vendorPayments = new();
+            var paymentsDetails = await _vendorPaymentRepository.GetPaymentDetailsWithServiceDetailsByVednorDetailId(VendorDetailId);
+            if (paymentsDetails.Count() != 0)
+            {
+                int noOfPaymentDid = paymentsDetails.Count;
+                decimal totalAmountPaid = (decimal)paymentsDetails?.Sum(x => x.VendorPaymentAmount);
+
+                decimal amountToBePaid = await GetNonTaxableAmountToBePaid(ServiceSantionAmount??0, paymentType);
+                if ((amountToBePaid + totalAmountPaid) > ServiceSantionAmount)
+                {
+                    //Show pop up amount cannot be greater tha santioned amount
+
+                    vendorPayments.Meassage = "Total Amount cannot be greater than santioned amount";
+                    return vendorPayments;
+                }
+
+                if ((amountToBePaid + totalAmountPaid) == ServiceSantionAmount)
+                {
+                    //show pop up that this is the last payment  
+                    //Return Amount to be paid ,messgae
+
+                    vendorPayments.Meassage = "This is the last payment";
+                    vendorPayments.TotalPaymentNotTaxable = amountToBePaid;
+                    return vendorPayments;
+
+                }
+                if ((amountToBePaid + totalAmountPaid) < ServiceSantionAmount)
+                {
+                    //Return Amount to be paid 
+
+                    vendorPayments.TotalPaymentNotTaxable = amountToBePaid;
+                    return vendorPayments;
+                }
+            }
+            else
+            {
+                decimal amountToBePaid = await GetNonTaxableAmountToBePaid(ServiceSantionAmount ?? 0, paymentType);
+                vendorPayments = new VendorPayments();
+                vendorPayments.TotalPaymentNotTaxable = amountToBePaid;
+                return vendorPayments;
+            }
+            return vendorPayments;
+        }
+
+        private async Task<decimal> GetNonTaxableAmountToBePaid(decimal ServiceSantionAmount, string? paymentType)
+        {
+            switch (paymentType)
+            {
+                case "Monthly":
+                    return HandleMonthly(ServiceSantionAmount);
+
+                case "Quarterly":
+                    return HandleQuarterLy(ServiceSantionAmount);
+
+                case "Half Yearly":
+                    return HandleHalfEarly(ServiceSantionAmount);
+
+                case "Yearly":
+                    return HandleYearly(ServiceSantionAmount);
+
+                case "None":
+                    return HandleNone(ServiceSantionAmount);
+
+                default:
+                    break;
+            }
+            return 0;
+        }
+
+        private decimal HandleMonthly(decimal santionedAmount)
+        {
+            int noOfterms = 12;
+            return santionedAmount / noOfterms;
+        }
+
+        private decimal HandleYearly(decimal santionedAmount)
+        {
+            int noOfterms = 1;
+            return santionedAmount / noOfterms;
+        }
+
+        private decimal HandleHalfEarly(decimal santionedAmount)
+        {
+            int noOfterms = 2;
+            return santionedAmount / noOfterms;
+        }
+        private decimal HandleQuarterLy(decimal santionedAmount)
+        {
+            int noOfterms = 4;
+            return santionedAmount / noOfterms;
+        }
+
+        private decimal HandleNone(decimal? santionedAmount)
+        {
+
+            return santionedAmount ?? 0;
+        }
 
 
         public async Task AddVendorPayment(VendorPaymentModel VendorPaymentModel)
         {
-            InvoiceDetailsModel invoiceDetailsModel = new InvoiceDetailsModel() 
+            InvoiceDetailsModel invoiceDetailsModel = new InvoiceDetailsModel()
             {
                 CreatedBy = VendorPaymentModel.CreatedBy,
                 CreatedDate = DateTime.UtcNow,
-                IsActive=true,
+                IsActive = true,
                 InvoiceDate = VendorPaymentModel.InvoiceDate,
                 InvoiceNumber = VendorPaymentModel.InvoiceNumber,
-                InvoiceParticulars=VendorPaymentModel.InvoiceParticulars                
+                InvoiceParticulars = VendorPaymentModel.InvoiceParticulars
             };
             var invoiceId = await _invoiceDetailsBusinessLogic.AddInvoice(invoiceDetailsModel);
             VendorPayment vendorPayment = new()
@@ -141,7 +243,7 @@ namespace Database.VMA.Repositories
 
                 entity.CreatedBy = VendorPaymentEntity.CreatedBy;
                 entity.CreatedDate = VendorPaymentEntity.CreatedDate;
-               
+
 
                 entity.VendorPaymentId = VendorPaymentEntity.VendorPaymentId;
                 entity.PaymentCode = VendorPaymentEntity.PaymentCode;
