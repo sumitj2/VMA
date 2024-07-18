@@ -6,6 +6,7 @@ using DocumentFormat.OpenXml.Drawing.Charts;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -588,7 +589,22 @@ namespace VMA.MVVM.ViewModels.Add
             set
             {
                 _vendorPaymentTdsamount = value;
+                VendorPaymentTdsamountNew = Convert.ToString(value);
                 OnPropertyChanged(nameof(VendorPaymentTdsamount));
+            }
+        }
+
+        private string _vendorPaymentTdsamountNew;
+
+        [RegularExpression("^[0-9.]+$")]
+        public string VendorPaymentTdsamountNew
+        {
+            get { return _vendorPaymentTdsamountNew; }
+            set
+            {
+                _vendorPaymentTdsamountNew = value;
+                VendorPaymentTdsamount = Convert.ToDecimal(value);
+                OnPropertyChanged(nameof(VendorPaymentTdsamountNew));
             }
         }
 
