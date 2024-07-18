@@ -40,7 +40,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
                 if (SelectComboItem != null && !string.IsNullOrEmpty(value))
                 {
-                    PropertyInfo? propertyInfo = typeof(VendorModel)?.GetProperty(SelectComboItem.NameSearch.Replace(" ", ""));
+                    PropertyInfo? propertyInfo = typeof(VendorModel)?.GetProperty(SelectComboItem.NameSearch);
 
                     Vendors = new ObservableCollection<VendorModel>(TempVendors.Where(x => propertyInfo?.GetValue(x, null)?.ToString()?.ToLower(System.Globalization.CultureInfo.CurrentCulture).Contains(value, StringComparison.CurrentCultureIgnoreCase) ?? false));
                 }
@@ -80,8 +80,26 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ObservableCollection<SearchModel> ComboItem
         {
-            get { return _comboItem; }
-            set { _comboItem = value; }
+            get
+            {
+                if (_comboItem == null)
+                {
+                    _comboItem = new ObservableCollection<SearchModel>();
+
+                    Type type = typeof(VendorModel);
+
+                    PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    
+                    int id = 1;
+                    
+                    foreach (PropertyInfo property in properties.Where(x=>x.PropertyType == typeof(String)))
+                    {
+                        _comboItem.Add(new SearchModel() { NameSearch = property.Name, SearchId = id });
+                    }
+                }
+
+                return _comboItem;
+            }
         }
         #endregion
 
@@ -97,12 +115,14 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
         {
-            ComboItem =
-            [
-                new(){NameSearch="Vendor Code",SearchId=1},
-                new(){NameSearch="Vendor Name",SearchId=2},
+           
+            
+            //ComboItem =
+            //[
+            //    new(){NameSearch="Vendor Code",SearchId=1},
+            //    new(){NameSearch="Vendor Name",SearchId=2},
 
-            ];
+            //];
             _vendorBusinessLogic = vendorBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelCommand(ShowVendorForm);
