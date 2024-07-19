@@ -73,7 +73,14 @@ namespace VMA.MVVM.ViewModels.Menus
             set
             {
                 selectedDepartment = value;
-                NeworExistingDepartment = selectedDepartment.DepartmentName;
+                if (selectedDepartment != null)
+                {
+                    NeworExistingDepartment = selectedDepartment.DepartmentName;
+                }
+                else
+                {
+                    NeworExistingDepartment = string.Empty;
+                }
                 OnPropertyChanged(nameof(SelectedDepartment));
             }
         }
@@ -114,6 +121,27 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
+        /// <summary>
+        /// New Document commmnad
+        /// </summary>
+        private ViewModelCommand deleteDepartmentCommand;
+
+        /// <summary>
+        /// Enroll Command
+        /// </summary>
+        public ICommand DeleteDepartmentCommand
+        {
+            get
+            {
+                if (this.deleteDepartmentCommand == null)
+                {
+                    this.deleteDepartmentCommand = new ViewModelCommand(c => this.DeleteDepartment(c));
+                }
+
+                return this.deleteDepartmentCommand;
+            }
+        }
+
         public ICommand SubmitCommand { get; }
 
         public SettingsViewModel()
@@ -135,6 +163,8 @@ namespace VMA.MVVM.ViewModels.Menus
                     DepartmentName = NeworExistingDepartment,
                     Id = Convert.ToString(Departments.Count + 1)
                 });
+
+                NeworExistingDepartment = string.Empty;
             }
             else
             {
@@ -146,6 +176,13 @@ namespace VMA.MVVM.ViewModels.Menus
         private bool CanAddOrUpdateDepartments()
         {
             return !string.IsNullOrEmpty(NeworExistingDepartment);
+        }
+
+        private void DeleteDepartment(object department)
+        {
+            Department localdepartment = (Department)department;
+
+            Departments.Remove(localdepartment);
         }
 
         private bool ValidateGst()
@@ -180,9 +217,29 @@ namespace VMA.MVVM.ViewModels.Menus
         //}
     }
 
-    public class Department
+    public class Department : ViewModelBase
     {
-        public string Id { get; set; }
-        public string DepartmentName { get; set; }
+        private string id;
+        public string Id 
+        { 
+            get { return id; } 
+            set 
+            { 
+                id = value; 
+                OnPropertyChanged(nameof(Id)); 
+            } 
+        }
+
+        private string departmentName;
+
+        public string DepartmentName 
+        { 
+            get { return departmentName; } 
+            set 
+            { 
+                departmentName = value; 
+                OnPropertyChanged(nameof(DepartmentName)); 
+            } 
+        }
     }
 }
