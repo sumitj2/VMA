@@ -3,20 +3,126 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views"
+             xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="165,211,0,0" TextWrapping="Wrap" Text="Hello Homw" VerticalAlignment="Top" Height="78" RenderTransformOrigin="0.5,0.5" Width="235">
-            <TextBlock.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform ScaleY="-1"/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </TextBlock.RenderTransform>
-        </TextBlock>
+    <Border CornerRadius="10"                    
+ BorderThickness="0"
+     Background="white" Opacity="0.95">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
+                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="120"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <WrapPanel HorizontalAlignment="Center">
+                    <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15">
+                        <materialDesign:Card  UniformCornerRadius="1" BorderThickness="5"
+              BorderBrush="White" Width="148" Height="100"  Background="#F6F6F8">
+                            <StackPanel Margin="5">
+                                <materialDesign:PackIcon Kind="UserGroup">
+                                    <materialDesign:PackIcon.Foreground>
+                                        <LinearGradientBrush StartPoint="1,0" EndPoint="0.5,1">
+                                            <GradientStop Color="#912A73" Offset="0" />
+                                            <GradientStop Color="#FA8E22" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </materialDesign:PackIcon.Foreground>
+                                </materialDesign:PackIcon>
+                                <TextBlock FontSize="12" Text="Total Vendors"  />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="280K" Margin="0 10 0 0" />
 
-    </Grid>
+                            </StackPanel>
+                        </materialDesign:Card>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15">
+                        <materialDesign:Card UniformCornerRadius="1" BorderThickness="5"
+              BorderBrush="White" Width="148" Height="100"  Background="#F6F6F8">
+                            <StackPanel Margin="5">
+                                <materialDesign:PackIcon Kind="AccountService">
+                                    <materialDesign:PackIcon.Foreground>
+                                        <LinearGradientBrush StartPoint="1,0" EndPoint="0.5,1">
+                                            <GradientStop Color="#912A73" Offset="0" />
+                                            <GradientStop Color="#FA8E22" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </materialDesign:PackIcon.Foreground>
+                                </materialDesign:PackIcon>
+                                <TextBlock FontSize="12" Text="Total Services" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="280K" Margin="0 10 0 0" />
+
+
+                            </StackPanel>
+                        </materialDesign:Card>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15">
+                        <materialDesign:Card UniformCornerRadius="1" BorderThickness="5"
+               BorderBrush="White" Width="148" Height="100" Background="#F6F6F8">
+                            <StackPanel Margin="5">
+                                <materialDesign:PackIcon Kind="Rupee" Foreground="Red" />
+                                <TextBlock FontSize="12" Text="Total Santioned Amount" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="280K" Margin="0 10 0 0" />
+
+
+
+                            </StackPanel>
+                        </materialDesign:Card>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15">
+                        <materialDesign:Card  UniformCornerRadius="1" BorderThickness="5"
+            BorderBrush="White" Width="148" Height="100"   Background="#F6F6F8">
+                            <StackPanel Margin="10">
+                                <materialDesign:PackIcon Kind="AccountPending" Foreground="#29A3EC" />
+                                <TextBlock FontSize="12" Text="Amount Paid" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="60K" Margin="0 10 0 0" />
+
+                            </StackPanel>
+                        </materialDesign:Card>
+                    </Border>
+                </WrapPanel>
+            </StackPanel>
+            <Grid Grid.Row="1">
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="400"/>
+                        <ColumnDefinition Width="400"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel x:Name="CompanyDetails" Grid.Row="0"
+                                 Orientation="Vertical">
+
+
+                        <ListBox ItemsSource="{Binding DataItems}" Margin="10">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Text="Forbes" Margin="5"/>
+                                        <ProgressBar Value="5" Maximum="100" Height="20" Margin="5"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+
+
+                    </StackPanel>
+
+                    <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
+                                         Orientation="Vertical">
+                        <materialDesign:Clock Time="" Height="110" Width="246" FontWeight="ExtraBlack" HorizontalAlignment="Center" RenderTransformOrigin="0.476,0.313"/>
+                        <Calendar Background="#F6F6F8" materialDesign:BadgedAssist.BadgeBackground="AliceBlue"></Calendar>
+
+                    </StackPanel>
+
+                </Grid>
+
+            </Grid>
+
+        </Grid>
+    </Border>
 </UserControl>
