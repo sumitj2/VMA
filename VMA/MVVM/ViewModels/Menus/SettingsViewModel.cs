@@ -14,9 +14,6 @@ namespace VMA.MVVM.ViewModels.Menus
 {
     public class SettingsViewModel : ViewModelBase
     {
-
-       
-
         #region Properties
 
         private int _Cgstpercentage;
@@ -36,7 +33,9 @@ namespace VMA.MVVM.ViewModels.Menus
         public int Sgstpercentage
         {
             get { return _Sgstpercentage; }
-            set { _Sgstpercentage = value;
+            set
+            {
+                _Sgstpercentage = value;
                 OnPropertyChanged(nameof(Sgstpercentage));
             }
         }
@@ -46,22 +45,108 @@ namespace VMA.MVVM.ViewModels.Menus
         public int Igstpercentage
         {
             get { return _Igstpercentage; }
-            set { _Igstpercentage = value;
+            set
+            {
+                _Igstpercentage = value;
                 OnPropertyChanged(nameof(Igstpercentage));
+            }
+        }
+
+
+        private ObservableCollection<Department> departments;
+        public ObservableCollection<Department> Departments
+        {
+            get
+            { return departments; }
+            set
+            {
+                departments = value;
+                OnPropertyChanged(nameof(Departments));
+            }
+        }
+
+        private Department selectedDepartment;
+        public Department SelectedDepartment
+        {
+            get
+            { return selectedDepartment; }
+            set
+            {
+                selectedDepartment = value;
+                NeworExistingDepartment = selectedDepartment.DepartmentName;
+                OnPropertyChanged(nameof(SelectedDepartment));
+            }
+        }
+
+        private string neworExistingDepartment;
+
+        public string NeworExistingDepartment
+        {
+            get { return neworExistingDepartment; }
+            set
+            {
+                neworExistingDepartment = value;
+                OnPropertyChanged(nameof(NeworExistingDepartment));
             }
         }
 
         #endregion
 
-        public SettingsViewModel()
+
+        /// <summary>
+        /// New Document commmnad
+        /// </summary>
+        private ViewModelCommand addOrUpdateDepartment;
+
+        /// <summary>
+        /// Enroll Command
+        /// </summary>
+        public ICommand AddOrUpdateDepartment
         {
-            
-           // SubmitCommand = new ViewModelAsyncCommand<GstcalculationMasterModel>(SaveGst, ValidateGst);
-            //_ = GetGSTDetails();
+            get
+            {
+                if (this.addOrUpdateDepartment == null)
+                {
+                    this.addOrUpdateDepartment = new ViewModelCommand(c => this.AddOrUpdateDepartments(), x => this.CanAddOrUpdateDepartments());
+                }
+
+                return this.addOrUpdateDepartment;
+            }
         }
 
         public ICommand SubmitCommand { get; }
-        
+
+        public SettingsViewModel()
+        {
+            Departments = new ObservableCollection<Department>();
+            Departments = [new Department() { Id = "1", DepartmentName = "IT" },
+            new Department() {Id= "2", DepartmentName = "Hardware"},
+            new Department() {Id = "3", DepartmentName="Software"}];
+            // SubmitCommand = new ViewModelAsyncCommand<GstcalculationMasterModel>(SaveGst, ValidateGst);
+            //_ = GetGSTDetails();
+        }
+
+        private void AddOrUpdateDepartments()
+        {
+            if (SelectedDepartment == null)
+            {
+                Departments.Add(new Department()
+                {
+                    DepartmentName = NeworExistingDepartment,
+                    Id = Convert.ToString(Departments.Count + 1)
+                });
+            }
+            else
+            {
+                Departments.Where(x => x.Id == SelectedDepartment.Id).FirstOrDefault().DepartmentName = NeworExistingDepartment;
+                SelectedDepartment = null;
+            }
+        }
+
+        private bool CanAddOrUpdateDepartments()
+        {
+            return !string.IsNullOrEmpty(NeworExistingDepartment);
+        }
 
         private bool ValidateGst()
         {
@@ -93,5 +178,11 @@ namespace VMA.MVVM.ViewModels.Menus
 
 
         //}
+    }
+
+    public class Department
+    {
+        public string Id { get; set; }
+        public string DepartmentName { get; set; }
     }
 }
