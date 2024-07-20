@@ -30,10 +30,18 @@ public partial class VendorManagementDbContext : DbContext
 
     public virtual DbSet<VendorService> VendorServices { get; set; }
 
-    
+    public virtual DbSet<Configuration> Configurations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Configuration>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Configur__3214EC07A58439ED");
+
+            entity.Property(e => e.Cfgkey).HasColumnName("CFGKey");
+            entity.Property(e => e.Cfgvallue).HasColumnName("CFGVallue");
+        });
+
         modelBuilder.Entity<GstcalculationMaster>(entity =>
         {
             entity.HasKey(e => e.SrNo).HasName("PK__GSTCalcu__C3A4D3AC16F8356B");
