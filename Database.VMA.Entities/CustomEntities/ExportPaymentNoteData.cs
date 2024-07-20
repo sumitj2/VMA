@@ -22,16 +22,17 @@ namespace Database.VMA.Entities.CustomEntities
 
         public string? InvoiceParticulars { get; set; }//Invoice_Particular
 
-        public string? VendorPaymentAmount { get; set; }//Total_Amount
+        public decimal? VendorPaymentAmount { get; set; }//Total_Amount
 
         public string? VendorDetailCategory { get; set; }//Department
 
         public string? ServiceType { get; set; }//Type of expenditure
 
-        public string? ServiceSantionAmount { get; set; }
+        public decimal? ServiceSantionAmount { get; set; }
+        public DateOnly VendorPaymentDate { get; set; }
         public string? ServiceSantionedBy { get; set; }//Sanctioned_by
         public decimal? VendorPaymentTdsamount { get; set; }//TDS_Amount
-        public int? VendorPaymentUtrnumber { get; set; }//UTR_Number
+        public string? VendorPaymentUtrnumber { get; set; }//UTR_Number
 
         public decimal? VendorPaymentRtgsAmount { get; set; }//RTGS_Amount
 
