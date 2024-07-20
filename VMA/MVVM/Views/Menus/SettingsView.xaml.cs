@@ -29,5 +29,15 @@ namespace VMA.MVVM.Views
         {
             itemsListBox.UnselectAll();
         }
+
+        private void SactionsGroupBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            itemsSanctionsListBox.UnselectAll();
+        }
+
+        private void ExpenditureGroupBox_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            itemsExpenditureListBox.UnselectAll();
+        }
     }
 }
