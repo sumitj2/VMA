@@ -87,8 +87,28 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ObservableCollection<SearchModel> ComboItem
         {
-            get { return _comboItem; }
-            set { _comboItem = value; }
+            get
+            {
+                if (_comboItem == null)
+                {
+                    List<string> skip = new List<string>() { "CreatedBy", "CreatedDate", "LastUpdateBy", "LastUpdatedDate" };
+                    _comboItem = new ObservableCollection<SearchModel>();
+
+                    Type type = typeof(VenderPaymentNoteModel);
+
+                    PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+                    int id = 1;
+
+                    foreach (PropertyInfo property in properties.Where(x => x.PropertyType == typeof(String)))
+                    {
+                        if (!skip.Contains(property.Name))
+                            _comboItem.Add(new SearchModel() { NameSearch = property.Name, SearchId = id });
+                    }
+                }
+
+                return _comboItem;
+            }
         }
         #endregion
 
