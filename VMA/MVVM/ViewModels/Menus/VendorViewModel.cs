@@ -115,14 +115,6 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
         {
-           
-            
-            //ComboItem =
-            //[
-            //    new(){NameSearch="Vendor Code",SearchId=1},
-            //    new(){NameSearch="Vendor Name",SearchId=2},
-
-            //];
             _vendorBusinessLogic = vendorBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelCommand(ShowVendorForm);

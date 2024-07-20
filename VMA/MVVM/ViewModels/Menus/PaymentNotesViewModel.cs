@@ -128,6 +128,7 @@ namespace VMA.MVVM.ViewModels.Menus
         public async Task HidePaymentNotesForm(object obj)
         {
             _parentViewModel.CurrentChildView = this;
+            await Task.Run(GetPaymentsNote).ConfigureAwait(true);
         }
 
         private async Task GetPaymentsNote()

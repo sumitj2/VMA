@@ -131,6 +131,7 @@ namespace VMA.MVVM.ViewModels.Menus
         public async Task HidePaymentForm(object model)
         {
             _parentViewModel.CurrentChildView = this;
+            await Task.Run(GetVendorPayments).ConfigureAwait(true);
         }
 
         private async Task ShowPaymentForm(object model)

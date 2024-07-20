@@ -130,10 +130,10 @@ namespace VMA.MVVM.ViewModels.Menus
             return Task.CompletedTask;
         }
 
-        public Task HideDetailInfoForm(object obj)
+        public async Task HideDetailInfoForm(object obj)
         {
             _parentViewModel.CurrentChildView = this;
-            return Task.CompletedTask;
+            await Task.Run(GetDetailsVendorServices).ConfigureAwait(true);           
         }
 
         private async Task GetDetailsVendorServices()
