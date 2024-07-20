@@ -120,13 +120,13 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private Task ShowDetailsInfoForm(VendorDetailModel model)
         {
-            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this,SelectedVendorService, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic);
+            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this,SelectedVendorService, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic, VendorServiceDetails);
             return Task.CompletedTask;
         }
 
         private Task EditDetailInfoForm(VendorDetailModel model)
         {
-            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this, model, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic);
+            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this, model, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic,null);
             return Task.CompletedTask;
         }
 

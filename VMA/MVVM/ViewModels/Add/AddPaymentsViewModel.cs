@@ -864,6 +864,13 @@ namespace VMA.MVVM.ViewModels.Add
             int? vendorDetaillID = SelectedVendorDetailService?.VendorDetailId;
             var res = await _vendorPaymentBusinessLogic.GetAmoutToBePaidDetails(vendorDetaillID, santionedAmt, paymentType).ConfigureAwait(true);
             VendorPaymentAmount = res?.TotalPaymentNotTaxable;
+            if (res?.Meassage != null)
+            {
+                MessageBox.Show(res.Meassage);
+                // SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, res.Meassage);
+                if (res?.Meassage == "Total Amount cannot be greater than santioned amount")
+                    await HidePaymentForm(this);
+            }
         }
         private async Task LoadGSTDetails()
         {

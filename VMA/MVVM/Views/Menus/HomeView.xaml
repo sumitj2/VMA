@@ -114,7 +114,7 @@
 
                     <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
                                          Orientation="Vertical">
-                        <materialDesign:Clock Time="" Height="110" Width="246" FontWeight="ExtraBlack" HorizontalAlignment="Center" RenderTransformOrigin="0.476,0.313"/>
+                        <materialDesign:Clock Time="" Height="107" Width="246" FontWeight="ExtraBlack" HorizontalAlignment="Center" RenderTransformOrigin="0.48,0.2"/>
                         <Calendar Background="#F6F6F8" materialDesign:BadgedAssist.BadgeBackground="AliceBlue"></Calendar>
 
                     </StackPanel>

@@ -42,7 +42,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         }
 
-        private VendorServiceModel _selectedVendorDetailService;
+        private VendorServiceModel? _selectedVendorDetailService;
         public VendorServiceModel? SelectedVendorDetailService
         {
             get { return _selectedVendorDetailService; }
@@ -50,6 +50,15 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _selectedVendorDetailService = value;
                 OnPropertyChanged(nameof(SelectedVendorDetailService));
+                var res = _detailsLsit.FirstOrDefault(x => x.VendorServiceName == _selectedVendorDetailService?.VendorServiceName);
+                var msg1 = @$"Vendor Details alreday added for {_selectedVendorDetailService?.VendorServiceName}";
+
+                if (res!=null)
+                {
+                    var msg = @$"Vendor Details alreday added for {_selectedVendorDetailService?.VendorServiceName}";
+                    MessageBox.Show(msg);                   
+                   
+                }
 
             }
         }
@@ -321,17 +330,17 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
-
-        public AddDetailedInfoViewModel(DetailedInfoViewModel detailedInfoViewModel, VendorDetailModel vendorDetailViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic)
+        ObservableCollection<VendorDetailModel> _detailsLsit;
+        public AddDetailedInfoViewModel(DetailedInfoViewModel detailedInfoViewModel, VendorDetailModel vendorDetailViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, ObservableCollection<VendorDetailModel> detailsLsit)
         {
+            _detailsLsit= detailsLsit;  
             ComboxPaymentMethods =
             [
                 new(){NameSearch="Monthly",SearchId=1},
                 new(){NameSearch="Quarterly",SearchId=2},
                 new(){NameSearch="Half Yearly",SearchId=3},
                 new(){NameSearch="Yearly",SearchId=4},
-                 new(){NameSearch="None",SearchId=5},
-
+                new(){NameSearch="None",SearchId=5},
             ];
 
             _vendorDetailViewModel = vendorDetailViewModel;
