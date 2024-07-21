@@ -29,6 +29,7 @@ namespace VMA.MVVM.ViewModels
         private IInvoiceDetailsBusinessLogic _invoiceDetailsBusinessLogic;
         private IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
         private IReportExportToExcelPaymentNote _reportExportToExcelPaymentNote;
+        private IConfigurationBusinessLogic _configurationBusinessLogic;
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -95,14 +96,14 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowGSTViewCommand { get; }
 
 
-        public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IReportExportToExcelPaymentNote reportExportToExcelPaymentNote)
+        public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IReportExportToExcelPaymentNote reportExportToExcelPaymentNote,IConfigurationBusinessLogic configurationBusinessLogic)
         {
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
             _venderPaymentNotesBusinessLogic = venderPaymentNotesBusinessLogic;
-
+            _configurationBusinessLogic = configurationBusinessLogic;
             // _currentUserAccount = new UserAccountModel();
 
             //Initialize command
@@ -132,7 +133,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowSettingViewCommand(object obj)
         {
-            CurrentChildView = new SettingsViewModel();
+            CurrentChildView = new SettingsViewModel(_configurationBusinessLogic);
             Caption = "Settings";
             Icon = IconChar.Gears;
         }

@@ -5,7 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using VMA.MVVM.Models;
@@ -14,6 +18,8 @@ namespace VMA.MVVM.ViewModels.Menus
 {
     public class SettingsViewModel : ViewModelBase
     {
+        private readonly IConfigurationBusinessLogic _configBusinessLogic;
+
         #region Properties
 
         private int _Cgstpercentage;
@@ -358,28 +364,52 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand SubmitCommand { get; }
 
-        public SettingsViewModel()
+        public SettingsViewModel(IConfigurationBusinessLogic configBusinessLogic)
         {
-            Departments = new ObservableCollection<Department>();
-            Departments = [new Department() { Id = "1", DepartmentName = "IT" },
-            new Department() {Id= "2", DepartmentName = "Hardware"},
-            new Department() {Id = "3", DepartmentName="Software"}];
+            _configBusinessLogic = configBusinessLogic;
 
-            Sanctions = new ObservableCollection<Sanction>();
-            Sanctions = [new Sanction() { Id = "1", SanctionName = "CEO" },
-            new Sanction() {Id= "2", SanctionName = "CTO"},
-            new Sanction() {Id = "3", SanctionName="COO"}];
-
-
-            Expenditures = new ObservableCollection<Expenditure>();
-            Expenditures = [new () { Id = "1", ExpenditureName = "Travel" },
-            new Expenditure() {Id= "2", ExpenditureName = "Salary"},
-            new Expenditure() {Id = "3", ExpenditureName="Hardware"}];
+            GetAllConfigurations();
 
             // SubmitCommand = new ViewModelAsyncCommand<GstcalculationMasterModel>(SaveGst, ValidateGst);
             //_ = GetGSTDetails();
         }
 
+
+        public async void GetAllConfigurations()
+        {
+            var allConfigurations = await _configBusinessLogic.GetConfigurations().ConfigureAwait(true);
+
+            string departmentConfigJson = allConfigurations.Where(x => x.Cfgkey == nameof(Department)).FirstOrDefault()?.CfgValue;
+            string expenditureConfigJson = allConfigurations.Where(x => x.Cfgkey == nameof(Expenditure)).FirstOrDefault()?.CfgValue;
+            string sanctionConfigJson = allConfigurations.Where(x => x.Cfgkey == nameof(Sanction)).FirstOrDefault()?.CfgValue;
+
+            if (!string.IsNullOrEmpty(departmentConfigJson))
+            {
+                Departments = JsonSerializer.Deserialize<ObservableCollection<Department>>(departmentConfigJson);
+            }
+            else
+            {
+                Departments = new ObservableCollection<Department>();
+            }
+
+            if (!string.IsNullOrEmpty(expenditureConfigJson))
+            {
+                Expenditures = JsonSerializer.Deserialize<ObservableCollection<Expenditure>>(expenditureConfigJson);
+            }
+            else
+            {
+                Expenditures = new ObservableCollection<Expenditure>(); 
+            }
+
+            if (!string.IsNullOrEmpty(sanctionConfigJson))
+            {
+                Sanctions = JsonSerializer.Deserialize<ObservableCollection<Sanction>>(sanctionConfigJson);
+            }
+            else
+            {
+                Sanctions = new ObservableCollection<Sanction>();
+            }
+        }
         private void AddOrUpdateDepartments()
         {
             if (SelectedDepartment == null)
@@ -397,6 +427,11 @@ namespace VMA.MVVM.ViewModels.Menus
                 Departments.Where(x => x.Id == SelectedDepartment.Id).FirstOrDefault().DepartmentName = NeworExistingDepartment;
                 SelectedDepartment = null;
             }
+
+            string departmentjson = JsonSerializer.Serialize(Departments);
+
+            ConfigurationModel configuration = new ConfigurationModel() { Cfgkey = nameof(Department), CfgValue = departmentjson };
+            _configBusinessLogic.AddConfiguration(configuration);
         }
 
         private bool CanAddOrUpdateDepartments()
@@ -428,6 +463,11 @@ namespace VMA.MVVM.ViewModels.Menus
                 Expenditures.Where(x => x.Id == SelectedExpentidure.Id).FirstOrDefault().ExpenditureName = NeworExistingExpenditure;
                 SelectedExpentidure = null;
             }
+
+            string expenditurejson = JsonSerializer.Serialize(Expenditures);
+
+            ConfigurationModel configuration = new ConfigurationModel() { Cfgkey = nameof(Expenditure), CfgValue = expenditurejson };
+            _configBusinessLogic.UpdateOrDeleteConfiguration(configuration);
         }
 
         private bool CanAddOrUpdateExpenditures()
@@ -441,8 +481,6 @@ namespace VMA.MVVM.ViewModels.Menus
 
             Expenditures.Remove(localexpenditure);
         }
-
-
 
         private void AddOrUpdateSanctions()
         {
@@ -461,6 +499,11 @@ namespace VMA.MVVM.ViewModels.Menus
                 Sanctions.Where(x => x.Id == SelectedSanction.Id).FirstOrDefault().SanctionName = NeworExistingSanction;
                 SelectedSanction = null;
             }
+
+            string sanctionjson = JsonSerializer.Serialize(Sanctions);
+
+            ConfigurationModel configuration = new ConfigurationModel() { Cfgkey = nameof(Sanction), CfgValue = sanctionjson };
+            _configBusinessLogic.UpdateOrDeleteConfiguration(configuration);
         }
 
         private bool CanAddOrUpdateSanctions()
@@ -505,6 +548,11 @@ namespace VMA.MVVM.ViewModels.Menus
 
 
         //}
+    }
+
+    public class Departments
+    {
+        public List<Department> departments;
     }
 
     public class Department : ViewModelBase

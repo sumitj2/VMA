@@ -21,6 +21,7 @@ namespace Database.VMA.Repositories
             await _context.AddAsync(ConfigurationEntity).ConfigureAwait(true);
             await _context.SaveChangesAsync();
         }
+
         public async Task UpdateDeleteConfigurations(Configuration ConfigurationEntity)
         {
             var existingEntity = _context.Configurations.Find(ConfigurationEntity.Id);
