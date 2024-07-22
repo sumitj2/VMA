@@ -1,7 +1,9 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
+using BusinessLogic.VMA;
 using Database.VMA.Entities;
 using Database.VMA.Repositories;
+using DocumentFormat.OpenXml.Bibliography;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +11,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -26,6 +29,7 @@ namespace VMA.MVVM.ViewModels.Add
         private readonly VendorDetailModel _vendorDetailViewModel;
         private readonly IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
         private readonly IVendorBusinessLogic _vendorBusinessLogic;
+        private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
         private string _saveButtonName;
 
         #region Properties
@@ -53,11 +57,11 @@ namespace VMA.MVVM.ViewModels.Add
                 var res = _detailsLsit.FirstOrDefault(x => x.VendorServiceName == _selectedVendorDetailService?.VendorServiceName);
                 var msg1 = @$"Vendor Details alreday added for {_selectedVendorDetailService?.VendorServiceName}";
 
-                if (res!=null)
+                if (res != null)
                 {
                     var msg = @$"Vendor Details alreday added for {_selectedVendorDetailService?.VendorServiceName}";
-                    MessageBox.Show(msg);                   
-                   
+                    MessageBox.Show(msg);
+
                 }
 
             }
@@ -331,9 +335,11 @@ namespace VMA.MVVM.ViewModels.Add
         #endregion
 
         ObservableCollection<VendorDetailModel> _detailsLsit;
-        public AddDetailedInfoViewModel(DetailedInfoViewModel detailedInfoViewModel, VendorDetailModel vendorDetailViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, ObservableCollection<VendorDetailModel> detailsLsit)
+        public AddDetailedInfoViewModel(DetailedInfoViewModel detailedInfoViewModel, VendorDetailModel vendorDetailViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, ObservableCollection<VendorDetailModel> detailsLsit, IConfigurationBusinessLogic configurationBusinessLogic)
         {
-            _detailsLsit= detailsLsit;  
+            _configurationBusinessLogic= configurationBusinessLogic;
+           
+            _detailsLsit = detailsLsit;
             ComboxPaymentMethods =
             [
                 new(){NameSearch="Monthly",SearchId=1},
@@ -396,6 +402,111 @@ namespace VMA.MVVM.ViewModels.Add
             return true;
         }
 
+        private ObservableCollection<Menus.Department> departments;
+        public ObservableCollection<Menus.Department> Departments
+        {
+            get
+            { return departments; }
+            set
+            {
+                departments = value;
+                OnPropertyChanged(nameof(Departments));
+            }
+        }
+
+        private Menus.Department selectedDepartment;
+        public Menus.Department SelectedDepartment
+        {
+            get
+            { return selectedDepartment; }
+            set
+            {
+                selectedDepartment = value;
+                OnPropertyChanged(nameof(SelectedDepartment));
+            }
+        }
+
+        private ObservableCollection<Expenditure> expenditures;
+        public ObservableCollection<Expenditure> Expenditures
+        {
+            get
+            { return expenditures; }
+            set
+            {
+                expenditures = value;
+                OnPropertyChanged(nameof(Expenditures));
+            }
+        }
+
+        private Expenditure selectedExpenditure;
+        public Expenditure SelectedExpentidure
+        {
+            get
+            { return selectedExpenditure; }
+            set
+            {
+                selectedExpenditure = value;
+                OnPropertyChanged(nameof(SelectedExpentidure));
+            }
+        }
+
+        private ObservableCollection<Sanction> sanctions;
+        public ObservableCollection<Sanction> Sanctions
+        {
+            get
+            { return sanctions; }
+            set
+            {
+                sanctions = value;
+                OnPropertyChanged(nameof(Sanctions));
+            }
+        }
+
+        private Sanction selectedSanction;
+        public Sanction SelectedSanction
+        {
+            get
+            { return selectedSanction; }
+            set
+            {
+                selectedSanction = value;
+                OnPropertyChanged(nameof(SelectedSanction));
+            }
+        }
+        public async Task GetAllConfigurations()
+        {
+            var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
+            string? departmentConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Menus.Department))?.CfgValue;
+            string? expenditureConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure))?.CfgValue;
+            string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
+
+            if (!string.IsNullOrEmpty(departmentConfigJson))
+            {
+                Departments = JsonSerializer.Deserialize<ObservableCollection<Menus.Department>>(departmentConfigJson);
+            }
+            else
+            {
+                Departments = new ObservableCollection<Menus.Department>();
+            }
+
+            if (!string.IsNullOrEmpty(expenditureConfigJson))
+            {
+                Expenditures = JsonSerializer.Deserialize<ObservableCollection<Expenditure>>(expenditureConfigJson);
+            }
+            else
+            {
+                Expenditures = new ObservableCollection<Expenditure>();
+            }
+
+            if (!string.IsNullOrEmpty(sanctionConfigJson))
+            {
+                Sanctions = JsonSerializer.Deserialize<ObservableCollection<Sanction>>(sanctionConfigJson);
+            }
+            else
+            {
+                Sanctions = new ObservableCollection<Sanction>();
+            }
+        }
         private async Task SaveVendorServiceDetails(VendorDetailModel model)
         {
             if (SaveButtonName == "Update")
@@ -478,6 +589,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             await LoadVendors();
             await PopulateValues();
+            await GetAllConfigurations();
         }
 
         #endregion

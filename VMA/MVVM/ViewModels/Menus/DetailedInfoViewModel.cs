@@ -23,6 +23,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         private readonly IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
         private readonly IVendorBusinessLogic _vendorBusinessLogic;
+        private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
         public SearchModel SelectComboItem
         {
             get { return _selectComboItem; }
@@ -121,8 +122,9 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand EditDetailInfoCommand { get; }
         #endregion
-        public DetailedInfoViewModel(MainViewModel parentViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic)
+        public DetailedInfoViewModel(MainViewModel parentViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic)
         {
+            _configurationBusinessLogic= configurationBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _vendorServiceBusinessLogic= vendorServiceBusinessLogic;
             _vendorBusinessLogic= vendorBusinessLogic;  
@@ -135,13 +137,13 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private Task ShowDetailsInfoForm(VendorDetailModel model)
         {
-            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this,SelectedVendorService, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic, VendorServiceDetails);
+            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this,SelectedVendorService, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic, VendorServiceDetails, _configurationBusinessLogic);
             return Task.CompletedTask;
         }
 
         private Task EditDetailInfoForm(VendorDetailModel model)
         {
-            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this, model, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic,null);
+            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this, model, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic,null,null);
             return Task.CompletedTask;
         }
 
