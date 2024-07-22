@@ -114,20 +114,48 @@
                                     <TextBlock Text="Enter Service Category details(Department)"
                                                Style="{StaticResource FormTextBlock}"/>
 
-                                    <TextBox x:Name="txtServieCategory"
-                                             Text="{Binding VendorDetailCategory ,UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource FormTextBox}"
-                                             TextWrapping="Wrap"
-                                             AcceptsReturn="True"/>
+                                    <ComboBox Style="{StaticResource vendorCombobox}"   
+                                              ItemsSource="{Binding VendorDetailServices}"   
+                                              SelectedItem="{Binding SelectedVendorDetailService, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="VendorServiceName" 
+                                              SelectedValuePath="VendorServiceId"
+                                              SelectedValue="{Binding SelectedVendorDetailService.VendorServiceId, Mode=TwoWay}"
+                                              Grid.Row="1" 
+                                              Width="239" 
+                                              Height="30" 
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Left"
+                                              Margin="27,20,10,20"
+                                              Background="Transparent"
+                                              FontWeight="Medium"
+                                              FontFamily="Montserrat"                            
+                                              Foreground="{StaticResource plainTextColor3}"
+                                              BorderBrush="{StaticResource plainTextColor3}"
+                                              BorderThickness="0,0,0,1" />
+
                                     <TextBlock Text="Service Type(Type of expenditure)"
                                                Style="{StaticResource FormTextBlock}"/>
 
-                                    <TextBox x:Name="txtServieType"
-                                             Text="{Binding ServiceType ,UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource FormTextBox}"
-                                             TextWrapping="Wrap"
-                                             AcceptsReturn="True"/>
-                                    
+                                    <ComboBox Style="{StaticResource vendorCombobox}"   
+            ItemsSource="{Binding VendorDetailServices}"   
+            SelectedItem="{Binding SelectedVendorDetailService, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+            DisplayMemberPath="VendorServiceName" 
+            SelectedValuePath="VendorServiceId"
+            SelectedValue="{Binding SelectedVendorDetailService.VendorServiceId, Mode=TwoWay}"
+            Grid.Row="1" 
+            Width="239" 
+            Height="30" 
+            VerticalContentAlignment="Center"
+            HorizontalAlignment="Left"
+            Margin="27,20,10,0"
+            Background="Transparent"
+            FontWeight="Medium"
+            FontFamily="Montserrat"                            
+            Foreground="{StaticResource plainTextColor3}"
+            BorderBrush="{StaticResource plainTextColor3}"
+            BorderThickness="0,0,0,1" />
+
+
                                     <TextBlock Text="Service StartDate"
                                                Style="{StaticResource FormTextBlock}"
                                                Margin="20,20,230,0"/>
@@ -161,9 +189,24 @@
                                        Style="{StaticResource FormTextBlock}"
                                        Margin="20,20,0,0"/>
 
-                                    <TextBox x:Name="txtSantionBy"
-                                       Text="{Binding ServiceSantionedBy,UpdateSourceTrigger=PropertyChanged}"                                         
-                                       Style="{StaticResource FormTextBox}"/>
+                                    <ComboBox Style="{StaticResource vendorCombobox}"   
+                                              ItemsSource="{Binding VendorDetailServices}"   
+                                              SelectedItem="{Binding SelectedVendorDetailService, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="VendorServiceName" 
+                                              SelectedValuePath="VendorServiceId"
+                                              SelectedValue="{Binding SelectedVendorDetailService.VendorServiceId, Mode=TwoWay}"
+                                              Grid.Row="1" 
+                                              Width="239" 
+                                              Height="30" 
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Left"
+                                              Margin="27,20,10,5"
+                                              Background="Transparent"
+                                              FontWeight="Medium"
+                                              FontFamily="Montserrat"                            
+                                              Foreground="{StaticResource plainTextColor3}"
+                                              BorderBrush="{StaticResource plainTextColor3}"
+                                              BorderThickness="0,0,0,1" />
 
                                     <TextBlock Text="Santioned Amount"
                                        Style="{StaticResource FormTextBlock}"
