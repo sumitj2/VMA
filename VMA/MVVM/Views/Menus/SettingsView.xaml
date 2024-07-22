@@ -24,7 +24,7 @@ BorderThickness="0"
 
             <Grid Grid.Row="0">
                 <TabControl Style="{DynamicResource TabContorlStyle}" Background="White">
-                    <TabItem Header="GST Settings" Style="{DynamicResource TabItemStyle}" Height="39">
+                    <TabItem Header="General Settings" Style="{DynamicResource TabItemStyle}" Height="39">
                         <AdornerDecorator>
                             <Grid Grid.Row="0">
                                 <Grid.ColumnDefinitions>
@@ -35,31 +35,24 @@ BorderThickness="0"
                                 <StackPanel x:Name="CompanyDetails" Grid.Row="0"
                                 Orientation="Vertical">
                                    
-                                    <TextBlock Text="Enter CGST Percentage"
+                                    <TextBlock Text="Enter Financial Year"
                                            Style="{StaticResource FormTextBlock}"/>
 
-                                    <TextBox x:Name="txtCGST"
+                                    <TextBox x:Name="txtFinancilaYear"
                                          Text="{Binding Cgstpercentage ,UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource FormTextBox}"
                                          TextWrapping="Wrap"
                                          AcceptsReturn="True"/>
-                                    <TextBlock Text="Enter SGST Percentage"
+                                    <TextBlock Text="Enter Note ID"
                                            Style="{StaticResource FormTextBlock}"/>
 
-                                    <TextBox x:Name="txtSGST"
+                                    <TextBox x:Name="txtNoteId"
                                          Text="{Binding Sgstpercentage ,UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource FormTextBox}"
                                          TextWrapping="Wrap"
                                          AcceptsReturn="True"/>
 
-                                    <TextBlock Text="Enter IGST Percentage"
-                                               Style="{StaticResource FormTextBlock}"/>
-
-                                    <TextBox x:Name="txtIGST"
-                                             Text="{Binding Igstpercentage ,UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource FormTextBox}"
-                                             TextWrapping="Wrap"
-                                             AcceptsReturn="True"/>
+                                    
 
                                 </StackPanel>
 
