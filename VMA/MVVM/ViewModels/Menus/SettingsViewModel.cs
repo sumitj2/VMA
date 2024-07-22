@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Abstraction.VMA.Contract;
+﻿using Azure;
+using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
 using Database.VMA.Entities;
 using System;
@@ -374,11 +375,21 @@ namespace VMA.MVVM.ViewModels.Menus
             //_ = GetGSTDetails();
         }
 
-
+        private ObservableCollection<ConfigurationModel?> _allConfigurations;
+        public ObservableCollection<ConfigurationModel?> AllConfigurations
+        {
+            get
+            { return _allConfigurations; }
+            set
+            {
+                _allConfigurations = value;
+                OnPropertyChanged(nameof(AllConfigurations));
+            }
+        }
         public async void GetAllConfigurations()
         {
             var allConfigurations = await _configBusinessLogic.GetConfigurations().ConfigureAwait(true);
-
+            AllConfigurations = new ObservableCollection<ConfigurationModel?>(allConfigurations);
             string departmentConfigJson = allConfigurations.Where(x => x.Cfgkey == nameof(Department)).FirstOrDefault()?.CfgValue;
             string expenditureConfigJson = allConfigurations.Where(x => x.Cfgkey == nameof(Expenditure)).FirstOrDefault()?.CfgValue;
             string sanctionConfigJson = allConfigurations.Where(x => x.Cfgkey == nameof(Sanction)).FirstOrDefault()?.CfgValue;
@@ -398,7 +409,7 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             else
             {
-                Expenditures = new ObservableCollection<Expenditure>(); 
+                Expenditures = new ObservableCollection<Expenditure>();
             }
 
             if (!string.IsNullOrEmpty(sanctionConfigJson))
@@ -412,31 +423,44 @@ namespace VMA.MVVM.ViewModels.Menus
         }
         private void AddOrUpdateDepartments()
         {
-            bool isDepartmentExist = Departments.Where(x => x.DepartmentName == NeworExistingDepartment).Count() > 0;
+            bool isDepartmentExist = Departments.Count(x => x.DepartmentName == NeworExistingDepartment) > 0;
 
-            if (!isDepartmentExist)
+            string operation = "";
+            if (Departments != null && Departments.Any())
             {
-                if (SelectedDepartment == null)
+                if (!isDepartmentExist)
                 {
-                    Departments.Add(new Department()
+                    if (SelectedDepartment == null)
                     {
-                        DepartmentName = NeworExistingDepartment,
-                        Id = Convert.ToString(Departments.Count + 1)
-                    });
+                        Departments.Add(new Department()
+                        {
+                            DepartmentName = NeworExistingDepartment,
+                            Id = Convert.ToString(Departments.Count + 1)
+                        });                        
+                        NeworExistingDepartment = string.Empty;
+                    }
+                    else
+                    {
+                        Departments.Where(x => x.Id == SelectedDepartment.Id).FirstOrDefault().DepartmentName = NeworExistingDepartment;
+                        SelectedDepartment = null;
+                    }
 
-                    NeworExistingDepartment = string.Empty;
+                    SaveConfiguration(AllConfigurations.FirstOrDefault(x=>x.Cfgkey== nameof(Department)).Id, nameof(Department), Departments, operation);
                 }
                 else
                 {
-                    Departments.Where(x => x.Id == SelectedDepartment.Id).FirstOrDefault().DepartmentName = NeworExistingDepartment;
-                    SelectedDepartment = null;
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Department is already exist, please try different");
                 }
-
-                SaveConfiguration(1, nameof(Department), Departments);
             }
-            else
+            else 
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Department is already exist, please try different");
+                Departments.Add(new Department()
+                {
+                    DepartmentName = NeworExistingDepartment,
+                    Id = Convert.ToString(Departments.Count + 1)
+                });
+                operation = "add";
+                SaveConfiguration(0, nameof(Department), Departments, operation);
             }
         }
 
@@ -447,40 +471,54 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private void DeleteDepartment(object department)
         {
+            string operation = "";
             Department localdepartment = (Department)department;
 
             Departments.Remove(localdepartment);
 
-            SaveConfiguration(1, nameof(Department), Departments);
+            SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == "Department").Id, nameof(Department), Departments, operation);
         }
 
         private void AddOrUpdateExpenditures()
         {
-            bool isExpenditureExist = Expenditures.Where(x => x.ExpenditureName == NeworExistingExpenditure).Count() > 0;
-
-            if (!isExpenditureExist)
+            bool isExpenditureExist = Expenditures.Count(x => x.ExpenditureName == NeworExistingExpenditure) > 0;
+            string operation = "";
+            if (Expenditures != null && Expenditures.Any())
             {
-                if (SelectedExpentidure == null)
+                if (!isExpenditureExist)
                 {
-                    Expenditures.Add(new Expenditure()
+                    if (SelectedExpentidure == null)
                     {
-                        ExpenditureName = NeworExistingExpenditure,
-                        Id = Convert.ToString(Expenditures.Count + 1)
-                    });
+                        Expenditures.Add(new Expenditure()
+                        {
+                            ExpenditureName = NeworExistingExpenditure,
+                            Id = Convert.ToString(Expenditures.Count + 1)
+                        });
 
-                    NeworExistingExpenditure = string.Empty;
+                        NeworExistingExpenditure = string.Empty;                        
+                    }
+                    else
+                    {
+                        Expenditures.Where(x => x.Id == SelectedExpentidure.Id).FirstOrDefault().ExpenditureName = NeworExistingExpenditure;
+                        SelectedExpentidure = null;
+                    }
+
+                    SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure)).Id, nameof(Expenditure), Expenditures, operation);
                 }
                 else
                 {
-                    Expenditures.Where(x => x.Id == SelectedExpentidure.Id).FirstOrDefault().ExpenditureName = NeworExistingExpenditure;
-                    SelectedExpentidure = null;
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Expenditure is already exist, please try different");
                 }
-
-                SaveConfiguration(3, nameof(Expenditure), Expenditures);
             }
             else
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Expenditure is already exist, please try different");
+                Expenditures.Add(new Expenditure()
+                {
+                    ExpenditureName = NeworExistingExpenditure,
+                    Id = Convert.ToString(Expenditures.Count + 1)
+                });
+                operation = "add";
+                SaveConfiguration(0, nameof(Expenditure), Expenditures, operation);
             }
 
         }
@@ -492,40 +530,55 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private void DeleteExpenditure(object expenditure)
         {
+            string operation = "";
             Expenditure localexpenditure = (Expenditure)expenditure;
 
             Expenditures.Remove(localexpenditure);
 
-            SaveConfiguration(3, nameof(Expenditure), Expenditures);
+            SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure)).Id, nameof(Expenditure), Expenditures, operation);
         }
 
         private void AddOrUpdateSanctions()
         {
-            bool isSanctionExist = Sanctions.Where(x => x.SanctionName == NeworExistingSanction).Count() > 0;
-
-            if (!isSanctionExist)
+            bool isSanctionExist = Sanctions.Count(x => x.SanctionName == NeworExistingSanction) > 0;
+            string operation = "";
+            if (Sanctions != null && Sanctions.Any())
             {
-                if (SelectedSanction == null)
+                if (!isSanctionExist)
                 {
-                    Sanctions.Add(new Sanction()
+                    if (SelectedSanction == null)
                     {
-                        SanctionName = NeworExistingSanction,
-                        Id = Convert.ToString(Sanctions.Count + 1)
-                    });
+                        Sanctions.Add(new Sanction()
+                        {
+                            SanctionName = NeworExistingSanction,
+                            Id = Convert.ToString(Sanctions.Count + 1)
+                        });
 
-                    NeworExistingSanction = string.Empty;
+                        NeworExistingSanction = string.Empty;                        
+                    }
+                    else
+                    {
+                        Sanctions.Where(x => x.Id == SelectedSanction.Id).FirstOrDefault().SanctionName = NeworExistingSanction;
+                        SelectedSanction = null;
+                    }
+
+                    SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction)).Id, nameof(Sanction), Sanctions, operation);
                 }
                 else
                 {
-                    Sanctions.Where(x => x.Id == SelectedSanction.Id).FirstOrDefault().SanctionName = NeworExistingSanction;
-                    SelectedSanction = null;
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Saction is already exist, please try different");
                 }
-
-                SaveConfiguration(2, nameof(Sanction), Sanctions);
             }
             else
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Saction is already exist, please try different");
+                Sanctions.Add(new Sanction()
+                {
+                    SanctionName = NeworExistingSanction,
+                    Id = Convert.ToString(Sanctions.Count + 1)
+                });                
+                operation = "add";
+
+                SaveConfiguration(0, nameof(Sanction), Sanctions, operation);
             }
         }
 
@@ -536,11 +589,12 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private void DeleteSanction(object sanction)
         {
+            string operation = "";
             Sanction localsanction = (Sanction)sanction;
 
             Sanctions.Remove(localsanction);
 
-            SaveConfiguration(2, nameof(Sanction), Sanctions);
+            SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction)).Id, nameof(Sanction), Sanctions, operation);
         }
 
         private bool ValidateGst()
@@ -564,13 +618,20 @@ namespace VMA.MVVM.ViewModels.Menus
             //await _gstcalculationMasterBusinessLogic.AddGstMaster(gstcalculationMaster);
         }
 
-        private void SaveConfiguration(int id, string cfgkey, object cfgvalue)
+        private void SaveConfiguration(int id, string cfgkey, object cfgvalue, string operation)
         {
             string cfgvaluejson = JsonSerializer.Serialize(cfgvalue);
 
             ConfigurationModel configuration = new ConfigurationModel() { Id = id, Cfgkey = cfgkey, CfgValue = cfgvaluejson };
+            if (operation != "add")
+            {
+                _configBusinessLogic.UpdateOrDeleteConfiguration(configuration);
+            }
+            else
+            {
+                _configBusinessLogic.AddConfiguration(configuration);
 
-            _configBusinessLogic.UpdateOrDeleteConfiguration(configuration);
+            }
         }
 
         //public async Task GetGSTDetails()
@@ -587,26 +648,26 @@ namespace VMA.MVVM.ViewModels.Menus
     public class Department : ViewModelBase
     {
         private string id;
-        public string Id 
-        { 
-            get { return id; } 
-            set 
-            { 
-                id = value; 
-                OnPropertyChanged(nameof(Id)); 
-            } 
+        public string Id
+        {
+            get { return id; }
+            set
+            {
+                id = value;
+                OnPropertyChanged(nameof(Id));
+            }
         }
 
         private string departmentName;
 
-        public string DepartmentName 
-        { 
-            get { return departmentName; } 
-            set 
-            { 
-                departmentName = value; 
-                OnPropertyChanged(nameof(DepartmentName)); 
-            } 
+        public string DepartmentName
+        {
+            get { return departmentName; }
+            set
+            {
+                departmentName = value;
+                OnPropertyChanged(nameof(DepartmentName));
+            }
         }
     }
 

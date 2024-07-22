@@ -18,7 +18,11 @@ namespace Database.VMA.Repositories
         }
         public async Task AddConfiguration(Configuration ConfigurationEntity)
         {
-            await _context.AddAsync(ConfigurationEntity).ConfigureAwait(true);
+            var existingEntity = _context.Configurations.FirstOrDefault(e => e.Cfgkey == ConfigurationEntity.Cfgkey);
+            if (existingEntity == null)
+            {
+                await _context.Configurations.AddAsync(ConfigurationEntity).ConfigureAwait(true);
+            }
             await _context.SaveChangesAsync();
         }
 

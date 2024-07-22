@@ -58,7 +58,6 @@ namespace BusinessLogic.VMA
         {
             Configuration configuration = new Configuration()
             {
-                Id = configurationmodel.Id,
                 Cfgkey = configurationmodel.Cfgkey,
                 Cfgvallue = configurationmodel.CfgValue
             };
