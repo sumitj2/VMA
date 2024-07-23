@@ -74,7 +74,7 @@ namespace BusinessLogic.VMA
                 Cfgvallue = configurationmodel.CfgValue
             };
 
-            await _configurationsRepository.UpdateDeleteConfigurations(configuration);
+            await _configurationsRepository.UpdateDeleteConfigurations(configuration).ConfigureAwait(true);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace VMA
         private void ConfigureServices(IServiceCollection services)
         {
             string cs = ConfigurationManager.ConnectionStrings["VMA"].ConnectionString;
-            services.AddDbContext<VendorManagementDbContext>(options => options.UseSqlServer(cs));
+            services.AddDbContext<VendorManagementDbContext>(options => options.UseSqlServer(cs),ServiceLifetime.Scoped);
 
             services.AddSingleton<IUserBusinessLogic, UserBusinessLogic>();
             services.AddSingleton<IUserRepository, UserRepository>();

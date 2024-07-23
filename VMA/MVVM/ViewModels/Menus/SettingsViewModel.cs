@@ -23,45 +23,33 @@ namespace VMA.MVVM.ViewModels.Menus
 
         #region Properties
 
-        private int _Cgstpercentage;
+        private string _financialYear;
 
-        public int Cgstpercentage
+        public string FinancialYear
         {
-            get { return _Cgstpercentage; }
+            get { return _financialYear; }
             set
             {
-                _Cgstpercentage = value;
-                OnPropertyChanged(nameof(Cgstpercentage));
+                _financialYear = value;
+                OnPropertyChanged(nameof(FinancialYear));
             }
         }
 
-        private int _Sgstpercentage;
+        private string _noteId;
 
-        public int Sgstpercentage
+        public string NoteId
         {
-            get { return _Sgstpercentage; }
+            get { return _noteId; }
             set
             {
-                _Sgstpercentage = value;
-                OnPropertyChanged(nameof(Sgstpercentage));
-            }
-        }
-
-        private int _Igstpercentage;
-
-        public int Igstpercentage
-        {
-            get { return _Igstpercentage; }
-            set
-            {
-                _Igstpercentage = value;
-                OnPropertyChanged(nameof(Igstpercentage));
+                _noteId = value;
+                OnPropertyChanged(nameof(NoteId));
             }
         }
 
 
-        private ObservableCollection<Department> departments;
-        public ObservableCollection<Department> Departments
+        private ObservableCollection<Department>? departments;
+        public ObservableCollection<Department>? Departments
         {
             get
             { return departments; }
@@ -106,8 +94,8 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private ObservableCollection<Expenditure> expenditures;
-        public ObservableCollection<Expenditure> Expenditures
+        private ObservableCollection<Expenditure>? expenditures;
+        public ObservableCollection<Expenditure>? Expenditures
         {
             get
             { return expenditures; }
@@ -152,8 +140,8 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private ObservableCollection<Sanction> sanctions;
-        public ObservableCollection<Sanction> Sanctions
+        private ObservableCollection<Sanction>? sanctions;
+        public ObservableCollection<Sanction>? Sanctions
         {
             get
             { return sanctions; }
@@ -165,7 +153,7 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private Sanction selectedSanction;
-        public Sanction SelectedSanction
+        public Sanction? SelectedSanction
         {
             get
             { return selectedSanction; }
@@ -369,14 +357,14 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             _configBusinessLogic = configBusinessLogic;
 
-            GetAllConfigurations();
+            _ = GetAllConfigurations();
 
-            // SubmitCommand = new ViewModelAsyncCommand<GstcalculationMasterModel>(SaveGst, ValidateGst);
+            SubmitCommand = new ViewModelAsyncCommand<object>(SaveGeneralSettings, ValidateGeneralSettings);
             //_ = GetGSTDetails();
         }
 
-        private ObservableCollection<ConfigurationModel?> _allConfigurations;
-        public ObservableCollection<ConfigurationModel?> AllConfigurations
+        private ObservableCollection<ConfigurationModel>? _allConfigurations;
+        public ObservableCollection<ConfigurationModel>? AllConfigurations
         {
             get
             { return _allConfigurations; }
@@ -386,44 +374,51 @@ namespace VMA.MVVM.ViewModels.Menus
                 OnPropertyChanged(nameof(AllConfigurations));
             }
         }
-        public async void GetAllConfigurations()
+        public async Task GetAllConfigurations()
         {
             var allConfigurations = await _configBusinessLogic.GetConfigurations().ConfigureAwait(true);
-            AllConfigurations = new ObservableCollection<ConfigurationModel?>(allConfigurations);
-            string departmentConfigJson = allConfigurations.Where(x => x.Cfgkey == nameof(Department)).FirstOrDefault()?.CfgValue;
-            string expenditureConfigJson = allConfigurations.Where(x => x.Cfgkey == nameof(Expenditure)).FirstOrDefault()?.CfgValue;
-            string sanctionConfigJson = allConfigurations.Where(x => x.Cfgkey == nameof(Sanction)).FirstOrDefault()?.CfgValue;
+            AllConfigurations = new ObservableCollection<ConfigurationModel>(allConfigurations);
+            if (allConfigurations != null)
+            {
+                string? departmentConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Department))?.CfgValue;
+                string? expenditureConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure))?.CfgValue;
+                string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
+                string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear))?.CfgValue;
+                string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
 
-            if (!string.IsNullOrEmpty(departmentConfigJson))
-            {
-                Departments = JsonSerializer.Deserialize<ObservableCollection<Department>>(departmentConfigJson);
-            }
-            else
-            {
-                Departments = new ObservableCollection<Department>();
-            }
+                NoteId=noteID  ;
+                FinancialYear=financialYear ;
+                if (!string.IsNullOrEmpty(departmentConfigJson))
+                {
+                    Departments = JsonSerializer.Deserialize<ObservableCollection<Department>>(departmentConfigJson);
+                }
+                else
+                {
+                    Departments = [];
+                }
 
-            if (!string.IsNullOrEmpty(expenditureConfigJson))
-            {
-                Expenditures = JsonSerializer.Deserialize<ObservableCollection<Expenditure>>(expenditureConfigJson);
-            }
-            else
-            {
-                Expenditures = new ObservableCollection<Expenditure>();
-            }
+                if (!string.IsNullOrEmpty(expenditureConfigJson))
+                {
+                    Expenditures = JsonSerializer.Deserialize<ObservableCollection<Expenditure>>(expenditureConfigJson);
+                }
+                else
+                {
+                    Expenditures = [];
+                }
 
-            if (!string.IsNullOrEmpty(sanctionConfigJson))
-            {
-                Sanctions = JsonSerializer.Deserialize<ObservableCollection<Sanction>>(sanctionConfigJson);
-            }
-            else
-            {
-                Sanctions = new ObservableCollection<Sanction>();
+                if (!string.IsNullOrEmpty(sanctionConfigJson))
+                {
+                    Sanctions = JsonSerializer.Deserialize<ObservableCollection<Sanction>>(sanctionConfigJson);
+                }
+                else
+                {
+                    Sanctions = [];
+                }
             }
         }
-        private void AddOrUpdateDepartments()
+        private async void AddOrUpdateDepartments()
         {
-            bool isDepartmentExist = Departments.Count(x => x.DepartmentName == NeworExistingDepartment) > 0;
+            bool isDepartmentExist = Departments?.Count(x => x.DepartmentName == NeworExistingDepartment) > 0;
 
             string operation = "";
             if (Departments != null && Departments.Any())
@@ -436,7 +431,7 @@ namespace VMA.MVVM.ViewModels.Menus
                         {
                             DepartmentName = NeworExistingDepartment,
                             Id = Convert.ToString(Departments.Count + 1)
-                        });                        
+                        });
                         NeworExistingDepartment = string.Empty;
                     }
                     else
@@ -445,23 +440,24 @@ namespace VMA.MVVM.ViewModels.Menus
                         SelectedDepartment = null;
                     }
 
-                    SaveConfiguration(AllConfigurations.FirstOrDefault(x=>x.Cfgkey== nameof(Department)).Id, nameof(Department), Departments, operation);
+                    SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Department)).Id, nameof(Department), Departments, operation);
                 }
                 else
                 {
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Department is already exist, please try different");
                 }
             }
-            else 
+            else
             {
-                Departments.Add(new Department()
+                Departments?.Add(new Department()
                 {
                     DepartmentName = NeworExistingDepartment,
                     Id = Convert.ToString(Departments.Count + 1)
                 });
                 operation = "add";
-                SaveConfiguration(0, nameof(Department), Departments, operation);
+                await SaveConfiguration(0, nameof(Department), Departments, operation);
             }
+
         }
 
         private bool CanAddOrUpdateDepartments()
@@ -495,7 +491,7 @@ namespace VMA.MVVM.ViewModels.Menus
                             Id = Convert.ToString(Expenditures.Count + 1)
                         });
 
-                        NeworExistingExpenditure = string.Empty;                        
+                        NeworExistingExpenditure = string.Empty;
                     }
                     else
                     {
@@ -528,19 +524,19 @@ namespace VMA.MVVM.ViewModels.Menus
             return !string.IsNullOrEmpty(NeworExistingExpenditure);
         }
 
-        private void DeleteExpenditure(object expenditure)
+        private async Task DeleteExpenditure(object expenditure)
         {
             string operation = "";
             Expenditure localexpenditure = (Expenditure)expenditure;
 
-            Expenditures.Remove(localexpenditure);
+            Expenditures?.Remove(localexpenditure);
 
-            SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure)).Id, nameof(Expenditure), Expenditures, operation);
+            await SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure)).Id, nameof(Expenditure), Expenditures, operation);
         }
 
-        private void AddOrUpdateSanctions()
+        private async void AddOrUpdateSanctions()
         {
-            bool isSanctionExist = Sanctions.Count(x => x.SanctionName == NeworExistingSanction) > 0;
+            bool isSanctionExist = Sanctions?.Count(x => x.SanctionName == NeworExistingSanction) > 0;
             string operation = "";
             if (Sanctions != null && Sanctions.Any())
             {
@@ -554,15 +550,15 @@ namespace VMA.MVVM.ViewModels.Menus
                             Id = Convert.ToString(Sanctions.Count + 1)
                         });
 
-                        NeworExistingSanction = string.Empty;                        
+                        NeworExistingSanction = string.Empty;
                     }
                     else
                     {
-                        Sanctions.Where(x => x.Id == SelectedSanction.Id).FirstOrDefault().SanctionName = NeworExistingSanction;
+                        Sanctions.FirstOrDefault(x => x.Id == SelectedSanction.Id).SanctionName = NeworExistingSanction;
                         SelectedSanction = null;
                     }
 
-                    SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction)).Id, nameof(Sanction), Sanctions, operation);
+                    await SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction)).Id, nameof(Sanction), Sanctions, operation);
                 }
                 else
                 {
@@ -571,14 +567,14 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             else
             {
-                Sanctions.Add(new Sanction()
+                Sanctions?.Add(new Sanction()
                 {
                     SanctionName = NeworExistingSanction,
                     Id = Convert.ToString(Sanctions.Count + 1)
-                });                
+                });
                 operation = "add";
 
-                SaveConfiguration(0, nameof(Sanction), Sanctions, operation);
+                await SaveConfiguration(0, nameof(Sanction), Sanctions, operation);
             }
         }
 
@@ -587,53 +583,70 @@ namespace VMA.MVVM.ViewModels.Menus
             return !string.IsNullOrEmpty(NeworExistingSanction);
         }
 
-        private void DeleteSanction(object sanction)
+        private async Task DeleteSanction(object sanction)
         {
             string operation = "";
             Sanction localsanction = (Sanction)sanction;
 
-            Sanctions.Remove(localsanction);
+            Sanctions?.Remove(localsanction);
 
-            SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction)).Id, nameof(Sanction), Sanctions, operation);
+            await SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction)).Id, nameof(Sanction), Sanctions, operation);
         }
 
-        private bool ValidateGst()
+        private bool ValidateGeneralSettings()
         {
             return true;
         }
 
-        private async Task SaveGst(object model)
+        private async Task SaveGeneralSettings(object model)
         {
-            //GstcalculationMasterModel gstcalculationMaster = new()
-            //{
-            //    CgstPercentage = Cgstpercentage,
-            //    IgstPercentage = Igstpercentage,
-            //    SgstPercentage = Sgstpercentage,
-            //    CreatedBy = UserAccountModel.Username,
-            //    LastUpdateBy = UserAccountModel.Username,
-            //    LastUpdatedDate = DateTime.UtcNow,
-            //    CreatedDate = DateTime.UtcNow,
-            //    IsActive = true,
-            //};
-            //await _gstcalculationMasterBusinessLogic.AddGstMaster(gstcalculationMaster);
-        }
-
-        private void SaveConfiguration(int id, string cfgkey, object cfgvalue, string operation)
-        {
-            string cfgvaluejson = JsonSerializer.Serialize(cfgvalue);
-
-            ConfigurationModel configuration = new ConfigurationModel() { Id = id, Cfgkey = cfgkey, CfgValue = cfgvaluejson };
-            if (operation != "add")
+            bool getFinancialYear = AllConfigurations.Any(x => x?.Cfgkey == nameof(FinancialYear));
+            bool getNoteId = AllConfigurations.Any(x => x?.Cfgkey == nameof(NoteId));
+            string operation = "";
+            if (getFinancialYear)
             {
-                _configBusinessLogic.UpdateOrDeleteConfiguration(configuration);
+                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear)).Id, nameof(FinancialYear), FinancialYear, operation);
             }
             else
             {
-                _configBusinessLogic.AddConfiguration(configuration);
-
+                operation = "add";
+                await SaveGenralSettings(0, nameof(FinancialYear), FinancialYear, operation);
+            }
+            if (getNoteId)
+            {
+                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId)).Id, nameof(NoteId), NoteId, operation);
+            }
+            else
+            {
+                operation = "add";
+                await SaveGenralSettings(0, nameof(NoteId), NoteId, operation);
             }
         }
 
+        private async Task SaveConfiguration(int id, string cfgkey, object cfgvalue, string operation)
+        {
+            string cfgvaluejson = JsonSerializer.Serialize(cfgvalue);
+            await Save(id, cfgkey, operation, cfgvaluejson);
+        }
+
+        private async Task Save(int id, string cfgkey, string operation, string cfgvaluejson)
+        {
+            if (operation != "add")
+            {
+                await _configBusinessLogic.UpdateOrDeleteConfiguration(new ConfigurationModel() { Id = id, Cfgkey = cfgkey, CfgValue = cfgvaluejson }).ConfigureAwait(true);
+            }
+            else
+            {
+                await _configBusinessLogic.AddConfiguration(new ConfigurationModel() { Id = id, Cfgkey = cfgkey, CfgValue = cfgvaluejson });
+            }
+            await GetAllConfigurations();
+        }
+
+        private async Task SaveGenralSettings(int id, string cfgkey, string cfgvalue, string operation)
+        {
+            await Save(id, cfgkey, operation, cfgvalue);
+
+        }
         //public async Task GetGSTDetails()
         //{
         //    var latestGST = await _gstcalculationMasterBusinessLogic.GetAllGstMaster();
@@ -673,8 +686,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
     public class Expenditure : ViewModelBase
     {
-        private string id;
-        public string Id
+        private string? id;
+        public string? Id
         {
             get { return id; }
             set
@@ -684,9 +697,9 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private string expenditureName;
+        private string? expenditureName;
 
-        public string ExpenditureName
+        public string? ExpenditureName
         {
             get { return expenditureName; }
             set
@@ -699,8 +712,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
     public class Sanction : ViewModelBase
     {
-        private string id;
-        public string Id
+        private string? id;
+        public string? Id
         {
             get { return id; }
             set
@@ -710,9 +723,9 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private string sanctionName;
+        private string? sanctionName;
 
-        public string SanctionName
+        public string? SanctionName
         {
             get { return sanctionName; }
             set

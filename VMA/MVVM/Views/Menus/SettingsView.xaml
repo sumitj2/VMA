@@ -39,7 +39,7 @@ BorderThickness="0"
                                            Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtFinancilaYear"
-                                         Text="{Binding Cgstpercentage ,UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding FinancialYear ,UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource FormTextBox}"
                                          TextWrapping="Wrap"
                                          AcceptsReturn="True"/>
@@ -47,12 +47,47 @@ BorderThickness="0"
                                            Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtNoteId"
-                                         Text="{Binding Sgstpercentage ,UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding NoteId ,UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource FormTextBox}"
                                          TextWrapping="Wrap"
                                          AcceptsReturn="True"/>
 
-                                    
+                                    <StackPanel Grid.Row="2" 
+     Orientation="Horizontal"
+     VerticalAlignment="Bottom"
+     HorizontalAlignment="Center"
+     Margin="0,0,0,9">
+
+                                        <Button Style="{StaticResource vendorSaveButton}"
+             Command="{Binding SubmitCommand}"                            
+             Content="Save"                            
+             FontSize="12"
+             FontFamily="Montserrat"
+             Cursor="Hand"
+             BorderThickness="0"
+             Foreground="White"
+             VerticalAlignment="Top"/>
+                                        <!--<Button Style="{StaticResource vendorCancelButton}"
+             Command="{Binding HideDetailInfoFormCommand}"                            
+             Content="Cancel"                            
+             FontSize="12"
+             FontFamily="Montserrat"
+             Cursor="Hand"
+             BorderThickness="0"
+             Foreground="White"
+             VerticalAlignment="Top"/>
+     <Button Style="{StaticResource vendorClearButton}"
+             Command="{Binding ClearFormCommand }"                            
+             Content="Clear"                            
+             FontSize="12"
+             FontFamily="Montserrat"
+             Cursor="Hand"
+             BorderThickness="0"
+             Foreground="White"
+             VerticalAlignment="Top"/>-->
+
+
+                                    </StackPanel>
 
                                 </StackPanel>
 
@@ -251,7 +286,7 @@ Text="{Binding ExpenditureName,UpdateSourceTrigger=PropertyChanged}" FontSize="1
                 HorizontalAlignment="Center"
                 Margin="0,0,0,9">
                
-                <Button Style="{StaticResource vendorSaveButton}"
+                <!--<Button Style="{StaticResource vendorSaveButton}"
                         Command="{Binding SubmitCommand}"                            
                         Content="Save"                            
                         FontSize="12"
@@ -259,7 +294,7 @@ Text="{Binding ExpenditureName,UpdateSourceTrigger=PropertyChanged}" FontSize="1
                         Cursor="Hand"
                         BorderThickness="0"
                         Foreground="White"
-                        VerticalAlignment="Top"/>
+                        VerticalAlignment="Top"/>-->
                 <!--<Button Style="{StaticResource vendorCancelButton}"
                         Command="{Binding HideDetailInfoFormCommand}"                            
                         Content="Cancel"                            
