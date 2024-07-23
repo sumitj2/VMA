@@ -704,7 +704,7 @@ namespace VMA.MVVM.ViewModels.Add
                 InvoiceParticulars = _vendorPaymentModel?.InvoiceParticulars;
                 InvoiceDate = _vendorPaymentModel?.InvoiceDate;
 
-                PaymentNoteNo = _vendorPaymentModel?.PaymentNoteNo;
+                PaymentNoteNo = _vendorPaymentModel.PaymentNoteNo;
 
                 var gstSrNo = GSTDetails.ToList().Find(x => x.SrNo == _vendorPaymentModel?.FkGstmasterSrNo);
 

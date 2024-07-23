@@ -33,6 +33,16 @@
 
                                 <StackPanel x:Name="CompanyDetails" Grid.Row="0"
                                     Orientation="Vertical">
+                                    <TextBlock Text="Payment Note Year"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
+                                    
+                                    <TextBox x:Name="txtServiceYear"
+                                               Text="{Binding PaymentNoteYear ,UpdateSourceTrigger=PropertyChanged}"
+                                               Style="{StaticResource FormTextBox}"
+                                               TextWrapping="Wrap"
+                                               AcceptsReturn="True"/>
+
                                     <TextBlock Text="Select Vendor"
                                                Style="{StaticResource FormTextBlock}"
                                                Margin="22,20,230,0"/>
@@ -92,10 +102,12 @@
                                     
                                     <TextBlock Text="Payment Note Number"
                                                Style="{StaticResource FormTextBlock}"/>
+                                    <TextBlock Text="{Binding PaymentNoteId,UpdateSourceTrigger=PropertyChanged}"
+                                               FontSize="9" FontWeight="Light"  Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtPaymentNoteNo"
                                              Text="{Binding PaymentNoteNo ,UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource FormTextBox}"/>
+                                             Style="{StaticResource FormTextBox}" Width="168" Margin="0,-20,30,30"/>
 
                                     <TextBlock Text="Payment Note Date"
                                                Style="{StaticResource FormTextBlock}"/>

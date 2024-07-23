@@ -122,8 +122,10 @@ namespace VMA.MVVM.ViewModels.Menus
         public ICommand EditPaymentNotesFormCommand { get; }
         #endregion
 
-        public PaymentNotesViewModel(MainViewModel parentViewModel,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorBusinessLogic vendorBusinessLogic)
+        private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
+        public PaymentNotesViewModel(MainViewModel parentViewModel,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorBusinessLogic vendorBusinessLogic,IConfigurationBusinessLogic configurationBusinessLogic)
         {
+            _configurationBusinessLogic = configurationBusinessLogic;
             _venderPaymentNotesBusinessLogic=venderPaymentNotesBusinessLogic;
             _vendorDetailsBusinessLogic=vendorDetailsBusinessLogic; 
             _vendorBusinessLogic=vendorBusinessLogic;
@@ -136,12 +138,12 @@ namespace VMA.MVVM.ViewModels.Menus
         private async Task EditPaymentNoteForm(VenderPaymentNoteModel model)
         {
             SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
-            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this, _vendorDetailsBusinessLogic,_vendorBusinessLogic,_venderPaymentNotesBusinessLogic,model);
+            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this, _vendorDetailsBusinessLogic,_vendorBusinessLogic,_venderPaymentNotesBusinessLogic,model, _configurationBusinessLogic);
         }
         
         private async Task ShowPaymentNotesForm(VenderPaymentNoteModel model)
         {
-            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this,_vendorDetailsBusinessLogic,_vendorBusinessLogic,_venderPaymentNotesBusinessLogic,null);
+            _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this,_vendorDetailsBusinessLogic,_vendorBusinessLogic,_venderPaymentNotesBusinessLogic,null, _configurationBusinessLogic);
 
         }
 

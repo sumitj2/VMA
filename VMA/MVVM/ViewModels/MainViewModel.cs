@@ -147,7 +147,7 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecutePaymentNoteViewCommand(object obj)
         {
-            CurrentChildView = new PaymentNotesViewModel(this, _venderPaymentNotesBusinessLogic, _vendorDetailsBusinessLogic, _vendorBusinessLogic);
+            CurrentChildView = new PaymentNotesViewModel(this, _venderPaymentNotesBusinessLogic, _vendorDetailsBusinessLogic, _vendorBusinessLogic, _configurationBusinessLogic);
             Caption = "Payment Notes";
             Icon = IconChar.NoteSticky;
         }

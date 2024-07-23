@@ -29,4 +29,5 @@ public partial class VenderPaymentNoteModel
     public DateTime? LastUpdatedDate { get; set; }
 
     public int FkVendorId { get; set; }
+    public string? PaymentNoteYear { get; set; }
 }

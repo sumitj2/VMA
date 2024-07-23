@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
+using BusinessLogic.VMA;
 using Database.Abstraction.VMA.Contract;
 using Database.VMA.Entities;
 using Database.VMA.Repositories;
@@ -147,6 +148,34 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
+        private string? _PaymentNoteYear;
+        public string? PaymentNoteYear
+        {
+            get
+            {
+                return _PaymentNoteYear;
+            }
+            set
+            {
+                _PaymentNoteYear = value;
+                OnPropertyChanged(nameof(PaymentNoteYear));
+            }
+        }
+
+        private string? _PaymentNoteId;
+        public string? PaymentNoteId
+        {
+            get
+            {
+                return _PaymentNoteId;
+            }
+            set
+            {
+                _PaymentNoteId = value;
+                OnPropertyChanged(nameof(PaymentNoteId));
+            }
+        }
+
         private DateTime? _PaymentNoteDate;
         public DateTime? PaymentNoteDate
         {
@@ -196,9 +225,9 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
+        private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
 
-
-        public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, VenderPaymentNoteModel? editPaymentNote)
+        public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, VenderPaymentNoteModel? editPaymentNote, IConfigurationBusinessLogic configurationBusinessLogic)
         {
             _paymentNotesViewModel = paymentNotesViewModel;
             _editPaymentNote = editPaymentNote;
@@ -223,7 +252,21 @@ namespace VMA.MVVM.ViewModels.Add
             _venderPaymentNotesBusinessLogic = venderPaymentNotesBusinessLogic;
             HidePaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(HidePaymentNoteForm);
             SubmitCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(SubmitPaymentNote, ValidatePaymentNote);
+            _configurationBusinessLogic = configurationBusinessLogic;
             CallAync();
+        }
+        public async Task GetAllConfigurations()
+        {
+            var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
+
+            string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
+            string? noteId = allConfigurations.FirstOrDefault(x => x.Cfgkey == "NoteId")?.CfgValue;
+            Random random = new Random();
+
+            PaymentNoteYear = financialYear;
+            PaymentNoteId = noteId;
+            PaymentNoteNo = Convert.ToString(random.Next(100, 10000));
+
         }
 
         private bool ValidatePaymentNote()
@@ -242,7 +285,8 @@ namespace VMA.MVVM.ViewModels.Add
                     PaymentNoteNo = PaymentNoteNo ?? "",
                     PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
                     NoteId = _editPaymentNote.NoteId,
-                    FkVendorId = _editPaymentNote.VendorId
+                    FkVendorId = _editPaymentNote.VendorId,
+                    PaymentNoteYear = _editPaymentNote.PaymentNoteYear
                 };
                 await _venderPaymentNotesBusinessLogic.EditUpdatePaymentNotes(payment);
 
@@ -252,12 +296,13 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 VenderPaymentNoteModel paymentNote = new()
                 {
-                    PaymentNoteNo = PaymentNoteNo ?? "",
+                    PaymentNoteNo = PaymentNoteId + PaymentNoteNo ?? "",
                     PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
                     CreatedBy = UserAccountModel.Username,
                     CreatedDate = DateTime.UtcNow,
                     IsActive = true,
-                    FkVendorId = SelectedVendorModel.VendorId
+                    FkVendorId = SelectedVendorModel.VendorId,
+                    PaymentNoteYear = _editPaymentNote?.PaymentNoteYear
                 };
                 await _venderPaymentNotesBusinessLogic.AddPaymentNotes(paymentNote);
 
@@ -274,9 +319,8 @@ namespace VMA.MVVM.ViewModels.Add
         }
         public async Task MainTask()
         {
-
+            await GetAllConfigurations();
             await LoadVendors();
-
             await PopulateValues();
         }
         private void CanGoBack(object obj)
@@ -299,9 +343,10 @@ namespace VMA.MVVM.ViewModels.Add
         {
             if (_editPaymentNote != null)
             {
+                PaymentNoteId = "";
                 PaymentNoteNo = _editPaymentNote.PaymentNoteNo;
                 PaymentNoteDate = _editPaymentNote.PaymentNoteDate;
-                SelectedVendorName =  VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName??"";
+                SelectedVendorName = VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName ?? "";
             }
         }
 
