@@ -122,24 +122,26 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand EditPaymentCommand { get; }
         #endregion
-        public PaymentsViewModel(MainViewModel parentViewModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IVendorBusinessLogic vendorBusinessLogic,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
+        private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
+        public PaymentsViewModel(MainViewModel parentViewModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IVendorBusinessLogic vendorBusinessLogic,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic)
         {
+            _configurationBusinessLogic = configurationBusinessLogic;
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
-            _venderPaymentNotesBusinessLogic= venderPaymentNotesBusinessLogic;
+            _venderPaymentNotesBusinessLogic = venderPaymentNotesBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ShowPaymentForm);
             HidePaymentFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(HidePaymentForm);
             EditPaymentCommand = new ViewModelAsyncCommand<VendorPaymentModel>(EditPayment);
-            _=GetVendorPayments();
+            _ = GetVendorPayments();
         }
 
         private async Task EditPayment(VendorPaymentModel model)
         {
             SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
-            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this,_vendorDetailsBusinessLogic, model, _vendorPaymentBusinessLogic, _gstcalculationMasterBusinessLogic,_vendorBusinessLogic, _venderPaymentNotesBusinessLogic);
+            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this,_vendorDetailsBusinessLogic, model, _vendorPaymentBusinessLogic, _gstcalculationMasterBusinessLogic,_vendorBusinessLogic, _venderPaymentNotesBusinessLogic, _configurationBusinessLogic);
         }
 
         public async Task HidePaymentForm(object model)
@@ -150,7 +152,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task ShowPaymentForm(object model)
         {
-            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this, _vendorDetailsBusinessLogic, SelectedVendorService,_vendorPaymentBusinessLogic, _gstcalculationMasterBusinessLogic,_vendorBusinessLogic, _venderPaymentNotesBusinessLogic);
+            _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this, _vendorDetailsBusinessLogic, SelectedVendorService,_vendorPaymentBusinessLogic, _gstcalculationMasterBusinessLogic,_vendorBusinessLogic, _venderPaymentNotesBusinessLogic, _configurationBusinessLogic);
         }
 
         private async Task GetVendorPayments()

@@ -13,6 +13,7 @@
     <None Remove="Images\key-icon.png" />
     <None Remove="Images\logo.png" />
     <None Remove="Images\user-icon.png" />
+    <None Remove="MVVM\ViewModels\Menus\SettingsViewModel.cs~RF38c95223.TMP" />
   </ItemGroup>
 
   <ItemGroup>

@@ -23,9 +23,9 @@ namespace VMA.MVVM.ViewModels.Menus
 
         #region Properties
 
-        private string _financialYear;
+        private string? _financialYear;
 
-        public string FinancialYear
+        public string? FinancialYear
         {
             get { return _financialYear; }
             set
@@ -35,9 +35,9 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private string _noteId;
+        private string? _noteId;
 
-        public string NoteId
+        public string? NoteId
         {
             get { return _noteId; }
             set

@@ -4,6 +4,7 @@ using BusinessLogic.VMA;
 using Database.VMA.Entities;
 using Database.VMA.Repositories;
 using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.ExtendedProperties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,8 +35,8 @@ namespace VMA.MVVM.ViewModels.Add
 
         #region Properties
 
-        private string _serviceYear;
-        public string ServiceYear
+        private string? _serviceYear;
+        public string? ServiceYear
         {
             get { return _serviceYear; }
             set
@@ -473,13 +474,33 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(SelectedSanction));
             }
         }
+        
+
+        private string? _noteId;
+
+        public string? NoteId
+        {
+            get { return _noteId; }
+            set
+            {
+                _noteId = value;
+                OnPropertyChanged(nameof(NoteId));
+            }
+        }
         public async Task GetAllConfigurations()
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
             string? departmentConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Menus.Department))?.CfgValue;
             string? expenditureConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure))?.CfgValue;
             string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
+            string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
+            string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
+            
+            Random random = new Random();
+            int randomNumber = random.Next(100, 1000);
 
+            NoteId = noteID;
+            ServiceYear = financialYear;
             if (!string.IsNullOrEmpty(departmentConfigJson))
             {
                 Departments = JsonSerializer.Deserialize<ObservableCollection<Menus.Department>>(departmentConfigJson);

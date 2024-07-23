@@ -1,7 +1,9 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
+using BusinessLogic.VMA;
 using Database.VMA.Entities;
 using Database.VMA.Repositories;
+using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -612,9 +615,10 @@ namespace VMA.MVVM.ViewModels.Add
 
 
         #endregion
-
-        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
+        private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
+        public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic)
         {
+            _configurationBusinessLogic = configurationBusinessLogic;
             _vendorPaymentModel = vendorPaymentModel;
             if (_vendorPaymentModel != null)
             {
@@ -641,7 +645,30 @@ namespace VMA.MVVM.ViewModels.Add
             SubmitCommand = new ViewModelAsyncCommand<VendorPaymentModel>(SubmitPaymentDetails, ValidatePAymentDetails);
             ClearFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ClearPaymentForm);
             _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
+            _configurationBusinessLogic = configurationBusinessLogic;
             CallAync();
+        }
+
+        private string? _noteId;
+
+        public string? NoteId
+        {
+            get { return _noteId; }
+            set
+            {
+                _noteId = value;
+                OnPropertyChanged(nameof(NoteId));
+            }
+        }
+        public async Task GetAllConfigurations()
+        {
+            var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
+            
+            string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
+           
+            
+            VendorPaymentYear = financialYear;
+            
         }
         private async Task PopulateValues()
         {
@@ -825,7 +852,7 @@ namespace VMA.MVVM.ViewModels.Add
             await LoadGSTDetails();
             await LoadVendors();
             await PopulateValues();
-
+            await GetAllConfigurations();
         }
         private void CanGoBack(object obj)
         {
