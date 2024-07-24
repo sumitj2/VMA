@@ -219,8 +219,6 @@ namespace VMA.MVVM.ViewModels.Add
             VendorCode = Convert.ToString(parentViewModel.Vendors.Count + 1);
 
             PopulateValues();
-            BackCommand = new ViewModelCommand(CanGoBack);
-            NextCommand = new ViewModelCommand(CanGoNext);
             _vendorbusinessLogic = vendorBusinessLogic;
             _vendorViewModel = parentViewModel;
             HideVendorFormCommand = new ViewModelAsyncCommand<VendorModel>(HideVendorForm);
