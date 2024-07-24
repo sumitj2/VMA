@@ -23,6 +23,11 @@ namespace Database.VMA.Repositories
             {
                 await _context.Configurations.AddAsync(ConfigurationEntity).ConfigureAwait(true);
             }
+            else
+            {
+                existingEntity.Cfgvallue = ConfigurationEntity.Cfgvallue;
+                await UpdateDeleteConfigurations(existingEntity);
+            }
             await _context.SaveChangesAsync();
         }
 

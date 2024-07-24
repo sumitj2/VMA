@@ -145,17 +145,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(SaveButtonName));
             }
         }
-        public int SelectedTabIndex
-        {
-            get => _selectedTabIndex;
-            set
-            {
-                _selectedTabIndex = value;
-                OnPropertyChanged(nameof(SelectedTabIndex));
-                OnPropertyChanged(nameof(CanGoBack));
-                OnPropertyChanged(nameof(CanGoNext));
-            }
-        }
+        
         public Visibility GSTTabVisible
         {
             get { return IsGSTDetailsVisible ? Visibility.Visible : Visibility.Collapsed; }
@@ -327,7 +317,7 @@ namespace VMA.MVVM.ViewModels.Add
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
 
                     _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId));
-                    GetAmountToBepaid();
+                    _ = GetAmountToBepaid();
                 }
             }
         }
@@ -345,8 +335,8 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        private string _paymentNoteNo;
-        public string PaymentNoteNo
+        private string? _paymentNoteNo;
+        public string? PaymentNoteNo
         {
             get { return _paymentNoteNo; }
             set
@@ -704,7 +694,7 @@ namespace VMA.MVVM.ViewModels.Add
                 InvoiceParticulars = _vendorPaymentModel?.InvoiceParticulars;
                 InvoiceDate = _vendorPaymentModel?.InvoiceDate;
 
-                PaymentNoteNo = _vendorPaymentModel.PaymentNoteNo;
+                PaymentNoteNo = _vendorPaymentModel?.PaymentNoteNo;
 
                 var gstSrNo = GSTDetails.ToList().Find(x => x.SrNo == _vendorPaymentModel?.FkGstmasterSrNo);
 
@@ -842,7 +832,7 @@ namespace VMA.MVVM.ViewModels.Add
             await _paymentViewModel.HidePaymentForm(this).ConfigureAwait(true);
         }
 
-        private async void CallAync()
+        private async Task CallAync()
         {
             await MainTask();
         }
@@ -853,19 +843,6 @@ namespace VMA.MVVM.ViewModels.Add
             await LoadVendors();
             await PopulateValues();
         }
-        private void CanGoBack(object obj)
-        {
-            if (SelectedTabIndex < 0)
-                SelectedTabIndex--;
-        }
-
-        private void CanGoNext(object obj)
-        {
-            if (SelectedTabIndex < _numbersOfTab)
-                SelectedTabIndex++;
-        }
-
-
         private void CalculateGST()
         {
             if (SelectedGSTModel != null)
@@ -883,7 +860,7 @@ namespace VMA.MVVM.ViewModels.Add
             VendorPaymentTotalAmountPaid = Convert.ToDecimal(GSTTotal + Convert.ToDouble(VendorPaymentAmount));
 
         }
-        private async void GetAmountToBepaid()
+        private async Task GetAmountToBepaid()
         {
             string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
             decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;

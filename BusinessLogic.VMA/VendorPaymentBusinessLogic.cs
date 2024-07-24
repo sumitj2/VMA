@@ -55,11 +55,11 @@ namespace Database.VMA.Repositories
         public async Task<VendorPayments?> GetAmoutToBePaidDetails(int? VendorDetailId, decimal? ServiceSantionAmount, string? paymentType)
         {
             VendorPayments? vendorPayments = new();
-            var paymentsDetails = await _vendorPaymentRepository.GetPaymentDetailsWithServiceDetailsByVednorDetailId(VendorDetailId);
+            var paymentsDetails = await _vendorPaymentRepository.GetPaymentDetailsWithServiceDetailsByVednorDetailId(VendorDetailId).ConfigureAwait(true);
             if (paymentsDetails.Count() != 0)
             {
                 int noOfPaymentDid = paymentsDetails.Count;
-                decimal totalAmountPaid = (decimal)paymentsDetails?.Sum(x => x.VendorPaymentAmount);
+                decimal? totalAmountPaid =paymentsDetails?.Sum(x => x.VendorPaymentAmount);
 
                 decimal amountToBePaid = await GetNonTaxableAmountToBePaid(ServiceSantionAmount ?? 0, paymentType);
                 if ((amountToBePaid + totalAmountPaid) > ServiceSantionAmount)

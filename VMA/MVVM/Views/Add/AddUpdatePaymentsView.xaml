@@ -23,7 +23,8 @@ BorderThickness="0"
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <TabControl Style="{DynamicResource TabContorlStyle}" SelectedIndex="{Binding SelectedTabIndex}" Background="White">
+                <TabControl Style="{DynamicResource TabContorlStyle}" 
+                            Background="White">
                     <TabItem Header="Service Selection" Style="{DynamicResource TabItemStyle}" Height="39">
                         <AdornerDecorator>
                             <Grid Grid.Row="0">
@@ -407,9 +408,7 @@ BorderThickness="0"
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Center"
                 Margin="0,0,0,9">
-                <Button Command="{Binding BackCommand}" Style="{StaticResource gridEditButton}">
-                    <iconPacks:PackIconMaterial Kind="LessThan" Width="12" Height="12" VerticalAlignment="Center" />
-                </Button>
+
                 <Button Style="{StaticResource vendorSaveButton}"
                 Command="{Binding SubmitCommand}"                            
                 Content="{Binding SaveButtonName, Mode=TwoWay}"                            
@@ -437,9 +436,7 @@ BorderThickness="0"
                 BorderThickness="0"
                 Foreground="White"
                 VerticalAlignment="Top"/>
-                <Button Command="{Binding NextCommand}" Margin="4" Style="{StaticResource gridEditButton}">
-                    <iconPacks:PackIconMaterial Kind="GreaterThan" Width="12" Height="12" VerticalAlignment="Center" />
-                </Button>
+
 
             </StackPanel>
         </Grid>

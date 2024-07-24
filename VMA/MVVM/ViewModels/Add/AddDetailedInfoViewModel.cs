@@ -218,7 +218,9 @@ namespace VMA.MVVM.ViewModels.Add
         public SearchModel? SelectPaymentType
         {
             get { return _selectPaymentType; }
-            set { _selectPaymentType = value; }
+            set { _selectPaymentType = value;
+                OnPropertyChanged(nameof(SelectPaymentType));
+            }
         }
 
         private bool _isAmcYes;
@@ -681,7 +683,7 @@ namespace VMA.MVVM.ViewModels.Add
                 var paymentType = ComboxPaymentMethods.ToList().Find(x => x.NameSearch == _vendorDetailViewModel?.ServicePaymentType);
                 if (paymentType != null)
                 {
-                    SelectPaymentType =ComboxPaymentMethods[3];
+                    SelectPaymentType =ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentType)];
                 }
 
             }

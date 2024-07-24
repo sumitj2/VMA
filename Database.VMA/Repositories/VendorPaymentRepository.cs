@@ -83,7 +83,7 @@ namespace Database.VMA.Repositories
                                           NoteId = paymentNote.NoteId,
                                           PaymentNoteNo = paymentNote.PaymentNoteNo
                                       };
-            return await productsWithVendors.ToListAsync();
+            return await productsWithVendors.ToListAsync().ConfigureAwait(true);
         }
         public async Task<List<VendorPaymentWithService>> GetAllPaymentDetailsWithServiceDetails()
         {
