@@ -316,13 +316,13 @@ namespace Database.VMA.Repositories
                 BankBranchName = res?.BankBranchName,
                 CreatedBy = res?.CreatedBy,
                 CreatedDate = res?.CreatedDate,
-                FkVendorDetailId = res.FkVendorDetailId,
-                IsActive = res.IsActive,
+                FkVendorDetailId = res?.FkVendorDetailId,
+                IsActive = res?.IsActive,
                 LastUpdateBy = res?.LastUpdateBy,
                 LastUpdatedDate = res?.LastUpdatedDate,
-                VendorPaymentAmount = res.VendorPaymentAmount,
+                VendorPaymentAmount = res?.VendorPaymentAmount,
                 VendorPaymentCgst = res?.VendorPaymentCgst,
-                VendorPaymentDate = res.VendorPaymentDate,
+                VendorPaymentDate = res?.VendorPaymentDate,
                 VendorPaymentId = res!.VendorPaymentId,
                 VendorPaymentIsGst = res?.VendorPaymentIsGst,
                 VendorPaymentRtgsAmount = res?.VendorPaymentRtgsAmount,
@@ -331,7 +331,7 @@ namespace Database.VMA.Repositories
                 VendorPaymentTdsamount = res?.VendorPaymentTdsamount,
                 VendorPaymentTotalAmountPaid = res?.VendorPaymentTotalAmountPaid,
                 VendorPaymentUtrnumber = res?.VendorPaymentUtrnumber,
-                PaymentYear = res.PaymentYear
+                PaymentYear = res?.PaymentYear
             };
 
             return vendorPayment;

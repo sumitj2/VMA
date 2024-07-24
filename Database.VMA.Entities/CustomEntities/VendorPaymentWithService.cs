@@ -8,7 +8,7 @@ namespace Database.VMA.Entities.CustomEntities
 {
     public class VendorPaymentWithService : VendorPayment
     {
-        public int NoteId { get; set; }
+        public int? NoteId { get; set; }
         public string PaymentNoteNo { get; set; } = null!;
         public int? VendorId { get; set; }
         public string? VendorName { get; set; }
@@ -17,7 +17,7 @@ namespace Database.VMA.Entities.CustomEntities
         public decimal? ServiceSantionAmount { get; set; }
         public string? ServicePaymentType { get; set; }
 
-        public int InvoiceId { get; set; }
+        public int? InvoiceId { get; set; }
 
         public string? InvoiceNumber { get; set; }
 

@@ -5,7 +5,7 @@ namespace Database.VMA.Entities;
 
 public partial class InvoiceDetail
 {
-    public int InvoiceId { get; set; }
+    public int? InvoiceId { get; set; }
 
     public string? InvoiceNumber { get; set; }
 

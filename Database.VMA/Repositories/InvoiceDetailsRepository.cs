@@ -16,7 +16,7 @@ namespace Database.VMA.Repositories
         {
             _context = context;
         }
-        public async Task<int> AddInvoice(InvoiceDetail InvoiceDetailsEntity)
+        public async Task<int?> AddInvoice(InvoiceDetail InvoiceDetailsEntity)
         {
             await _context.AddAsync(InvoiceDetailsEntity).ConfigureAwait(true);
             await _context.SaveChangesAsync();
@@ -40,7 +40,7 @@ namespace Database.VMA.Repositories
         {
             return await _context.InvoiceDetails.Where(x => x.IsActive == true).ToListAsync();
         }
-        public async Task<InvoiceDetail?> GetInvoiceById(int invoiceId)
+        public async Task<InvoiceDetail?> GetInvoiceById(int? invoiceId)
         {
             return await _context.InvoiceDetails.Where(x => x.IsActive == true && x.InvoiceId == invoiceId).FirstOrDefaultAsync();
         }

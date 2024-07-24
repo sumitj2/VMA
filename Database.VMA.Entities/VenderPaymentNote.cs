@@ -5,7 +5,7 @@ namespace Database.VMA.Entities;
 
 public partial class VendorPaymentNote
 {
-    public int NoteId { get; set; }
+    public int? NoteId { get; set; }
 
     public string PaymentNoteNo { get; set; } = null!;
 
@@ -21,6 +21,6 @@ public partial class VendorPaymentNote
 
     public DateTime? LastUpdatedDate { get; set; }
 
-    public int FkVendorId { get; set; }
+    public int?  FkVendorId { get; set; }
     public string? PaymentNoteYear { get; set; }
 }

@@ -17,7 +17,7 @@ namespace Database.VMA.Repositories
         {
             _invoiceDetailsRepository = invoiceDetailsRepository;
         }
-        public async Task<int> AddInvoice(InvoiceDetailsModel invoiceDetailModel)
+        public async Task<int?> AddInvoice(InvoiceDetailsModel invoiceDetailModel)
         {
             InvoiceDetail invoiceDetailsEntity = new InvoiceDetail()
             {
@@ -47,7 +47,7 @@ namespace Database.VMA.Repositories
                 LastUpdateBy = invoiceDetailModel.LastUpdateBy,
                 LastUpdatedDate = invoiceDetailModel.LastUpdatedDate
             };
-           
+
             await _invoiceDetailsRepository.EditUpdateInvoice(invoiceDetailsEntity).ConfigureAwait(true);
         }
         public async Task<IEnumerable<InvoiceDetailsModel>> GetAllInvoices()
@@ -72,7 +72,7 @@ namespace Database.VMA.Repositories
             }
             return invoiceDetailsModels;
         }
-        public async Task<InvoiceDetailsModel?> GetInvoiceById(int invoiceId)
+        public async Task<InvoiceDetailsModel?> GetInvoiceById(int? invoiceId)
         {
             var res = await _invoiceDetailsRepository.GetInvoiceById(invoiceId).ConfigureAwait(true);
             if (res != null)
@@ -90,22 +90,22 @@ namespace Database.VMA.Repositories
                     LastUpdatedDate = res?.LastUpdatedDate
                 };
             }
-            return null; 
+            return null;
         }
 
         public async Task RemoveInvoice(InvoiceDetailsModel invoiceDetailModel)
         {
-            InvoiceDetail invoiceDetailsEntity=new InvoiceDetail()
+            InvoiceDetail invoiceDetailsEntity = new InvoiceDetail()
             {
                 LastUpdatedDate = invoiceDetailModel.LastUpdatedDate,
                 LastUpdateBy = invoiceDetailModel.LastUpdateBy,
                 CreatedDate = invoiceDetailModel.CreatedDate,
                 CreatedBy = invoiceDetailModel.CreatedBy,
-                InvoiceDate = invoiceDetailModel.InvoiceDate,   
-                InvoiceId = invoiceDetailModel.InvoiceId,   
+                InvoiceDate = invoiceDetailModel.InvoiceDate,
+                InvoiceId = invoiceDetailModel.InvoiceId,
                 InvoiceNumber = invoiceDetailModel.InvoiceNumber,
-                InvoiceParticulars=invoiceDetailModel.InvoiceParticulars,
-                IsActive=   invoiceDetailModel.IsActive
+                InvoiceParticulars = invoiceDetailModel.InvoiceParticulars,
+                IsActive = invoiceDetailModel.IsActive
             };
             await _invoiceDetailsRepository.RemoveInvoice(invoiceDetailsEntity).ConfigureAwait(true);
         }

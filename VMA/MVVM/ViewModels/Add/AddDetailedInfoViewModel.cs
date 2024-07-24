@@ -23,8 +23,6 @@ namespace VMA.MVVM.ViewModels.Add
 {
     public class AddDetailedInfoViewModel : ViewModelBase
     {
-        private int _selectedTabIndex;
-        private int _numbersOfTab = 1;
         private readonly DetailedInfoViewModel _detailedInfoViewModel;
         private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         private readonly VendorDetailModel _vendorDetailViewModel;
@@ -281,18 +279,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(SaveButtonName));
             }
         }
-        public int SelectedTabIndex
-        {
-            get => _selectedTabIndex;
-            set
-            {
-                _selectedTabIndex = value;
-                OnPropertyChanged(nameof(SelectedTabIndex));
-                OnPropertyChanged(nameof(CanGoBack));
-                OnPropertyChanged(nameof(CanGoNext));
-            }
-        }
-
+        
         #region Observable collections
         private ObservableCollection<VendorServiceModel> _vendorDetailServices;
         private ObservableCollection<SearchModel> _comboxPaymentMethod;
@@ -328,9 +315,7 @@ namespace VMA.MVVM.ViewModels.Add
         }
         #endregion
 
-        #region Command
-        public ICommand BackCommand { get; set; }
-        public ICommand NextCommand { get; set; }
+        #region Command        
         public ICommand HideDetailInfoFormCommand { get; }
         public ICommand SubmitCommand { get; }
         public ICommand ClearFormCommand { get; }
@@ -355,9 +340,7 @@ namespace VMA.MVVM.ViewModels.Add
             _vendorDetailViewModel = vendorDetailViewModel;
             _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
-            _vendorBusinessLogic = vendorBusinessLogic;
-            BackCommand = new ViewModelCommand(CanGoBack);
-            NextCommand = new ViewModelCommand(CanGoNext);
+            _vendorBusinessLogic = vendorBusinessLogic;            
             SubmitCommand = new ViewModelAsyncCommand<VendorDetailModel>(SaveVendorServiceDetails, ValidateVendorServiceDetails);
             ClearFormCommand = new ViewModelAsyncCommand<VendorDetailModel>(ClearFormFields);
             if (_vendorDetailViewModel != null)
@@ -622,18 +605,6 @@ namespace VMA.MVVM.ViewModels.Add
         }
 
         #endregion
-
-        private void CanGoBack(object obj)
-        {
-            if (SelectedTabIndex < 0)
-                SelectedTabIndex--;
-        }
-
-        private void CanGoNext(object obj)
-        {
-            if (SelectedTabIndex < _numbersOfTab)
-                SelectedTabIndex++;
-        }
         private async Task PopulateValues()
         {
             if (_vendorDetailViewModel != null)

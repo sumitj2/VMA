@@ -19,8 +19,6 @@ namespace VMA.MVVM.ViewModels.Add
 {
     public class AddPaymentNotesViewModel : ViewModelBase
     {
-        private int _selectedTabIndex;
-        private int _numbersOfTab = 1;
         private string _saveButtonName;
         private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         private readonly IVendorBusinessLogic _vendorBusinessLogic;
@@ -36,17 +34,6 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _saveButtonName = value;
                 OnPropertyChanged(nameof(SaveButtonName));
-            }
-        }
-        public int SelectedTabIndex
-        {
-            get => _selectedTabIndex;
-            set
-            {
-                _selectedTabIndex = value;
-                OnPropertyChanged(nameof(SelectedTabIndex));
-                OnPropertyChanged(nameof(CanGoBack));
-                OnPropertyChanged(nameof(CanGoNext));
             }
         }
 
@@ -85,9 +72,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         #endregion
 
-        #region Command
-        public ICommand BackCommand { get; set; }
-        public ICommand NextCommand { get; set; }
+        #region Command        
         public ICommand HidePaymentNotesFormCommand { get; }
         public ICommand SubmitCommand { get; }
         public ICommand ClearFormCommand { get; }
@@ -262,7 +247,7 @@ namespace VMA.MVVM.ViewModels.Add
             string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
             string? noteId = allConfigurations.FirstOrDefault(x => x.Cfgkey == "NoteId")?.CfgValue;
             PaymentNoteYear = financialYear;
-            PaymentNoteId = noteId;         
+            PaymentNoteId = noteId;
         }
 
         private bool ValidatePaymentNote()
@@ -280,9 +265,9 @@ namespace VMA.MVVM.ViewModels.Add
                     IsActive = true,
                     PaymentNoteNo = PaymentNoteNo ?? "",
                     PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
-                    NoteId = _editPaymentNote.NoteId,
-                    FkVendorId = _editPaymentNote.VendorId,
-                    PaymentNoteYear = _editPaymentNote.PaymentNoteYear
+                    NoteId = _editPaymentNote?.NoteId,
+                    FkVendorId = _editPaymentNote?.VendorId,
+                    PaymentNoteYear = _editPaymentNote?.PaymentNoteYear
                 };
                 await _venderPaymentNotesBusinessLogic.EditUpdatePaymentNotes(payment);
 
@@ -318,17 +303,6 @@ namespace VMA.MVVM.ViewModels.Add
             await GetAllConfigurations();
             await LoadVendors();
             await PopulateValues();
-        }
-        private void CanGoBack(object obj)
-        {
-            if (SelectedTabIndex < 0)
-                SelectedTabIndex--;
-        }
-
-        private void CanGoNext(object obj)
-        {
-            if (SelectedTabIndex < _numbersOfTab)
-                SelectedTabIndex++;
         }
         private async Task HidePaymentNoteForm(object model)
         {

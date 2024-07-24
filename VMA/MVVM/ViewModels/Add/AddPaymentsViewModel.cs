@@ -22,8 +22,6 @@ namespace VMA.MVVM.ViewModels.Add
 {
     public class AddPaymentsViewModel : ViewModelBase
     {
-        private int _selectedTabIndex;
-        private int _numbersOfTab = 1;
         private string _saveButtonName;
         private readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         private readonly IVendorPaymentBusinessLogic _vendorPaymentBusinessLogic;
@@ -179,8 +177,6 @@ namespace VMA.MVVM.ViewModels.Add
         }
 
         #region Command
-        public ICommand BackCommand { get; set; }
-        public ICommand NextCommand { get; set; }
         public ICommand HidePaymentFormCommand { get; }
         public ICommand SubmitCommand { get; }
         public ICommand ClearFormCommand { get; }

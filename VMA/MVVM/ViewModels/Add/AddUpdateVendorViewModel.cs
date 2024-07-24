@@ -21,18 +21,14 @@ namespace VMA.MVVM.ViewModels.Add
     public class AddUpdateVendorViewModel : ViewModelBase
     {
         private readonly IVendorBusinessLogic _vendorbusinessLogic;
-        private readonly VendorViewModel _vendorViewModel;
-        private int _selectedTabIndex;
-        private int _numbersOfTab = 1;
+        private readonly VendorViewModel _vendorViewModel;       
 
         #region Command
         public ICommand BackCommand { get; set; }
         public ICommand NextCommand { get; set; }
         public ICommand HideVendorFormCommand { get; }
         public ICommand SubmitCommand { get; }
-        public ICommand ClearFormCommand { get; }
-        public ICommand SwitchToTab1Command { get; }
-        public ICommand SwitchToTab2Command { get; }
+        public ICommand ClearFormCommand { get; }        
 
         #endregion
 
@@ -205,19 +201,7 @@ namespace VMA.MVVM.ViewModels.Add
                 _vendorGstnumber = value;
                 OnPropertyChanged(nameof(VendorGstnumber));
             }
-        }
-
-        public int SelectedTabIndex
-        {
-            get => _selectedTabIndex;
-            set
-            {
-                _selectedTabIndex = value;
-                OnPropertyChanged(nameof(SelectedTabIndex));
-                OnPropertyChanged(nameof(CanGoBack));
-                OnPropertyChanged(nameof(CanGoNext));
-            }
-        }
+        }        
 
         #endregion
 
@@ -231,8 +215,7 @@ namespace VMA.MVVM.ViewModels.Add
             else
             {
                 SaveButtonName = "Submit";
-            }
-            SelectedTabIndex = 0;
+            }            
             VendorCode = Convert.ToString(parentViewModel.Vendors.Count + 1);
 
             PopulateValues();
@@ -260,19 +243,6 @@ namespace VMA.MVVM.ViewModels.Add
 
             return validData;
         }
-
-        private void CanGoBack(object obj)
-        {
-            if (SelectedTabIndex < 0)
-                SelectedTabIndex--;
-        }
-
-        private void CanGoNext(object obj)
-        {
-            if (SelectedTabIndex < _numbersOfTab)
-                SelectedTabIndex++;
-        }
-
         private void PopulateValues()
         {
             if (SelectedVendor != null)

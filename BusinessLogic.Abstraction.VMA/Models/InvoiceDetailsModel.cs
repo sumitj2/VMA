@@ -5,7 +5,7 @@ namespace BusinessLogic.Abstraction.VMA.Models;
 
 public partial class InvoiceDetailsModel
 {
-    public int InvoiceId { get; set; }
+    public int? InvoiceId { get; set; }
 
     public string? InvoiceNumber { get; set; }
 
