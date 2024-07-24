@@ -31,7 +31,7 @@ namespace Database.VMA.Repositories
                 LastUpdateBy = invoiceDetailModel.LastUpdateBy,
                 LastUpdatedDate = invoiceDetailModel.LastUpdatedDate
             };
-            return await _invoiceDetailsRepository.AddInvoice(invoiceDetailsEntity);
+            return await _invoiceDetailsRepository.AddInvoice(invoiceDetailsEntity).ConfigureAwait(true);
         }
         public async Task EditUpdateInvoice(InvoiceDetailsModel invoiceDetailModel)
         {
@@ -48,11 +48,11 @@ namespace Database.VMA.Repositories
                 LastUpdatedDate = invoiceDetailModel.LastUpdatedDate
             };
            
-            await _invoiceDetailsRepository.EditUpdateInvoice(invoiceDetailsEntity);
+            await _invoiceDetailsRepository.EditUpdateInvoice(invoiceDetailsEntity).ConfigureAwait(true);
         }
         public async Task<IEnumerable<InvoiceDetailsModel>> GetAllInvoices()
         {
-            var res = await _invoiceDetailsRepository.GetAllInvoices();
+            var res = await _invoiceDetailsRepository.GetAllInvoices().ConfigureAwait(true);
             List<InvoiceDetailsModel> invoiceDetailsModels = [];
             foreach (var invoice in res)
             {
@@ -74,7 +74,7 @@ namespace Database.VMA.Repositories
         }
         public async Task<InvoiceDetailsModel?> GetInvoiceById(int invoiceId)
         {
-            var res = await _invoiceDetailsRepository.GetInvoiceById(invoiceId);
+            var res = await _invoiceDetailsRepository.GetInvoiceById(invoiceId).ConfigureAwait(true);
             if (res != null)
             {
                 InvoiceDetailsModel invoiceDetailsModel = new InvoiceDetailsModel()
@@ -107,7 +107,7 @@ namespace Database.VMA.Repositories
                 InvoiceParticulars=invoiceDetailModel.InvoiceParticulars,
                 IsActive=   invoiceDetailModel.IsActive
             };
-            await _invoiceDetailsRepository.RemoveInvoice(invoiceDetailsEntity);
+            await _invoiceDetailsRepository.RemoveInvoice(invoiceDetailsEntity).ConfigureAwait(true);
         }
     }
 }

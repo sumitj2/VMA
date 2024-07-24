@@ -41,7 +41,7 @@
                                                Text="{Binding PaymentNoteYear ,UpdateSourceTrigger=PropertyChanged}"
                                                Style="{StaticResource FormTextBox}"
                                                TextWrapping="Wrap"
-                                               AcceptsReturn="True"/>
+                                               AcceptsReturn="True" IsEnabled="False"/>
 
                                     <TextBlock Text="Select Vendor"
                                                Style="{StaticResource FormTextBlock}"
@@ -103,7 +103,7 @@
                                     <TextBlock Text="Payment Note Number"
                                                Style="{StaticResource FormTextBlock}"/>
                                     <TextBlock Text="{Binding PaymentNoteId,UpdateSourceTrigger=PropertyChanged}"
-                                               FontSize="9" FontWeight="Light"  Style="{StaticResource FormTextBlock}"/>
+                                               FontSize="12" FontWeight="Regular"  Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtPaymentNoteNo"
                                              Text="{Binding PaymentNoteNo ,UpdateSourceTrigger=PropertyChanged}"

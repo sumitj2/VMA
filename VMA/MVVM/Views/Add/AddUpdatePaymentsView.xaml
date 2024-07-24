@@ -41,7 +41,7 @@ BorderThickness="0"
                                               Text="{Binding VendorPaymentYear ,UpdateSourceTrigger=PropertyChanged}"
                                               Style="{StaticResource FormTextBox}"
                                               TextWrapping="Wrap"
-                                              AcceptsReturn="True"/>
+                                              AcceptsReturn="True" IsEnabled="False"/>
 
                                     <TextBlock Text="Select Vendor"
                                                Style="{StaticResource FormTextBlock}"

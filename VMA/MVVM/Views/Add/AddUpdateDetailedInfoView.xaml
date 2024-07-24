@@ -41,7 +41,7 @@
                                                Text="{Binding ServiceYear ,UpdateSourceTrigger=PropertyChanged}"
                                                Style="{StaticResource FormTextBox}"
                                                TextWrapping="Wrap"
-                                               AcceptsReturn="True"/>
+                                               AcceptsReturn="True" IsEnabled="False"/>
 
                                     <TextBlock Text="Select Vendor"
                                                Style="{StaticResource FormTextBlock}"
@@ -255,10 +255,10 @@
 
                                     <ComboBox Style="{StaticResource vendorCombobox}"                              
                                               ItemsSource="{Binding ComboxPaymentMethods}"   
-                                              SelectedItem="{Binding SelectPaymentType, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              SelectedItem="{Binding SelectPaymentType, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  
                                               DisplayMemberPath="NameSearch" 
                                               SelectedValuePath="SearchId"
-                                              SelectedValue="{Binding SelectPaymentType.SearchId, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedValue="{Binding SelectPaymentType.SearchId,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                               Name="paymentMethod" 
                                               Grid.Row="1" 
                                               Width="239" 

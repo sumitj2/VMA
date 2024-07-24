@@ -261,12 +261,8 @@ namespace VMA.MVVM.ViewModels.Add
 
             string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
             string? noteId = allConfigurations.FirstOrDefault(x => x.Cfgkey == "NoteId")?.CfgValue;
-            Random random = new Random();
-
             PaymentNoteYear = financialYear;
-            PaymentNoteId = noteId;
-            PaymentNoteNo = Convert.ToString(random.Next(100, 10000));
-
+            PaymentNoteId = noteId;         
         }
 
         private bool ValidatePaymentNote()

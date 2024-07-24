@@ -12,15 +12,24 @@ namespace Database.VMA.Repositories
         {
             _context = context;
         }
-        
+
         public async Task<bool> AuthenticateUser(NetworkCredential credential)
         {
-            var result = await _context.Users.FirstOrDefaultAsync(x => x.Username == credential.UserName && x.Password == credential.Password).ConfigureAwait(false);
-            if (result  != null)
+            try
             {
-                return true;
-            };
-            return false;
+                var result = await _context.Users.FirstOrDefaultAsync(x => x.Username == credential.UserName && x.Password == credential.Password).ConfigureAwait(false);
+                if (result != null)
+                {
+                    return true;
+                };
+                return false;
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+
+            }
         }
 
         public async Task<User> GetByUsername(string username)
@@ -45,7 +54,7 @@ namespace Database.VMA.Repositories
         {
             throw new NotImplementedException();
         }
-        
+
         public void Remove(int id)
         {
             throw new NotImplementedException();

@@ -214,7 +214,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        private SearchModel _selectPaymentType;
+        private SearchModel? _selectPaymentType;
         public SearchModel? SelectPaymentType
         {
             get { return _selectPaymentType; }
@@ -662,26 +662,26 @@ namespace VMA.MVVM.ViewModels.Add
                 var expenditureServiceType = expenditures.ToList().Find(x => x.ExpenditureName == _vendorDetailViewModel?.ServiceType);
                 if (expenditureServiceType != null)
                 {
-                    selectedExpenditure = expenditures[expenditures.IndexOf(expenditureServiceType)];
+                    SelectedExpentidure = expenditures[expenditures.IndexOf(expenditureServiceType)];
 
                 }
                 var santionedBY = sanctions.ToList().Find(x => x.SanctionName == _vendorDetailViewModel?.ServiceSantionedBy);
                 if (santionedBY != null)
                 {
-                    selectedSanction = sanctions[sanctions.IndexOf(santionedBY)];
+                    SelectedSanction = sanctions[sanctions.IndexOf(santionedBY)];
 
                 }
                 var depName = departments.ToList().Find(x => x.DepartmentName == _vendorDetailViewModel?.VendorDetailCategory);
                 if (depName != null)
                 {
-                    selectedDepartment = departments[departments.IndexOf(depName)];
+                    SelectedDepartment = departments[departments.IndexOf(depName)];
 
                 }
 
                 var paymentType = ComboxPaymentMethods.ToList().Find(x => x.NameSearch == _vendorDetailViewModel?.ServicePaymentType);
                 if (paymentType != null)
                 {
-                    SelectPaymentType = ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentType)];
+                    SelectPaymentType =ComboxPaymentMethods[3];
                 }
 
             }

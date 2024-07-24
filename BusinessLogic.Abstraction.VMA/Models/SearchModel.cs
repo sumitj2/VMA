@@ -15,9 +15,9 @@ namespace BusinessLogic.Abstraction.VMA.Models
             get { return _searchId; }
             set { _searchId = value; }
         }
-        private string _nameSearch;
+        private string? _nameSearch;
 
-        public string NameSearch
+        public string? NameSearch
         {
             get { return _nameSearch; }
             set { _nameSearch = value; }

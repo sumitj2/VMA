@@ -597,10 +597,10 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        private string _vendorPaymentTdsamountNew;
+        private string? _vendorPaymentTdsamountNew;
 
         [RegularExpression("^[0-9.]+$")]
-        public string VendorPaymentTdsamountNew
+        public string? VendorPaymentTdsamountNew
         {
             get { return _vendorPaymentTdsamountNew; }
             set
@@ -754,8 +754,8 @@ namespace VMA.MVVM.ViewModels.Add
                     FkNoteId = _vendorPaymentModel.NoteId,
                     Notes = VendorPaymentNotesDetails,
 
-                    VendorPaymentDate = (DateOnly)VendorPaymentDate,
-                    VendorPaymentAmount = (decimal?)VendorPaymentAmount,
+                    VendorPaymentDate = VendorPaymentDate,
+                    VendorPaymentAmount = VendorPaymentAmount,
                     VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
 
                     VendorPaymentIsGst = IsGSTDetailsVisible,
@@ -848,11 +848,10 @@ namespace VMA.MVVM.ViewModels.Add
         }
         public async Task MainTask()
         {
-            // await LoadVendorServiceDetails();
+            await GetAllConfigurations();
             await LoadGSTDetails();
             await LoadVendors();
             await PopulateValues();
-            await GetAllConfigurations();
         }
         private void CanGoBack(object obj)
         {

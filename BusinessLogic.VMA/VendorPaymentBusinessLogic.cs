@@ -164,19 +164,19 @@ namespace Database.VMA.Repositories
                 InvoiceNumber = VendorPaymentModel.InvoiceNumber,
                 InvoiceParticulars = VendorPaymentModel.InvoiceParticulars
             };
-            var invoiceId = await _invoiceDetailsBusinessLogic.AddInvoice(invoiceDetailsModel);
+            var invoiceId = await _invoiceDetailsBusinessLogic.AddInvoice(invoiceDetailsModel).ConfigureAwait(true);
             VendorPayment vendorPayment = new()
             {
                 BankBranchName = VendorPaymentModel.BankBranchName,
                 CreatedBy = VendorPaymentModel.CreatedBy,
                 CreatedDate = DateTime.UtcNow,
-                FkVendorDetailId = (int)VendorPaymentModel.FkVendorDetailId,
-                IsActive = (bool)VendorPaymentModel.IsActive,
+                FkVendorDetailId = VendorPaymentModel.FkVendorDetailId,
+                IsActive = VendorPaymentModel.IsActive,
                 LastUpdateBy = VendorPaymentModel.LastUpdateBy,
                 LastUpdatedDate = DateTime.UtcNow,
                 VendorPaymentAmount = VendorPaymentModel.VendorPaymentAmount,
                 VendorPaymentCgst = VendorPaymentModel.VendorPaymentCgst,
-                VendorPaymentDate = (DateOnly)VendorPaymentModel.VendorPaymentDate,
+                VendorPaymentDate = VendorPaymentModel.VendorPaymentDate,
                 VendorPaymentId = VendorPaymentModel.VendorPaymentId,
                 VendorPaymentIsGst = VendorPaymentModel.VendorPaymentIsGst,
                 Notes = VendorPaymentModel.Notes,
@@ -196,7 +196,7 @@ namespace Database.VMA.Repositories
                 FkInvoiceId = invoiceId
 
             };
-            await _vendorPaymentRepository.AddVendorPayment(vendorPayment);
+            await _vendorPaymentRepository.AddVendorPayment(vendorPayment).ConfigureAwait(true);
         }
         public async Task EditUpdateVendorPayment(VendorPaymentModel VendorPaymentEntity)
         {
