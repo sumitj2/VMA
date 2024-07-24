@@ -6,8 +6,8 @@ namespace BusinessLogic.Abstraction.VMA.Models;
 public partial class VendorPaymentModel :InvoiceDetailsModel
 {
     #region Join
-    public int NoteId { get; set; }
-    public string PaymentNoteNo { get; set; } = null!;
+    public int? NoteId { get; set; }
+    public string? PaymentNoteNo { get; set; } = null!;
     public int? VendorId { get; set; }
     public string? VendorName { get; set; }
     public int? VendorServiceId { get; set; }
@@ -16,13 +16,13 @@ public partial class VendorPaymentModel :InvoiceDetailsModel
     public string? ServicePaymentType { get; set; }  
 
     #endregion
-    public int VendorPaymentId { get; set; }
+    public int? VendorPaymentId { get; set; }
 
     public string? PaymentCode { get; set; }
 
-    public string PaymentYear { get; set; } = null!;
+    public string? PaymentYear { get; set; } = null!;
 
-    public DateOnly VendorPaymentDate { get; set; }
+    public DateOnly? VendorPaymentDate { get; set; }
 
     public decimal? VendorPaymentAmount { get; set; }
 
@@ -56,17 +56,17 @@ public partial class VendorPaymentModel :InvoiceDetailsModel
 
     public string? CreatedBy { get; set; }
 
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
 
     public string? LastUpdateBy { get; set; }
 
     public DateTime? LastUpdatedDate { get; set; }
 
-    public int FkVendorDetailId { get; set; }
+    public int? FkVendorDetailId { get; set; }
 
-    public int FkInvoiceId { get; set; }
+    public int? FkInvoiceId { get; set; }
 
-    public int FkNoteId { get; set; }
+    public int? FkNoteId { get; set; }
 
-    public int FkGstmasterSrNo { get; set; }
+    public int? FkGstmasterSrNo { get; set; }
 }

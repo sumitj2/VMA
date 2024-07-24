@@ -24,7 +24,7 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdateVendorDetail(VendorDetail VendorDetailEntity)
         {
-            var result = await GetVendorDetailsId(VendorDetailEntity.VendorDetailId);
+            var result = await GetVendorDetailsId((int)VendorDetailEntity.VendorDetailId);
             if (result != null)
             {
                 _context.VendorDetails.Update(result);

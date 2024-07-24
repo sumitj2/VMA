@@ -21,27 +21,27 @@ namespace Database.VMA.Repositories
                 CreatedDate = DateTime.UtcNow,
                 IsActive = vendorDetailModel.IsActive,
                 QuantityOfUnit = vendorDetailModel.QuantityOfUnit,
-                FkVendorServiceId = (int)vendorDetailModel.FkVendorServiceId,
-                RatePerUnit = vendorDetailModel.RatePerUnit,
-                ServiceEndDate = vendorDetailModel.ServiceEndDate,
-                ServicePaymentType = vendorDetailModel.ServicePaymentType,
-                ServiceSantionAmount = vendorDetailModel.ServiceSantionAmount,
-                ServiceSantionedBy = vendorDetailModel.ServiceSantionedBy,
-                ServiceStartDate = vendorDetailModel.ServiceStartDate,
-                ServiceType = vendorDetailModel.ServiceType,
-                VendorDetailCategory = vendorDetailModel.VendorDetailCategory,
-                VendorDetailId = vendorDetailModel.VendorDetailId,
-                DetailsYear = vendorDetailModel.DetailsYear,
-                FkVendorId = vendorDetailModel.FkVendorId,
-                IsAmc = vendorDetailModel.IsAmc,
-                SantionedDate = vendorDetailModel.SantionedDate,
-                SantionedNoteNo = vendorDetailModel.SantionedNoteNo,
+                FkVendorServiceId = vendorDetailModel?.FkVendorServiceId,
+                RatePerUnit = vendorDetailModel?.RatePerUnit,
+                ServiceEndDate = vendorDetailModel?.ServiceEndDate,
+                ServicePaymentType = vendorDetailModel?.ServicePaymentType,
+                ServiceSantionAmount = vendorDetailModel?.ServiceSantionAmount,
+                ServiceSantionedBy = vendorDetailModel?.ServiceSantionedBy,
+                ServiceStartDate = vendorDetailModel?.ServiceStartDate,
+                ServiceType = vendorDetailModel?.ServiceType,
+                VendorDetailCategory = vendorDetailModel?.VendorDetailCategory,
+                VendorDetailId = vendorDetailModel?.VendorDetailId,
+                DetailsYear = vendorDetailModel?.DetailsYear,
+                FkVendorId = vendorDetailModel?.FkVendorId,
+                IsAmc = vendorDetailModel?.IsAmc,
+                SantionedDate = vendorDetailModel?.SantionedDate,
+                SantionedNoteNo = vendorDetailModel?.SantionedNoteNo,
             };
             await _vendorDetailsRepository.AddVendorDetails(vendorDetailEntity);
         }
         public async Task EditUpdateVendorDetails(VendorDetailModel vendorDetailModel)
         {
-            var detail = await _vendorDetailsRepository.GetVendorDetailsId(vendorDetailModel.VendorDetailId);
+            var detail = await _vendorDetailsRepository.GetVendorDetailsId(Convert.ToInt32(vendorDetailModel.VendorDetailId));
             if (detail != null)
             {
                 detail.IsActive = true;
@@ -56,13 +56,13 @@ namespace Database.VMA.Repositories
                 detail.ServicePaymentType = vendorDetailModel.ServicePaymentType;
                 detail.ServiceEndDate = vendorDetailModel.ServiceEndDate;
                 detail.RatePerUnit = vendorDetailModel.RatePerUnit;
-                detail.FkVendorServiceId = (int)vendorDetailModel.FkVendorServiceId;
+                detail.FkVendorServiceId = vendorDetailModel.FkVendorServiceId;
                 detail.QuantityOfUnit = vendorDetailModel.QuantityOfUnit;
                 detail.SantionedDate = vendorDetailModel.SantionedDate;
                 detail.FkVendorId = vendorDetailModel.FkVendorId;
                 detail.VendorDetailCategory = vendorDetailModel?.VendorDetailCategory;
-                detail.FkVendorId = vendorDetailModel.VendorId;
-                detail.IsAmc = vendorDetailModel.IsAmc;
+                detail.FkVendorId = vendorDetailModel?.VendorId;
+                detail.IsAmc = vendorDetailModel?.IsAmc;
                 detail.SantionedNoteNo = vendorDetailModel?.SantionedNoteNo;
 
                 await _vendorDetailsRepository.EditUpdateVendorDetail(detail);
@@ -123,7 +123,7 @@ namespace Database.VMA.Repositories
                 LastUpdatedDate = res?.LastUpdatedDate,
                 LastUpdateBy = res?.LastUpdateBy,
                 IsActive = res?.IsActive,
-                FkVendorServiceId = res.FkVendorServiceId,
+                FkVendorServiceId = res?.FkVendorServiceId,
                 CreatedDate = res?.CreatedDate,
                 CreatedBy = res?.CreatedBy,
                 QuantityOfUnit = res?.QuantityOfUnit,
@@ -148,7 +148,7 @@ namespace Database.VMA.Repositories
                 QuantityOfUnit = VendorPaymentModel.QuantityOfUnit,
                 CreatedBy = VendorPaymentModel.CreatedBy,
                 CreatedDate = VendorPaymentModel.CreatedDate,
-                FkVendorServiceId = (int)VendorPaymentModel.FkVendorServiceId,
+                FkVendorServiceId = VendorPaymentModel.FkVendorServiceId,
                 IsActive = VendorPaymentModel.IsActive,
                 LastUpdateBy = VendorPaymentModel.LastUpdateBy,
                 LastUpdatedDate = VendorPaymentModel.LastUpdatedDate,

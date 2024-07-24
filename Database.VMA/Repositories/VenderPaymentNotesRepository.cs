@@ -56,6 +56,7 @@ namespace Database.VMA.Repositories
                                                 NoteId = paymentNote.NoteId,
                                                 PaymentNoteDate = paymentNote.PaymentNoteDate,
                                                 PaymentNoteNo = paymentNote.PaymentNoteNo,
+                                                PaymentNoteYear=paymentNote.PaymentNoteYear
 
                                             };
             return await paymentNoteWithAllDetails.ToListAsync();
@@ -100,9 +101,6 @@ namespace Database.VMA.Repositories
                                           VendorPaymentRtgsDate = payment.VendorPaymentRtgsDate,
                                           VendorName = vendor.VendorName,
                                           VendorPaymentDate = payment.VendorPaymentDate,
-
-
-
                                       };
             return await productsWithVendors.ToListAsync();
 

@@ -29,7 +29,7 @@ namespace Database.VMA.Entities.CustomEntities
         public string? ServiceType { get; set; }//Type of expenditure
 
         public decimal? ServiceSantionAmount { get; set; }
-        public DateOnly VendorPaymentDate { get; set; }
+        public DateOnly? VendorPaymentDate { get; set; }
         public string? ServiceSantionedBy { get; set; }//Sanctioned_by
         public decimal? VendorPaymentTdsamount { get; set; }//TDS_Amount
         public string? VendorPaymentUtrnumber { get; set; }//UTR_Number

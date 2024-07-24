@@ -25,7 +25,8 @@ namespace Database.VMA.Repositories
                 NoteId = paymentNotesModel.NoteId,
                 PaymentNoteDate = (DateTime)paymentNotesModel.PaymentNoteDate,
                 PaymentNoteNo = paymentNotesModel.PaymentNoteNo,
-                FkVendorId=paymentNotesModel.FkVendorId
+                FkVendorId=paymentNotesModel.FkVendorId,
+                PaymentNoteYear=paymentNotesModel.PaymentNoteYear
             };
             await _venderPaymentNotesRepository.AddVendorPaymentNotes(vendorEntity);
         }
@@ -42,6 +43,7 @@ namespace Database.VMA.Repositories
                 paymentNotesEntity.PaymentNoteDate =Convert.ToDateTime(paymentNotesModel?.PaymentNoteDate);
                 paymentNotesEntity.NoteId = paymentNotesModel!.NoteId;
                 paymentNotesEntity.FkVendorId=paymentNotesModel.FkVendorId;
+                paymentNotesEntity.PaymentNoteYear = paymentNotesModel?.PaymentNoteYear;
                 await _venderPaymentNotesRepository.EditUpdateVendorPaymentNotes(paymentNotesEntity);
             }
         }
@@ -67,7 +69,8 @@ namespace Database.VMA.Repositories
                         VendorName = paymentNote.VendorName,
                         FkVendorId = paymentNote.VendorId,
                         VendorServiceId = paymentNote.VendorServiceId,
-                        VendorServiceName= paymentNote.VendorServiceName
+                        VendorServiceName= paymentNote.VendorServiceName,
+                        PaymentNoteYear= paymentNote.PaymentNoteYear
                     });
                 }
             }
@@ -85,7 +88,8 @@ namespace Database.VMA.Repositories
                 LastUpdatedDate = repositoryResult?.LastUpdatedDate,
                 NoteId = repositoryResult!.NoteId,
                 PaymentNoteDate = repositoryResult.PaymentNoteDate,
-                PaymentNoteNo = repositoryResult.PaymentNoteNo
+                PaymentNoteNo = repositoryResult.PaymentNoteNo,
+                PaymentNoteYear = repositoryResult.PaymentNoteYear
             };
             return vendorModel;
 
@@ -101,6 +105,7 @@ namespace Database.VMA.Repositories
                 LastUpdatedDate = paymentNoteModel?.LastUpdatedDate,
                 PaymentNoteNo = paymentNoteModel?.PaymentNoteNo!=null?paymentNoteModel.PaymentNoteNo:"",
                 PaymentNoteDate =Convert.ToDateTime(paymentNoteModel?.PaymentNoteDate),
+                PaymentNoteYear=paymentNoteModel?.PaymentNoteYear,
                 NoteId = paymentNoteModel!.NoteId
             };
 

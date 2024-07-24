@@ -326,7 +326,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
 
-                    _ = LoadVendorPaymentNotes(SelectedVendorDetailService.VendorId);
+                    _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId));
                     GetAmountToBepaid();
                 }
             }
@@ -663,12 +663,12 @@ namespace VMA.MVVM.ViewModels.Add
         public async Task GetAllConfigurations()
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
-            
+
             string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
-           
-            
+
+
             VendorPaymentYear = financialYear;
-            
+
         }
         private async Task PopulateValues()
         {
@@ -799,8 +799,8 @@ namespace VMA.MVVM.ViewModels.Add
                     FkVendorDetailId = SelectedVendorDetailService.VendorDetailId,
                     Notes = VendorPaymentNotesDetails,
 
-                    VendorPaymentDate = (DateOnly)VendorPaymentDate,
-                    VendorPaymentAmount = (decimal?)VendorPaymentAmount,
+                    VendorPaymentDate = VendorPaymentDate,
+                    VendorPaymentAmount = VendorPaymentAmount,
                     VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
 
                     VendorPaymentIsGst = IsGSTDetailsVisible,

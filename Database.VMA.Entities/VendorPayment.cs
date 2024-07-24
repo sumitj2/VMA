@@ -5,13 +5,13 @@ namespace Database.VMA.Entities;
 
 public partial class VendorPayment
 {
-    public int VendorPaymentId { get; set; }
+    public int? VendorPaymentId { get; set; }
 
     public string? PaymentCode { get; set; }
 
-    public string PaymentYear { get; set; } = null!;
+    public string? PaymentYear { get; set; } = null!;
 
-    public DateOnly VendorPaymentDate { get; set; }
+    public DateOnly? VendorPaymentDate { get; set; }
 
     public decimal? VendorPaymentAmount { get; set; }
 
@@ -45,17 +45,17 @@ public partial class VendorPayment
 
     public string? CreatedBy { get; set; }
 
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
 
     public string? LastUpdateBy { get; set; }
 
     public DateTime? LastUpdatedDate { get; set; }
 
-    public int FkVendorDetailId { get; set; }
+    public int? FkVendorDetailId { get; set; }
 
-    public int FkInvoiceId { get; set; }
+    public int? FkInvoiceId { get; set; }
 
-    public int FkNoteId { get; set; }
+    public int? FkNoteId { get; set; }
 
-    public int FkGstmasterSrNo { get; set; }
+    public int? FkGstmasterSrNo { get; set; }
 }

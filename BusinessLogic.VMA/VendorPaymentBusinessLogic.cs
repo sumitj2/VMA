@@ -61,7 +61,7 @@ namespace Database.VMA.Repositories
                 int noOfPaymentDid = paymentsDetails.Count;
                 decimal totalAmountPaid = (decimal)paymentsDetails?.Sum(x => x.VendorPaymentAmount);
 
-                decimal amountToBePaid = await GetNonTaxableAmountToBePaid(ServiceSantionAmount??0, paymentType);
+                decimal amountToBePaid = await GetNonTaxableAmountToBePaid(ServiceSantionAmount ?? 0, paymentType);
                 if ((amountToBePaid + totalAmountPaid) > ServiceSantionAmount)
                 {
                     //Show pop up amount cannot be greater tha santioned amount
@@ -200,7 +200,7 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdateVendorPayment(VendorPaymentModel VendorPaymentEntity)
         {
-            var entity = await _vendorPaymentRepository.GetVendorPaymentById(VendorPaymentEntity.VendorPaymentId);
+            var entity = await _vendorPaymentRepository.GetVendorPaymentById(Convert.ToInt32(VendorPaymentEntity.VendorPaymentId));
             var invoiceEntity = await _invoiceDetailsBusinessLogic.GetInvoiceById(VendorPaymentEntity.InvoiceId);
 
             if (invoiceEntity != null)
@@ -347,8 +347,8 @@ namespace Database.VMA.Repositories
                 BankBranchName = VendorPaymentModel.BankBranchName,
                 CreatedBy = VendorPaymentModel.CreatedBy,
                 CreatedDate = VendorPaymentModel.CreatedDate,
-                FkVendorDetailId = (int)VendorPaymentModel.FkVendorDetailId,
-                IsActive = (bool)VendorPaymentModel.IsActive,
+                FkVendorDetailId = VendorPaymentModel.FkVendorDetailId,
+                IsActive = VendorPaymentModel.IsActive,
                 LastUpdateBy = VendorPaymentModel.LastUpdateBy,
                 LastUpdatedDate = VendorPaymentModel.LastUpdatedDate,
                 VendorPaymentAmount = VendorPaymentModel.VendorPaymentAmount,

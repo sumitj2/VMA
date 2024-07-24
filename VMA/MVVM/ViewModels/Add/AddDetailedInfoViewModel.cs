@@ -338,8 +338,8 @@ namespace VMA.MVVM.ViewModels.Add
         ObservableCollection<VendorDetailModel> _detailsLsit;
         public AddDetailedInfoViewModel(DetailedInfoViewModel detailedInfoViewModel, VendorDetailModel vendorDetailViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, ObservableCollection<VendorDetailModel> detailsLsit, IConfigurationBusinessLogic configurationBusinessLogic)
         {
-            _configurationBusinessLogic= configurationBusinessLogic;
-           
+            _configurationBusinessLogic = configurationBusinessLogic;
+
             _detailsLsit = detailsLsit;
             ComboxPaymentMethods =
             [
@@ -474,7 +474,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(SelectedSanction));
             }
         }
-        
+
 
         private string? _noteId;
 
@@ -495,7 +495,7 @@ namespace VMA.MVVM.ViewModels.Add
             string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
             string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
             string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
-            
+
             Random random = new Random();
             int randomNumber = random.Next(100, 1000);
 
@@ -534,16 +534,19 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 VendorDetailModel vendorModel = new()
                 {
+                    ServiceType = selectedExpenditure.ExpenditureName,
+                    ServiceSantionedBy = SelectedSanction.SanctionName,
+                    VendorDetailCategory = SelectedDepartment.DepartmentName,
+
                     IsActive = true,
                     QuantityOfUnit = QuantityOfUnit,
                     ServiceSantionAmount = ServiceSantionAmount,
                     ServiceEndDate = ServiceEndDate,
                     RatePerUnit = RatePerUnit,
-                    ServiceType = ServiceType,
-                    VendorDetailCategory = VendorDetailCategory,
+
                     ServiceStartDate = ServiceStartDate,
                     ServicePaymentType = SelectPaymentType?.NameSearch,
-                    ServiceSantionedBy = ServiceSantionedBy,
+
                     DetailsYear = ServiceYear,
                     IsAmc = IsAmcYes != true ? false : true,
                     SantionedDate = SantionedDate,
@@ -568,6 +571,10 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 VendorDetailModel vendorModel = new()
                 {
+                    ServiceType = selectedExpenditure.ExpenditureName,
+                    ServiceSantionedBy = SelectedSanction.SanctionName,
+                    VendorDetailCategory = SelectedDepartment.DepartmentName,
+
                     IsActive = true,
                     CreatedBy = UserAccountModel.Username,
                     CreatedDate = DateTime.UtcNow,
@@ -575,20 +582,19 @@ namespace VMA.MVVM.ViewModels.Add
                     ServiceSantionAmount = ServiceSantionAmount,
                     ServiceEndDate = ServiceEndDate,
                     RatePerUnit = RatePerUnit,
-                    ServiceType = ServiceType,
-                    VendorDetailCategory = VendorDetailCategory,
+
+
                     ServiceStartDate = ServiceStartDate,
                     ServicePaymentType = SelectPaymentType?.NameSearch,
-                    ServiceSantionedBy = ServiceSantionedBy,
                     DetailsYear = ServiceYear,
                     IsAmc = IsAmcYes != true ? false : true,
                     SantionedDate = SantionedDate,
                     VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
                     VendorName = SelectedVendorModel.VendorName,
                     SantionedNoteNo = SantionedNoteNo,
-                    VendorServiceId = SelectedVendorDetailService.VendorServiceId,
+                    VendorServiceId = SelectedVendorDetailService?.VendorServiceId,
                     FkVendorId = SelectedVendorModel.VendorId,
-                    FkVendorServiceId = SelectedVendorDetailService.VendorServiceId,
+                    FkVendorServiceId = SelectedVendorDetailService?.VendorServiceId,
                     VendorId = SelectedVendorModel.VendorId,
                     VendorCode = SelectedVendorModel.VendorCode
                 };
@@ -608,9 +614,9 @@ namespace VMA.MVVM.ViewModels.Add
         }
         public async Task MainTask()
         {
+            await GetAllConfigurations();
             await LoadVendors();
             await PopulateValues();
-            await GetAllConfigurations();
         }
 
         #endregion
@@ -632,14 +638,14 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 ServiceYear = _vendorDetailViewModel.DetailsYear;
                 SantionedDate = _vendorDetailViewModel?.SantionedDate != null ? (DateOnly)_vendorDetailViewModel.SantionedDate : DateOnly.MinValue;
-                ServiceSantionedBy = _vendorDetailViewModel?.ServiceSantionedBy ?? "";
+                // ServiceSantionedBy = _vendorDetailViewModel?.ServiceSantionedBy ?? "";
                 ServiceStartDate = _vendorDetailViewModel?.ServiceStartDate != null ? (DateOnly)_vendorDetailViewModel.ServiceStartDate : DateOnly.MinValue;
                 ServiceEndDate = _vendorDetailViewModel?.ServiceEndDate != null ? (DateOnly)_vendorDetailViewModel.ServiceEndDate : DateOnly.MinValue;
                 ServiceSantionAmount = _vendorDetailViewModel?.ServiceSantionAmount ?? 0;
                 RatePerUnit = _vendorDetailViewModel?.RatePerUnit ?? "";
                 QuantityOfUnit = _vendorDetailViewModel?.QuantityOfUnit ?? 0;
-                ServiceType = _vendorDetailViewModel?.ServiceType ?? "";
-                VendorDetailCategory = _vendorDetailViewModel?.VendorDetailCategory ?? "";
+                // ServiceType = _vendorDetailViewModel?.ServiceType ?? "";
+                // VendorDetailCategory = _vendorDetailViewModel?.VendorDetailCategory ?? "";
                 SantionedNoteNo = _vendorDetailViewModel?.SantionedNoteNo ?? "";
                 bool amc = _vendorDetailViewModel?.IsAmc ?? false;
                 if (amc)
@@ -652,6 +658,32 @@ namespace VMA.MVVM.ViewModels.Add
                 }
                 SelctedVendorServiceName = _vendorDetailViewModel?.VendorServiceName ?? "";
                 SelectedVendorName = _vendorDetailViewModel?.VendorName ?? "";
+
+                var expenditureServiceType = expenditures.ToList().Find(x => x.ExpenditureName == _vendorDetailViewModel?.ServiceType);
+                if (expenditureServiceType != null)
+                {
+                    selectedExpenditure = expenditures[expenditures.IndexOf(expenditureServiceType)];
+
+                }
+                var santionedBY = sanctions.ToList().Find(x => x.SanctionName == _vendorDetailViewModel?.ServiceSantionedBy);
+                if (santionedBY != null)
+                {
+                    selectedSanction = sanctions[sanctions.IndexOf(santionedBY)];
+
+                }
+                var depName = departments.ToList().Find(x => x.DepartmentName == _vendorDetailViewModel?.VendorDetailCategory);
+                if (depName != null)
+                {
+                    selectedDepartment = departments[departments.IndexOf(depName)];
+
+                }
+
+                var paymentType = ComboxPaymentMethods.ToList().Find(x => x.NameSearch == _vendorDetailViewModel?.ServicePaymentType);
+                if (paymentType != null)
+                {
+                    SelectPaymentType = ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentType)];
+                }
+
             }
         }
 

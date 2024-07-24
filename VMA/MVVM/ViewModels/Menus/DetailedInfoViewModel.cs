@@ -143,7 +143,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private Task EditDetailInfoForm(VendorDetailModel model)
         {
-            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this, model, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic,null,null);
+            _parentViewModel.CurrentChildView = new AddDetailedInfoViewModel(this, model, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic,null, _configurationBusinessLogic);
             return Task.CompletedTask;
         }
 
