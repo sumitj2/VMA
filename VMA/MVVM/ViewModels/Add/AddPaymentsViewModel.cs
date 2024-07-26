@@ -313,6 +313,7 @@ namespace VMA.MVVM.ViewModels.Add
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
 
                     _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId));
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
                     _ = GetAmountToBepaid();
                 }
             }
@@ -632,7 +633,7 @@ namespace VMA.MVVM.ViewModels.Add
             ClearFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ClearPaymentForm);
             _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
             _configurationBusinessLogic = configurationBusinessLogic;
-            CallAync();
+           _= CallAync();
         }
 
         private string? _noteId;

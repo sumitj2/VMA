@@ -114,7 +114,16 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _SelectedVendorModel = value;
                 OnPropertyChanged(nameof(SelectedVendorModel));
+
+                var res = VendorModels.FirstOrDefault(x => x.VendorName == _SelectedVendorModel?.VendorName);
                 //_ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
+                if (res != null)
+                {
+                    var msg1 = @$"Payment Note alreday genrated for {_SelectedVendorModel?.VendorName}";
+                    MessageBox.Show(msg1);
+                    _=HidePaymentNoteForm(this);
+
+                }
             }
         }
         #endregion
@@ -214,6 +223,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, VenderPaymentNoteModel? editPaymentNote, IConfigurationBusinessLogic configurationBusinessLogic)
         {
+            PaymentNoteNo = Convert.ToString(paymentNotesViewModel.VendorPaymentNotes.Count + 1);
             _paymentNotesViewModel = paymentNotesViewModel;
             _editPaymentNote = editPaymentNote;
             if (_editPaymentNote != null)
@@ -263,7 +273,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     LastUpdateBy = UserAccountModel.Username,
                     IsActive = true,
-                    PaymentNoteNo = PaymentNoteNo ?? "",
+                    PaymentNoteNo = PaymentNoteId + PaymentNoteNo ?? "",
                     PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
                     NoteId = _editPaymentNote?.NoteId,
                     FkVendorId = _editPaymentNote?.VendorId,
@@ -313,8 +323,8 @@ namespace VMA.MVVM.ViewModels.Add
         {
             if (_editPaymentNote != null)
             {
-                PaymentNoteId = "";
-                PaymentNoteNo = _editPaymentNote.PaymentNoteNo;
+                //PaymentNoteId = "";
+                PaymentNoteNo = _editPaymentNote.PaymentNoteNo.Replace(PaymentNoteId,"");
                 PaymentNoteDate = _editPaymentNote.PaymentNoteDate;
                 SelectedVendorName = VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName ?? "";
             }

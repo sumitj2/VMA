@@ -103,11 +103,12 @@
                                     <TextBlock Text="Payment Note Number"
                                                Style="{StaticResource FormTextBlock}"/>
                                     <TextBlock Text="{Binding PaymentNoteId,UpdateSourceTrigger=PropertyChanged}"
-                                               FontSize="12" FontWeight="Regular"  Style="{StaticResource FormTextBlock}"/>
+                                               FontSize="13" FontStyle="Oblique" FontWeight="DemiBold"  Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtPaymentNoteNo"
                                              Text="{Binding PaymentNoteNo ,UpdateSourceTrigger=PropertyChanged}"
-                                             Style="{StaticResource FormTextBox}" Width="168" Margin="0,-20,30,30"/>
+                                             Style="{StaticResource FormTextBox}" Width="200" 
+                                             Margin="0,-20,-170,20" IsEnabled="False"/>
 
                                     <TextBlock Text="Payment Note Date"
                                                Style="{StaticResource FormTextBlock}"/>

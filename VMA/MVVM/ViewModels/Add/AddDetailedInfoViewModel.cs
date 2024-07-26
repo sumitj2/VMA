@@ -60,7 +60,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     var msg = @$"Vendor Details alreday added for {_selectedVendorDetailService?.VendorServiceName}";
                     MessageBox.Show(msg);
-
+                    _=HideDetailInfoForm(this);
                 }
 
             }
