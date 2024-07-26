@@ -143,7 +143,7 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(SaveButtonName));
             }
         }
-        
+
         public Visibility GSTTabVisible
         {
             get { return IsGSTDetailsVisible ? Visibility.Visible : Visibility.Collapsed; }
@@ -571,17 +571,17 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        private decimal? _vendorPaymentTdsamount;
-        public decimal? VendorPaymentTdsamount
-        {
-            get { return _vendorPaymentTdsamount; }
-            set
-            {
-                _vendorPaymentTdsamount = value;
-                VendorPaymentTdsamountNew = Convert.ToString(value);
-                OnPropertyChanged(nameof(VendorPaymentTdsamount));
-            }
-        }
+        //private decimal? _vendorPaymentTdsamount;
+        //public decimal? VendorPaymentTdsamount
+        //{
+        //    get { return _vendorPaymentTdsamount; }
+        //    set
+        //    {
+        //        _vendorPaymentTdsamount = value;
+        //        VendorPaymentTdsamountNew = Convert.ToString(value);
+        //        OnPropertyChanged(nameof(VendorPaymentTdsamount));
+        //    }
+        //}
 
         private string? _vendorPaymentTdsamountNew;
 
@@ -592,7 +592,7 @@ namespace VMA.MVVM.ViewModels.Add
             set
             {
                 _vendorPaymentTdsamountNew = value;
-                VendorPaymentTdsamount = Convert.ToDecimal(value);
+                //  VendorPaymentTdsamount = Convert.ToDecimal(value);
                 OnPropertyChanged(nameof(VendorPaymentTdsamountNew));
             }
         }
@@ -684,8 +684,14 @@ namespace VMA.MVVM.ViewModels.Add
                 VendorPaymentUtrnumber = _vendorPaymentModel?.VendorPaymentUtrnumber;
                 VendorPaymentRtgsAmount = _vendorPaymentModel?.VendorPaymentRtgsAmount;
                 VendorPaymentRtgsDate = _vendorPaymentModel?.VendorPaymentRtgsDate;
-                VendorPaymentTdsamount = _vendorPaymentModel?.VendorPaymentTdsamount;
-
+                if (_vendorPaymentModel?.VendorPaymentTdsamount.ToString() == "0")
+                {
+                    VendorPaymentTdsamountNew = null;
+                }
+                else
+                {
+                    VendorPaymentTdsamountNew = _vendorPaymentModel?.VendorPaymentTdsamount.ToString();
+                }
                 InvoiceNumber = _vendorPaymentModel?.InvoiceNumber;
                 InvoiceParticulars = _vendorPaymentModel?.InvoiceParticulars;
                 InvoiceDate = _vendorPaymentModel?.InvoiceDate;
@@ -715,7 +721,7 @@ namespace VMA.MVVM.ViewModels.Add
             // VendorPaymentIsTdsapplicable = false;
             VendorPaymentRtgsDate = DateOnly.MinValue;
             VendorPaymentSgst = 0;
-            VendorPaymentTdsamount = 0;
+            VendorPaymentTdsamountNew = "";
             VendorPaymentRtgsAmount = 0;
             VendorPaymentUtrnumber = "";
             VendorPaymentTotalAmountPaid = 0;
@@ -763,7 +769,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorPaymentRtgsDate = VendorPaymentRtgsDate,
                     VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
                     VendorPaymentUtrnumber = VendorPaymentUtrnumber,
-                    VendorPaymentTdsamount = IsTDSTextBoxVisible ? VendorPaymentTdsamount : 0,
+                    VendorPaymentTdsamount = IsTDSTextBoxVisible ? Convert.ToDecimal(VendorPaymentTdsamountNew) : 0,
 
                     LastUpdateBy = UserAccountModel.Username,
                     LastUpdatedDate = DateTime.UtcNow,
@@ -808,7 +814,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorPaymentRtgsDate = VendorPaymentRtgsDate,
                     VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
                     VendorPaymentUtrnumber = VendorPaymentUtrnumber,
-                    VendorPaymentTdsamount = IsTDSTextBoxVisible ? VendorPaymentTdsamount : 0,
+                    VendorPaymentTdsamount = IsTDSTextBoxVisible ? Convert.ToDecimal(VendorPaymentTdsamountNew) : 0,
 
                     CreatedBy = UserAccountModel.Username,
                     CreatedDate = DateTime.UtcNow,

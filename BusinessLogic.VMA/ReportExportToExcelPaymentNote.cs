@@ -66,11 +66,11 @@ namespace BusinessLogic.VMA
                 FileName = "Output" + DateTime.UtcNow.ToString("ff") + ".xlsx"
             };
 
-
-            File.WriteAllBytes(saveFileDialog.FileName, fileContent);
+            string path = "D:\\Notes\\";
+            File.WriteAllBytes(path + saveFileDialog.FileName, fileContent);
 
             MessageBox.Show($"File successfully saved to {saveFileDialog.FileName}");
-            string path = "F:\\ThaneBharatNewProject\\VMA\\VMA\\bin\\Debug\\net8.0-windows\\";
+            
             OpenExcelFile(path + saveFileDialog.FileName);
 
         }

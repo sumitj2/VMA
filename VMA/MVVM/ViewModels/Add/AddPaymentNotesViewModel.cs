@@ -267,7 +267,7 @@ namespace VMA.MVVM.ViewModels.Add
                     PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
                     NoteId = _editPaymentNote?.NoteId,
                     FkVendorId = _editPaymentNote?.VendorId,
-                    PaymentNoteYear = _editPaymentNote?.PaymentNoteYear
+                    PaymentNoteYear = PaymentNoteYear
                 };
                 await _venderPaymentNotesBusinessLogic.EditUpdatePaymentNotes(payment);
 
@@ -283,7 +283,7 @@ namespace VMA.MVVM.ViewModels.Add
                     CreatedDate = DateTime.UtcNow,
                     IsActive = true,
                     FkVendorId = SelectedVendorModel.VendorId,
-                    PaymentNoteYear = _editPaymentNote?.PaymentNoteYear
+                    PaymentNoteYear = PaymentNoteYear
                 };
                 await _venderPaymentNotesBusinessLogic.AddPaymentNotes(paymentNote);
 

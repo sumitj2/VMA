@@ -109,6 +109,7 @@
                 RowStyle="{DynamicResource DataGridRowStyle1}" 
                 ItemsSource="{Binding VendorServiceDetails,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" AutoGenerateColumns="False" CanUserResizeRows="False" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="Year" Binding="{Binding  DetailsYear}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Vendor Name" Binding="{Binding VendorName }" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Service Name" Binding="{Binding VendorServiceName }" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Service Type" Binding="{Binding ServiceType}" IsReadOnly="True" Width="auto"/>

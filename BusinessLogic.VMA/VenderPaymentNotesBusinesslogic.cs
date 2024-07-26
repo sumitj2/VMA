@@ -78,7 +78,7 @@ namespace Database.VMA.Repositories
         }
         public async Task<VenderPaymentNoteModel?> GetPaymentNoteByVendorId(int vendorId)
         {
-            var repositoryResult = await _venderPaymentNotesRepository.GetVendorsPaymentNoteByIVendorId(vendorId);
+            var repositoryResult = await _venderPaymentNotesRepository.GetVendorsPaymentNoteByIVendorId(vendorId).ConfigureAwait(true);
             VenderPaymentNoteModel vendorModel = new()
             {
                 CreatedBy = repositoryResult?.CreatedBy,
