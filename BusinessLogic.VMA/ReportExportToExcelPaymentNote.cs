@@ -5,6 +5,7 @@ using Database.Abstraction.VMA.Contract;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,10 @@ using System.Windows;
 
 namespace BusinessLogic.VMA
 {
+
     public class ReportExportToExcelPaymentNote : IReportExportToExcelPaymentNote
     {
+
         private readonly IVenderPaymentNotesRepository _venderPaymentNotesRepository;
         public ReportExportToExcelPaymentNote(IVenderPaymentNotesRepository venderPaymentNotesRepository)
         {
@@ -25,7 +28,9 @@ namespace BusinessLogic.VMA
         {
             List<ExportPaymentNoteData> exportData = new List<ExportPaymentNoteData>();
             var res = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetailsToExport().ConfigureAwait(true);
-            foreach (var item in res)
+            var orderrez = res.OrderBy(x => x.PaymentNoteNo).ThenBy(x => x.VendorPaymentDate);
+            var e = res.GroupBy(x => x.VendorServiceName);
+            foreach (var item in orderrez)
             {
                 exportData.Add(new ExportPaymentNoteData
                 {
@@ -46,7 +51,9 @@ namespace BusinessLogic.VMA
                     VendorPaymentAmount = item.VendorPaymentAmount,
                     VendorPaymentRtgsAmount = item.VendorPaymentRtgsAmount,
                     VendorPaymentRtgsDate = item.VendorPaymentRtgsDate,
-                    VendorPaymentTdsamount = item.VendorPaymentTdsamount
+                    VendorPaymentTdsamount = item.VendorPaymentTdsamount,
+                    VendorPaymentDate = item.VendorPaymentDate,
+                    IsAmc=item.IsAmc
                 });
             }
             var fileContent = ExportToExcel(exportData);
@@ -56,76 +63,119 @@ namespace BusinessLogic.VMA
             {
                 Filter = "Excel Files|*.xlsx",
                 Title = "PaymentNotes",
-                FileName = "output.xlsx"
+                FileName = "Output" + DateTime.UtcNow.ToString("ff") + ".xlsx"
             };
 
 
             File.WriteAllBytes(saveFileDialog.FileName, fileContent);
+
             MessageBox.Show($"File successfully saved to {saveFileDialog.FileName}");
+            string path = "F:\\ThaneBharatNewProject\\VMA\\VMA\\bin\\Debug\\net8.0-windows\\";
+            OpenExcelFile(path + saveFileDialog.FileName);
 
         }
 
         private byte[] ExportToExcel(List<ExportPaymentNoteData> data)
         {
-            using (var workbook = new XLWorkbook())
+            var groupServiceNameList = data.GroupBy(x => x.VendorServiceName);
+
+            using var workbook = new XLWorkbook();
+            int counter = 0;
+            int srNo = 1;
+
+            var worksheet = workbook.Worksheets.Add("AMC Chart");
+            worksheet.Cell(1, 1).Value = "Sr_No";
+            worksheet.Cell(1, 2).Value = "Financial Year";
+            worksheet.Cell(1, 3).Value = "Payment_Note_number";
+            worksheet.Cell(1, 4).Value = "Payment_Note_Date";
+            worksheet.Cell(1, 5).Value = "Vendor_Name";
+            worksheet.Cell(1, 6).Value = "Service_Name";
+            worksheet.Cell(1, 7).Value = "Santioned Amount";
+            worksheet.Cell(1, 8).Value = "Amount Due";
+            worksheet.Cell(1, 9).Value = "Period";
+            worksheet.Cell(1, 10).Value = "Period Amount Paid";
+            worksheet.Cell(1, 11).Value = "Payment Date";
+            worksheet.Cell(1, 12).Value = "Total Amount Paid Till Now";
+            worksheet.Cell(1, 13).Value = "Invoice_Number";
+            worksheet.Cell(1, 14).Value = "Invoice_Date";
+            worksheet.Cell(1, 15).Value = "Invoice_Particular";
+            worksheet.Cell(1, 16).Value = "Department";
+            worksheet.Cell(1, 17).Value = "AMC";
+            worksheet.Cell(1, 18).Value = "Type_Of_Expenditure";
+            worksheet.Cell(1, 19).Value = "Sanctioned_by";
+            worksheet.Cell(1, 20).Value = "TDS_Amount";
+            worksheet.Cell(1, 21).Value = "RTGS_Amount";
+            worksheet.Cell(1, 22).Value = "UTR_Number";
+            worksheet.Cell(1, 23).Value = "RTGS_Date";
+            
+            foreach (var service in groupServiceNameList.ToList())
             {
-                var worksheet = workbook.Worksheets.Add("Sheet1");
-                //		  								AMC	"Type of 
-                //Expenditure"	Sanctioned	Sanctioned_by	Sanctioned_Date		RTGS_Amount		
+                // Add Venor Name + Service Name
+                worksheet.Cell(counter + 2, 1).Value = service?.FirstOrDefault()?.VendorName + " " + service?.Key;
+                counter++;
 
-                // Add headers
-                worksheet.Cell(1, 1).Value = "Year";
-                worksheet.Cell(1, 2).Value = "Sr_No";
-                worksheet.Cell(1, 3).Value = "Payment_Note_number";
-                worksheet.Cell(1, 4).Value = "Payment_Note_Date";
-                worksheet.Cell(1, 5).Value = "Vendor_Name";
-                worksheet.Cell(1, 6).Value = "Service_Name";
-                worksheet.Cell(1, 7).Value = "Invoice_Number";
-                worksheet.Cell(1, 8).Value = "Invoice_Date";
-                worksheet.Cell(1, 9).Value = "Invoice_Particular";
-                worksheet.Cell(1, 10).Value = "Total_Amount";
-                worksheet.Cell(1, 11).Value = "Department";
-                worksheet.Cell(1, 12).Value = "AMC";
-                worksheet.Cell(1, 13).Value = "Type_Of_Expenditure";
-                worksheet.Cell(1, 14).Value = "Sanctioned_by";
-                worksheet.Cell(1, 15).Value = "TDS_Amount";
-                worksheet.Cell(1, 16).Value = "RTGS_Amount";
-                worksheet.Cell(1, 17).Value = "UTR_Number";
-                worksheet.Cell(1, 18).Value = "RTGS_Date";
-
-                // Add data
-                for (int i = 0; i < data.Count; i++)
+                for (int i = 0; i < service?.ToList().Count; i++)
                 {
-                    worksheet.Cell(i + 2, 1).Value = data[i].VendorPaymentYearRange;
-                    worksheet.Cell(i + 2, 2).Value = i;
-                    worksheet.Cell(i + 2, 3).Value = data[i].PaymentNoteNo;
-                    worksheet.Cell(i + 2, 4).Value = data[i].PaymentNoteDate;
-                    worksheet.Cell(i + 2, 5).Value = data[i].VendorName;
-                    worksheet.Cell(i + 2, 6).Value = data[i].VendorServiceName;
-                    worksheet.Cell(i + 2, 7).Value = data[i].InvoiceNumber;
-                    worksheet.Cell(i + 2, 8).Value = data[i].InvoiceDate;
-                                  
-                    worksheet.Cell(i + 2, 9).Value = data[i].InvoiceParticulars;
-                    worksheet.Cell(i + 2, 10).Value = data[i].VendorPaymentAmount;
-                    worksheet.Cell(i + 2, 11).Value = data[i].VendorDetailCategory;
-                    worksheet.Cell(i + 2, 12).Value = "";//AMC
-                                  
-                                  
-                    worksheet.Cell(i + 2, 13).Value = data[i].ServiceType;
-                    worksheet.Cell(i + 2, 14).Value = data[i].ServiceSantionedBy;
-                    worksheet.Cell(i + 2, 15).Value = data[i].VendorPaymentTdsamount;
-                    worksheet.Cell(i + 2, 16).Value = data[i].VendorPaymentRtgsAmount;
-                    worksheet.Cell(i + 2, 17).Value = data[i].VendorPaymentUtrnumber;
-                    worksheet.Cell(i + 2, 18).Value = data[i].VendorPaymentRtgsDate.ToString();
+                    worksheet.Cell(counter + 2, 1).Value = srNo;
+                    worksheet.Cell(counter + 2, 2).Value = service.ToList()[i].VendorPaymentYearRange;
+                    worksheet.Cell(counter + 2, 3).Value = service.ToList()[i].PaymentNoteNo;
+                    worksheet.Cell(counter + 2, 4).Value = service.ToList()[i].PaymentNoteDate;
+                    worksheet.Cell(counter + 2, 5).Value = service.ToList()[i].VendorName;
+                    worksheet.Cell(counter + 2, 6).Value = service.ToList()[i].VendorServiceName;
+                    worksheet.Cell(counter + 2, 7).Value = service.ToList()[i].ServiceSantionAmount;
+                    if (i == 0)
+                    {
+                        worksheet.Cell(counter + 2, 8).Value = service.ToList()[i].ServiceSantionAmount - service.ToList()[i].VendorPaymentAmount;//amt due
+                    }
+                    else
+                    {
+                        worksheet.Cell(counter + 2, 8).Value = (decimal)worksheet.Cell((counter + 2) - 1, 8).Value.GetNumber() - service.ToList()[i].VendorPaymentAmount;
+                    }
 
+                    worksheet.Cell(counter + 2, 9).Value = (i + 1) + "Period Amout";//Period
+                    worksheet.Cell(counter + 2, 10).Value = service.ToList()[i].VendorPaymentAmount;//"Period Amount Paid"
+                    worksheet.Cell(counter + 2, 11).Value = service.ToList()[i].VendorPaymentDate.ToString();
 
+                    if (i == 0)
+                    {
+                        worksheet.Cell(counter + 2, 12).Value = service.ToList()[i].VendorPaymentAmount; ;//totla amt paid tilll no                           
+                    }
+                    else
+                    {
+                        worksheet.Cell(counter + 2, 12).Value = (decimal)worksheet.Cell((counter + 2) - 1, 12).Value.GetNumber() + service.ToList()[i].VendorPaymentAmount;//totla amt paid tilll now
+                    }
+                    worksheet.Cell(counter + 2, 13).Value = service.ToList()[i].InvoiceNumber;
+                    worksheet.Cell(counter + 2, 14).Value = service.ToList()[i].InvoiceDate;
+                    worksheet.Cell(counter + 2, 15).Value = service.ToList()[i].InvoiceParticulars;
+                    worksheet.Cell(counter + 2, 16).Value = service.ToList()[i].VendorDetailCategory;
+                    worksheet.Cell(counter + 2, 17).Value = (XLCellValue)service.ToList()[i].IsAmc;
+                    worksheet.Cell(counter + 2, 18).Value = service.ToList()[i].ServiceType;
+                    worksheet.Cell(counter + 2, 19).Value = service.ToList()[i].ServiceSantionedBy;
+                    worksheet.Cell(counter + 2, 20).Value = service.ToList()[i].VendorPaymentTdsamount;
+                    worksheet.Cell(counter + 2, 21).Value = service.ToList()[i].VendorPaymentRtgsAmount;
+                    worksheet.Cell(counter + 2, 22).Value = service.ToList()[i].VendorPaymentUtrnumber;
+                    worksheet.Cell(counter + 2, 23).Value = service.ToList()[i].VendorPaymentRtgsDate.ToString();
+                    counter++;
+                    srNo++;
                 }
-
-                using (var stream = new MemoryStream())
-                {
-                    workbook.SaveAs(stream);
-                    return stream.ToArray();
-                }
+            }
+            using (var stream = new MemoryStream())
+            {
+                workbook.SaveAs(stream);
+                //OpenExcelFile()
+                return stream.ToArray();
+            }
+        }
+        public void OpenExcelFile(string filePath)
+        {
+            try
+            {
+                Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                Debug.WriteLine($"Error opening file: {ex.Message}");
             }
         }
     }

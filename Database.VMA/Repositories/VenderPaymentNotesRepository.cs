@@ -79,14 +79,10 @@ namespace Database.VMA.Repositories
 
                                       select new ExportPaymentNoteData
                                       {
-
                                           VendorServiceName = service.VendorServiceName,
-
                                           InvoiceDate = invoice.InvoiceDate,
-
                                           InvoiceNumber = invoice.InvoiceNumber,
                                           InvoiceParticulars = invoice.InvoiceParticulars,
-
                                           PaymentNoteDate = paymentNote.PaymentNoteDate,
                                           PaymentNoteNo = paymentNote.PaymentNoteNo,
                                           ServiceSantionAmount = details.ServiceSantionAmount,
@@ -101,6 +97,7 @@ namespace Database.VMA.Repositories
                                           VendorPaymentRtgsDate = payment.VendorPaymentRtgsDate,
                                           VendorName = vendor.VendorName,
                                           VendorPaymentDate = payment.VendorPaymentDate,
+                                          IsAmc=details.IsAmc
                                       };
             return await productsWithVendors.ToListAsync();
 

@@ -8,9 +8,6 @@ namespace BusinessLogic.Abstraction.VMA.Models
 {
     public class ExportPaymentNoteData
     {
-        //		  					AMC	
-        //Sanctioned		Sanctioned_Date				
-
         public int SrNo { get; set; }
         public string? VendorName { get; set; }//Vendor_Name
 
@@ -26,7 +23,7 @@ namespace BusinessLogic.Abstraction.VMA.Models
         public string? InvoiceParticulars { get; set; }//Invoice_Particular
 
         public decimal? VendorPaymentAmount { get; set; }//Total_Amount
-        public DateOnly VendorPaymentDate { get; set; }
+        public DateOnly? VendorPaymentDate { get; set; }
         public string? VendorDetailCategory { get; set; }//Department
 
         public string? ServiceType { get; set; }//Type of expenditure
@@ -39,5 +36,7 @@ namespace BusinessLogic.Abstraction.VMA.Models
         public decimal? VendorPaymentRtgsAmount { get; set; }//RTGS_Amount
 
         public DateOnly? VendorPaymentRtgsDate { get; set; }//RTGS_Date
+
+        public bool? IsAmc { get; set; }
     }
 }

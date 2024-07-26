@@ -37,5 +37,6 @@ namespace Database.VMA.Entities.CustomEntities
         public decimal? VendorPaymentRtgsAmount { get; set; }//RTGS_Amount
 
         public DateOnly? VendorPaymentRtgsDate { get; set; }//RTGS_Date
+        public bool? IsAmc { get; set; }
     }
 }
