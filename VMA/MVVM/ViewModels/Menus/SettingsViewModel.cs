@@ -367,51 +367,69 @@ namespace VMA.MVVM.ViewModels.Menus
                 OnPropertyChanged(nameof(AllConfigurations));
             }
         }
+
         public async Task GetAllConfigurations()
         {
-            var allConfigurations = await _configBusinessLogic.GetConfigurations().ConfigureAwait(true);
-            AllConfigurations = new ObservableCollection<ConfigurationModel>(allConfigurations);
-            if (allConfigurations != null)
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+            try
             {
-                string? departmentConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Department))?.CfgValue;
-                string? expenditureConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure))?.CfgValue;
-                string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
-                string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear))?.CfgValue;
-                string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
+                var allConfigurations = await _configBusinessLogic.GetConfigurations().ConfigureAwait(true);
+                AllConfigurations = new ObservableCollection<ConfigurationModel>(allConfigurations);
+                
+                if (allConfigurations != null)
+                {
+                    string? departmentConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Department))?.CfgValue;
+                    string? expenditureConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure))?.CfgValue;
+                    string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
+                    string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear))?.CfgValue;
+                    string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
 
-                NoteId = noteID;
-                FinancialYear = financialYear;
+                    NoteId = noteID;
+                    FinancialYear = financialYear;
 
-                if (!string.IsNullOrEmpty(departmentConfigJson))
-                {
-                    Departments = JsonSerializer.Deserialize<ObservableCollection<Department>>(departmentConfigJson);
-                }
-                else
-                {
-                    Departments = [];
-                }
+                    if (!string.IsNullOrEmpty(departmentConfigJson))
+                    {
+                        Departments = JsonSerializer.Deserialize<ObservableCollection<Department>>(departmentConfigJson);
+                    }
+                    else
+                    {
+                        Departments = [];
+                    }
 
-                if (!string.IsNullOrEmpty(expenditureConfigJson))
-                {
-                    Expenditures = JsonSerializer.Deserialize<ObservableCollection<Expenditure>>(expenditureConfigJson);
-                }
-                else
-                {
-                    Expenditures = [];
-                }
+                    if (!string.IsNullOrEmpty(expenditureConfigJson))
+                    {
+                        Expenditures = JsonSerializer.Deserialize<ObservableCollection<Expenditure>>(expenditureConfigJson);
+                    }
+                    else
+                    {
+                        Expenditures = [];
+                    }
 
-                if (!string.IsNullOrEmpty(sanctionConfigJson))
-                {
-                    Sanctions = JsonSerializer.Deserialize<ObservableCollection<Sanction>>(sanctionConfigJson);
+                    if (!string.IsNullOrEmpty(sanctionConfigJson))
+                    {
+                        Sanctions = JsonSerializer.Deserialize<ObservableCollection<Sanction>>(sanctionConfigJson);
+                    }
+                    else
+                    {
+                        Sanctions = [];
+                    }
+
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loaded All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
                 }
-                else
-                {
-                    Sanctions = [];
-                }
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(string.Format("Class: {0}, Method: {1} - Could not load All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Could not load All configurations, Please contact to Administrator", false, true);
             }
         }
         private async void AddOrUpdateDepartments()
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into AddOrUpdate Departments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             bool isDepartmentExist = Departments?.Count(x => x.DepartmentName == NeworExistingDepartment) > 0;
 
             string operation = "";
@@ -448,9 +466,13 @@ namespace VMA.MVVM.ViewModels.Menus
                     DepartmentName = NeworExistingDepartment,
                     Id = Convert.ToString(Departments.Count + 1)
                 });
+
                 operation = "add";
+
                 await SaveConfiguration(0, nameof(Department), Departments, operation);
             }
+
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Done AddOrUpdate Departments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
         }
 
@@ -461,6 +483,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private void DeleteDepartment(object department)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into Delete Department", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             string operation = "";
             Department localdepartment = (Department)department;
 
@@ -471,8 +495,11 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private void AddOrUpdateExpenditures()
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into AddOrUpdate Expenditures", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             bool isExpenditureExist = Expenditures.Count(x => x.ExpenditureName == NeworExistingExpenditure) > 0;
             string operation = "";
+
             if (Expenditures != null && Expenditures.Any())
             {
                 if (!isExpenditureExist)
@@ -507,9 +534,13 @@ namespace VMA.MVVM.ViewModels.Menus
                     ExpenditureName = NeworExistingExpenditure,
                     Id = Convert.ToString(Expenditures.Count + 1)
                 });
+
                 operation = "add";
+
                 SaveConfiguration(0, nameof(Expenditure), Expenditures, operation);
             }
+
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Done AddOrUpdate Expenditures", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
         }
 
@@ -520,6 +551,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task DeleteExpenditure(object expenditure)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into Delete expenditure", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             string operation = "";
             Expenditure localexpenditure = (Expenditure)expenditure;
 
@@ -530,8 +563,11 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async void AddOrUpdateSanctions()
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into AddOrUpdate Sanctions", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             bool isSanctionExist = Sanctions?.Count(x => x.SanctionName == NeworExistingSanction) > 0;
             string operation = "";
+
             if (Sanctions != null && Sanctions.Any())
             {
                 if (!isSanctionExist)
@@ -571,6 +607,9 @@ namespace VMA.MVVM.ViewModels.Menus
 
                 await SaveConfiguration(0, nameof(Sanction), Sanctions, operation);
             }
+
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Done AddOrUpdate Sanctions", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
         }
 
         private bool CanAddOrUpdateSanctions()
@@ -580,6 +619,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task DeleteSanction(object sanction)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into Delete Sanction", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             string operation = "";
             Sanction localsanction = (Sanction)sanction;
 
@@ -598,6 +639,7 @@ namespace VMA.MVVM.ViewModels.Menus
             bool getFinancialYear = AllConfigurations.Any(x => x?.Cfgkey == nameof(FinancialYear));
             bool getNoteId = AllConfigurations.Any(x => x?.Cfgkey == nameof(NoteId));
             string operation = "";
+
             if (getFinancialYear)
             {
                 await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear)).Id, nameof(FinancialYear), FinancialYear, operation);
@@ -607,6 +649,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 operation = "add";
                 await SaveGenralSettings(0, nameof(FinancialYear), FinancialYear, operation);
             }
+
             if (getNoteId)
             {
                 await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId)).Id, nameof(NoteId), NoteId, operation);
@@ -614,6 +657,7 @@ namespace VMA.MVVM.ViewModels.Menus
             else
             {
                 operation = "add";
+
                 await SaveGenralSettings(0, nameof(NoteId), NoteId, operation);
             }
         }
@@ -626,15 +670,29 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task Save(int id, string cfgkey, string operation, string cfgvaluejson)
         {
-            if (operation != "add")
+            try
             {
-                await _configBusinessLogic.UpdateOrDeleteConfiguration(new ConfigurationModel() { Id = id, Cfgkey = cfgkey, CfgValue = cfgvaluejson }).ConfigureAwait(true);
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Trying to save configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                if (operation != "add")
+                {
+                    await _configBusinessLogic.UpdateOrDeleteConfiguration(new ConfigurationModel() { Id = id, Cfgkey = cfgkey, CfgValue = cfgvaluejson }).ConfigureAwait(true);
+                }
+                else
+                {
+                    await _configBusinessLogic.AddConfiguration(new ConfigurationModel() { Id = id, Cfgkey = cfgkey, CfgValue = cfgvaluejson });
+                }
+
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Configuration has been saved successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                await GetAllConfigurations();
             }
-            else
+            catch (Exception ex)
             {
-                await _configBusinessLogic.AddConfiguration(new ConfigurationModel() { Id = id, Cfgkey = cfgkey, CfgValue = cfgvaluejson });
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Could not save configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Could not save configuration, please try again or contact to administrator", false, true);
             }
-            await GetAllConfigurations();
         }
 
         private async Task SaveGenralSettings(int id, string cfgkey, string cfgvalue, string operation)
