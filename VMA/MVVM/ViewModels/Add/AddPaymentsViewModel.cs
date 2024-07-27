@@ -5,11 +5,13 @@ using Database.VMA.Entities;
 using Database.VMA.Repositories;
 using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Drawing.Charts;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -605,6 +607,8 @@ namespace VMA.MVVM.ViewModels.Add
         private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
         public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             _configurationBusinessLogic = configurationBusinessLogic;
             _vendorPaymentModel = vendorPaymentModel;
             if (_vendorPaymentModel != null)

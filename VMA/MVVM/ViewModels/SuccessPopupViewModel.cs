@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -70,7 +72,8 @@ namespace VMA.MVVM.ViewModels
 
         public SuccessPopupViewModel()
         {
-            
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
         }
 
         public void ShowPopup(NotificationType notificationType, string message)

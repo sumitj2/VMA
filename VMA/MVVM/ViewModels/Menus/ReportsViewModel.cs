@@ -1,11 +1,7 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
-using BusinessLogic.VMA;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Serilog;
+using System.Reflection;
 using System.Windows.Input;
 
 namespace VMA.MVVM.ViewModels.Menus
@@ -16,7 +12,9 @@ namespace VMA.MVVM.ViewModels.Menus
         public readonly IReportExportToExcelPaymentNote _reportExportToExcelPaymentNote;
         public ReportsViewModel(IReportExportToExcelPaymentNote reportExportToExcelPaymentNote)
         {
-            _reportExportToExcelPaymentNote= reportExportToExcelPaymentNote;
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+            _reportExportToExcelPaymentNote = reportExportToExcelPaymentNote;
             ExportPaymentNoteCommand = new ViewModelAsyncCommand<ExportPaymentNoteData>(ExportPaymentNote);
         }
 

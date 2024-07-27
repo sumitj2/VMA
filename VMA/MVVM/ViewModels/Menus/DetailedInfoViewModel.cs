@@ -1,14 +1,8 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
-using Database.VMA.Entities;
-using Database.VMA.Repositories;
-using System;
-using System.Collections.Generic;
+using Serilog;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using VMA.MVVM.ViewModels.Add;
 
@@ -124,7 +118,9 @@ namespace VMA.MVVM.ViewModels.Menus
         #endregion
         public DetailedInfoViewModel(MainViewModel parentViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic)
         {
-            _configurationBusinessLogic= configurationBusinessLogic;
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+            _configurationBusinessLogic = configurationBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _vendorServiceBusinessLogic= vendorServiceBusinessLogic;
             _vendorBusinessLogic= vendorBusinessLogic;  

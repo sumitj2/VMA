@@ -1,13 +1,8 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
-using Database.VMA.Entities;
-using Database.VMA.Repositories;
-using System;
-using System.Collections.Generic;
+using Serilog;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows.Input;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
@@ -127,6 +122,8 @@ namespace VMA.MVVM.ViewModels.Add
 
         public AddProductServicesViewModel(IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, ProductServicesViewModel parentViewModel, VendorServiceModel SelectedVendorService)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             this.SelectedProductVendorService = SelectedVendorService;
             if (SelectedVendorService != null)
             {

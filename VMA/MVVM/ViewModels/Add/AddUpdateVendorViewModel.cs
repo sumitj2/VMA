@@ -1,20 +1,15 @@
 ﻿
 using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Reflection;
 using System.Windows.Input;
-using System.Windows.Threading;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
-using VMA.MVVM.Views;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace VMA.MVVM.ViewModels.Add
 {
@@ -207,6 +202,8 @@ namespace VMA.MVVM.ViewModels.Add
 
         public AddUpdateVendorViewModel(IVendorBusinessLogic vendorBusinessLogic, VendorViewModel parentViewModel, VendorModel SelectedVendor)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             this.SelectedVendor = SelectedVendor;
             if (SelectedVendor != null)
             {

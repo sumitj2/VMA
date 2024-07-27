@@ -1,9 +1,6 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
-using Database.VMA.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System;
-using System.Collections.Immutable;
+using Serilog;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Input;
@@ -117,6 +114,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public VendorViewModel(IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             _vendorBusinessLogic = vendorBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelCommand(ShowVendorForm);

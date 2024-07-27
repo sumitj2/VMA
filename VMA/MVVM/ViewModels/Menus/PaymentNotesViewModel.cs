@@ -2,6 +2,7 @@
 using BusinessLogic.Abstraction.VMA.Models;
 using Database.VMA.Entities;
 using Database.VMA.Repositories;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -125,6 +126,8 @@ namespace VMA.MVVM.ViewModels.Menus
         private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
         public PaymentNotesViewModel(MainViewModel parentViewModel,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorBusinessLogic vendorBusinessLogic,IConfigurationBusinessLogic configurationBusinessLogic)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             _configurationBusinessLogic = configurationBusinessLogic;
             _venderPaymentNotesBusinessLogic=venderPaymentNotesBusinessLogic;
             _vendorDetailsBusinessLogic=vendorDetailsBusinessLogic; 

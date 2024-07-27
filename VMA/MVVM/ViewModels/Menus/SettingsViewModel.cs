@@ -1,19 +1,10 @@
-﻿using Azure;
-using BusinessLogic.Abstraction.VMA.Contract;
+﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
-using Database.VMA.Entities;
-using System;
-using System.Collections.Generic;
+using Serilog;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
+using System.Reflection;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.Json.Serialization.Metadata;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using VMA.MVVM.Models;
 
 namespace VMA.MVVM.ViewModels.Menus
 {
@@ -355,6 +346,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public SettingsViewModel(IConfigurationBusinessLogic configBusinessLogic)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             _configBusinessLogic = configBusinessLogic;
 
             _ = GetAllConfigurations();
@@ -386,8 +379,9 @@ namespace VMA.MVVM.ViewModels.Menus
                 string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear))?.CfgValue;
                 string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
 
-                NoteId=noteID  ;
-                FinancialYear=financialYear ;
+                NoteId = noteID;
+                FinancialYear = financialYear;
+
                 if (!string.IsNullOrEmpty(departmentConfigJson))
                 {
                     Departments = JsonSerializer.Deserialize<ObservableCollection<Department>>(departmentConfigJson);

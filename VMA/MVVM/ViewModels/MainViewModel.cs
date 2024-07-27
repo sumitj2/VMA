@@ -2,9 +2,11 @@
 using BusinessLogic.VMA;
 using Database.VMA.Repositories;
 using FontAwesome.Sharp;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.Xml;
 using System.Security.Principal;
 using System.Text;
@@ -98,6 +100,8 @@ namespace VMA.MVVM.ViewModels
 
         public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IReportExportToExcelPaymentNote reportExportToExcelPaymentNote,IConfigurationBusinessLogic configurationBusinessLogic)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;

@@ -1,15 +1,8 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
-using BusinessLogic.VMA;
-using Database.Abstraction.VMA.Contract;
-using Database.VMA.Entities;
-using Database.VMA.Repositories;
-using System;
-using System.Collections.Generic;
+using Serilog;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using VMA.MVVM.Models;
@@ -223,6 +216,8 @@ namespace VMA.MVVM.ViewModels.Add
 
         public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, VenderPaymentNoteModel? editPaymentNote, IConfigurationBusinessLogic configurationBusinessLogic)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             PaymentNoteNo = Convert.ToString(paymentNotesViewModel.VendorPaymentNotes.Count + 1);
             _paymentNotesViewModel = paymentNotesViewModel;
             _editPaymentNote = editPaymentNote;

@@ -1,10 +1,7 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Serilog;
+using System.Reflection;
 using System.Windows.Input;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
@@ -17,6 +14,8 @@ namespace VMA.MVVM.ViewModels.Add
         private readonly GSTViewModel _parentViewMode;
         public AddUpdateGSTMasterViewModel(IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, GSTViewModel parentViewMode)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
             _parentViewMode = parentViewMode;
             HideGSDetailsTFormCommand = new ViewModelAsyncCommand<VendorModel>(HideGSTForm);

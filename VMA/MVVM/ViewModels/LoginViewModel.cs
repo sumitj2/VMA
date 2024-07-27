@@ -10,6 +10,8 @@ using System.Windows.Input;
 using VMA.MVVM.Models;
 using BusinessLogic.Abstraction.VMA.Contract;
 using Microsoft.VisualBasic;
+using Serilog;
+using System.Reflection;
 
 namespace VMA.MVVM.ViewModels.Login
 {
@@ -111,6 +113,8 @@ namespace VMA.MVVM.ViewModels.Login
         //Constructor
         public LoginViewModel(IUserBusinessLogic userBusinessLogic)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
 #if DEBUG
             Username = "admin";
 #endif

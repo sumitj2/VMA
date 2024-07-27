@@ -1,16 +1,10 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
-using Database.VMA.Repositories;
-using System;
-using System.Collections.Generic;
+using Serilog;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using VMA.MVVM.ViewModels.Add;
-using VMA.MVVM.Views.Add;
 
 namespace VMA.MVVM.ViewModels.Menus
 {
@@ -124,6 +118,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ProductServicesViewModel(IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
             _parentViewModel = parentViewModel;

@@ -1,19 +1,9 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
-using BusinessLogic.VMA;
-using Database.VMA.Entities;
-using Database.VMA.Repositories;
-using DocumentFormat.OpenXml.Bibliography;
-using DocumentFormat.OpenXml.ExtendedProperties;
-using System;
-using System.Collections.Generic;
+using Serilog;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
+using System.Reflection;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using VMA.MVVM.Models;
@@ -325,6 +315,8 @@ namespace VMA.MVVM.ViewModels.Add
         ObservableCollection<VendorDetailModel> _detailsLsit;
         public AddDetailedInfoViewModel(DetailedInfoViewModel detailedInfoViewModel, VendorDetailModel vendorDetailViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, ObservableCollection<VendorDetailModel> detailsLsit, IConfigurationBusinessLogic configurationBusinessLogic)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
             _configurationBusinessLogic = configurationBusinessLogic;
 
             _detailsLsit = detailsLsit;
