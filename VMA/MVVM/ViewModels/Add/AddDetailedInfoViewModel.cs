@@ -19,7 +19,6 @@ namespace VMA.MVVM.ViewModels.Add
         private readonly IVendorServiceBusinessLogic _vendorServiceBusinessLogic;
         private readonly IVendorBusinessLogic _vendorBusinessLogic;
         private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
-        private string _saveButtonName;
 
         #region Properties
 
@@ -256,8 +255,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-
-        #endregion
+        private string _saveButtonName;
 
         public string SaveButtonName
         {
@@ -269,7 +267,162 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(SaveButtonName));
             }
         }
-        
+
+        private ObservableCollection<Menus.Department> departments;
+        public ObservableCollection<Menus.Department> Departments
+        {
+            get
+            { return departments; }
+            set
+            {
+                departments = value;
+                OnPropertyChanged(nameof(Departments));
+            }
+        }
+
+        private Menus.Department selectedDepartment;
+        public Menus.Department SelectedDepartment
+        {
+            get
+            { return selectedDepartment; }
+            set
+            {
+                selectedDepartment = value;
+                OnPropertyChanged(nameof(SelectedDepartment));
+            }
+        }
+
+        private ObservableCollection<Expenditure> expenditures;
+        public ObservableCollection<Expenditure> Expenditures
+        {
+            get
+            { return expenditures; }
+            set
+            {
+                expenditures = value;
+                OnPropertyChanged(nameof(Expenditures));
+            }
+        }
+
+        private Expenditure selectedExpenditure;
+        public Expenditure SelectedExpentidure
+        {
+            get
+            { return selectedExpenditure; }
+            set
+            {
+                selectedExpenditure = value;
+                OnPropertyChanged(nameof(SelectedExpentidure));
+            }
+        }
+
+        private ObservableCollection<Sanction> sanctions;
+        public ObservableCollection<Sanction> Sanctions
+        {
+            get
+            { return sanctions; }
+            set
+            {
+                sanctions = value;
+                OnPropertyChanged(nameof(Sanctions));
+            }
+        }
+
+        private Sanction selectedSanction;
+        public Sanction SelectedSanction
+        {
+            get
+            { return selectedSanction; }
+            set
+            {
+                selectedSanction = value;
+                OnPropertyChanged(nameof(SelectedSanction));
+            }
+        }
+
+
+        private string? _noteId;
+
+        public string? NoteId
+        {
+            get { return _noteId; }
+            set
+            {
+                _noteId = value;
+                OnPropertyChanged(nameof(NoteId));
+            }
+        }
+
+        private bool _IsComboBoxServiceVisible;
+
+        public bool IsComboBoxServiceVisible
+        {
+            get { return _IsComboBoxServiceVisible; }
+            set
+            {
+                _IsComboBoxServiceVisible = value;
+                OnPropertyChanged(nameof(HideServiceSelectComboBox));
+            }
+        }
+
+        private bool _IsComboBoxVendorVisible;
+
+        public bool IsComboBoxVendorVisible
+        {
+            get { return _IsComboBoxVendorVisible; }
+            set
+            {
+                _IsComboBoxVendorVisible = value;
+                OnPropertyChanged(nameof(HideVendorSelectComboBox));
+            }
+        }
+
+
+        private bool _IsTextBoxServiceVisible;
+
+        public bool IsTextBoxServiceVisible
+        {
+            get { return _IsTextBoxServiceVisible; }
+            set
+            {
+                _IsTextBoxServiceVisible = value;
+                OnPropertyChanged(nameof(HideSelectedService));
+            }
+        }
+
+        private bool _IsTextBoxSelectedVendorVisible;
+
+        public bool IsTextBoxSelectedVendorVisible
+        {
+            get { return _IsTextBoxSelectedVendorVisible; }
+            set
+            {
+                _IsTextBoxSelectedVendorVisible = value;
+                OnPropertyChanged(nameof(HideSelectedVendor));
+            }
+        }
+
+        public Visibility HideSelectedVendor
+        {
+            get { return IsTextBoxSelectedVendorVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideSelectedService
+        {
+            get { return IsTextBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideServiceSelectComboBox
+        {
+            get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HideVendorSelectComboBox
+        {
+            get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+        #endregion
+
         #region Observable collections
         private ObservableCollection<VendorServiceModel> _vendorDetailServices;
         private ObservableCollection<SearchModel> _comboxPaymentMethod;
@@ -380,207 +533,150 @@ namespace VMA.MVVM.ViewModels.Add
             return true;
         }
 
-        private ObservableCollection<Menus.Department> departments;
-        public ObservableCollection<Menus.Department> Departments
-        {
-            get
-            { return departments; }
-            set
-            {
-                departments = value;
-                OnPropertyChanged(nameof(Departments));
-            }
-        }
-
-        private Menus.Department selectedDepartment;
-        public Menus.Department SelectedDepartment
-        {
-            get
-            { return selectedDepartment; }
-            set
-            {
-                selectedDepartment = value;
-                OnPropertyChanged(nameof(SelectedDepartment));
-            }
-        }
-
-        private ObservableCollection<Expenditure> expenditures;
-        public ObservableCollection<Expenditure> Expenditures
-        {
-            get
-            { return expenditures; }
-            set
-            {
-                expenditures = value;
-                OnPropertyChanged(nameof(Expenditures));
-            }
-        }
-
-        private Expenditure selectedExpenditure;
-        public Expenditure SelectedExpentidure
-        {
-            get
-            { return selectedExpenditure; }
-            set
-            {
-                selectedExpenditure = value;
-                OnPropertyChanged(nameof(SelectedExpentidure));
-            }
-        }
-
-        private ObservableCollection<Sanction> sanctions;
-        public ObservableCollection<Sanction> Sanctions
-        {
-            get
-            { return sanctions; }
-            set
-            {
-                sanctions = value;
-                OnPropertyChanged(nameof(Sanctions));
-            }
-        }
-
-        private Sanction selectedSanction;
-        public Sanction SelectedSanction
-        {
-            get
-            { return selectedSanction; }
-            set
-            {
-                selectedSanction = value;
-                OnPropertyChanged(nameof(SelectedSanction));
-            }
-        }
-
-
-        private string? _noteId;
-
-        public string? NoteId
-        {
-            get { return _noteId; }
-            set
-            {
-                _noteId = value;
-                OnPropertyChanged(nameof(NoteId));
-            }
-        }
+        
         public async Task GetAllConfigurations()
         {
-            var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
-            string? departmentConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Menus.Department))?.CfgValue;
-            string? expenditureConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure))?.CfgValue;
-            string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
-            string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
-            string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
+            try
+            {
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting all the configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-            Random random = new Random();
-            int randomNumber = random.Next(100, 1000);
+                var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
+                string? departmentConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Menus.Department))?.CfgValue;
+                string? expenditureConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure))?.CfgValue;
+                string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
+                string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
+                string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
 
-            NoteId = noteID;
-            ServiceYear = financialYear;
-            if (!string.IsNullOrEmpty(departmentConfigJson))
-            {
-                Departments = JsonSerializer.Deserialize<ObservableCollection<Menus.Department>>(departmentConfigJson);
-            }
-            else
-            {
-                Departments = new ObservableCollection<Menus.Department>();
-            }
+                NoteId = noteID;
+                ServiceYear = financialYear;
 
-            if (!string.IsNullOrEmpty(expenditureConfigJson))
-            {
-                Expenditures = JsonSerializer.Deserialize<ObservableCollection<Expenditure>>(expenditureConfigJson);
-            }
-            else
-            {
-                Expenditures = new ObservableCollection<Expenditure>();
-            }
+                if (!string.IsNullOrEmpty(departmentConfigJson))
+                {
+                    Departments = JsonSerializer.Deserialize<ObservableCollection<Menus.Department>>(departmentConfigJson);
+                }
+                else
+                {
+                    Departments = new ObservableCollection<Menus.Department>();
+                }
 
-            if (!string.IsNullOrEmpty(sanctionConfigJson))
-            {
-                Sanctions = JsonSerializer.Deserialize<ObservableCollection<Sanction>>(sanctionConfigJson);
+                if (!string.IsNullOrEmpty(expenditureConfigJson))
+                {
+                    Expenditures = JsonSerializer.Deserialize<ObservableCollection<Expenditure>>(expenditureConfigJson);
+                }
+                else
+                {
+                    Expenditures = new ObservableCollection<Expenditure>();
+                }
+
+                if (!string.IsNullOrEmpty(sanctionConfigJson))
+                {
+                    Sanctions = JsonSerializer.Deserialize<ObservableCollection<Sanction>>(sanctionConfigJson);
+                }
+                else
+                {
+                    Sanctions = new ObservableCollection<Sanction>();
+                }
+
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved all the configuration Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
-            else
+            catch (Exception ex)
             {
-                Sanctions = new ObservableCollection<Sanction>();
+                Log.Logger.Error(string.Format("Class: {0}, Method: {1} - Failed to get all the configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Could not load All configurations, Please contact to Administrator", false, true);
             }
         }
         private async Task SaveVendorServiceDetails(VendorDetailModel model)
         {
-            if (SaveButtonName == "Update")
+            try
             {
-                VendorDetailModel vendorModel = new()
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into save Vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                if (SaveButtonName == "Update")
                 {
-                    ServiceType = selectedExpenditure.ExpenditureName,
-                    ServiceSantionedBy = SelectedSanction.SanctionName,
-                    VendorDetailCategory = SelectedDepartment.DepartmentName,
+                    VendorDetailModel vendorModel = new()
+                    {
+                        ServiceType = selectedExpenditure.ExpenditureName,
+                        ServiceSantionedBy = SelectedSanction.SanctionName,
+                        VendorDetailCategory = SelectedDepartment.DepartmentName,
 
-                    IsActive = true,
-                    QuantityOfUnit = QuantityOfUnit,
-                    ServiceSantionAmount = ServiceSantionAmount,
-                    ServiceEndDate = ServiceEndDate,
-                    RatePerUnit = RatePerUnit,
+                        IsActive = true,
+                        QuantityOfUnit = QuantityOfUnit,
+                        ServiceSantionAmount = ServiceSantionAmount,
+                        ServiceEndDate = ServiceEndDate,
+                        RatePerUnit = RatePerUnit,
 
-                    ServiceStartDate = ServiceStartDate,
-                    ServicePaymentType = SelectPaymentType?.NameSearch,
+                        ServiceStartDate = ServiceStartDate,
+                        ServicePaymentType = SelectPaymentType?.NameSearch,
 
-                    DetailsYear = ServiceYear,
-                    IsAmc = IsAmcYes != true ? false : true,
-                    SantionedDate = SantionedDate,
-                    VendorServiceName = _vendorDetailViewModel.VendorServiceName,
-                    VendorName = _vendorDetailViewModel.VendorName,
-                    SantionedNoteNo = SantionedNoteNo,
-                    VendorServiceId = _vendorDetailViewModel.VendorServiceId,
-                    FkVendorId = _vendorDetailViewModel.VendorId,
-                    FkVendorServiceId = _vendorDetailViewModel.VendorServiceId,
-                    VendorId = _vendorDetailViewModel.VendorId,
-                    VendorCode = _vendorDetailViewModel.VendorCode,
-                    LastUpdateBy = UserAccountModel.Username,
-                    VendorDetailId = _vendorDetailViewModel.VendorDetailId,
-                    LastUpdatedDate = DateTime.UtcNow,
+                        DetailsYear = ServiceYear,
+                        IsAmc = IsAmcYes != true ? false : true,
+                        SantionedDate = SantionedDate,
+                        VendorServiceName = _vendorDetailViewModel.VendorServiceName,
+                        VendorName = _vendorDetailViewModel.VendorName,
+                        SantionedNoteNo = SantionedNoteNo,
+                        VendorServiceId = _vendorDetailViewModel.VendorServiceId,
+                        FkVendorId = _vendorDetailViewModel.VendorId,
+                        FkVendorServiceId = _vendorDetailViewModel.VendorServiceId,
+                        VendorId = _vendorDetailViewModel.VendorId,
+                        VendorCode = _vendorDetailViewModel.VendorCode,
+                        LastUpdateBy = UserAccountModel.Username,
+                        VendorDetailId = _vendorDetailViewModel.VendorDetailId,
+                        LastUpdatedDate = DateTime.UtcNow,
 
-                };
-                await _vendorDetailsBusinessLogic.EditUpdateVendorDetails(vendorModel);
+                    };
+                    await _vendorDetailsBusinessLogic.EditUpdateVendorDetails(vendorModel);
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully",true);
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
+
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Updated Vendor service details Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                }
+                else
+                {
+                    VendorDetailModel vendorModel = new()
+                    {
+                        ServiceType = selectedExpenditure.ExpenditureName,
+                        ServiceSantionedBy = SelectedSanction.SanctionName,
+                        VendorDetailCategory = SelectedDepartment.DepartmentName,
+
+                        IsActive = true,
+                        CreatedBy = UserAccountModel.Username,
+                        CreatedDate = DateTime.UtcNow,
+                        QuantityOfUnit = QuantityOfUnit,
+                        ServiceSantionAmount = ServiceSantionAmount,
+                        ServiceEndDate = ServiceEndDate,
+                        RatePerUnit = RatePerUnit,
+
+
+                        ServiceStartDate = ServiceStartDate,
+                        ServicePaymentType = SelectPaymentType?.NameSearch,
+                        DetailsYear = ServiceYear,
+                        IsAmc = IsAmcYes != true ? false : true,
+                        SantionedDate = SantionedDate,
+                        VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
+                        VendorName = SelectedVendorModel.VendorName,
+                        SantionedNoteNo = SantionedNoteNo,
+                        VendorServiceId = SelectedVendorDetailService?.VendorServiceId,
+                        FkVendorId = SelectedVendorModel.VendorId,
+                        FkVendorServiceId = SelectedVendorDetailService?.VendorServiceId,
+                        VendorId = SelectedVendorModel.VendorId,
+                        VendorCode = SelectedVendorModel.VendorCode
+                    };
+                    await _vendorDetailsBusinessLogic.AddVendorDetails(vendorModel);
+
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Saved Vendor service details Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
+                }
+
+                await HideDetailInfoForm(this);
             }
-            else
+            catch (Exception ex)
             {
-                VendorDetailModel vendorModel = new()
-                {
-                    ServiceType = selectedExpenditure.ExpenditureName,
-                    ServiceSantionedBy = SelectedSanction.SanctionName,
-                    VendorDetailCategory = SelectedDepartment.DepartmentName,
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Could not save vendor service details, please try again or contact to administrator", false, true);
 
-                    IsActive = true,
-                    CreatedBy = UserAccountModel.Username,
-                    CreatedDate = DateTime.UtcNow,
-                    QuantityOfUnit = QuantityOfUnit,
-                    ServiceSantionAmount = ServiceSantionAmount,
-                    ServiceEndDate = ServiceEndDate,
-                    RatePerUnit = RatePerUnit,
-
-
-                    ServiceStartDate = ServiceStartDate,
-                    ServicePaymentType = SelectPaymentType?.NameSearch,
-                    DetailsYear = ServiceYear,
-                    IsAmc = IsAmcYes != true ? false : true,
-                    SantionedDate = SantionedDate,
-                    VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
-                    VendorName = SelectedVendorModel.VendorName,
-                    SantionedNoteNo = SantionedNoteNo,
-                    VendorServiceId = SelectedVendorDetailService?.VendorServiceId,
-                    FkVendorId = SelectedVendorModel.VendorId,
-                    FkVendorServiceId = SelectedVendorDetailService?.VendorServiceId,
-                    VendorId = SelectedVendorModel.VendorId,
-                    VendorCode = SelectedVendorModel.VendorCode
-                };
-                await _vendorDetailsBusinessLogic.AddVendorDetails(vendorModel);
-
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully",true);
+                Log.Logger.Error(string.Format("Class: {0}, Method: {1} - Failed to Save vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
-
-            await HideDetailInfoForm(this);
         }
 
         #region Async Call
@@ -661,9 +757,22 @@ namespace VMA.MVVM.ViewModels.Add
         /// <returns></returns>
         private async Task LoadVendorServiceDetails(int vendorId)
         {
-            var vendorServiceDetails = await _vendorServiceBusinessLogic.GetAllVendorServices().ConfigureAwait(true);
+            try
+            {
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loading vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-            VendorDetailServices = new ObservableCollection<VendorServiceModel>(vendorServiceDetails.Where(x => x.FkVendorId == vendorId));
+                var vendorServiceDetails = await _vendorServiceBusinessLogic.GetAllVendorServices().ConfigureAwait(true);
+
+                VendorDetailServices = new ObservableCollection<VendorServiceModel>(vendorServiceDetails.Where(x => x.FkVendorId == vendorId));
+
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loaded vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(string.Format("Class: {0}, Method: {1} - Failed to load vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+            }
         }
 
         /// <summary>
@@ -672,8 +781,19 @@ namespace VMA.MVVM.ViewModels.Add
         /// <returns></returns>
         private async Task LoadVendors()
         {
-            var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
-            VendorModels = new ObservableCollection<VendorModel>(vendors);
+            try
+            {
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loading vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
+                VendorModels = new ObservableCollection<VendorModel>(vendors);
+
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loaded vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(string.Format("Class: {0}, Method: {1} - Failed to load vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         #endregion
@@ -682,78 +802,6 @@ namespace VMA.MVVM.ViewModels.Add
         {
             await _detailedInfoViewModel.HideDetailInfoForm(this).ConfigureAwait(true);
         }
-
-        #region Combo box Vendor Service Visibility setting on Add and edit
-
-        private bool _IsComboBoxServiceVisible;
-
-        public bool IsComboBoxServiceVisible
-        {
-            get { return _IsComboBoxServiceVisible; }
-            set
-            {
-                _IsComboBoxServiceVisible = value;
-                OnPropertyChanged(nameof(HideServiceSelectComboBox));
-            }
-        }
-
-        private bool _IsComboBoxVendorVisible;
-
-        public bool IsComboBoxVendorVisible
-        {
-            get { return _IsComboBoxVendorVisible; }
-            set
-            {
-                _IsComboBoxVendorVisible = value;
-                OnPropertyChanged(nameof(HideVendorSelectComboBox));
-            }
-        }
-
-
-        private bool _IsTextBoxServiceVisible;
-
-        public bool IsTextBoxServiceVisible
-        {
-            get { return _IsTextBoxServiceVisible; }
-            set
-            {
-                _IsTextBoxServiceVisible = value;
-                OnPropertyChanged(nameof(HideSelectedService));
-            }
-        }
-
-        private bool _IsTextBoxSelectedVendorVisible;
-
-        public bool IsTextBoxSelectedVendorVisible
-        {
-            get { return _IsTextBoxSelectedVendorVisible; }
-            set
-            {
-                _IsTextBoxSelectedVendorVisible = value;
-                OnPropertyChanged(nameof(HideSelectedVendor));
-            }
-        }
-
-        public Visibility HideSelectedVendor
-        {
-            get { return IsTextBoxSelectedVendorVisible ? Visibility.Visible : Visibility.Collapsed; }
-        }
-
-        public Visibility HideSelectedService
-        {
-            get { return IsTextBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
-        }
-
-        public Visibility HideServiceSelectComboBox
-        {
-            get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
-        }
-
-        public Visibility HideVendorSelectComboBox
-        {
-            get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
-        }
-        #endregion
     }
 
 }
