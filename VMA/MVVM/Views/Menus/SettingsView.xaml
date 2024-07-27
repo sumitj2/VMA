@@ -91,10 +91,19 @@ BorderThickness="0"
 
                                 </StackPanel>
 
-                                
+                                <StackPanel Grid.Column="2" >
+                                    <TextBlock Text="Storage Location for Excel"     Style="{StaticResource FormTextBlock}"/>
+                                    <TextBox x:Name="StorageLocationTextBox" Margin="20,20,60,20" Width="314" Height="27"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Content="Browse..."   Width="75" Margin="0,0,10,0"/>
+                                        <Button Content="Save"  Width="75"/>
+                                    </StackPanel>
+                                </StackPanel>
 
-                            </Grid>
+                            </Grid>  
+                            
                         </AdornerDecorator>
+                        
                     </TabItem>
 
                     <TabItem Header="Settings" Style="{DynamicResource TabItemStyle}" Height="39">

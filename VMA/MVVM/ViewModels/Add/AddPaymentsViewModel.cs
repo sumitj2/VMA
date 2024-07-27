@@ -621,7 +621,7 @@ namespace VMA.MVVM.ViewModels.Add
         private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
         public AddPaymentsViewModel(PaymentsViewModel vendorViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, VendorPaymentModel vendorPaymentModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             _configurationBusinessLogic = configurationBusinessLogic;
             _vendorPaymentModel = vendorPaymentModel;
@@ -746,7 +746,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             try
             {
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the SubmitPaymentDetails", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the SubmitPaymentDetails", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 if (SaveButtonName == "Update")
                 {
@@ -790,7 +790,7 @@ namespace VMA.MVVM.ViewModels.Add
                     };
                     await _vendorPaymentBusinessLogic.EditUpdateVendorPayment(payment);
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Payment Details Updated Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Payment Details Updated Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
                 }
@@ -799,7 +799,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorPaymentModel payment = new()
                     {
                         PaymentYear = VendorPaymentYear,
-                        FkNoteId = PaymentNoteDetails.NoteId.Value,//
+                        FkNoteId = PaymentNoteDetails?.NoteId.Value,//
                         FkVendorDetailId = SelectedVendorDetailService.VendorDetailId,
                         Notes = VendorPaymentNotesDetails,
 
@@ -834,7 +834,7 @@ namespace VMA.MVVM.ViewModels.Add
                     };
                     await _vendorPaymentBusinessLogic.AddVendorPayment(payment);
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Payment Details Added Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Payment Details Added Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
                 }
@@ -843,7 +843,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             catch(Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to submit Payment Details.", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to submit Payment Details.", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to save Payment Details, Please contact to Administrator", false, true);
             }
@@ -899,19 +899,19 @@ namespace VMA.MVVM.ViewModels.Add
 
                 if (res?.Meassage != null)
                 {
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, res?.Meassage, false, true);
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, res.Meassage, false, true);
 
                     if (res?.Meassage == "Total Amount cannot be greater than santioned amount")
                     {
                         await HidePaymentForm(this);
                     }
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved payment amount", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved payment amount", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
                 }
             }
             catch(Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get payment amount.", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get payment amount.", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
         private async Task LoadGSTDetails()
