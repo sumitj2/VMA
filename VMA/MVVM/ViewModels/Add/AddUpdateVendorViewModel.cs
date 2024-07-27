@@ -275,54 +275,68 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task SaveVendor(object obj)
         {
-            if (SaveButtonName == "Update")
+            try
             {
-                VendorModel vendorModel = new()
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Saving Vendor Details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                if (SaveButtonName == "Update")
                 {
-                    VendorAccountNumber = _vendorAccountNumber,
-                    VendorCode = _vendorCode,
-                    VendorAddress = _vendorAddress,
-                    VendorBankName = _vendorBankName,
-                    VendorEmailId = _vendorEmailId,
-                    VendorName = _vendorName,
-                    VendorIfsccode = _vendorIfsccode,
-                    VendorPhoneNo = _vendorPhoneNo,
-                    VendorPinCode = _vendorPinCode,
-                    LastUpdateBy = UserAccountModel.Username,
-                    LastUpdatedDate = DateTime.UtcNow,
-                    VendorGstnumber = _vendorGstnumber,
-                    VendorId = SelectedVendor.VendorId,
-                    VendorPan = _vendorPAN
+                    VendorModel vendorModel = new()
+                    {
+                        VendorAccountNumber = _vendorAccountNumber,
+                        VendorCode = _vendorCode,
+                        VendorAddress = _vendorAddress,
+                        VendorBankName = _vendorBankName,
+                        VendorEmailId = _vendorEmailId,
+                        VendorName = _vendorName,
+                        VendorIfsccode = _vendorIfsccode,
+                        VendorPhoneNo = _vendorPhoneNo,
+                        VendorPinCode = _vendorPinCode,
+                        LastUpdateBy = UserAccountModel.Username,
+                        LastUpdatedDate = DateTime.UtcNow,
+                        VendorGstnumber = _vendorGstnumber,
+                        VendorId = SelectedVendor.VendorId,
+                        VendorPan = _vendorPAN
 
-                };
-                await _vendorbusinessLogic.EditUpdateVendor(vendorModel);
+                    };
+                    await _vendorbusinessLogic.EditUpdateVendor(vendorModel);
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor Details Updated Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
+                }
+                else
+                {
+                    VendorModel vendorModel = new()
+                    {
+                        VendorAccountNumber = _vendorAccountNumber,
+                        VendorCode = _vendorCode,
+                        VendorAddress = _vendorAddress,
+                        VendorBankName = _vendorBankName,
+                        VendorEmailId = _vendorEmailId,
+                        VendorName = _vendorName,
+                        VendorIfsccode = _vendorIfsccode,
+                        VendorPhoneNo = _vendorPhoneNo,
+                        VendorPinCode = _vendorPinCode,
+                        CreatedBy = UserAccountModel.Username,
+                        CreatedDate = DateTime.UtcNow,
+                        VendorGstnumber = _vendorGstnumber,
+                        VendorPan = _vendorPAN
+                    };
+                    await _vendorbusinessLogic.AddVendor(vendorModel);
+
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor Details Added Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
+                }
+
+                await HideVendorForm(this);
             }
-            else
+            catch (Exception ex)
             {
-                VendorModel vendorModel = new()
-                {
-                    VendorAccountNumber = _vendorAccountNumber,
-                    VendorCode = _vendorCode,
-                    VendorAddress = _vendorAddress,
-                    VendorBankName = _vendorBankName,
-                    VendorEmailId = _vendorEmailId,
-                    VendorName = _vendorName,
-                    VendorIfsccode = _vendorIfsccode,
-                    VendorPhoneNo = _vendorPhoneNo,
-                    VendorPinCode = _vendorPinCode,
-                    CreatedBy = UserAccountModel.Username,
-                    CreatedDate = DateTime.UtcNow,
-                    VendorGstnumber = _vendorGstnumber,
-                    VendorPan = _vendorPAN
-                };
-                await _vendorbusinessLogic.AddVendor(vendorModel);
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to save vendor details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
             }
-
-            await HideVendorForm(this);
         }
 
         private async Task HideVendorForm(object obj)

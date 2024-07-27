@@ -38,20 +38,31 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task SaveGSTDetails(VendorModel model)
         {
-            GstcalculationMasterModel gstcalculationMaster = new()
+            try
             {
-                GstCategoryName = GSTCategory,
-                CgstPercentage = Cgstpercentage,
-                IgstPercentage = Igstpercentage,
-                SgstPercentage = Sgstpercentage,
-                CreatedBy = UserAccountModel.Username,
-                LastUpdateBy = UserAccountModel.Username,
-                LastUpdatedDate = DateTime.UtcNow,
-                CreatedDate = DateTime.UtcNow,
-                IsActive = true,
-            };
-            await _gstcalculationMasterBusinessLogic.AddGstMaster(gstcalculationMaster);
-            _=HideGSTForm(this);
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Saving GST Details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                GstcalculationMasterModel gstcalculationMaster = new()
+                {
+                    GstCategoryName = GSTCategory,
+                    CgstPercentage = Cgstpercentage,
+                    IgstPercentage = Igstpercentage,
+                    SgstPercentage = Sgstpercentage,
+                    CreatedBy = UserAccountModel.Username,
+                    LastUpdateBy = UserAccountModel.Username,
+                    LastUpdatedDate = DateTime.UtcNow,
+                    CreatedDate = DateTime.UtcNow,
+                    IsActive = true,
+                };
+                await _gstcalculationMasterBusinessLogic.AddGstMaster(gstcalculationMaster);
+                _ = HideGSTForm(this);
+
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Saved GST Details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to save GST Details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         #region Properties
