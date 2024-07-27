@@ -68,6 +68,7 @@ namespace VMA
             services.AddSingleton<IConfigurationBusinessLogic, ConfigurationBusinessLogic>();
 
             services.AddSingleton<IReportExportToExcelPaymentNote, ReportExportToExcelPaymentNote>();
+            services.AddSingleton<IPaymentNoteInWord, PaymentNoteInWord>();
             //services.AddSingleton(x =>new VenderPaymentNotesBusinesslogic(x.GetRequiredService<IVenderPaymentNotesRepository>(),
             //                                                              x.GetRequiredService<IInvoiceDetailsBusinessLogic>()));
             //Register services and view models
