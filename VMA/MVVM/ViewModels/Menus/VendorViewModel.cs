@@ -133,7 +133,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task EditVendor(object obj)
         {
-            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
+            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...",true);
 
             _parentViewModel.CurrentChildView = new AddUpdateVendorViewModel(_vendorBusinessLogic, this, (VendorModel)obj);
         }

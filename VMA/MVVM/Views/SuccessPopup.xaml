@@ -5,9 +5,10 @@
         xmlns:Conv="clr-namespace:VMA.Converters"
         Title="Notification Popup" SizeToContent="Height" WindowStartupLocation="CenterScreen"
         WindowStyle="None" AllowsTransparency="True" Background="Transparent" 
-        HorizontalAlignment="Center" VerticalAlignment="Center">
+        HorizontalAlignment="Center" VerticalAlignment="Center" Topmost="True">
     <Window.Resources>
         <Conv:NotificationTypeToBrushConverter x:Key="NotificationTypeToBrushConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Window.Resources>
     <Grid RenderTransformOrigin="0,1" >
 
@@ -22,8 +23,7 @@
                     <TextBlock TextWrapping="Wrap" Margin="5" Text="{Binding Message,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}">
     
                     </TextBlock>
-                    <!--<CheckBox Content="Checkable" Margin="5 5 0 5" />
-                    <Button Content="Clickable" HorizontalAlignment="Center" />-->
+                    <Button Content="OK" HorizontalAlignment="Center" Style="{StaticResource DefaultButtonStyle}" Command="{Binding ClosePopupView}" Visibility="{Binding IsOKbtnVisible,Converter={StaticResource BoolToVisibilityConverter}}"/>
                 </StackPanel>
             </Border>
         </Border>
@@ -37,10 +37,10 @@
                             <SplineDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
                             <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
                         </DoubleAnimationUsingKeyFrames>
-                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
+                        <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)">
                             <SplineDoubleKeyFrame KeyTime="0:0:2" Value="1"/>
-                            <SplineDoubleKeyFrame KeyTime="0:0:4" Value="0"/>
-                        </DoubleAnimationUsingKeyFrames>
+                            <SplineDoubleKeyFrame KeyTime="0:0:10" Value="0"/>
+                        </DoubleAnimationUsingKeyFrames>-->
                     </Storyboard>
                 </BeginStoryboard>
             </EventTrigger>

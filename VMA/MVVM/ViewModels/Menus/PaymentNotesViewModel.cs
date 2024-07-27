@@ -140,7 +140,7 @@ namespace VMA.MVVM.ViewModels.Menus
         }
         private async Task EditPaymentNoteForm(VenderPaymentNoteModel model)
         {
-            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
+            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...", true);
             _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this, _vendorDetailsBusinessLogic,_vendorBusinessLogic,_venderPaymentNotesBusinessLogic,model, _configurationBusinessLogic);
         }
         

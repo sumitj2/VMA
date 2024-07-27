@@ -542,7 +542,7 @@ namespace VMA.MVVM.ViewModels.Add
                 };
                 await _vendorDetailsBusinessLogic.EditUpdateVendorDetails(vendorModel);
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully");
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully",true);
             }
             else
             {
@@ -577,7 +577,7 @@ namespace VMA.MVVM.ViewModels.Add
                 };
                 await _vendorDetailsBusinessLogic.AddVendorDetails(vendorModel);
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully");
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully",true);
             }
 
             await HideDetailInfoForm(this);

@@ -315,7 +315,7 @@ namespace VMA.MVVM.ViewModels.Add
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
 
                     _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId));
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...", true);
                     _ = GetAmountToBepaid();
                 }
             }
@@ -785,7 +785,7 @@ namespace VMA.MVVM.ViewModels.Add
                 };
                 await _vendorPaymentBusinessLogic.EditUpdateVendorPayment(payment);
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully");
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
             }
             else
             {
@@ -828,7 +828,7 @@ namespace VMA.MVVM.ViewModels.Add
                 await _vendorPaymentBusinessLogic.AddVendorPayment(payment);
 
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully");
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
             }
 
             await HidePaymentForm(this);

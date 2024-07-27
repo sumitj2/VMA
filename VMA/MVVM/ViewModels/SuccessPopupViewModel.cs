@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using VMA.Enums;
@@ -70,29 +71,76 @@ namespace VMA.MVVM.ViewModels
             }
         }
 
+        private bool _isOKbtnVisible;
+
+        public bool IsOKbtnVisible
+        {
+            get => _isOKbtnVisible;
+            set
+            {
+                _isOKbtnVisible = value;
+                OnPropertyChanged(nameof(IsOKbtnVisible));
+            }
+        }
+
+        /// <summary>
+        /// New Document commmnad
+        /// </summary>
+        private ViewModelCommand closePopupView;
+
+        /// <summary>
+        /// Enroll Command
+        /// </summary>
+        public ICommand ClosePopupView
+        {
+            get
+            {
+                if (this.closePopupView == null)
+                {
+                    this.closePopupView = new ViewModelCommand(c => this.ClosePopup());
+                }
+
+                return this.closePopupView;
+            }
+        }
+
         public SuccessPopupViewModel()
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
         }
 
-        public void ShowPopup(NotificationType notificationType, string message)
+        Window Window;
+
+        public void ShowPopup(NotificationType notificationType, string message, bool isAutomaticClosed,bool isOkBtnVisible = false)
         {
             Message = message;
             TypeOfNotification = notificationType;
             Header = notificationType.ToString();
+            IsOKbtnVisible = isOkBtnVisible;
 
-            Window window = (Window)Activator.CreateInstance(typeof(SuccessPopup))!;
-            window?.Show();
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(5); // Set the interval to 2 seconds
-            timer.Tick += (s, args) =>
+            Window = (Window)Activator.CreateInstance(typeof(SuccessPopup))!;
+            Window?.Show();
+
+            if (isAutomaticClosed)
             {
-                window?.Close(); // Close the popup
-                timer.Stop(); // Stop the timer
-            };
+                DispatcherTimer timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromSeconds(5); // Set the interval to 2 seconds
+                
+                timer.Start();
 
-            timer.Start();
+                timer.Tick += (s, args) =>
+                {
+                    Window?.Close(); // Close the popup
+                    timer.Stop(); // Stop the timer
+                };
+
+            }
+        }
+
+        public void ClosePopup()
+        {
+            Window?.Close();
         }
     }
 }

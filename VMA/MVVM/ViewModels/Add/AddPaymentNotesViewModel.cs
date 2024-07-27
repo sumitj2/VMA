@@ -276,7 +276,7 @@ namespace VMA.MVVM.ViewModels.Add
                 };
                 await _venderPaymentNotesBusinessLogic.EditUpdatePaymentNotes(payment);
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully");
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully",true);
             }
             else
             {
@@ -293,7 +293,7 @@ namespace VMA.MVVM.ViewModels.Add
                 await _venderPaymentNotesBusinessLogic.AddPaymentNotes(paymentNote);
 
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully");
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
             }
 
             await HidePaymentNoteForm(this);

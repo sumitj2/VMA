@@ -143,7 +143,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task EditPayment(VendorPaymentModel model)
         {
-            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...");
+            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...", true);
             _parentViewModel.CurrentChildView = new AddPaymentsViewModel(this,_vendorDetailsBusinessLogic, model, _vendorPaymentBusinessLogic, _gstcalculationMasterBusinessLogic,_vendorBusinessLogic, _venderPaymentNotesBusinessLogic, _configurationBusinessLogic);
         }
 

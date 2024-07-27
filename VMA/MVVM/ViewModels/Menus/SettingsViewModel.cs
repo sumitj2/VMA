@@ -438,7 +438,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 }
                 else
                 {
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Department is already exist, please try different");
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Department is already exist, please try different", false, true);
                 }
             }
             else
@@ -497,7 +497,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 }
                 else
                 {
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Expenditure is already exist, please try different");
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Expenditure is already exist, please try different", false, true);
                 }
             }
             else
@@ -556,7 +556,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 }
                 else
                 {
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Saction is already exist, please try different");
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Sanction is already exist, please try different", false, true);
                 }
             }
             else
@@ -566,6 +566,7 @@ namespace VMA.MVVM.ViewModels.Menus
                     SanctionName = NeworExistingSanction,
                     Id = Convert.ToString(Sanctions.Count + 1)
                 });
+
                 operation = "add";
 
                 await SaveConfiguration(0, nameof(Sanction), Sanctions, operation);
