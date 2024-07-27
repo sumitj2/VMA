@@ -113,7 +113,9 @@ namespace VMA.MVVM.ViewModels.Add
                 if (res != null)
                 {
                     var msg1 = @$"Payment Note alreday genrated for {_SelectedVendorModel?.VendorName}";
-                    MessageBox.Show(msg1);
+
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, msg1, false, true);
+
                     _=HidePaymentNoteForm(this);
 
                 }
@@ -218,7 +220,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-            PaymentNoteNo = Convert.ToString(paymentNotesViewModel.VendorPaymentNotes.Count + 1);
+            PaymentNoteNo = Convert.ToString(paymentNotesViewModel.VendorPaymentNotes?.Count + 1);
             _paymentNotesViewModel = paymentNotesViewModel;
             _editPaymentNote = editPaymentNote;
             if (_editPaymentNote != null)
@@ -245,6 +247,7 @@ namespace VMA.MVVM.ViewModels.Add
             _configurationBusinessLogic = configurationBusinessLogic;
             CallAync();
         }
+
         public async Task GetAllConfigurations()
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
@@ -262,41 +265,56 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task SubmitPaymentNote(VenderPaymentNoteModel model)
         {
-            if (SaveButtonName == "Update")
+            try
             {
-                VenderPaymentNoteModel payment = new()
-                {
-                    LastUpdateBy = UserAccountModel.Username,
-                    IsActive = true,
-                    PaymentNoteNo = PaymentNoteId + PaymentNoteNo ?? "",
-                    PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
-                    NoteId = _editPaymentNote?.NoteId,
-                    FkVendorId = _editPaymentNote?.VendorId,
-                    PaymentNoteYear = PaymentNoteYear
-                };
-                await _venderPaymentNotesBusinessLogic.EditUpdatePaymentNotes(payment);
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the SubmitPaymentNote", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully",true);
+                if (SaveButtonName == "Update")
+                {
+                    VenderPaymentNoteModel payment = new()
+                    {
+                        LastUpdateBy = UserAccountModel.Username,
+                        IsActive = true,
+                        PaymentNoteNo = PaymentNoteId + PaymentNoteNo ?? "",
+                        PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
+                        NoteId = _editPaymentNote?.NoteId.Value,
+                        FkVendorId = _editPaymentNote?.VendorId,
+                        PaymentNoteYear = PaymentNoteYear
+                    };
+                    await _venderPaymentNotesBusinessLogic.EditUpdatePaymentNotes(payment);
+
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor payment updated Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
+                }
+                else
+                {
+                    VenderPaymentNoteModel paymentNote = new()
+                    {
+                        PaymentNoteNo = PaymentNoteId + PaymentNoteNo ?? "",
+                        PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
+                        CreatedBy = UserAccountModel.Username,
+                        CreatedDate = DateTime.UtcNow,
+                        IsActive = true,
+                        FkVendorId = SelectedVendorModel.VendorId,
+                        PaymentNoteYear = PaymentNoteYear
+                    };
+                    await _venderPaymentNotesBusinessLogic.AddPaymentNotes(paymentNote);
+
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor payment saved Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
+                }
+
+                await HidePaymentNoteForm(this);
             }
-            else
+            catch(Exception ex)
             {
-                VenderPaymentNoteModel paymentNote = new()
-                {
-                    PaymentNoteNo = PaymentNoteId + PaymentNoteNo ?? "",
-                    PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
-                    CreatedBy = UserAccountModel.Username,
-                    CreatedDate = DateTime.UtcNow,
-                    IsActive = true,
-                    FkVendorId = SelectedVendorModel.VendorId,
-                    PaymentNoteYear = PaymentNoteYear
-                };
-                await _venderPaymentNotesBusinessLogic.AddPaymentNotes(paymentNote);
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to save vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to save vendor payments, Please contact to Administrator", false, true);
             }
-
-            await HidePaymentNoteForm(this);
         }
 
         private async void CallAync()

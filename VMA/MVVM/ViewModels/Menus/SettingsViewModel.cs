@@ -421,9 +421,9 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(string.Format("Class: {0}, Method: {1} - Could not load All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to load All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Could not load All configurations, Please contact to Administrator", false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to load All configurations, Please contact to Administrator", false, true);
             }
         }
         private async void AddOrUpdateDepartments()
@@ -689,9 +689,9 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Could not save configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to save configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Could not save configuration, please try again or contact to administrator", false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to save configuration, please try again or contact to administrator", false, true);
             }
         }
 

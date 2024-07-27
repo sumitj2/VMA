@@ -17,6 +17,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
 
@@ -402,6 +403,19 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
+
+        private string? _noteId;
+
+        public string? NoteId
+        {
+            get { return _noteId; }
+            set
+            {
+                _noteId = value;
+                OnPropertyChanged(nameof(NoteId));
+            }
+        }
+
         #region GST Tab
 
         //CGST
@@ -640,27 +654,15 @@ namespace VMA.MVVM.ViewModels.Add
            _= CallAync();
         }
 
-        private string? _noteId;
-
-        public string? NoteId
-        {
-            get { return _noteId; }
-            set
-            {
-                _noteId = value;
-                OnPropertyChanged(nameof(NoteId));
-            }
-        }
         public async Task GetAllConfigurations()
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
 
             string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
 
-
             VendorPaymentYear = financialYear;
-
         }
+
         private async Task PopulateValues()
         {
             if (_vendorPaymentModel != null)
@@ -710,7 +712,6 @@ namespace VMA.MVVM.ViewModels.Add
                     SelectedGSTModel = GSTDetails[GSTDetails.IndexOf(gstSrNo)];
                 }
             }
-
         }
 
         private async Task ClearPaymentForm(VendorPaymentModel model)
@@ -743,95 +744,109 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task SubmitPaymentDetails(VendorPaymentModel model)
         {
-            if (SaveButtonName == "Update")
+            try
             {
-                VendorPaymentModel payment = new VendorPaymentModel()
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the SubmitPaymentDetails", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                if (SaveButtonName == "Update")
                 {
-                    PaymentYear = VendorPaymentYear,
-                    FkNoteId = _vendorPaymentModel.NoteId,
-                    Notes = VendorPaymentNotesDetails,
+                    VendorPaymentModel payment = new VendorPaymentModel()
+                    {
+                        PaymentYear = VendorPaymentYear,
+                        FkNoteId = _vendorPaymentModel.NoteId,
+                        Notes = VendorPaymentNotesDetails,
 
-                    VendorPaymentDate = VendorPaymentDate,
-                    VendorPaymentAmount = VendorPaymentAmount,
-                    VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
+                        VendorPaymentDate = VendorPaymentDate.Value,
+                        VendorPaymentAmount = VendorPaymentAmount,
+                        VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
 
-                    VendorPaymentIsGst = IsGSTDetailsVisible,
-                    FkGstmasterSrNo = IsGSTDetailsVisible ? SelectedGSTModel.SrNo : 0,
-                    VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
-                    IsPaymentForBranch = IsBranchNameVisible,
-                    BankBranchName = IsBranchNameVisible ? BankBranchName : "",
+                        VendorPaymentIsGst = IsGSTDetailsVisible,
+                        FkGstmasterSrNo = IsGSTDetailsVisible ? SelectedGSTModel.SrNo : 0,
+                        VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
+                        IsPaymentForBranch = IsBranchNameVisible,
+                        BankBranchName = IsBranchNameVisible ? BankBranchName : "",
 
-                    VendorPaymentCgst = IsGSTDetailsVisible ? VendorPaymentCgst : 0,
-                    VendorPaymentSgst = IsGSTDetailsVisible ? VendorPaymentSgst : 0,
-                    VendorPaymentIgst = IsGSTDetailsVisible ? VendorPaymentIgst : 0,
+                        VendorPaymentCgst = IsGSTDetailsVisible ? VendorPaymentCgst : 0,
+                        VendorPaymentSgst = IsGSTDetailsVisible ? VendorPaymentSgst : 0,
+                        VendorPaymentIgst = IsGSTDetailsVisible ? VendorPaymentIgst : 0,
 
-                    InvoiceDate = InvoiceDate,
-                    InvoiceNumber = InvoiceNumber,
-                    InvoiceParticulars = InvoiceParticulars,
+                        InvoiceDate = InvoiceDate,
+                        InvoiceNumber = InvoiceNumber,
+                        InvoiceParticulars = InvoiceParticulars,
 
-                    PaymentCode = "",
+                        PaymentCode = "",
 
-                    VendorPaymentRtgsDate = VendorPaymentRtgsDate,
-                    VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
-                    VendorPaymentUtrnumber = VendorPaymentUtrnumber,
-                    VendorPaymentTdsamount = IsTDSTextBoxVisible ? Convert.ToDecimal(VendorPaymentTdsamountNew) : 0,
+                        VendorPaymentRtgsDate = VendorPaymentRtgsDate,
+                        VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
+                        VendorPaymentUtrnumber = VendorPaymentUtrnumber,
+                        VendorPaymentTdsamount = IsTDSTextBoxVisible ? Convert.ToDecimal(VendorPaymentTdsamountNew) : 0,
 
-                    LastUpdateBy = UserAccountModel.Username,
-                    LastUpdatedDate = DateTime.UtcNow,
-                    VendorPaymentId = _vendorPaymentModel.VendorPaymentId,
-                    IsActive = true,
-                    FkVendorDetailId = _vendorPaymentModel.FkVendorDetailId,
-                    InvoiceId = _vendorPaymentModel.InvoiceId,
-                };
-                await _vendorPaymentBusinessLogic.EditUpdateVendorPayment(payment);
+                        LastUpdateBy = UserAccountModel.Username,
+                        LastUpdatedDate = DateTime.UtcNow,
+                        VendorPaymentId = _vendorPaymentModel.VendorPaymentId,
+                        IsActive = true,
+                        FkVendorDetailId = _vendorPaymentModel.FkVendorDetailId,
+                        InvoiceId = _vendorPaymentModel.InvoiceId,
+                    };
+                    await _vendorPaymentBusinessLogic.EditUpdateVendorPayment(payment);
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Payment Details Updated Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
+                }
+                else
+                {
+                    VendorPaymentModel payment = new()
+                    {
+                        PaymentYear = VendorPaymentYear,
+                        FkNoteId = PaymentNoteDetails.NoteId.Value,//
+                        FkVendorDetailId = SelectedVendorDetailService.VendorDetailId,
+                        Notes = VendorPaymentNotesDetails,
+
+                        VendorPaymentDate = VendorPaymentDate.Value,
+                        VendorPaymentAmount = VendorPaymentAmount,
+                        VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
+
+                        VendorPaymentIsGst = IsGSTDetailsVisible,
+                        FkGstmasterSrNo = SelectedGSTModel != null ? SelectedGSTModel.SrNo : 0,
+                        VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
+                        IsPaymentForBranch = IsBranchNameVisible,
+                        BankBranchName = IsBranchNameVisible ? BankBranchName : null,
+
+                        VendorPaymentCgst = IsGSTDetailsVisible ? VendorPaymentCgst : 0,
+                        VendorPaymentSgst = IsGSTDetailsVisible ? VendorPaymentSgst : 0,
+                        VendorPaymentIgst = IsGSTDetailsVisible ? VendorPaymentIgst : 0,
+
+                        InvoiceDate = InvoiceDate,
+                        InvoiceNumber = InvoiceNumber,
+                        InvoiceParticulars = InvoiceParticulars,
+
+                        PaymentCode = "",
+
+                        VendorPaymentRtgsDate = VendorPaymentRtgsDate,
+                        VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
+                        VendorPaymentUtrnumber = VendorPaymentUtrnumber,
+                        VendorPaymentTdsamount = IsTDSTextBoxVisible ? Convert.ToDecimal(VendorPaymentTdsamountNew) : 0,
+
+                        CreatedBy = UserAccountModel.Username,
+                        CreatedDate = DateTime.UtcNow,
+                        IsActive = true,
+                    };
+                    await _vendorPaymentBusinessLogic.AddVendorPayment(payment);
+
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Payment Details Added Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
+                }
+
+                await HidePaymentForm(this);
             }
-            else
+            catch(Exception ex)
             {
-                VendorPaymentModel payment = new()
-                {
-                    PaymentYear = VendorPaymentYear,
-                    FkNoteId = PaymentNoteDetails.NoteId,//
-                    FkVendorDetailId = SelectedVendorDetailService.VendorDetailId,
-                    Notes = VendorPaymentNotesDetails,
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to submit Payment Details.", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-                    VendorPaymentDate = VendorPaymentDate,
-                    VendorPaymentAmount = VendorPaymentAmount,
-                    VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
-
-                    VendorPaymentIsGst = IsGSTDetailsVisible,
-                    FkGstmasterSrNo = SelectedGSTModel != null ? SelectedGSTModel.SrNo : 0,
-                    VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
-                    IsPaymentForBranch = IsBranchNameVisible,
-                    BankBranchName = IsBranchNameVisible ? BankBranchName : null,
-
-                    VendorPaymentCgst = IsGSTDetailsVisible ? VendorPaymentCgst : 0,
-                    VendorPaymentSgst = IsGSTDetailsVisible ? VendorPaymentSgst : 0,
-                    VendorPaymentIgst = IsGSTDetailsVisible ? VendorPaymentIgst : 0,
-
-                    InvoiceDate = InvoiceDate,
-                    InvoiceNumber = InvoiceNumber,
-                    InvoiceParticulars = InvoiceParticulars,
-
-                    PaymentCode = "",
-
-                    VendorPaymentRtgsDate = VendorPaymentRtgsDate,
-                    VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
-                    VendorPaymentUtrnumber = VendorPaymentUtrnumber,
-                    VendorPaymentTdsamount = IsTDSTextBoxVisible ? Convert.ToDecimal(VendorPaymentTdsamountNew) : 0,
-
-                    CreatedBy = UserAccountModel.Username,
-                    CreatedDate = DateTime.UtcNow,
-                    IsActive = true,
-                };
-                await _vendorPaymentBusinessLogic.AddVendorPayment(payment);
-
-
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to save Payment Details, Please contact to Administrator", false, true);
             }
-
-            await HidePaymentForm(this);
         }
 
         public async Task HidePaymentForm(object model)
@@ -843,6 +858,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             await MainTask();
         }
+
         public async Task MainTask()
         {
             await GetAllConfigurations();
@@ -850,6 +866,7 @@ namespace VMA.MVVM.ViewModels.Add
             await LoadVendors();
             await PopulateValues();
         }
+
         private void CalculateGST()
         {
             if (SelectedGSTModel != null)
@@ -865,21 +882,36 @@ namespace VMA.MVVM.ViewModels.Add
 
             GSTTotal = Convert.ToDouble(VendorPaymentCgst + VendorPaymentIgst + VendorPaymentSgst);
             VendorPaymentTotalAmountPaid = Convert.ToDecimal(GSTTotal + Convert.ToDouble(VendorPaymentAmount));
-
         }
+
         private async Task GetAmountToBepaid()
         {
-            string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
-            decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
-            int? vendorDetaillID = SelectedVendorDetailService?.VendorDetailId;
-            var res = await _vendorPaymentBusinessLogic.GetAmoutToBePaidDetails(vendorDetaillID, santionedAmt, paymentType).ConfigureAwait(true);
-            VendorPaymentAmount = res?.TotalPaymentNotTaxable;
-            if (res?.Meassage != null)
+            try
             {
-                MessageBox.Show(res.Meassage);
-                // SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, res.Meassage);
-                if (res?.Meassage == "Total Amount cannot be greater than santioned amount")
-                    await HidePaymentForm(this);
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting payment amount", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
+                decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
+                int? vendorDetaillID = SelectedVendorDetailService?.VendorDetailId;
+
+                var res = await _vendorPaymentBusinessLogic.GetAmoutToBePaidDetails(vendorDetaillID, santionedAmt, paymentType).ConfigureAwait(true);
+                VendorPaymentAmount = res?.TotalPaymentNotTaxable;
+
+                if (res?.Meassage != null)
+                {
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, res?.Meassage, false, true);
+
+                    if (res?.Meassage == "Total Amount cannot be greater than santioned amount")
+                    {
+                        await HidePaymentForm(this);
+                    }
+
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved payment amount", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get payment amount.", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
         private async Task LoadGSTDetails()

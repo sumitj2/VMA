@@ -47,9 +47,8 @@ namespace VMA.MVVM.ViewModels.Add
 
                 if (res != null)
                 {
-                    var msg = @$"Vendor Details alreday added for {_selectedVendorDetailService?.VendorServiceName}";
-                    MessageBox.Show(msg);
-                    _=HideDetailInfoForm(this);
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, msg1, false, true);
+                    _ = HideDetailInfoForm(this);
                 }
 
             }
@@ -581,9 +580,9 @@ namespace VMA.MVVM.ViewModels.Add
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(string.Format("Class: {0}, Method: {1} - Failed to get all the configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to get all the configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Could not load All configurations, Please contact to Administrator", false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to load All configurations, Please contact to Administrator", false, true);
             }
         }
         private async Task SaveVendorServiceDetails(VendorDetailModel model)
@@ -673,9 +672,9 @@ namespace VMA.MVVM.ViewModels.Add
             }
             catch (Exception ex)
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Could not save vendor service details, please try again or contact to administrator", false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed save vendor service details, please try again or contact to administrator", false, true);
 
-                Log.Logger.Error(string.Format("Class: {0}, Method: {1} - Failed to Save vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to Save vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
 
@@ -770,7 +769,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(string.Format("Class: {0}, Method: {1} - Failed to load vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to load vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
             }
         }
@@ -792,7 +791,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(string.Format("Class: {0}, Method: {1} - Failed to load vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to load vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
 
