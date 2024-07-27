@@ -104,7 +104,9 @@ namespace VMA.MVVM.ViewModels.Menus
                     foreach (PropertyInfo property in properties.Where(x => x.PropertyType == typeof(String)))
                     {
                         if (!skip.Contains(property.Name))
+                        {
                             _comboItem.Add(new SearchModel() { NameSearch = property.Name, SearchId = id });
+                        }
                     }
                 }
 
@@ -129,14 +131,14 @@ namespace VMA.MVVM.ViewModels.Menus
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
             _configurationBusinessLogic = configurationBusinessLogic;
-            _venderPaymentNotesBusinessLogic=venderPaymentNotesBusinessLogic;
-            _vendorDetailsBusinessLogic=vendorDetailsBusinessLogic; 
-            _vendorBusinessLogic=vendorBusinessLogic;
+            _venderPaymentNotesBusinessLogic = venderPaymentNotesBusinessLogic;
+            _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
+            _vendorBusinessLogic = vendorBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowPaymentNoteFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(ShowPaymentNotesForm);
             HidePaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(HidePaymentNotesForm);
             EditPaymentNotesFormCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(EditPaymentNoteForm);
-            _=GetPaymentsNote();
+            _ = GetPaymentsNote();
         }
         private async Task EditPaymentNoteForm(VenderPaymentNoteModel model)
         {
@@ -147,7 +149,6 @@ namespace VMA.MVVM.ViewModels.Menus
         private async Task ShowPaymentNotesForm(VenderPaymentNoteModel model)
         {
             _parentViewModel.CurrentChildView = new AddPaymentNotesViewModel(this,_vendorDetailsBusinessLogic,_vendorBusinessLogic,_venderPaymentNotesBusinessLogic,null, _configurationBusinessLogic);
-
         }
 
         public async Task HidePaymentNotesForm(object obj)
@@ -158,8 +159,20 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task GetPaymentsNote()
         {
-            var paymentNotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
-            VendorPaymentNotes = TempVendorPaymentNotes = new ObservableCollection<VenderPaymentNoteModel>(paymentNotes);
+            try
+            {
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting payment notes", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                var paymentNotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
+                VendorPaymentNotes = TempVendorPaymentNotes = new ObservableCollection<VenderPaymentNoteModel>(paymentNotes);
+
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved payment notes", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get payment notes", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
     }
 }

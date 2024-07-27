@@ -130,65 +130,128 @@ namespace VMA.MVVM.ViewModels
 
         private void ExecuteShowGSTViewCommand(object t)
         {
-            CurrentChildView = new GSTViewModel(_gstcalculationMasterBusinessLogic,this);
-            Caption = "GTS Master";
-            Icon = IconChar.RankingStar;
+            try
+            {
+                CurrentChildView = new GSTViewModel(_gstcalculationMasterBusinessLogic, this);
+                Caption = "GTS Master";
+                Icon = IconChar.RankingStar;
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         private void ExecuteShowSettingViewCommand(object obj)
         {
-            CurrentChildView = new SettingsViewModel(_configurationBusinessLogic);
-            Caption = "Settings";
-            Icon = IconChar.Gears;
+            try
+            {
+                CurrentChildView = new SettingsViewModel(_configurationBusinessLogic);
+                Caption = "Settings";
+                Icon = IconChar.Gears;
+            }
+            catch(Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         private void ExecuteShowReportViewCommand(object obj)
         {
-            CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote);
-            Caption = "Reports";
-            Icon = IconChar.File;
+            try
+            {
+                CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote);
+                Caption = "Reports";
+                Icon = IconChar.File;
+            }
+            catch(Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         private void ExecutePaymentNoteViewCommand(object obj)
         {
-            CurrentChildView = new PaymentNotesViewModel(this, _venderPaymentNotesBusinessLogic, _vendorDetailsBusinessLogic, _vendorBusinessLogic, _configurationBusinessLogic);
-            Caption = "Payment Notes";
-            Icon = IconChar.NoteSticky;
+            try
+            {
+                CurrentChildView = new PaymentNotesViewModel(this, _venderPaymentNotesBusinessLogic, _vendorDetailsBusinessLogic, _vendorBusinessLogic, _configurationBusinessLogic);
+                Caption = "Payment Notes";
+                Icon = IconChar.NoteSticky;
+            }
+            catch(Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         private void ExecuteShowPaymentViewCommand(object obj)
         {
-            CurrentChildView = new PaymentsViewModel(this, _vendorPaymentBusinessLogic, _vendorDetailsBusinessLogic, _gstcalculationMasterBusinessLogic,_vendorBusinessLogic,_venderPaymentNotesBusinessLogic, _configurationBusinessLogic);
-            Caption = "Payments";
-            Icon = IconChar.Paypal;
+            try
+            {
+                CurrentChildView = new PaymentsViewModel(this, _vendorPaymentBusinessLogic, _vendorDetailsBusinessLogic, _gstcalculationMasterBusinessLogic, _vendorBusinessLogic, _venderPaymentNotesBusinessLogic, _configurationBusinessLogic);
+                Caption = "Payments";
+                Icon = IconChar.Paypal;
+            }
+            catch(Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         private void ExecuteShowDetailedInfoViewCommand(object obj)
         {
-            CurrentChildView = new DetailedInfoViewModel(this, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic,_vendorBusinessLogic,_configurationBusinessLogic);
-            Caption = "Detailed Info";
-            Icon = IconChar.InfoCircle;
+            try
+            {
+                CurrentChildView = new DetailedInfoViewModel(this, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic, _vendorBusinessLogic, _configurationBusinessLogic);
+                Caption = "Detailed Info";
+                Icon = IconChar.InfoCircle;
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         private void ExecuteShowProductServicesViewCommand(object obj)
         {
-            CurrentChildView = new ProductServicesViewModel(_vendorServiceBusinessLogic, _vendorBusinessLogic, this);
-            Caption = "Products Services";
-            Icon = IconChar.ProductHunt;
+            try
+            {
+                CurrentChildView = new ProductServicesViewModel(_vendorServiceBusinessLogic, _vendorBusinessLogic, this);
+                Caption = "Products Services";
+                Icon = IconChar.ProductHunt;
+            }
+            catch(Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         private void ExecuteShowVendorViewCommand(object obj)
         {
-            CurrentChildView = new VendorViewModel(_vendorBusinessLogic, this);
-            Caption = "Vendors";
-            Icon = IconChar.UserGroup;
+            try
+            {
+                CurrentChildView = new VendorViewModel(_vendorBusinessLogic, this);
+                Caption = "Vendors";
+                Icon = IconChar.UserGroup;
+            }
+            catch(Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         private void ExecuteShowHomeViewCommand(object obj)
         {
-            CurrentChildView = new HomeViewModel();
-            Caption = "Home";
-            Icon = IconChar.Home;
+            try
+            {
+                CurrentChildView = new HomeViewModel();
+                Caption = "Home";
+                Icon = IconChar.Home;
+            }
+            catch(Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         private async Task LoadCurrentUserData()

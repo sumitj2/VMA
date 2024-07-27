@@ -107,7 +107,6 @@ namespace VMA.MVVM.ViewModels
         public SuccessPopupViewModel()
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
-
         }
 
         Window Window;

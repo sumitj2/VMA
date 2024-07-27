@@ -105,7 +105,9 @@ namespace VMA.MVVM.ViewModels.Menus
                     foreach (PropertyInfo property in properties.Where(x => x.PropertyType == typeof(String)))
                     {
                         if (!skip.Contains(property.Name))
+                        {
                             _comboItem.Add(new SearchModel() { NameSearch = property.Name, SearchId = id });
+                        }
                     }
                 }
 
@@ -160,8 +162,19 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task GetVendorPayments()
         {
-            var vendors = await _vendorPaymentBusinessLogic.GetAllVendorPayment().ConfigureAwait(true);
-            VendorsPayment = TempVendorsPayment = new ObservableCollection<VendorPaymentModel>(vendors);
+            try
+            {
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                var vendors = await _vendorPaymentBusinessLogic.GetAllVendorPayment().ConfigureAwait(true);
+                VendorsPayment = TempVendorsPayment = new ObservableCollection<VendorPaymentModel>(vendors);
+
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
     }
 }

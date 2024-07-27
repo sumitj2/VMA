@@ -151,8 +151,20 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task GetDetailsVendorServices()
         {
-            var details = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
-            VendorServiceDetails = TempVendorServiceDetails = new ObservableCollection<VendorDetailModel>(details);
+            try
+            {
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting Vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                var details = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
+                VendorServiceDetails = TempVendorServiceDetails = new ObservableCollection<VendorDetailModel>(details);
+
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retreived Vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+            }
+            catch (Exception ex) 
+            {
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to retreived Vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
     }
 }

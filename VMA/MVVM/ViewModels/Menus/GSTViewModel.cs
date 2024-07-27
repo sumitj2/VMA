@@ -111,8 +111,19 @@ namespace VMA.MVVM.ViewModels.Menus
         }
         private async Task GetGSTMaster()
         {
-            var vendors = await _gstcalculationMasterBusinessLogic.GetAllGstMaster().ConfigureAwait(true);
-            GSTMaster = TempGSTMaster = new ObservableCollection<GstcalculationMasterModel>(vendors);
+            try
+            {
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting GST master details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                var vendors = await _gstcalculationMasterBusinessLogic.GetAllGstMaster().ConfigureAwait(true);
+                GSTMaster = TempGSTMaster = new ObservableCollection<GstcalculationMasterModel>(vendors);
+
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved GST master details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to get GST master details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         #region commands

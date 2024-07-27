@@ -140,8 +140,19 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task GetVendors()
         {
-            var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
-            Vendors = TempVendors = new ObservableCollection<VendorModel>(vendors);
+            try
+            {
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
+                Vendors = TempVendors = new ObservableCollection<VendorModel>(vendors);
+
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to get vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            }
         }
 
         private void ShowVendorForm(object obj)

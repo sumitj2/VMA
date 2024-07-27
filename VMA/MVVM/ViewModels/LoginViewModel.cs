@@ -140,17 +140,28 @@ namespace VMA.MVVM.ViewModels.Login
 
         private async void ExecuteLoginCommand(object obj)
         {
-            var isValidUser = await _userBusinessLogic.AuthenticateUser(new NetworkCredential(Username, Password));
-            
-            if (isValidUser)
+            try
             {
-                Thread.CurrentPrincipal = new GenericPrincipal(
-                    new GenericIdentity(Username), null);
-                IsViewVisible = false;
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the Login Command", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+
+                var isValidUser = await _userBusinessLogic.AuthenticateUser(new NetworkCredential(Username, Password));
+
+                if (isValidUser)
+                {
+                    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Username), null);
+                    IsViewVisible = false;
+
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - User Authenticated", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                }
+                else
+                {
+                    ErrorMessage = "* Invalid username or password";
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                ErrorMessage = "* Invalid username or password";
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to Authorize user", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
 
