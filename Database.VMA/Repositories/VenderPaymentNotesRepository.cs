@@ -62,7 +62,7 @@ namespace Database.VMA.Repositories
             return await paymentNoteWithAllDetails.ToListAsync();
         }
 
-        public async Task<List<ExportPaymentNoteData>> GetAllPaymentDetailsWithServiceDetailsToExport()
+        public async Task<List<ExportPaymentNoteData>> GetAllPaymentDetailsWithServiceDetailsToExport(string? finacialYear)
         {
             var productsWithVendors = from payment in _context.VendorPayments
                                       join details in _context.VendorDetails
@@ -76,6 +76,8 @@ namespace Database.VMA.Repositories
                                       join paymentNote in _context.VendorPaymentNotes
                                       on payment.FkNoteId equals paymentNote.NoteId
                                       where payment.IsActive == true
+                                            //&&
+                                            //payment.PaymentYear==finacialYear
 
                                       select new ExportPaymentNoteData
                                       {
@@ -103,7 +105,7 @@ namespace Database.VMA.Repositories
 
         }
 
-        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(string serviceName)//string financialYear
+        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(string? serviceName,string? financialYear)
         {
             var productsWithVendors = from payment in _context.VendorPayments
                                       join details in _context.VendorDetails
@@ -116,7 +118,10 @@ namespace Database.VMA.Repositories
                                       on payment.FkInvoiceId equals invoice.InvoiceId
                                       join paymentNote in _context.VendorPaymentNotes
                                       on payment.FkNoteId equals paymentNote.NoteId
-                                      where payment.IsActive == true && service.VendorServiceName==serviceName
+                                      where payment.IsActive == true && 
+                                            service.VendorServiceName==serviceName 
+                                            //&&
+                                            //payment.PaymentYear == payment.PaymentYear
 
                                       select new CreateWordDocumentPaymentNote
                                       {
@@ -143,8 +148,8 @@ namespace Database.VMA.Repositories
                                           RatePerUnit = details.RatePerUnit,
                                           SantionedDate = details.SantionedDate,
                                           TotalAmountPaid = payment.VendorPaymentTotalAmountPaid,
-                                          TotalGST = payment.VendorPaymentIgst + payment.VendorPaymentSgst + payment.VendorPaymentCgst
-
+                                          TotalGST = payment.VendorPaymentIgst + payment.VendorPaymentSgst + payment.VendorPaymentCgst,
+                                          UTRNo=payment.VendorPaymentUtrnumber
                                       };
             return await productsWithVendors.ToListAsync();
 

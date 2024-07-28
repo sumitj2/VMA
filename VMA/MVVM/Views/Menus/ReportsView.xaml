@@ -63,7 +63,7 @@
                                              Text="{Binding VendorPaymentYear ,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource FormTextBox}"
                                              TextWrapping="Wrap"
-                                             AcceptsReturn="True" />
+                                             AcceptsReturn="True" IsEnabled="False" />
 
                                     <TextBlock Text="Select Vendor"
                                                Style="{StaticResource FormTextBlock}"
@@ -139,7 +139,7 @@
                                                Margin="20,20,230,0"/>
 
                                     <DatePicker x:Name="txtserviceStartDate"
-                                                Text="{Binding ServiceStartDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361" />
+                                                Text="{Binding NoteGenerationDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361" />
 
                                     <TextBlock Text="Body Befor Invoice"
                                                Style="{StaticResource FormTextBlock}"/>

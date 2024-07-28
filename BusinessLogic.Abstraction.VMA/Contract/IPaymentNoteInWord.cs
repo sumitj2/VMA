@@ -8,6 +8,6 @@ namespace BusinessLogic.Abstraction.VMA.Contract
 {
     public interface IPaymentNoteInWord
     {
-        Task CreateAndOpenWordFile(string serviceName, string from, string to, string bodyTextBefore, string bodyTextAfter);
+        Task CreateAndOpenWordFile(string? serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path);
     }
 }

@@ -27,7 +27,7 @@ namespace BusinessLogic.VMA
         public async Task ExportPaymentNotes()
         {
             List<ExportPaymentNoteData> exportData = new List<ExportPaymentNoteData>();
-            var res = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetailsToExport().ConfigureAwait(true);
+            var res = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetailsToExport("").ConfigureAwait(true);
             var orderrez = res.OrderBy(x => x.PaymentNoteNo).ThenBy(x => x.VendorPaymentDate);
             var e = res.GroupBy(x => x.VendorServiceName);
             foreach (var item in orderrez)

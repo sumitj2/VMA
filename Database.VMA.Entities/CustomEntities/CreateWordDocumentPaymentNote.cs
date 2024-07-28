@@ -14,8 +14,7 @@ namespace Database.VMA.Entities.CustomEntities
 
         public string? CreatiionDate { get; set; }
         public DateOnly? SantionedDate { get; set; }
-        public string? From { get; set; }
-        public string? To { get; set; }
+        public string? UTRNo { get; set; }      
 
         public decimal? TotalGST { get; set; }
 

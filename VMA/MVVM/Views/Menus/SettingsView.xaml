@@ -52,7 +52,7 @@ BorderThickness="0"
                                             BorderThickness="0"
                                             Foreground="White"
                                             VerticalAlignment="Top"
-                                            Margin="280,-40,20,30"/>
+                                            Margin="280,-40,20,30" />
                                     <TextBlock Text="Enter Note ID"
                                            Style="{StaticResource FormTextBlock}"/>
 
@@ -116,8 +116,8 @@ BorderThickness="0"
                                         <DockPanel>
                                             <TextBox x:Name="inputTextBox" Style="{StaticResource FormTextBox}" Text="{Binding NeworExistingDepartment,UpdateSourceTrigger=PropertyChanged}" Width="200" Height="25"/>
                                             <TextBlock IsHitTestVisible="False" Text="Enter Department" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-220 0 0 0"  
-           Foreground="{StaticResource plainTextColor3}"
-           FontSize="13">
+                                                       Foreground="{StaticResource plainTextColor3}"
+                                                       FontSize="13">
                                                 <TextBlock.Style>
                                                     <Style TargetType="{x:Type TextBlock}">
                                                         <Setter Property="Visibility" Value="Collapsed"/>

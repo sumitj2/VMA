@@ -499,7 +499,8 @@ namespace VMA.MVVM.ViewModels.Menus
                     string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
                     string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear))?.CfgValue;
                     string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
-
+                    FilePathWord=allConfigurations.FirstOrDefault(x=>x.Cfgkey == nameof(FilePathWord))?.CfgValue;
+                    FilePathExcel=allConfigurations.FirstOrDefault(x=>x.Cfgkey== nameof(FilePathExcel))?.CfgValue;
                     NoteId = noteID;
                     FinancialYear = financialYear;
 

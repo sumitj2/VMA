@@ -6,6 +6,7 @@ using Database.VMA.Repositories;
 using Serilog;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Input;
 
 namespace VMA.MVVM.ViewModels.Menus
@@ -13,6 +14,23 @@ namespace VMA.MVVM.ViewModels.Menus
     public class ReportsViewModel : ViewModelBase
     {
         #region Observable collections for Combo box
+
+        private string? pathWord;
+
+        public string? PathWord
+        {
+            get { return pathWord; }
+            set { pathWord = value; }
+        }
+
+        private string? pathExcel;
+
+        public string? PathExcel
+        {
+            get { return pathExcel; }
+            set { pathExcel = value; }
+        }
+
 
         private VendorDetailModel _SelectedVendorDetailService;
         public VendorDetailModel SelectedVendorDetailService
@@ -23,6 +41,8 @@ namespace VMA.MVVM.ViewModels.Menus
                 _SelectedVendorDetailService = value;
                 if (SelectedVendorDetailService != null)
                 {
+                    BeforeInvocie += SelectedVendorDetailService.VendorServiceName;
+                    AfterInvoice += SelectedVendorDetailService.VendorServiceName;
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
                 }
             }
@@ -50,6 +70,19 @@ namespace VMA.MVVM.ViewModels.Menus
                 OnPropertyChanged(nameof(To));
             }
         }
+
+        private DateOnly _NoteGenerationDate;
+
+        public DateOnly NoteGenerationDate
+        {
+            get { return _NoteGenerationDate; }
+            set
+            {
+                _NoteGenerationDate = value;
+                OnPropertyChanged(nameof(NoteGenerationDate));
+            }
+        }
+
 
         private string? beforeInvocie;
 
@@ -118,6 +151,8 @@ namespace VMA.MVVM.ViewModels.Menus
                 if (SelectedVendorModel != null)
                 {
                     OnPropertyChanged(nameof(SelectedVendorModel));
+                    BeforeInvocie +=" "+ SelectedVendorModel.VendorName;
+                    AfterInvoice +=" "+ SelectedVendorModel.VendorName;
                     _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
                 }
             }
@@ -148,13 +183,13 @@ namespace VMA.MVVM.ViewModels.Menus
         #endregion
 
         public ICommand ExportPaymentNoteCommand { get; }
-        public ICommand GenerateCommand { get;  }
+        public ICommand GenerateCommand { get; }
         public readonly IReportExportToExcelPaymentNote _reportExportToExcelPaymentNote;
         public readonly IVendorBusinessLogic _vendorBusinessLogic;
         public readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         public readonly IConfigurationBusinessLogic _configurationBusinessLogic;
         public readonly IPaymentNoteInWord _paymentNoteInWord;
-        public ReportsViewModel(IReportExportToExcelPaymentNote reportExportToExcelPaymentNote, IVendorBusinessLogic vendorBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic,IPaymentNoteInWord paymentNoteInWord )
+        public ReportsViewModel(IReportExportToExcelPaymentNote reportExportToExcelPaymentNote, IVendorBusinessLogic vendorBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord)
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
@@ -170,7 +205,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task GeneratePaymentNote(CreateWordDocumentPaymentNote note)
         {
-            await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From,To,BeforeInvocie,AfterInvoice);
+            await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From, To, BeforeInvocie, AfterInvoice,_vendorPaymentYear,pathWord).ConfigureAwait(true);
         }
 
         private async Task CallAync()
@@ -181,9 +216,7 @@ namespace VMA.MVVM.ViewModels.Menus
         public async Task MainTask()
         {
             await GetAllConfigurations();
-
             await LoadVendors();
-
         }
 
         private async Task ExportPaymentNote(Database.VMA.Entities.CustomEntities.ExportPaymentNoteData data)
@@ -205,10 +238,15 @@ namespace VMA.MVVM.ViewModels.Menus
         public async Task GetAllConfigurations()
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
+            VendorPaymentYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue; 
+            pathWord = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FilePathWord")?.CfgValue;            
 
-            string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
+            pathExcel = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FilePathExcel")?.CfgValue;
+            if (pathWord == null || pathExcel==null)
+            {
+                MessageBox.Show("Please Set file storage configuration in settings ");   
+            }
 
-            VendorPaymentYear = financialYear;
         }
     }
 }
