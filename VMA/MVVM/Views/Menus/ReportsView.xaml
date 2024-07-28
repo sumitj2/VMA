@@ -55,111 +55,109 @@
                                 </Grid.ColumnDefinitions>
 
                                 <StackPanel x:Name="CompanyDetails" Grid.Row="0"
-            Orientation="Vertical">
+                                            Orientation="Vertical">
                                     <TextBlock Text="Service Year"
-                       Style="{StaticResource FormTextBlock}"
-                       Margin="20,20,230,0"/>
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
                                     <TextBox x:Name="txtServiceYear"
-                       Text="{Binding ServiceYear ,UpdateSourceTrigger=PropertyChanged}"
-                       Style="{StaticResource FormTextBox}"
-                       TextWrapping="Wrap"
-                       AcceptsReturn="True" />
+                                             Text="{Binding VendorPaymentYear ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True" />
 
                                     <TextBlock Text="Select Vendor"
-                       Style="{StaticResource FormTextBlock}"
-                       Margin="20,20,230,0"/>
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
 
-                                    <ComboBox Style="{StaticResource vendorCombobox}"                              
-                      
-                      ItemsSource="{Binding VendorModels}"   
-                      SelectedItem="{Binding SelectedVendorModel, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
-                      DisplayMemberPath="VendorName" 
-                      SelectedValuePath="VendorId"
-                      SelectedValue="{Binding SelectedVendorDetailService.VendorId, Mode=TwoWay}"
-                      Grid.Row="1" 
-                      Width="239" 
-                      Height="30" 
-                      VerticalContentAlignment="Center"
-                      HorizontalAlignment="Right"
-                      Margin="0,-20,10,10"
-                      Background="Transparent"
-                      FontWeight="Medium"
-                      FontFamily="Montserrat"                            
-                      Foreground="{StaticResource plainTextColor3}"
-                      BorderBrush="{StaticResource plainTextColor3}"
-                      BorderThickness="0,0,0,1" />
+                                    <ComboBox Style="{StaticResource vendorCombobox}"
+                                              ItemsSource="{Binding VendorModels}"   
+                                              SelectedItem="{Binding SelectedVendorModel, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="VendorName" 
+                                              SelectedValuePath="VendorId"
+                                              SelectedValue="{Binding SelectedVendorDetailService.VendorId, Mode=TwoWay}"
+                                              Grid.Row="1" 
+                                              Width="239" 
+                                              Height="30" 
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              Margin="0,-20,10,10"
+                                              Background="Transparent"
+                                              FontWeight="Medium"
+                                              FontFamily="Montserrat"                            
+                                              Foreground="{StaticResource plainTextColor3}"
+                                              BorderBrush="{StaticResource plainTextColor3}"
+                                              BorderThickness="0,0,0,1" />
 
                                     <TextBlock Text="Select Service"
-                       Style="{StaticResource FormTextBlock}"
-                       Margin="20,20,230,0"/>
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
 
-                                    <ComboBox Style="{StaticResource vendorCombobox}"                              
-                      
-                      ItemsSource="{Binding VendorDetailServices}"   
-                      SelectedItem="{Binding SelectedVendorDetailService, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
-                      DisplayMemberPath="VendorServiceName" 
-                      SelectedValuePath="VendorServiceId"
-                      SelectedValue="{Binding SelectedVendorDetailService.VendorServiceId, Mode=TwoWay}"
-                      Grid.Row="1" 
-                      Width="239" 
-                      Height="30" 
-                      VerticalContentAlignment="Center"
-                      HorizontalAlignment="Right"
-                      Margin="0,-20,10,10"
-                      Background="Transparent"
-                      FontWeight="Medium"
-                      FontFamily="Montserrat"                            
-                      Foreground="{StaticResource plainTextColor3}"
-                      BorderBrush="{StaticResource plainTextColor3}"
-                      BorderThickness="0,0,0,1" />
+                                    <ComboBox Style="{StaticResource vendorCombobox}"  
+                                              ItemsSource="{Binding VendorServiceDetails}"   
+                                              SelectedItem="{Binding SelectedVendorDetailService, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="VendorServiceName" 
+                                              SelectedValuePath="VendorServiceId"
+                                              SelectedValue="{Binding SelectedVendorDetailService.VendorServiceId, Mode=TwoWay}"
+                                              Grid.Row="1" 
+                                              Width="239" 
+                                              Height="30" 
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              Margin="0,-20,10,10"
+                                              Background="Transparent"
+                                              FontWeight="Medium"
+                                              FontFamily="Montserrat"                            
+                                              Foreground="{StaticResource plainTextColor3}"
+                                              BorderBrush="{StaticResource plainTextColor3}"
+                                              BorderThickness="0,0,0,1" />
 
                                     <TextBlock Text="From"
-                       Style="{StaticResource FormTextBlock}"/>
+                                               Style="{StaticResource FormTextBlock}"/>
                                     <TextBox x:Name="txtServiceYe"
-Text="{Binding ServiceYear ,UpdateSourceTrigger=PropertyChanged}"
-Style="{StaticResource FormTextBox}"
-TextWrapping="Wrap"
-AcceptsReturn="True" />
+                                             Text="{Binding From ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True" />
 
                                     <TextBlock Text="To"
-                       Style="{StaticResource FormTextBlock}"/>
+                                               Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtServiceYea"
-Text="{Binding ServiceYear ,UpdateSourceTrigger=PropertyChanged}"
-Style="{StaticResource FormTextBox}"
-TextWrapping="Wrap"
-AcceptsReturn="True" />
+                                             Text="{Binding To ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True" />
 
                                 </StackPanel>
 
                                 <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
-               Orientation="Vertical">
+                                            Orientation="Vertical">
 
 
                                     <TextBlock Text="Note Generation Date"
-                       Style="{StaticResource FormTextBlock}"
-                       Margin="20,20,230,0"/>
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
 
                                     <DatePicker x:Name="txtserviceStartDate"
-               Text="{Binding ServiceStartDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361" />
+                                                Text="{Binding ServiceStartDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361" />
 
                                     <TextBlock Text="Body Befor Invoice"
-                Style="{StaticResource FormTextBlock}"/>
-                                    <TextBox Text="{Binding TextAreaContent, UpdateSourceTrigger=PropertyChanged}"
-                 AcceptsReturn="True"
-                 VerticalScrollBarVisibility="Visible"
-                 HorizontalScrollBarVisibility="Visible"
-                 Margin="10"
-                 TextWrapping="Wrap" Width="344" Height="118"/>
+                                               Style="{StaticResource FormTextBlock}"/>
+                                    <TextBox Text="{Binding BeforeInvocie, UpdateSourceTrigger=PropertyChanged}"
+                                             AcceptsReturn="True"
+                                             VerticalScrollBarVisibility="Visible"
+                                             HorizontalScrollBarVisibility="Visible"
+                                             Margin="10"
+                                             TextWrapping="Wrap" Width="344" Height="118"/>
 
                                     <TextBlock Text="Body After Invoice"
-Style="{StaticResource FormTextBlock}"/>
-                                    <TextBox Text="{Binding TextAreaContent, UpdateSourceTrigger=PropertyChanged}"
-AcceptsReturn="True"
-VerticalScrollBarVisibility="Visible"
-HorizontalScrollBarVisibility="Visible"
-Margin="10"
-TextWrapping="Wrap" Width="344" Height="63"/>
+                                               Style="{StaticResource FormTextBlock}"/>
+                                    <TextBox Text="{Binding AfterInvoice, UpdateSourceTrigger=PropertyChanged}"
+                                             AcceptsReturn="True"
+                                             VerticalScrollBarVisibility="Visible"
+                                             HorizontalScrollBarVisibility="Visible"
+                                             Margin="10"
+                                             TextWrapping="Wrap" Width="344" Height="63"/>
 
 
                                 </StackPanel>
@@ -179,7 +177,7 @@ TextWrapping="Wrap" Width="344" Height="63"/>
                     Margin="0,0,0,9" Visibility="Visible">
 
                 <Button Style="{StaticResource vendorSaveButton}"
-                    Command="{Binding SubmitCommand}"                            
+                    Command="{Binding GenerateCommand}"                            
                     Content="Generate"                            
                     FontSize="12"
                     FontFamily="Montserrat"

@@ -337,6 +337,7 @@ namespace VMA.MVVM.ViewModels.Add
             if (_editPaymentNote != null)
             {
                 //PaymentNoteId = "";
+                PaymentNoteYear= _editPaymentNote.PaymentNoteYear;
                 PaymentNoteNo = _editPaymentNote.PaymentNoteNo.Replace(PaymentNoteId,"");
                 PaymentNoteDate = _editPaymentNote.PaymentNoteDate;
                 SelectedVendorName = VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName ?? "";

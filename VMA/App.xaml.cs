@@ -83,7 +83,8 @@ namespace VMA
                                                          x.GetRequiredService<IVenderPaymentNotesBusinessLogic>(),
                                                          x.GetRequiredService<IGstcalculationMasterBusinessLogic>(),
                                                          x.GetRequiredService<IReportExportToExcelPaymentNote>(),
-                                                         x.GetRequiredService<IConfigurationBusinessLogic>()));
+                                                         x.GetRequiredService<IConfigurationBusinessLogic>(),
+                                                         x.GetRequiredService<IPaymentNoteInWord>()));
             services.AddSingleton(x => new MainView(x.GetRequiredService<MainViewModel>()));
         }
         protected override void OnStartup(StartupEventArgs e)
