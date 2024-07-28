@@ -241,6 +241,22 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 FilePathExcel = openFileDialog.FolderName;
             }
+
+            bool? getExcelFileLocation = AllConfigurations?.Any(x => x?.Cfgkey == nameof(FilePathExcel));
+            if (FilePathExcel != null)
+            {
+                if (getExcelFileLocation == true)
+                {
+                    string operation = "";
+                    await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FilePathExcel)).Id, nameof(FilePathExcel), FilePathExcel, operation).ConfigureAwait(true);
+                }
+                else
+                {
+                    string operation = "add";
+                    await SaveGenralSettings(0, nameof(FilePathExcel), FilePathExcel, operation).ConfigureAwait(true);
+                }
+            }
+
         }
 
         private async Task BrowseWordLocation(object obj)
@@ -252,13 +268,28 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 FilePathWord = openFileDialog.FolderName;
             }
+            bool? getWordFileLocation = AllConfigurations?.Any(x => x?.Cfgkey == nameof(FilePathWord));
+            if (FilePathWord != null)
+            {
+                if (getWordFileLocation == true)
+                {
+                    string operation = "";
+                    await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FilePathWord)).Id, nameof(FilePathWord), FilePathWord, operation).ConfigureAwait(true);
+                }
+                else
+                {
+                    string operation = "add";
+                    await SaveGenralSettings(0, nameof(FilePathWord), FilePathWord, operation).ConfigureAwait(true);
+                }
+            }
+
         }
 
         public ICommand BrowseExcelLocationCommand { get; }
 
         public ICommand BrowseWordLocationCommand { get; }
 
-        public ICommand SaveLocationCommand { get; }
+        //public ICommand SaveLocationCommand { get; }
 
         #endregion
 
@@ -405,6 +436,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
             SubmitFinancialYearCommand = new ViewModelAsyncCommand<object>(SaveFinancialYearSettings, ValidateGeneralSettings);
             SubmitNoteIdCommand = new ViewModelAsyncCommand<object>(SaveNoteFormat);
+            BrowseExcelLocationCommand = new ViewModelAsyncCommand<object>(BrowseExcelLocation);
+            BrowseWordLocationCommand = new ViewModelAsyncCommand<object>(BrowseWordLocation);
         }
         private async Task SaveNoteFormat(object model)
         {
@@ -756,15 +789,7 @@ namespace VMA.MVVM.ViewModels.Menus
             await Save(id, cfgkey, operation, cfgvalue);
 
         }
-        //public async Task GetGSTDetails()
-        //{
-        //    var latestGST = await _gstcalculationMasterBusinessLogic.GetAllGstMaster();
-        //    Cgstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.CgstPercentage);
-        //    Sgstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.SgstPercentage);
-        //    Igstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.IgstPercentage);
 
-
-        //}
     }
 
     public class Department : ViewModelBase
