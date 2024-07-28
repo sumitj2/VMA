@@ -114,8 +114,11 @@ namespace VMA.MVVM.ViewModels.Add
             }
             set
             {
-                _vendorPinCode = value;
-                OnPropertyChanged(nameof(VendorPinCode));
+                if (value.Count() <= 6)
+                {
+                    _vendorPinCode = value;
+                    OnPropertyChanged(nameof(VendorPinCode));
+                }
             }
         }
 
@@ -127,8 +130,11 @@ namespace VMA.MVVM.ViewModels.Add
             }
             set
             {
-                _vendorPhoneNo = value;
-                OnPropertyChanged(nameof(VendorPhoneNo));
+                if (value.Count() <= 6)
+                {
+                    _vendorPhoneNo = value;
+                    OnPropertyChanged(nameof(VendorPhoneNo));
+                }
             }
         }
 
