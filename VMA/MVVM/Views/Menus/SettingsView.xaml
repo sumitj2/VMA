@@ -34,7 +34,7 @@ BorderThickness="0"
 
                                 <StackPanel x:Name="CompanyDetails" Grid.Row="0"
                                 Orientation="Vertical">
-                                   
+
                                     <TextBlock Text="Enter Financial Year"
                                            Style="{StaticResource FormTextBlock}"/>
 
@@ -53,57 +53,49 @@ BorderThickness="0"
                                          AcceptsReturn="True"/>
 
                                     <StackPanel Grid.Row="2" 
-     Orientation="Horizontal"
-     VerticalAlignment="Bottom"
-     HorizontalAlignment="Center"
-     Margin="0,0,0,9">
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Bottom"
+                                                HorizontalAlignment="Center"
+                                                Margin="0,0,0,9">
 
                                         <Button Style="{StaticResource vendorSaveButton}"
-             Command="{Binding SubmitCommand}"                            
-             Content="Save"                            
-             FontSize="12"
-             FontFamily="Montserrat"
-             Cursor="Hand"
-             BorderThickness="0"
-             Foreground="White"
-             VerticalAlignment="Top"/>
-                                        <!--<Button Style="{StaticResource vendorCancelButton}"
-             Command="{Binding HideDetailInfoFormCommand}"                            
-             Content="Cancel"                            
-             FontSize="12"
-             FontFamily="Montserrat"
-             Cursor="Hand"
-             BorderThickness="0"
-             Foreground="White"
-             VerticalAlignment="Top"/>
-     <Button Style="{StaticResource vendorClearButton}"
-             Command="{Binding ClearFormCommand }"                            
-             Content="Clear"                            
-             FontSize="12"
-             FontFamily="Montserrat"
-             Cursor="Hand"
-             BorderThickness="0"
-             Foreground="White"
-             VerticalAlignment="Top"/>-->
-
-
+                                                Command="{Binding SubmitCommand}"                            
+                                                Content="Save"                            
+                                                FontSize="12"
+                                                FontFamily="Montserrat"
+                                                Cursor="Hand"
+                                                BorderThickness="0"
+                                                Foreground="White"
+                                                VerticalAlignment="Top"/>
                                     </StackPanel>
 
                                 </StackPanel>
 
                                 <StackPanel Grid.Column="2" >
                                     <TextBlock Text="Storage Location for Excel"     Style="{StaticResource FormTextBlock}"/>
-                                    <TextBox x:Name="StorageLocationTextBox" Margin="20,20,60,20" Width="314" Height="27"/>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Content="Browse..."   Width="75" Margin="0,0,10,0"/>
-                                        <Button Content="Save"  Width="75"/>
-                                    </StackPanel>
+                                    <TextBox Style="{StaticResource FormTextBox}" Text="{Binding FilePathExcel, UpdateSourceTrigger=PropertyChanged}" Width="250" Margin="10,20,150,10"/>
+                                    <Button Style="{StaticResource vendorSaveButton}" Command="{Binding BrowseExcelLocationCommand}" Content="Browse" Width="100" Margin="10,-50,-250,0"/>
+
+                                    <TextBlock Text="Storage Location for Word"     Style="{StaticResource FormTextBlock}"/>
+                                    <TextBox Style="{StaticResource FormTextBox}" Text="{Binding FilePathWord, UpdateSourceTrigger=PropertyChanged}" Width="250" Margin="10,20,150,10"/>
+                                    <Button Style="{StaticResource vendorSaveButton}" Command="{Binding BrowseWordLocationCommand}" Content="Browse" Width="100" Margin="10,-50,-250,0"/>
+
+                                    <Button Style="{StaticResource vendorSaveButton}"
+                                            Command="{Binding SaveLocationCommand}"                            
+                                            Content="Save Location"                            
+                                            FontSize="12"
+                                            FontFamily="Montserrat"
+                                            Cursor="Hand"
+                                            BorderThickness="0"
+                                            Foreground="White"
+                                            VerticalAlignment="Top"/>
+
                                 </StackPanel>
 
-                            </Grid>  
-                            
+                            </Grid>
+
                         </AdornerDecorator>
-                        
+
                     </TabItem>
 
                     <TabItem Header="Settings" Style="{DynamicResource TabItemStyle}" Height="39">
@@ -284,7 +276,7 @@ Text="{Binding ExpenditureName,UpdateSourceTrigger=PropertyChanged}" FontSize="1
                             </Grid>
                         </AdornerDecorator>
                     </TabItem>
-                    
+
                 </TabControl>
             </Grid>
 
@@ -294,7 +286,7 @@ Text="{Binding ExpenditureName,UpdateSourceTrigger=PropertyChanged}" FontSize="1
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Center"
                 Margin="0,0,0,9">
-               
+
                 <!--<Button Style="{StaticResource vendorSaveButton}"
                         Command="{Binding SubmitCommand}"                            
                         Content="Save"                            
@@ -322,7 +314,7 @@ Text="{Binding ExpenditureName,UpdateSourceTrigger=PropertyChanged}" FontSize="1
                         BorderThickness="0"
                         Foreground="White"
                         VerticalAlignment="Top"/>-->
-                
+
 
             </StackPanel>
         </Grid>
