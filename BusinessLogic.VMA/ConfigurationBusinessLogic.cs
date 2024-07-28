@@ -27,7 +27,7 @@ namespace BusinessLogic.VMA
             {
                 Id = configurationResult.Id,
                 Cfgkey = configurationResult.Cfgkey,
-                CfgValue = configurationResult.Cfgvallue
+                CfgValue = configurationResult.Cfgvalue
             };
 
 
@@ -46,7 +46,7 @@ namespace BusinessLogic.VMA
                 {
                     Id = configuration.Id,
                     Cfgkey = configuration.Cfgkey,
-                    CfgValue = configuration.Cfgvallue
+                    CfgValue = configuration.Cfgvalue
                 });
 
             }
@@ -59,7 +59,7 @@ namespace BusinessLogic.VMA
             Configuration configuration = new Configuration()
             {
                 Cfgkey = configurationmodel.Cfgkey,
-                Cfgvallue = configurationmodel.CfgValue
+                Cfgvalue = configurationmodel.CfgValue
             };
 
             await _configurationsRepository.AddConfiguration(configuration);
@@ -71,7 +71,7 @@ namespace BusinessLogic.VMA
             {
                 Id = configurationmodel.Id,
                 Cfgkey = configurationmodel.Cfgkey,
-                Cfgvallue = configurationmodel.CfgValue
+                Cfgvalue = configurationmodel.CfgValue
             };
 
             await _configurationsRepository.UpdateDeleteConfigurations(configuration).ConfigureAwait(true);

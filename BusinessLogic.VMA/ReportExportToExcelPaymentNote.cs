@@ -27,7 +27,7 @@ namespace BusinessLogic.VMA
         public async Task ExportPaymentNotes()
         {
             List<ExportPaymentNoteData> exportData = new List<ExportPaymentNoteData>();
-            var res = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetailsToExport().ConfigureAwait(true);
+            var res = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetailsToExport("").ConfigureAwait(true);
             var orderrez = res.OrderBy(x => x.PaymentNoteNo).ThenBy(x => x.VendorPaymentDate);
             var e = res.GroupBy(x => x.VendorServiceName);
             foreach (var item in orderrez)
@@ -53,7 +53,7 @@ namespace BusinessLogic.VMA
                     VendorPaymentRtgsDate = item.VendorPaymentRtgsDate,
                     VendorPaymentTdsamount = item.VendorPaymentTdsamount,
                     VendorPaymentDate = item.VendorPaymentDate,
-                    IsAmc=item.IsAmc
+                    IsAmc = item.IsAmc
                 });
             }
             var fileContent = ExportToExcel(exportData);
@@ -70,7 +70,7 @@ namespace BusinessLogic.VMA
             File.WriteAllBytes(path + saveFileDialog.FileName, fileContent);
 
             MessageBox.Show($"File successfully saved to {saveFileDialog.FileName}");
-            
+
             OpenExcelFile(path + saveFileDialog.FileName);
 
         }
@@ -107,7 +107,7 @@ namespace BusinessLogic.VMA
             worksheet.Cell(1, 21).Value = "RTGS_Amount";
             worksheet.Cell(1, 22).Value = "UTR_Number";
             worksheet.Cell(1, 23).Value = "RTGS_Date";
-            
+
             foreach (var service in groupServiceNameList.ToList())
             {
                 // Add Venor Name + Service Name
@@ -148,7 +148,15 @@ namespace BusinessLogic.VMA
                     worksheet.Cell(counter + 2, 14).Value = service.ToList()[i].InvoiceDate;
                     worksheet.Cell(counter + 2, 15).Value = service.ToList()[i].InvoiceParticulars;
                     worksheet.Cell(counter + 2, 16).Value = service.ToList()[i].VendorDetailCategory;
-                    worksheet.Cell(counter + 2, 17).Value = (XLCellValue)service.ToList()[i].IsAmc;
+                    if (service?.ToList()[i].IsAmc == true)
+                    {
+                        worksheet.Cell(counter + 2, 17).Value = "Yes";
+                    }
+                    else
+                    {
+                        worksheet.Cell(counter + 2, 17).Value = "No";
+                    }
+
                     worksheet.Cell(counter + 2, 18).Value = service.ToList()[i].ServiceType;
                     worksheet.Cell(counter + 2, 19).Value = service.ToList()[i].ServiceSantionedBy;
                     worksheet.Cell(counter + 2, 20).Value = service.ToList()[i].VendorPaymentTdsamount;

@@ -32,6 +32,7 @@ namespace VMA.MVVM.ViewModels
         private IGstcalculationMasterBusinessLogic _gstcalculationMasterBusinessLogic;
         private IReportExportToExcelPaymentNote _reportExportToExcelPaymentNote;
         private IConfigurationBusinessLogic _configurationBusinessLogic;
+        private IPaymentNoteInWord _paymentNoteInWord;
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -98,7 +99,7 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowGSTViewCommand { get; }
 
 
-        public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IReportExportToExcelPaymentNote reportExportToExcelPaymentNote,IConfigurationBusinessLogic configurationBusinessLogic)
+        public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IReportExportToExcelPaymentNote reportExportToExcelPaymentNote,IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord)
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
@@ -108,6 +109,7 @@ namespace VMA.MVVM.ViewModels
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
             _venderPaymentNotesBusinessLogic = venderPaymentNotesBusinessLogic;
             _configurationBusinessLogic = configurationBusinessLogic;
+            _paymentNoteInWord = paymentNoteInWord; 
             // _currentUserAccount = new UserAccountModel();
 
             //Initialize command
@@ -160,7 +162,7 @@ namespace VMA.MVVM.ViewModels
         {
             try
             {
-                CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote);
+                CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote,_vendorBusinessLogic,_vendorDetailsBusinessLogic,_configurationBusinessLogic, _paymentNoteInWord);
                 Caption = "Reports";
                 Icon = IconChar.File;
             }

@@ -34,7 +34,7 @@ BorderThickness="0"
 
                                 <StackPanel x:Name="CompanyDetails" Grid.Row="0"
                                 Orientation="Vertical">
-                                   
+
                                     <TextBlock Text="Enter Financial Year"
                                            Style="{StaticResource FormTextBlock}"/>
 
@@ -42,7 +42,17 @@ BorderThickness="0"
                                          Text="{Binding FinancialYear ,UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource FormTextBox}"
                                          TextWrapping="Wrap"
-                                         AcceptsReturn="True"/>
+                                         AcceptsReturn="True" Width="238" Margin="-90,10,20,10"/>
+                                    <Button Style="{StaticResource vendorSaveButton}"
+                                            Command="{Binding SubmitFinancialYearCommand}"                            
+                                            Content="Year"                            
+                                            FontSize="12"
+                                            FontFamily="Montserrat"
+                                            Cursor="Hand"
+                                            BorderThickness="0"
+                                            Foreground="White"
+                                            VerticalAlignment="Top"
+                                            Margin="280,-40,20,30" />
                                     <TextBlock Text="Enter Note ID"
                                            Style="{StaticResource FormTextBlock}"/>
 
@@ -50,51 +60,45 @@ BorderThickness="0"
                                          Text="{Binding NoteId ,UpdateSourceTrigger=PropertyChanged}"
                                          Style="{StaticResource FormTextBox}"
                                          TextWrapping="Wrap"
-                                         AcceptsReturn="True"/>
+                                         AcceptsReturn="True"
+                                          Width="238" Margin="-90,10,20,10"/>
+                                    <Button Style="{StaticResource vendorSaveButton}"
+                                            Command="{Binding SubmitNoteIdCommand}"                            
+                                            Content="NoteId"                            
+                                            FontSize="12"
+                                            FontFamily="Montserrat"
+                                            Cursor="Hand"
+                                            BorderThickness="0"
+                                            Foreground="White"
+                                            VerticalAlignment="Top"
+                                            Margin="280,-40,20,30"/>
 
                                     <StackPanel Grid.Row="2" 
-     Orientation="Horizontal"
-     VerticalAlignment="Bottom"
-     HorizontalAlignment="Center"
-     Margin="0,0,0,9">
+                                                Orientation="Horizontal"
+                                                VerticalAlignment="Bottom"
+                                                HorizontalAlignment="Center"
+                                                Margin="0,0,0,9">
 
-                                        <Button Style="{StaticResource vendorSaveButton}"
-             Command="{Binding SubmitCommand}"                            
-             Content="Save"                            
-             FontSize="12"
-             FontFamily="Montserrat"
-             Cursor="Hand"
-             BorderThickness="0"
-             Foreground="White"
-             VerticalAlignment="Top"/>
-                                        <!--<Button Style="{StaticResource vendorCancelButton}"
-             Command="{Binding HideDetailInfoFormCommand}"                            
-             Content="Cancel"                            
-             FontSize="12"
-             FontFamily="Montserrat"
-             Cursor="Hand"
-             BorderThickness="0"
-             Foreground="White"
-             VerticalAlignment="Top"/>
-     <Button Style="{StaticResource vendorClearButton}"
-             Command="{Binding ClearFormCommand }"                            
-             Content="Clear"                            
-             FontSize="12"
-             FontFamily="Montserrat"
-             Cursor="Hand"
-             BorderThickness="0"
-             Foreground="White"
-             VerticalAlignment="Top"/>-->
-
-
+                                       
                                     </StackPanel>
 
                                 </StackPanel>
 
-                                
+                                <StackPanel Grid.Column="2" >
+                                    <TextBlock Text="Storage Location for Excel"     Style="{StaticResource FormTextBlock}"/>
+                                    <TextBox Style="{StaticResource FormTextBox}" Text="{Binding FilePathExcel, UpdateSourceTrigger=PropertyChanged}" Width="212" Margin="10,20,150,10"/>
+                                    <Button Style="{StaticResource vendorSaveButton}" Command="{Binding BrowseExcelLocationCommand}" Content="Browse" Width="100" Margin="10,-50,-250,0"/>
+
+                                    <TextBlock Text="Storage Location for Word"     Style="{StaticResource FormTextBlock}"/>
+                                    <TextBox Style="{StaticResource FormTextBox}" Text="{Binding FilePathWord, UpdateSourceTrigger=PropertyChanged}" Width="218" Margin="10,20,150,10"/>
+                                    <Button Style="{StaticResource vendorSaveButton}" Command="{Binding BrowseWordLocationCommand}" Content="Browse" Width="100" Margin="10,-50,-250,0"/>
+
+                                </StackPanel>
 
                             </Grid>
+
                         </AdornerDecorator>
+
                     </TabItem>
 
                     <TabItem Header="Settings" Style="{DynamicResource TabItemStyle}" Height="39">
@@ -112,8 +116,8 @@ BorderThickness="0"
                                         <DockPanel>
                                             <TextBox x:Name="inputTextBox" Style="{StaticResource FormTextBox}" Text="{Binding NeworExistingDepartment,UpdateSourceTrigger=PropertyChanged}" Width="200" Height="25"/>
                                             <TextBlock IsHitTestVisible="False" Text="Enter Department" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="-220 0 0 0"  
-           Foreground="{StaticResource plainTextColor3}"
-           FontSize="13">
+                                                       Foreground="{StaticResource plainTextColor3}"
+                                                       FontSize="13">
                                                 <TextBlock.Style>
                                                     <Style TargetType="{x:Type TextBlock}">
                                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -275,7 +279,7 @@ Text="{Binding ExpenditureName,UpdateSourceTrigger=PropertyChanged}" FontSize="1
                             </Grid>
                         </AdornerDecorator>
                     </TabItem>
-                    
+
                 </TabControl>
             </Grid>
 
@@ -285,7 +289,7 @@ Text="{Binding ExpenditureName,UpdateSourceTrigger=PropertyChanged}" FontSize="1
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Center"
                 Margin="0,0,0,9">
-               
+
                 <!--<Button Style="{StaticResource vendorSaveButton}"
                         Command="{Binding SubmitCommand}"                            
                         Content="Save"                            
@@ -313,7 +317,7 @@ Text="{Binding ExpenditureName,UpdateSourceTrigger=PropertyChanged}" FontSize="1
                         BorderThickness="0"
                         Foreground="White"
                         VerticalAlignment="Top"/>-->
-                
+
 
             </StackPanel>
         </Grid>

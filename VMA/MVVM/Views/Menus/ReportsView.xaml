@@ -24,7 +24,7 @@
 
             <Grid Grid.Row="0">
                 <TabControl Style="{DynamicResource TabContorlStyle}"  Background="White">
-                    <TabItem Header="Export Payment Notes to Excel" Style="{DynamicResource TabItemStyle}" Height="39">
+                    <TabItem Header="AMC Payment to Excel" Style="{DynamicResource TabItemStyle}" Height="39">
                         <AdornerDecorator>
                             <StackPanel Grid.Row="2" 
                                         Orientation="Horizontal"
@@ -45,11 +45,160 @@
                             </StackPanel>
                         </AdornerDecorator>
                     </TabItem>
-                    
+
+                    <TabItem Header="Service Payment Note" Style="{DynamicResource TabItemStyle}" Height="39">
+                        <AdornerDecorator>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel x:Name="CompanyDetails" Grid.Row="0"
+                                            Orientation="Vertical">
+                                    <TextBlock Text="Service Year"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
+                                    <TextBox x:Name="txtServiceYear"
+                                             Text="{Binding VendorPaymentYear ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True" IsEnabled="False" />
+
+                                    <TextBlock Text="Select Vendor"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
+
+                                    <ComboBox Style="{StaticResource vendorCombobox}"
+                                              ItemsSource="{Binding VendorModels}"   
+                                              SelectedItem="{Binding SelectedVendorModel, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="VendorName" 
+                                              SelectedValuePath="VendorId"
+                                              SelectedValue="{Binding SelectedVendorDetailService.VendorId, Mode=TwoWay}"
+                                              Grid.Row="1" 
+                                              Width="239" 
+                                              Height="30" 
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              Margin="0,-20,10,10"
+                                              Background="Transparent"
+                                              FontWeight="Medium"
+                                              FontFamily="Montserrat"                            
+                                              Foreground="{StaticResource plainTextColor3}"
+                                              BorderBrush="{StaticResource plainTextColor3}"
+                                              BorderThickness="0,0,0,1" />
+
+                                    <TextBlock Text="Select Service"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
+
+                                    <ComboBox Style="{StaticResource vendorCombobox}"  
+                                              ItemsSource="{Binding VendorServiceDetails}"   
+                                              SelectedItem="{Binding SelectedVendorDetailService, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              DisplayMemberPath="VendorServiceName" 
+                                              SelectedValuePath="VendorServiceId"
+                                              SelectedValue="{Binding SelectedVendorDetailService.VendorServiceId, Mode=TwoWay}"
+                                              Grid.Row="1" 
+                                              Width="239" 
+                                              Height="30" 
+                                              VerticalContentAlignment="Center"
+                                              HorizontalAlignment="Right"
+                                              Margin="0,-20,10,10"
+                                              Background="Transparent"
+                                              FontWeight="Medium"
+                                              FontFamily="Montserrat"                            
+                                              Foreground="{StaticResource plainTextColor3}"
+                                              BorderBrush="{StaticResource plainTextColor3}"
+                                              BorderThickness="0,0,0,1" />
+
+                                    <TextBlock Text="From"
+                                               Style="{StaticResource FormTextBlock}"/>
+                                    <TextBox x:Name="txtServiceYe"
+                                             Text="{Binding From ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True" />
+
+                                    <TextBlock Text="To"
+                                               Style="{StaticResource FormTextBlock}"/>
+
+                                    <TextBox x:Name="txtServiceYea"
+                                             Text="{Binding To ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             AcceptsReturn="True" />
+
+                                </StackPanel>
+
+                                <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
+                                            Orientation="Vertical">
+
+
+                                    <TextBlock Text="Note Generation Date"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
+
+                                    <DatePicker x:Name="txtserviceStartDate"
+                                                Text="{Binding NoteGenerationDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361" />
+
+                                    <TextBlock Text="Body Befor Invoice"
+                                               Style="{StaticResource FormTextBlock}"/>
+                                    <TextBox Text="{Binding BeforeInvocie, UpdateSourceTrigger=PropertyChanged}"
+                                             AcceptsReturn="True"
+                                             VerticalScrollBarVisibility="Visible"
+                                             HorizontalScrollBarVisibility="Visible"
+                                             Margin="10"
+                                             TextWrapping="Wrap" Width="344" Height="118"/>
+
+                                    <TextBlock Text="Body After Invoice"
+                                               Style="{StaticResource FormTextBlock}"/>
+                                    <TextBox Text="{Binding AfterInvoice, UpdateSourceTrigger=PropertyChanged}"
+                                             AcceptsReturn="True"
+                                             VerticalScrollBarVisibility="Visible"
+                                             HorizontalScrollBarVisibility="Visible"
+                                             Margin="10"
+                                             TextWrapping="Wrap" Width="344" Height="63"/>
+
+
+                                </StackPanel>
+
+                            </Grid>
+                        </AdornerDecorator>
+                    </TabItem>
+
                 </TabControl>
             </Grid>
 
-            
+            <!--buttons setting in footer-->
+            <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Center"
+                    Margin="0,0,0,9" Visibility="Visible">
+
+                <Button Style="{StaticResource vendorSaveButton}"
+                    Command="{Binding GenerateCommand}"                            
+                    Content="Generate"                            
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    VerticalAlignment="Top" />
+
+                <Button Style="{StaticResource vendorClearButton}"
+                    Command="{Binding ClearFormCommand }"                            
+                    Content="Clear"                            
+                    FontSize="12"
+                    FontFamily="Montserrat"
+                    Cursor="Hand"
+                    BorderThickness="0"
+                    Foreground="White"
+                    VerticalAlignment="Top"/>
+
+
+            </StackPanel>
+
         </Grid>
     </Border>
 </UserControl>

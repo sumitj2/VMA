@@ -9,5 +9,5 @@ public partial class Configuration
 
     public string Cfgkey { get; set; } = null!;
 
-    public string Cfgvallue { get; set; } = null!;
+    public string? Cfgvalue { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Abstraction.VMA.Contract;
+﻿using Azure;
+using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
 using Serilog;
 using System.Collections.ObjectModel;
@@ -15,7 +16,6 @@ namespace VMA.MVVM.ViewModels.Menus
         #region Properties
 
         private string? _financialYear;
-
         public string? FinancialYear
         {
             get { return _financialYear; }
@@ -27,7 +27,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string? _noteId;
-
         public string? NoteId
         {
             get { return _noteId; }
@@ -74,7 +73,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string neworExistingDepartment;
-
         public string NeworExistingDepartment
         {
             get { return neworExistingDepartment; }
@@ -166,7 +164,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string btnDepartmentContent = "Add";
-
         public string BtnDepartmentContent
         {
             get { return btnDepartmentContent; }
@@ -178,7 +175,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string btnExpenditureContent = "Add";
-
         public string BtnExpenditureContent
         {
             get { return btnExpenditureContent; }
@@ -190,7 +186,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string btnSanctionContent = "Add";
-
         public string BtnSanctionContent
         {
             get { return btnSanctionContent; }
@@ -202,7 +197,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string neworExistingSanction;
-
         public string NeworExistingSanction
         {
             get { return neworExistingSanction; }
@@ -212,6 +206,92 @@ namespace VMA.MVVM.ViewModels.Menus
                 OnPropertyChanged(nameof(NeworExistingSanction));
             }
         }
+
+        #region FIle Storage
+        private string? _filePathExcel;
+
+        public string? FilePathExcel
+        {
+            get { return _filePathExcel; }
+            set
+            {
+                _filePathExcel = value;
+                OnPropertyChanged(nameof(FilePathExcel));
+            }
+        }
+
+        private string? _filePathWord;
+
+        public string? FilePathWord
+        {
+            get { return _filePathWord; }
+            set
+            {
+                _filePathWord = value;
+                OnPropertyChanged(nameof(FilePathWord));
+            }
+        }
+
+        private async Task BrowseExcelLocation(object obj)
+        {
+            // Implement file browsing logic here
+            // For example, using OpenFileDialog
+            var openFileDialog = new Microsoft.Win32.OpenFolderDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                FilePathExcel = openFileDialog.FolderName;
+            }
+
+            bool? getExcelFileLocation = AllConfigurations?.Any(x => x?.Cfgkey == nameof(FilePathExcel));
+            if (FilePathExcel != null)
+            {
+                if (getExcelFileLocation == true)
+                {
+                    string operation = "";
+                    await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FilePathExcel)).Id, nameof(FilePathExcel), FilePathExcel, operation).ConfigureAwait(true);
+                }
+                else
+                {
+                    string operation = "add";
+                    await SaveGenralSettings(0, nameof(FilePathExcel), FilePathExcel, operation).ConfigureAwait(true);
+                }
+            }
+
+        }
+
+        private async Task BrowseWordLocation(object obj)
+        {
+            // Implement file browsing logic here
+            // For example, using OpenFileDialog
+            var openFileDialog = new Microsoft.Win32.OpenFolderDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                FilePathWord = openFileDialog.FolderName;
+            }
+            bool? getWordFileLocation = AllConfigurations?.Any(x => x?.Cfgkey == nameof(FilePathWord));
+            if (FilePathWord != null)
+            {
+                if (getWordFileLocation == true)
+                {
+                    string operation = "";
+                    await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FilePathWord)).Id, nameof(FilePathWord), FilePathWord, operation).ConfigureAwait(true);
+                }
+                else
+                {
+                    string operation = "add";
+                    await SaveGenralSettings(0, nameof(FilePathWord), FilePathWord, operation).ConfigureAwait(true);
+                }
+            }
+
+        }
+
+        public ICommand BrowseExcelLocationCommand { get; }
+
+        public ICommand BrowseWordLocationCommand { get; }
+
+        //public ICommand SaveLocationCommand { get; }
+
+        #endregion
 
         #endregion
 
@@ -342,7 +422,9 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        public ICommand SubmitCommand { get; }
+        public ICommand SubmitNoteIdCommand { get; }
+
+        public ICommand SubmitFinancialYearCommand { get; }
 
         public SettingsViewModel(IConfigurationBusinessLogic configBusinessLogic)
         {
@@ -352,8 +434,41 @@ namespace VMA.MVVM.ViewModels.Menus
 
             _ = GetAllConfigurations();
 
-            SubmitCommand = new ViewModelAsyncCommand<object>(SaveGeneralSettings, ValidateGeneralSettings);
-            //_ = GetGSTDetails();
+            SubmitFinancialYearCommand = new ViewModelAsyncCommand<object>(SaveFinancialYearSettings, ValidateGeneralSettings);
+            SubmitNoteIdCommand = new ViewModelAsyncCommand<object>(SaveNoteFormat);
+            BrowseExcelLocationCommand = new ViewModelAsyncCommand<object>(BrowseExcelLocation);
+            BrowseWordLocationCommand = new ViewModelAsyncCommand<object>(BrowseWordLocation);
+        }
+        private async Task SaveNoteFormat(object model)
+        {
+            bool getNoteId = AllConfigurations.Any(x => x?.Cfgkey == nameof(NoteId));
+            string operation = "";
+            if (getNoteId)
+            {
+                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId)).Id, nameof(NoteId), NoteId, operation);
+            }
+            else
+            {
+                operation = "add";
+
+                await SaveGenralSettings(0, nameof(NoteId), NoteId, operation);
+            }
+        }
+        private async Task SaveFinancialYearSettings(object model)
+        {
+            bool getFinancialYear = AllConfigurations.Any(x => x?.Cfgkey == nameof(FinancialYear));
+
+            string operation = "";
+
+            if (getFinancialYear)
+            {
+                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear)).Id, nameof(FinancialYear), FinancialYear, operation);
+            }
+            else
+            {
+                operation = "add";
+                await SaveGenralSettings(0, nameof(FinancialYear), FinancialYear, operation);
+            }
         }
 
         private ObservableCollection<ConfigurationModel>? _allConfigurations;
@@ -376,7 +491,7 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 var allConfigurations = await _configBusinessLogic.GetConfigurations().ConfigureAwait(true);
                 AllConfigurations = new ObservableCollection<ConfigurationModel>(allConfigurations);
-                
+
                 if (allConfigurations != null)
                 {
                     string? departmentConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Department))?.CfgValue;
@@ -384,7 +499,8 @@ namespace VMA.MVVM.ViewModels.Menus
                     string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
                     string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear))?.CfgValue;
                     string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
-
+                    FilePathWord=allConfigurations.FirstOrDefault(x=>x.Cfgkey == nameof(FilePathWord))?.CfgValue;
+                    FilePathExcel=allConfigurations.FirstOrDefault(x=>x.Cfgkey== nameof(FilePathExcel))?.CfgValue;
                     NoteId = noteID;
                     FinancialYear = financialYear;
 
@@ -421,7 +537,7 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to load All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to load All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to load All configurations, Please contact to Administrator", false, true);
             }
@@ -634,33 +750,7 @@ namespace VMA.MVVM.ViewModels.Menus
             return true;
         }
 
-        private async Task SaveGeneralSettings(object model)
-        {
-            bool getFinancialYear = AllConfigurations.Any(x => x?.Cfgkey == nameof(FinancialYear));
-            bool getNoteId = AllConfigurations.Any(x => x?.Cfgkey == nameof(NoteId));
-            string operation = "";
 
-            if (getFinancialYear)
-            {
-                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear)).Id, nameof(FinancialYear), FinancialYear, operation);
-            }
-            else
-            {
-                operation = "add";
-                await SaveGenralSettings(0, nameof(FinancialYear), FinancialYear, operation);
-            }
-
-            if (getNoteId)
-            {
-                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId)).Id, nameof(NoteId), NoteId, operation);
-            }
-            else
-            {
-                operation = "add";
-
-                await SaveGenralSettings(0, nameof(NoteId), NoteId, operation);
-            }
-        }
 
         private async Task SaveConfiguration(int id, string cfgkey, object cfgvalue, string operation)
         {
@@ -689,7 +779,7 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to save configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to save configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to save configuration, please try again or contact to administrator", false, true);
             }
@@ -700,15 +790,7 @@ namespace VMA.MVVM.ViewModels.Menus
             await Save(id, cfgkey, operation, cfgvalue);
 
         }
-        //public async Task GetGSTDetails()
-        //{
-        //    var latestGST = await _gstcalculationMasterBusinessLogic.GetAllGstMaster();
-        //    Cgstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.CgstPercentage);
-        //    Sgstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.SgstPercentage);
-        //    Igstpercentage = Convert.ToInt32(latestGST?.ToList()?.FirstOrDefault()?.IgstPercentage);
 
-
-        //}
     }
 
     public class Department : ViewModelBase
