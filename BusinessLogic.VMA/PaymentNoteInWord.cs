@@ -30,10 +30,9 @@ namespace BusinessLogic.VMA
                 var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear).ConfigureAwait(true);
 
                 if (result != null)
-                {
-                    path = "C:\\Output";
+                {                   
                     // Ensure the directory exists
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                    Directory.CreateDirectory(Path.GetDirectoryName(path+"_"+serviceName+ "_PaymentNote.docx"));
 
                     // Create and save the Word document
                     using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document))

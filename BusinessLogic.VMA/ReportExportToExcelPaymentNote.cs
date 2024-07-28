@@ -24,13 +24,12 @@ namespace BusinessLogic.VMA
             _venderPaymentNotesRepository = venderPaymentNotesRepository;
         }
 
-        public async Task ExportPaymentNotes()
+        public async Task ExportPaymentNotes(string? financialYear,string? path)
         {
-            List<ExportPaymentNoteData> exportData = new List<ExportPaymentNoteData>();
-            var res = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetailsToExport("").ConfigureAwait(true);
-            var orderrez = res.OrderBy(x => x.PaymentNoteNo).ThenBy(x => x.VendorPaymentDate);
-            var e = res.GroupBy(x => x.VendorServiceName);
-            foreach (var item in orderrez)
+            List<ExportPaymentNoteData> exportData = [];
+            var payments = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetailsToExport(financialYear).ConfigureAwait(true);
+            var orderByPayments = payments.OrderBy(x => x.PaymentNoteNo).ThenBy(x => x.VendorPaymentDate);            
+            foreach (var item in orderByPayments)
             {
                 exportData.Add(new ExportPaymentNoteData
                 {
@@ -63,10 +62,10 @@ namespace BusinessLogic.VMA
             {
                 Filter = "Excel Files|*.xlsx",
                 Title = "PaymentNotes",
-                FileName = "Output" + DateTime.UtcNow.ToString("ff") + ".xlsx"
+                FileName = "AMC_Payment_Details_" + DateTime.UtcNow.ToString("dd_t") + ".xlsx"
             };
 
-            string path = "D:\\Notes\\";
+            //string path = "D:\\Notes\\";
             File.WriteAllBytes(path + saveFileDialog.FileName, fileContent);
 
             MessageBox.Show($"File successfully saved to {saveFileDialog.FileName}");

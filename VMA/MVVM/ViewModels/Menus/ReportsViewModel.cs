@@ -221,7 +221,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task ExportPaymentNote(Database.VMA.Entities.CustomEntities.ExportPaymentNoteData data)
         {
-            await _reportExportToExcelPaymentNote.ExportPaymentNotes().ConfigureAwait(true);
+            await _reportExportToExcelPaymentNote.ExportPaymentNotes(_vendorPaymentYear,pathExcel).ConfigureAwait(true);
         }
 
         private async Task LoadVendors()

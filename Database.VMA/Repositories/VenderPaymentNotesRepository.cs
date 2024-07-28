@@ -56,7 +56,7 @@ namespace Database.VMA.Repositories
                                                 NoteId = paymentNote.NoteId,
                                                 PaymentNoteDate = paymentNote.PaymentNoteDate,
                                                 PaymentNoteNo = paymentNote.PaymentNoteNo,
-                                                PaymentNoteYear=paymentNote.PaymentNoteYear
+                                                PaymentNoteYear = paymentNote.PaymentNoteYear
 
                                             };
             return await paymentNoteWithAllDetails.ToListAsync();
@@ -75,10 +75,8 @@ namespace Database.VMA.Repositories
                                       on payment.FkInvoiceId equals invoice.InvoiceId
                                       join paymentNote in _context.VendorPaymentNotes
                                       on payment.FkNoteId equals paymentNote.NoteId
-                                      where payment.IsActive == true
-                                            //&&
-                                            //payment.PaymentYear==finacialYear
-
+                                      where payment.IsActive == true &&
+                                            payment.PaymentYear == finacialYear
                                       select new ExportPaymentNoteData
                                       {
                                           VendorServiceName = service.VendorServiceName,
@@ -99,13 +97,13 @@ namespace Database.VMA.Repositories
                                           VendorPaymentRtgsDate = payment.VendorPaymentRtgsDate,
                                           VendorName = vendor.VendorName,
                                           VendorPaymentDate = payment.VendorPaymentDate,
-                                          IsAmc=details.IsAmc
+                                          IsAmc = details.IsAmc
                                       };
             return await productsWithVendors.ToListAsync();
 
         }
 
-        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(string? serviceName,string? financialYear)
+        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(string? serviceName, string? financialYear)
         {
             var productsWithVendors = from payment in _context.VendorPayments
                                       join details in _context.VendorDetails
@@ -118,11 +116,9 @@ namespace Database.VMA.Repositories
                                       on payment.FkInvoiceId equals invoice.InvoiceId
                                       join paymentNote in _context.VendorPaymentNotes
                                       on payment.FkNoteId equals paymentNote.NoteId
-                                      where payment.IsActive == true && 
-                                            service.VendorServiceName==serviceName 
-                                            //&&
-                                            //payment.PaymentYear == payment.PaymentYear
-
+                                      where payment.IsActive == true &&
+                                            service.VendorServiceName == serviceName &&
+                                            payment.PaymentYear == payment.PaymentYear
                                       select new CreateWordDocumentPaymentNote
                                       {
                                           VendorServiceName = service.VendorServiceName,
@@ -149,7 +145,7 @@ namespace Database.VMA.Repositories
                                           SantionedDate = details.SantionedDate,
                                           TotalAmountPaid = payment.VendorPaymentTotalAmountPaid,
                                           TotalGST = payment.VendorPaymentIgst + payment.VendorPaymentSgst + payment.VendorPaymentCgst,
-                                          UTRNo=payment.VendorPaymentUtrnumber
+                                          UTRNo = payment.VendorPaymentUtrnumber
                                       };
             return await productsWithVendors.ToListAsync();
 

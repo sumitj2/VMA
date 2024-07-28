@@ -8,6 +8,6 @@ namespace BusinessLogic.Abstraction.VMA.Contract
 {
     public interface IReportExportToExcelPaymentNote
     {
-        public Task ExportPaymentNotes();
+        public Task ExportPaymentNotes(string? financialYear, string? path);
     }
 }
