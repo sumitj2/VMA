@@ -25,7 +25,7 @@ namespace Database.VMA.Repositories
             }
             else
             {
-                existingEntity.Cfgvallue = ConfigurationEntity.Cfgvallue;
+                existingEntity.Cfgvalue = ConfigurationEntity.Cfgvalue;
                 await UpdateDeleteConfigurations(existingEntity);
             }
             await _context.SaveChangesAsync();

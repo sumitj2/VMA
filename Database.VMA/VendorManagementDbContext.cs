@@ -36,10 +36,10 @@ public partial class VendorManagementDbContext : DbContext
     {
         modelBuilder.Entity<Configuration>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Configur__3214EC07A58439ED");
+            entity.HasKey(e => e.Id).HasName("PK__Configur__3214EC07FB9FBC06");
 
             entity.Property(e => e.Cfgkey).HasColumnName("CFGKey");
-            entity.Property(e => e.Cfgvallue).HasColumnName("CFGVallue");
+            entity.Property(e => e.Cfgvalue).HasColumnName("CFGValue");
         });
 
         modelBuilder.Entity<GstcalculationMaster>(entity =>
