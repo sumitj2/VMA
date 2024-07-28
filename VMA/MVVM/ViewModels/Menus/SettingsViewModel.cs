@@ -1,4 +1,5 @@
-﻿using BusinessLogic.Abstraction.VMA.Contract;
+﻿using Azure;
+using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
 using Serilog;
 using System.Collections.ObjectModel;
@@ -252,7 +253,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 FilePathWord = openFileDialog.FolderName;
             }
         }
-        
+
         public ICommand BrowseExcelLocationCommand { get; }
 
         public ICommand BrowseWordLocationCommand { get; }
@@ -390,7 +391,9 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        public ICommand SubmitCommand { get; }
+        public ICommand SubmitNoteIdCommand { get; }
+
+        public ICommand SubmitFinancialYearCommand { get; }
 
         public SettingsViewModel(IConfigurationBusinessLogic configBusinessLogic)
         {
@@ -400,8 +403,39 @@ namespace VMA.MVVM.ViewModels.Menus
 
             _ = GetAllConfigurations();
 
-            SubmitCommand = new ViewModelAsyncCommand<object>(SaveGeneralSettings, ValidateGeneralSettings);
-            //_ = GetGSTDetails();
+            SubmitFinancialYearCommand = new ViewModelAsyncCommand<object>(SaveFinancialYearSettings, ValidateGeneralSettings);
+            SubmitNoteIdCommand = new ViewModelAsyncCommand<object>(SaveNoteFormat);
+        }
+        private async Task SaveNoteFormat(object model)
+        {
+            bool getNoteId = AllConfigurations.Any(x => x?.Cfgkey == nameof(NoteId));
+            string operation = "";
+            if (getNoteId)
+            {
+                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId)).Id, nameof(NoteId), NoteId, operation);
+            }
+            else
+            {
+                operation = "add";
+
+                await SaveGenralSettings(0, nameof(NoteId), NoteId, operation);
+            }
+        }
+        private async Task SaveFinancialYearSettings(object model)
+        {
+            bool getFinancialYear = AllConfigurations.Any(x => x?.Cfgkey == nameof(FinancialYear));
+
+            string operation = "";
+
+            if (getFinancialYear)
+            {
+                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear)).Id, nameof(FinancialYear), FinancialYear, operation);
+            }
+            else
+            {
+                operation = "add";
+                await SaveGenralSettings(0, nameof(FinancialYear), FinancialYear, operation);
+            }
         }
 
         private ObservableCollection<ConfigurationModel>? _allConfigurations;
@@ -424,7 +458,7 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 var allConfigurations = await _configBusinessLogic.GetConfigurations().ConfigureAwait(true);
                 AllConfigurations = new ObservableCollection<ConfigurationModel>(allConfigurations);
-                
+
                 if (allConfigurations != null)
                 {
                     string? departmentConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Department))?.CfgValue;
@@ -469,7 +503,7 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to load All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to load All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to load All configurations, Please contact to Administrator", false, true);
             }
@@ -682,33 +716,7 @@ namespace VMA.MVVM.ViewModels.Menus
             return true;
         }
 
-        private async Task SaveGeneralSettings(object model)
-        {
-            bool getFinancialYear = AllConfigurations.Any(x => x?.Cfgkey == nameof(FinancialYear));
-            bool getNoteId = AllConfigurations.Any(x => x?.Cfgkey == nameof(NoteId));
-            string operation = "";
 
-            if (getFinancialYear)
-            {
-                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear)).Id, nameof(FinancialYear), FinancialYear, operation);
-            }
-            else
-            {
-                operation = "add";
-                await SaveGenralSettings(0, nameof(FinancialYear), FinancialYear, operation);
-            }
-
-            if (getNoteId)
-            {
-                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId)).Id, nameof(NoteId), NoteId, operation);
-            }
-            else
-            {
-                operation = "add";
-
-                await SaveGenralSettings(0, nameof(NoteId), NoteId, operation);
-            }
-        }
 
         private async Task SaveConfiguration(int id, string cfgkey, object cfgvalue, string operation)
         {
@@ -737,7 +745,7 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to save configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to save configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to save configuration, please try again or contact to administrator", false, true);
             }

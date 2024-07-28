@@ -28,7 +28,7 @@ namespace Database.VMA.Repositories
                 existingEntity.Cfgvalue = ConfigurationEntity.Cfgvalue;
                 await UpdateDeleteConfigurations(existingEntity);
             }
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();  
         }
 
         public async Task UpdateDeleteConfigurations(Configuration ConfigurationEntity)
@@ -46,11 +46,11 @@ namespace Database.VMA.Repositories
         }
         public async Task<IEnumerable<Configuration>> GetAllConfigurations()
         {
-            return await _context.Configurations.ToListAsync();
+            return await _context.Configurations.AsNoTracking().ToListAsync();
         }
         public async Task<Configuration?> GetConfigurationByKey(string CFGKey)
         {
-            return await _context.Configurations.Where(x => x.Cfgkey == CFGKey).FirstOrDefaultAsync();
+            return await _context.Configurations.AsNoTracking().Where(x => x.Cfgkey == CFGKey).FirstOrDefaultAsync();
         }
     }
 }
