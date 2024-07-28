@@ -15,7 +15,6 @@ namespace VMA.MVVM.ViewModels.Menus
         #region Properties
 
         private string? _financialYear;
-
         public string? FinancialYear
         {
             get { return _financialYear; }
@@ -27,7 +26,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string? _noteId;
-
         public string? NoteId
         {
             get { return _noteId; }
@@ -74,7 +72,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string neworExistingDepartment;
-
         public string NeworExistingDepartment
         {
             get { return neworExistingDepartment; }
@@ -166,7 +163,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string btnDepartmentContent = "Add";
-
         public string BtnDepartmentContent
         {
             get { return btnDepartmentContent; }
@@ -178,7 +174,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string btnExpenditureContent = "Add";
-
         public string BtnExpenditureContent
         {
             get { return btnExpenditureContent; }
@@ -190,7 +185,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string btnSanctionContent = "Add";
-
         public string BtnSanctionContent
         {
             get { return btnSanctionContent; }
@@ -202,7 +196,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string neworExistingSanction;
-
         public string NeworExistingSanction
         {
             get { return neworExistingSanction; }
@@ -212,6 +205,61 @@ namespace VMA.MVVM.ViewModels.Menus
                 OnPropertyChanged(nameof(NeworExistingSanction));
             }
         }
+
+        #region FIle Storage
+        private string? _filePathExcel;
+
+        public string? FilePathExcel
+        {
+            get { return _filePathExcel; }
+            set
+            {
+                _filePathExcel = value;
+                OnPropertyChanged(nameof(FilePathExcel));
+            }
+        }
+
+        private string? _filePathWord;
+
+        public string? FilePathWord
+        {
+            get { return _filePathWord; }
+            set
+            {
+                _filePathWord = value;
+                OnPropertyChanged(nameof(FilePathWord));
+            }
+        }
+
+        private async Task BrowseExcelLocation(object obj)
+        {
+            // Implement file browsing logic here
+            // For example, using OpenFileDialog
+            var openFileDialog = new Microsoft.Win32.OpenFolderDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                FilePathExcel = openFileDialog.FolderName;
+            }
+        }
+
+        private async Task BrowseWordLocation(object obj)
+        {
+            // Implement file browsing logic here
+            // For example, using OpenFileDialog
+            var openFileDialog = new Microsoft.Win32.OpenFolderDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                FilePathWord = openFileDialog.FolderName;
+            }
+        }
+        
+        public ICommand BrowseExcelLocationCommand { get; }
+
+        public ICommand BrowseWordLocationCommand { get; }
+
+        public ICommand SaveLocationCommand { get; }
+
+        #endregion
 
         #endregion
 
