@@ -66,7 +66,7 @@ namespace BusinessLogic.VMA
             };
 
             //string path = "D:\\Notes\\";
-            File.WriteAllBytes(path + saveFileDialog.FileName, fileContent);
+            File.WriteAllBytes(path+"\\"+ saveFileDialog.FileName, fileContent);
 
             MessageBox.Show($"File successfully saved to {saveFileDialog.FileName}");
 

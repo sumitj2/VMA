@@ -30,12 +30,13 @@ namespace BusinessLogic.VMA
                 var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear).ConfigureAwait(true);
 
                 if (result != null)
-                {                   
+                {
+                    var location = path + "\\" + serviceName + "_PaymentNote.docx";
                     // Ensure the directory exists
-                    Directory.CreateDirectory(Path.GetDirectoryName(path+"_"+serviceName+ "_PaymentNote.docx"));
+                    Directory.CreateDirectory(Path.GetDirectoryName(location));
 
                     // Create and save the Word document
-                    using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(path, WordprocessingDocumentType.Document))
+                    using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(location, WordprocessingDocumentType.Document))
                     {
                         // Add a main document part
                         MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
@@ -122,7 +123,7 @@ namespace BusinessLogic.VMA
 
                         TableRow rowHeader4 = new TableRow();
                         rowHeader4.Append(
-                            new TableCell(new Paragraph(new Run(new Text("Date :03rd June 2024 ")))),//Row 2, Cell 1
+                            new TableCell(new Paragraph(new Run(new Text("Date :"+DateTime.Now)))),//Row 2, Cell 1
                             new TableCell(new Paragraph(new Run(new Text("Pay Note : " + result?.FirstOrDefault()?.PaymentNoteNo))))
 
                         );
@@ -298,7 +299,7 @@ namespace BusinessLogic.VMA
                     }
 
                     // Open the Word file
-                    OpenWordFile(path);
+                    OpenWordFile(location);
                 }
             }
         }
