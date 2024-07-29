@@ -125,4 +125,27 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="RepotItemsButton" TargetType="Button">
+        <!--Normal button style-->
+        <Setter Property="Background" Value="#773DFF"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Height="30"
+                        CornerRadius="15" Width="150"
+                        Background="{TemplateBinding Background}"
+                        Margin="5,0,0,20">
+                        <ContentPresenter VerticalAlignment="Center"
+                            HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#836EFB"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

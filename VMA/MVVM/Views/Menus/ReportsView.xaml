@@ -23,28 +23,7 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <TabControl Style="{DynamicResource TabContorlStyle}"  Background="White">
-                    <TabItem Header="AMC Payment to Excel" Style="{DynamicResource TabItemStyle}" Height="39">
-                        <AdornerDecorator>
-                            <StackPanel Grid.Row="2" 
-                                        Orientation="Horizontal"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Center"
-                                        Margin="0,0,0,9">
-                                <Button Style="{StaticResource vendorSaveButton}"
-                                        Command="{Binding ExportPaymentNoteCommand}"                            
-                                        Content="Export"                            
-                                        FontSize="12"
-                                        FontFamily="Montserrat"
-                                        Cursor="Hand"
-                                        BorderThickness="0"
-                                        Foreground="White"
-                                        VerticalAlignment="Top"
-                                        />
-
-                            </StackPanel>
-                        </AdornerDecorator>
-                    </TabItem>
+                <TabControl Style="{DynamicResource TabContorlStyle}"  Background="White">                   
 
                     <TabItem Header="Service Payment Note" Style="{DynamicResource TabItemStyle}" Height="39">
                         <AdornerDecorator>
@@ -166,6 +145,46 @@
                         </AdornerDecorator>
                     </TabItem>
 
+                    <TabItem Header="Report" Style="{DynamicResource TabItemStyle}" Height="39">
+                        <AdornerDecorator>
+                            <StackPanel Grid.Row="2" 
+                                        Orientation="Vertical"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        Margin="0,0,0,9">
+                                <Button Style="{StaticResource RepotItemsButton}"
+                                        Command="{Binding ExportPaymentNoteCommand}"                            
+                                        Content="AMC Excel Repor"                            
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="2"
+                                        Foreground="White"
+                                        VerticalAlignment="Top"/>
+
+                                <Button Style="{StaticResource RepotItemsButton}"
+                                        Command="{Binding MonthlyReportCommand}"                            
+                                        Content="Monthly PDF Report"                            
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="2"
+                                        Foreground="White"
+                                        VerticalAlignment="Top"/>
+
+                                <Button Style="{StaticResource RepotItemsButton}"
+                                        Command="{Binding YearlyReportCommand}"                            
+                                        Content="Yearly PDF Repor"                            
+                                        FontSize="12"
+                                        FontFamily="Montserrat"
+                                        Cursor="Hand"
+                                        BorderThickness="2"
+                                        Foreground="White"
+                                        VerticalAlignment="Top"/>
+
+                            </StackPanel>
+                        </AdornerDecorator>
+                    </TabItem>
                 </TabControl>
             </Grid>
 
