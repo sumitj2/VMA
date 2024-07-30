@@ -108,7 +108,7 @@ namespace VMA.MVVM.ViewModels.Add
                 _SelectedVendorModel = value;
                 OnPropertyChanged(nameof(SelectedVendorModel));
 
-                var res = VendorModels.FirstOrDefault(x => x.VendorName == _SelectedVendorModel?.VendorName);
+                var res = _paymentNotesViewModel.TempVendorPaymentNotes.FirstOrDefault(x => x.VendorName == _SelectedVendorModel?.VendorName);
                 //_ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
                 if (res != null)
                 {
@@ -220,7 +220,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-            PaymentNoteNo = Convert.ToString(paymentNotesViewModel.VendorPaymentNotes?.Count + 1);
+            
             _paymentNotesViewModel = paymentNotesViewModel;
             _editPaymentNote = editPaymentNote;
             if (_editPaymentNote != null)
@@ -246,6 +246,7 @@ namespace VMA.MVVM.ViewModels.Add
             SubmitCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(SubmitPaymentNote, ValidatePaymentNote);
             _configurationBusinessLogic = configurationBusinessLogic;
             CallAync();
+            PaymentNoteNo = PaymentNoteId + Convert.ToString(paymentNotesViewModel.VendorPaymentNotes?.Count + 1);
         }
 
         public async Task GetAllConfigurations()
@@ -255,7 +256,7 @@ namespace VMA.MVVM.ViewModels.Add
             string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
             string? noteId = allConfigurations.FirstOrDefault(x => x.Cfgkey == "NoteId")?.CfgValue;
             PaymentNoteYear = financialYear;
-            PaymentNoteId = noteId;
+            PaymentNoteId = noteId+PaymentNoteNo;
         }
 
         private bool ValidatePaymentNote()
