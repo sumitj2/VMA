@@ -13,6 +13,12 @@
 "SccProvider" = "8:"
     "Hierarchy"
     {
+        "Entry"
+        {
+        "MsmKey" = "8:_FA2E959C13A343389C3117325199C7D2"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -38,6 +44,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -62,6 +76,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -151,7 +173,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:VMAInstaller"
         "ProductCode" = "8:{F316C3C3-3AC7-48A6-BFE7-CEBE19C75B5B}"
-        "PackageCode" = "8:{2392B62E-E7AE-4467-A131-22B6FC8B01ED}"
+        "PackageCode" = "8:{D112D10B-5A77-4DE2-85BD-374C052F6F35}"
         "UpgradeCode" = "8:{D5FD6599-E267-4105-A4AB-47FA0EB6294D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -271,20 +293,6 @@
         }
         "Shortcut"
         {
-            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_54475CA7E7AD4F0B8277518C038C50E3"
-            {
-            "Name" = "8:Shortcut to %sPrimary output from VMA (Active)"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "IconIndex" = "3:0"
-            "Transitive" = "11:FALSE"
-            "Target" = "8:_6055A1A8B4CF468AA11A8BFF93DEC7CC"
-            "Folder" = "8:_885B8384A66E474D975F3732B3C8A25B"
-            "WorkingFolder" = "8:_850F6FF5CB1F4303AF4BA0D0B9042617"
-            "Icon" = "8:"
-            "Feature" = "8:"
-            }
         }
         "UserInterface"
         {
@@ -684,9 +692,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6055A1A8B4CF468AA11A8BFF93DEC7CC"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_FA2E959C13A343389C3117325199C7D2"
             {
-            "SourcePath" = "8:..\\VMA\\obj\\Debug\\net8.0-windows\\VMA.dll"
+            "SourcePath" = "8:..\\VMA\\obj\\Debug\\net8.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_850F6FF5CB1F4303AF4BA0D0B9042617"
@@ -705,7 +713,7 @@
             "IsolateTo" = "8:"
             "ProjectOutputGroupRegister" = "3:1"
             "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
+            "OutputGroupCanonicalName" = "8:PublishItems"
             "OutputProjectGuid" = "8:{4FE33529-63EA-418A-AE66-1FF4C9D30706}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
