@@ -184,12 +184,16 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand ExportPaymentNoteCommand { get; }
         public ICommand GenerateCommand { get; }
+        public ICommand MonthlyReportCommand { get; }
+        public ICommand YearlyReportCommand { get; }
+
         public readonly IReportExportToExcelPaymentNote _reportExportToExcelPaymentNote;
         public readonly IVendorBusinessLogic _vendorBusinessLogic;
         public readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         public readonly IConfigurationBusinessLogic _configurationBusinessLogic;
         public readonly IPaymentNoteInWord _paymentNoteInWord;
-        public ReportsViewModel(IReportExportToExcelPaymentNote reportExportToExcelPaymentNote, IVendorBusinessLogic vendorBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord)
+        public readonly IYearlyMonthlyReportPDF _yearlyReportPDF;
+        public ReportsViewModel(IReportExportToExcelPaymentNote reportExportToExcelPaymentNote, IVendorBusinessLogic vendorBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord, IYearlyMonthlyReportPDF yearlyReportPDF)
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
@@ -198,9 +202,23 @@ namespace VMA.MVVM.ViewModels.Menus
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _configurationBusinessLogic = configurationBusinessLogic;
             _paymentNoteInWord = paymentNoteInWord;
+            _yearlyReportPDF = yearlyReportPDF;
+
             ExportPaymentNoteCommand = new ViewModelAsyncCommand<Database.VMA.Entities.CustomEntities.ExportPaymentNoteData>(ExportPaymentNote);
             GenerateCommand = new ViewModelAsyncCommand<CreateWordDocumentPaymentNote>(GeneratePaymentNote);
+            MonthlyReportCommand = new ViewModelAsyncCommand<Database.VMA.Entities.CustomEntities.ExportPaymentNoteData>(GenerateMonthlyReport);
+            YearlyReportCommand = new ViewModelAsyncCommand<Database.VMA.Entities.CustomEntities.ExportPaymentNoteData>(GenerateYearlyReport);
             _ = CallAync();
+        }
+
+        private async Task GenerateYearlyReport(Database.VMA.Entities.CustomEntities.ExportPaymentNoteData note)
+        {
+            await _yearlyReportPDF.GenerateYearlyReport(_vendorPaymentYear, pathExcel).ConfigureAwait(true);
+        }
+
+        private async Task GenerateMonthlyReport(Database.VMA.Entities.CustomEntities.ExportPaymentNoteData note)
+        {
+            await _yearlyReportPDF.GenerateMonthlyReport(_vendorPaymentYear,"month_need_to_pass", pathExcel).ConfigureAwait(true);
         }
 
         private async Task GeneratePaymentNote(CreateWordDocumentPaymentNote note)

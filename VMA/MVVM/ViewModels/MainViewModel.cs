@@ -33,6 +33,7 @@ namespace VMA.MVVM.ViewModels
         private IReportExportToExcelPaymentNote _reportExportToExcelPaymentNote;
         private IConfigurationBusinessLogic _configurationBusinessLogic;
         private IPaymentNoteInWord _paymentNoteInWord;
+        private IYearlyMonthlyReportPDF _yearlyMonthlyReportPDF;
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -99,7 +100,12 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowGSTViewCommand { get; }
 
 
-        public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IReportExportToExcelPaymentNote reportExportToExcelPaymentNote,IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord)
+        public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic,
+                             IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic,
+                             IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic,
+                             IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IReportExportToExcelPaymentNote reportExportToExcelPaymentNote,
+                             IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord,
+                             IYearlyMonthlyReportPDF yearlyMonthlyReportPDF)
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
@@ -109,7 +115,8 @@ namespace VMA.MVVM.ViewModels
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
             _venderPaymentNotesBusinessLogic = venderPaymentNotesBusinessLogic;
             _configurationBusinessLogic = configurationBusinessLogic;
-            _paymentNoteInWord = paymentNoteInWord; 
+            _paymentNoteInWord = paymentNoteInWord;
+            _yearlyMonthlyReportPDF = yearlyMonthlyReportPDF;
             // _currentUserAccount = new UserAccountModel();
 
             //Initialize command
@@ -152,7 +159,7 @@ namespace VMA.MVVM.ViewModels
                 Caption = "Settings";
                 Icon = IconChar.Gears;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
@@ -162,11 +169,11 @@ namespace VMA.MVVM.ViewModels
         {
             try
             {
-                CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote,_vendorBusinessLogic,_vendorDetailsBusinessLogic,_configurationBusinessLogic, _paymentNoteInWord);
+                CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote, _vendorBusinessLogic, _vendorDetailsBusinessLogic, _configurationBusinessLogic, _paymentNoteInWord,_yearlyMonthlyReportPDF);
                 Caption = "Reports";
                 Icon = IconChar.File;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
@@ -180,7 +187,7 @@ namespace VMA.MVVM.ViewModels
                 Caption = "Payment Notes";
                 Icon = IconChar.NoteSticky;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
@@ -194,7 +201,7 @@ namespace VMA.MVVM.ViewModels
                 Caption = "Payments";
                 Icon = IconChar.Paypal;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
@@ -222,7 +229,7 @@ namespace VMA.MVVM.ViewModels
                 Caption = "Products Services";
                 Icon = IconChar.ProductHunt;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
@@ -236,7 +243,7 @@ namespace VMA.MVVM.ViewModels
                 Caption = "Vendors";
                 Icon = IconChar.UserGroup;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
@@ -250,7 +257,7 @@ namespace VMA.MVVM.ViewModels
                 Caption = "Home";
                 Icon = IconChar.Home;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
