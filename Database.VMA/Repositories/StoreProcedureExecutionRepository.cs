@@ -18,12 +18,13 @@ namespace Database.VMA.Repositories
             _context = context;
         }
 
-        public async Task<List<YearlyReportData>> GetVendorServiceDataAsync(string detailsYear)
+        public async Task<List<YearlyReportData>> GetYearlyReportDataAsync(string detailsYear)
         {
             var detailsYearParam = new SqlParameter("@DetailsYear", detailsYear ?? (object)DBNull.Value);
 
-            return await _context.YearlyReportDatas
-                .FromSqlRaw("EXECUTE GetVendorServiceData @DetailsYear", detailsYearParam)
+            return await _context.YearlyReportData
+                .FromSqlRaw("EXECUTE GetYearlyAllServiceReport @DetailsYear", detailsYearParam)
+                .AsNoTracking() // Optional: To avoid tracking the entities
                 .ToListAsync();
         }
     }

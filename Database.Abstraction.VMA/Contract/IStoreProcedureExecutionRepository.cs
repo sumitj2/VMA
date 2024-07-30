@@ -9,6 +9,6 @@ namespace Database.Abstraction.VMA.Contract
 {
     public interface IStoreProcedureExecutionRepository
     {
-        Task<List<YearlyReportData>> GetVendorServiceDataAsync(string detailsYear);
+        Task<List<YearlyReportData>> GetYearlyReportDataAsync(string detailsYear);
     }
 }

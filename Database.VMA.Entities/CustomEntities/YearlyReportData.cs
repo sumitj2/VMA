@@ -11,9 +11,9 @@ namespace Database.VMA.Entities.CustomEntities
         public string? VendorName { get; set; }
         public string? VendorServiceName { get; set; }
         public string? ServicePaymentType { get; set; }
-        public decimal? ServiceSanctionAmount { get; set; }
+        public decimal ServiceSantionAmount { get; set; }
         public int NumberOfTerms { get; set; }
-        public decimal? TotalPaymentsMade { get; set; }
+        public int TotalPaymentsMade { get; set; }
         public int RemainingTerms { get; set; }
         public decimal? TotalVendorPaymentAmount { get; set; }
         public decimal? RemainingAmount { get; set; }

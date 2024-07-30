@@ -14,7 +14,7 @@ public partial class VendorManagementDbContext : DbContext
         : base(options)
     {
     }
-    public DbSet<YearlyReportData> YearlyReportDatas { get; set; }
+    public virtual DbSet<YearlyReportData> YearlyReportData { get; set; }
     public virtual DbSet<GstcalculationMaster> GstcalculationMasters { get; set; }
 
     public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
