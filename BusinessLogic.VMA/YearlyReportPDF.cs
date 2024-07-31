@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Style = MigraDoc.DocumentObjectModel.Style;
 
 namespace BusinessLogic.VMA
 {
@@ -27,10 +28,28 @@ namespace BusinessLogic.VMA
             return null;
         }
 
-        private void GeneratePdf(List<YearlyReportData> Data,string? path,string financilaYear)
+        private void GeneratePdf(List<YearlyReportData> Data, string? path, string financilaYear)
         {
             var document = new Document();
             var section = document.AddSection();
+
+            // Define a heading style
+            Style headingStyle = document.Styles["Heading1"];
+            headingStyle.Font.Name = "Verdana";
+            headingStyle.Font.Size = 20;
+            headingStyle.Font.Bold = true;
+
+            // Add a heading
+            Paragraph heading = section.AddParagraph("Thane Bharat Bank", "Heading1");
+            heading.Format.Alignment = ParagraphAlignment.Center;
+            section.AddParagraph(); // Adds an empty paragraph to create space
+
+            // Add the additional paragraph
+            Paragraph additionalText = section.AddParagraph("Yearly Vendor Service Report");
+            additionalText.Format.Alignment = ParagraphAlignment.Center;
+
+
+            section.AddParagraph();
             var table = section.AddTable();
             table.Borders.Width = 0.75;
 
@@ -54,6 +73,10 @@ namespace BusinessLogic.VMA
             row.Cells[4].AddParagraph("Paid Amt");
             row.Cells[5].AddParagraph("Pending Amt");
             int count = 1;
+            decimal? santionedAmtTotal = 0;
+            decimal? TotalAmountPaid = 0;
+            decimal? TotalRemainingAmt = 0;
+
             // Add data rows
             foreach (var item in Data)
             {
@@ -62,15 +85,25 @@ namespace BusinessLogic.VMA
                 row.Cells[1].AddParagraph(item?.VendorName);
                 row.Cells[2].AddParagraph(item.VendorServiceName);
                 row.Cells[3].AddParagraph(item?.ServiceSantionAmount.ToString());
-                row.Cells[4].AddParagraph(item?.TotalVendorPaymentAmount.ToString());
+                row.Cells[4].AddParagraph(item?.TotalVendorPaymentAmount != null ? item?.TotalVendorPaymentAmount.ToString():0.ToString());
                 row.Cells[5].AddParagraph(item?.RemainingAmount.ToString());
                 count++;
+                santionedAmtTotal += item?.ServiceSantionAmount;
+                TotalAmountPaid += item?.TotalVendorPaymentAmount != null ? item?.TotalVendorPaymentAmount : 0;
+                TotalRemainingAmt += item?.RemainingAmount;
             }
+            row = table.AddRow();
+            row.Cells[0].AddParagraph("Total");
+            row.Cells[1].AddParagraph("");
+            row.Cells[2].AddParagraph("");
+            row.Cells[3].AddParagraph(santionedAmtTotal.ToString());
+            row.Cells[4].AddParagraph(TotalAmountPaid.ToString());
+            row.Cells[5].AddParagraph(TotalRemainingAmt.ToString());
 
             // Render the document
             var pdfRenderer = new PdfDocumentRenderer(true) { Document = document };
             pdfRenderer.RenderDocument();
-            path = path+"\\" + financilaYear+DateTime.Now.ToString("ff") + "YearlyRepor.pdf";
+            path = path + "\\" + financilaYear + DateTime.Now.ToString("ff") + "YearlyRepor.pdf";
             pdfRenderer.PdfDocument.Save(path);
             OpenPdf(path);
         }
@@ -96,7 +129,7 @@ namespace BusinessLogic.VMA
             List<PDFYearlyData> pdfData = [];
             var payments = await _storeProcedureExecutionRepository.GetYearlyReportDataAsync(financilaYear).ConfigureAwait(true);
 
-            GeneratePdf(payments, path,financilaYear);
+            GeneratePdf(payments, path, financilaYear);
         }
     }
 }
