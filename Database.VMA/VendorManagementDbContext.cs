@@ -1,4 +1,5 @@
 ﻿using Database.VMA.Entities;
+using Database.VMA.Entities.CustomEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Database.VMA;
@@ -13,7 +14,7 @@ public partial class VendorManagementDbContext : DbContext
         : base(options)
     {
     }
-
+    public virtual DbSet<YearlyReportData> YearlyReportData { get; set; }
     public virtual DbSet<GstcalculationMaster> GstcalculationMasters { get; set; }
 
     public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
@@ -34,6 +35,8 @@ public partial class VendorManagementDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<YearlyReportData>().HasNoKey();
+
         modelBuilder.Entity<Configuration>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Configur__3214EC07FB9FBC06");

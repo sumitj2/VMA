@@ -156,7 +156,7 @@ namespace Database.VMA.Repositories
         }
         public async Task<VendorPaymentNote?> GetVendorsPaymentNoteByIVendorId(int? vendorId)
         {
-            return await _context.VendorPaymentNotes.Where(x => x.IsActive == true && x.NoteId == vendorId).FirstOrDefaultAsync().ConfigureAwait(true);
+            return await _context.VendorPaymentNotes.Where(x => x.IsActive == true && x.FkVendorId == vendorId).FirstOrDefaultAsync().ConfigureAwait(true);
         }
 
         public async Task RemoveVendorPaymentNote(VendorPaymentNote VenderPaymentNoteEntity)

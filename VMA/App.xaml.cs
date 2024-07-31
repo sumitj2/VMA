@@ -72,6 +72,8 @@ namespace VMA
 
             services.AddSingleton<IReportExportToExcelPaymentNote, ReportExportToExcelPaymentNote>();
             services.AddSingleton<IYearlyMonthlyReportPDF, YearlyMonthlyReportPDF>();
+
+            services.AddSingleton<IStoreProcedureExecutionRepository, StoreProcedureExecutionRepository>();
             //services.AddSingleton(x =>new VenderPaymentNotesBusinesslogic(x.GetRequiredService<IVenderPaymentNotesRepository>(),
             //                                                              x.GetRequiredService<IInvoiceDetailsBusinessLogic>()));
             //Register services and view models
