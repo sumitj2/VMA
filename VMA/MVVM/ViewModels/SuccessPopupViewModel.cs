@@ -118,6 +118,8 @@ namespace VMA.MVVM.ViewModels
             Header = notificationType.ToString();
             IsOKbtnVisible = isOkBtnVisible;
 
+            Window?.Close();
+
             Window = (Window)Activator.CreateInstance(typeof(SuccessPopup))!;
 
             Window?.Show();
