@@ -15,7 +15,7 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_FA2E959C13A343389C3117325199C7D2"
+        "MsmKey" = "8:_815D74C1A2BA4B9D931B36B6E44F700B"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -112,6 +112,14 @@
                 "Architecture" = "2:0"
                 "Runtime" = "2:0"
                 }
+                "{A06ECF26-33A3-4562-8140-9B0E340D4F24}:_AEB575D5953D475BB22AD226D2844787"
+                {
+                "Name" = "8:.NET Framework"
+                "Message" = "8:[VSDNETMSG]"
+                "FrameworkVersion" = "8:.NETFramework,Version=v4.7.2"
+                "AllowLaterVersions" = "11:FALSE"
+                "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
+                }
             }
         }
         "File"
@@ -171,9 +179,9 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:VMAInstaller"
+        "ProductName" = "8:VMA"
         "ProductCode" = "8:{F316C3C3-3AC7-48A6-BFE7-CEBE19C75B5B}"
-        "PackageCode" = "8:{D112D10B-5A77-4DE2-85BD-374C052F6F35}"
+        "PackageCode" = "8:{4B4CBEBC-4EA0-4C67-9BE4-98DA6633C326}"
         "UpgradeCode" = "8:{D5FD6599-E267-4105-A4AB-47FA0EB6294D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -184,7 +192,7 @@
         "Manufacturer" = "8:Freelancer"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:VMAInstaller"
+        "Title" = "8:VMA Client"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Freelancer"
         "Keywords" = "8:"
@@ -692,7 +700,7 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_FA2E959C13A343389C3117325199C7D2"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_815D74C1A2BA4B9D931B36B6E44F700B"
             {
             "SourcePath" = "8:..\\VMA\\obj\\Debug\\net8.0-windows\\apphost.exe"
             "TargetName" = "8:"
