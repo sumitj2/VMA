@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" xmlns:menus="clr-namespace:VMA.MVVM.ViewModels.Menus" xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" d:DataContext="{d:DesignInstance Type=menus:HomeViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Border CornerRadius="10"                    
@@ -36,7 +36,7 @@
                                     </materialDesign:PackIcon.Foreground>
                                 </materialDesign:PackIcon>
                                 <TextBlock FontSize="12" Text="Total Vendors"  />
-                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="280K" Margin="0 10 0 0" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfVendors ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 10 0 0" />
 
                             </StackPanel>
                         </materialDesign:Card>
@@ -54,7 +54,7 @@
                                     </materialDesign:PackIcon.Foreground>
                                 </materialDesign:PackIcon>
                                 <TextBlock FontSize="12" Text="Total Services" />
-                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="280K" Margin="0 10 0 0" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfServices,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 10 0 0" />
 
 
                             </StackPanel>
@@ -66,7 +66,7 @@
                             <StackPanel Margin="5">
                                 <materialDesign:PackIcon Kind="Rupee" Foreground="Red" />
                                 <TextBlock FontSize="12" Text="Total Santioned Amount" />
-                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="280K" Margin="0 10 0 0" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding TotalSanctionAmount,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 10 0 0" />
 
 
 
@@ -79,7 +79,7 @@
                             <StackPanel Margin="10">
                                 <materialDesign:PackIcon Kind="AccountPending" Foreground="#29A3EC" />
                                 <TextBlock FontSize="12" Text="Amount Paid" />
-                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="60K" Margin="0 10 0 0" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding TotalPaidAmount ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 10 0 0" />
 
                             </StackPanel>
                         </materialDesign:Card>
@@ -94,30 +94,26 @@
                         <ColumnDefinition Width="400"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel x:Name="CompanyDetails" Grid.Row="0"
-                                 Orientation="Vertical">
+                    <!--<StackPanel x:Name="CompanyDetails" Grid.Row="0"
+                                 Orientation="Horizontal" Margin="20">-->
+
+                    <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding FinancialYear,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="145,30,40,40" />
+
+                    <lvc:PieChart Series="{Binding SeriesCollection,UpdateSourceTrigger=PropertyChanged}" Width="302" Margin="49,0,49,0">
+                        <lvc:PieChart.ToolTip>
+                            <ToolTip Content="{Binding DataContext.Formatter, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        </lvc:PieChart.ToolTip>
+                    </lvc:PieChart>
 
 
-                        <ListBox ItemsSource="{Binding DataItems}" Margin="10">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel>
-                                        <TextBlock Text="Forbes" Margin="5"/>
-                                        <ProgressBar Value="5" Maximum="100" Height="20" Margin="5"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                    <!--</StackPanel>-->
 
-
-                    </StackPanel>
-
-                    <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
+                    <!--<StackPanel x:Name="CompanyDetail2" Grid.Column="1"
                                          Orientation="Vertical">
                         <materialDesign:Clock Time="" Height="107" Width="246" FontWeight="ExtraBlack" HorizontalAlignment="Center" RenderTransformOrigin="0.48,0.2"/>
                         <Calendar Background="#F6F6F8" materialDesign:BadgedAssist.BadgeBackground="AliceBlue"></Calendar>
 
-                    </StackPanel>
+                    </StackPanel>-->
 
                 </Grid>
 

@@ -126,9 +126,11 @@ namespace VMA.MVVM.ViewModels
 
             if (isAutomaticClosed)
             {
-                DispatcherTimer timer = new DispatcherTimer();
-                timer.Interval = TimeSpan.FromSeconds(5); // Set the interval to 2 seconds
-                
+                DispatcherTimer timer = new()
+                {
+                    Interval = TimeSpan.FromSeconds(5) // Set the interval to 2 seconds
+                };
+
                 timer.Start();
 
                 timer.Tick += (s, args) =>

@@ -18,14 +18,24 @@ namespace Database.VMA.Repositories
             _context = context;
         }
 
-        public async Task<List<YearlyReportData>> GetYearlyReportDataAsync(string detailsYear)
+        public async Task<List<YearlyReportData>> GetYearlyReportDataAsync(string? detailsYear)
         {
-            var detailsYearParam = new SqlParameter("@DetailsYear", detailsYear ?? (object)DBNull.Value);
-
-            return await _context.YearlyReportData
+            var detailsYearParam = new SqlParameter("@DetailsYear", detailsYear ?? (object)DBNull.Value);            
+            return
+                await _context.YearlyReportData
                 .FromSqlRaw("EXECUTE GetYearlyAllServiceReport @DetailsYear", detailsYearParam)
                 .AsNoTracking() // Optional: To avoid tracking the entities
                 .ToListAsync();
+        }
+
+        public async Task<DashboardDetails?> GetDashboardDetailsAsync(string? detailsYear)
+        {
+            // Use FromSqlRaw to execute the stored procedure and map the result to DTO
+            var result = await _context.DashboardData
+                .FromSqlRaw("EXECUTE GetDashboardDetails @DetailsYear = {0}", detailsYear)
+                .ToListAsync();
+
+            return result.FirstOrDefault();
         }
     }
 }

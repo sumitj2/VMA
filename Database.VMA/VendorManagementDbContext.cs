@@ -14,6 +14,8 @@ public partial class VendorManagementDbContext : DbContext
         : base(options)
     {
     }
+    public virtual DbSet<DashboardDetails> DashboardData { get; set; }
+
     public virtual DbSet<YearlyReportData> YearlyReportData { get; set; }
     public virtual DbSet<GstcalculationMaster> GstcalculationMasters { get; set; }
 
@@ -35,6 +37,7 @@ public partial class VendorManagementDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<DashboardDetails>().HasNoKey();
         modelBuilder.Entity<YearlyReportData>().HasNoKey();
 
         modelBuilder.Entity<Configuration>(entity =>

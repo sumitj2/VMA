@@ -73,6 +73,7 @@ namespace VMA
             services.AddSingleton<IReportExportToExcelPaymentNote, ReportExportToExcelPaymentNote>();
             services.AddSingleton<IYearlyMonthlyReportPDF, YearlyMonthlyReportPDF>();
 
+            services.AddSingleton<IHomePageBusinessLogic, HomePageBusinessLogic>();
             services.AddSingleton<IStoreProcedureExecutionRepository, StoreProcedureExecutionRepository>();
             //services.AddSingleton(x =>new VenderPaymentNotesBusinesslogic(x.GetRequiredService<IVenderPaymentNotesRepository>(),
             //                                                              x.GetRequiredService<IInvoiceDetailsBusinessLogic>()));
@@ -90,7 +91,8 @@ namespace VMA
                                                          x.GetRequiredService<IReportExportToExcelPaymentNote>(),
                                                          x.GetRequiredService<IConfigurationBusinessLogic>(),
                                                          x.GetRequiredService<IPaymentNoteInWord>(),
-                                                         x.GetRequiredService<IYearlyMonthlyReportPDF>()));
+                                                         x.GetRequiredService<IYearlyMonthlyReportPDF>(),
+                                                         x.GetRequiredService<IHomePageBusinessLogic>()));
             services.AddSingleton(x => new MainView(x.GetRequiredService<MainViewModel>()));
         }
         protected override void OnStartup(StartupEventArgs e)

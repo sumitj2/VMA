@@ -34,6 +34,7 @@ namespace VMA.MVVM.ViewModels
         private IConfigurationBusinessLogic _configurationBusinessLogic;
         private IPaymentNoteInWord _paymentNoteInWord;
         private IYearlyMonthlyReportPDF _yearlyMonthlyReportPDF;
+        private IHomePageBusinessLogic _homePageBusinessLogic;  
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -105,7 +106,7 @@ namespace VMA.MVVM.ViewModels
                              IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic,
                              IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IReportExportToExcelPaymentNote reportExportToExcelPaymentNote,
                              IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord,
-                             IYearlyMonthlyReportPDF yearlyMonthlyReportPDF)
+                             IYearlyMonthlyReportPDF yearlyMonthlyReportPDF, IHomePageBusinessLogic homePageBusinessLogic)
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
@@ -128,13 +129,14 @@ namespace VMA.MVVM.ViewModels
             ShowPaymentNoteViewCommand = new ViewModelCommand(ExecutePaymentNoteViewCommand);
             ShowReportViewCommand = new ViewModelCommand(ExecuteShowReportViewCommand);
             ShowSettingViewCommand = new ViewModelCommand(ExecuteShowSettingViewCommand);
-            ShowGSTViewCommand = new ViewModelCommand(ExecuteShowGSTViewCommand);
-            //Default view
-            ExecuteShowHomeViewCommand(null);
-            _ = LoadCurrentUserData();
+            ShowGSTViewCommand = new ViewModelCommand(ExecuteShowGSTViewCommand);            
             _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
             _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
             _reportExportToExcelPaymentNote = reportExportToExcelPaymentNote;
+            _homePageBusinessLogic = homePageBusinessLogic;
+            //Default view
+            ExecuteShowHomeViewCommand(null);
+            _ = LoadCurrentUserData();
         }
 
         private void ExecuteShowGSTViewCommand(object t)
@@ -253,7 +255,7 @@ namespace VMA.MVVM.ViewModels
         {
             try
             {
-                CurrentChildView = new HomeViewModel();
+                CurrentChildView = new HomeViewModel(_homePageBusinessLogic,_configurationBusinessLogic);
                 Caption = "Home";
                 Icon = IconChar.Home;
             }
