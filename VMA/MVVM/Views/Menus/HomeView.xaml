@@ -108,12 +108,11 @@
 
                     <!--</StackPanel>-->
 
-                    <!--<StackPanel x:Name="CompanyDetail2" Grid.Column="1"
+                    <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
                                          Orientation="Vertical">
-                        <materialDesign:Clock Time="" Height="107" Width="246" FontWeight="ExtraBlack" HorizontalAlignment="Center" RenderTransformOrigin="0.48,0.2"/>
-                        <Calendar Background="#F6F6F8" materialDesign:BadgedAssist.BadgeBackground="AliceBlue"></Calendar>
+                        <Calendar Background="#F6F6F8" materialDesign:BadgedAssist.BadgeBackground="AliceBlue" Margin="50"></Calendar>
 
-                    </StackPanel>-->
+                    </StackPanel>
 
                 </Grid>
 
