@@ -28,49 +28,52 @@ namespace BusinessLogic.VMA
         {
             List<ExportPaymentNoteData> exportData = [];
             var payments = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetailsToExport(financialYear).ConfigureAwait(true);
-            var orderByPayments = payments.OrderBy(x => x.PaymentNoteNo).ThenBy(x => x.VendorPaymentDate);            
-            foreach (var item in orderByPayments)
+            if (payments != null ||  payments?.Count!=0 )
             {
-                exportData.Add(new ExportPaymentNoteData
+                var orderByPayments = payments?.OrderBy(x => x.PaymentNoteNo).ThenBy(x => x.VendorPaymentDate);
+                foreach (var item in orderByPayments)
                 {
-                    InvoiceDate = item.InvoiceDate,
-                    InvoiceNumber = item.InvoiceNumber,
-                    InvoiceParticulars = item.InvoiceParticulars,
-                    PaymentNoteDate = item.PaymentNoteDate,
-                    PaymentNoteNo = item.PaymentNoteNo,
-                    ServiceSantionAmount = item.ServiceSantionAmount,
-                    VendorDetailCategory = item.VendorDetailCategory,
-                    VendorServiceName = item.VendorServiceName,
-                    VendorPaymentYearRange = item.VendorPaymentYearRange,
-                    VendorName = item.VendorName,
-                    ServiceType = item.ServiceType,
-                    VendorPaymentUtrnumber = item.VendorPaymentUtrnumber,
-                    ServiceSantionedBy = item.ServiceSantionedBy,
-                    SrNo = item.SrNo,
-                    VendorPaymentAmount = item.VendorPaymentAmount,
-                    VendorPaymentRtgsAmount = item.VendorPaymentRtgsAmount,
-                    VendorPaymentRtgsDate = item.VendorPaymentRtgsDate,
-                    VendorPaymentTdsamount = item.VendorPaymentTdsamount,
-                    VendorPaymentDate = item.VendorPaymentDate,
-                    IsAmc = item.IsAmc
-                });
+                    exportData.Add(new ExportPaymentNoteData
+                    {
+                        InvoiceDate = item.InvoiceDate,
+                        InvoiceNumber = item.InvoiceNumber,
+                        InvoiceParticulars = item.InvoiceParticulars,
+                        PaymentNoteDate = item.PaymentNoteDate,
+                        PaymentNoteNo = item.PaymentNoteNo,
+                        ServiceSantionAmount = item.ServiceSantionAmount,
+                        VendorDetailCategory = item.VendorDetailCategory,
+                        VendorServiceName = item.VendorServiceName,
+                        VendorPaymentYearRange = item.VendorPaymentYearRange,
+                        VendorName = item.VendorName,
+                        ServiceType = item.ServiceType,
+                        VendorPaymentUtrnumber = item.VendorPaymentUtrnumber,
+                        ServiceSantionedBy = item.ServiceSantionedBy,
+                        SrNo = item.SrNo,
+                        VendorPaymentAmount = item.VendorPaymentAmount,
+                        VendorPaymentRtgsAmount = item.VendorPaymentRtgsAmount,
+                        VendorPaymentRtgsDate = item.VendorPaymentRtgsDate,
+                        VendorPaymentTdsamount = item.VendorPaymentTdsamount,
+                        VendorPaymentDate = item.VendorPaymentDate,
+                        IsAmc = item.IsAmc
+                    });
+                }
+                var fileContent = ExportToExcel(exportData);
+
+                // Save the file to disk
+                var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+                {
+                    Filter = "Excel Files|*.xlsx",
+                    Title = "PaymentNotes",
+                    FileName = "AMC_Payment_Details_" + DateTime.UtcNow.ToString("dd_t") + ".xlsx"
+                };
+
+                //string path = "D:\\Notes\\";
+                File.WriteAllBytes(path + "\\" + saveFileDialog.FileName, fileContent);
+
+                MessageBox.Show($"File successfully saved to {saveFileDialog.FileName}");
+
+                OpenExcelFile(path + saveFileDialog.FileName);
             }
-            var fileContent = ExportToExcel(exportData);
-
-            // Save the file to disk
-            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
-            {
-                Filter = "Excel Files|*.xlsx",
-                Title = "PaymentNotes",
-                FileName = "AMC_Payment_Details_" + DateTime.UtcNow.ToString("dd_t") + ".xlsx"
-            };
-
-            //string path = "D:\\Notes\\";
-            File.WriteAllBytes(path+"\\"+ saveFileDialog.FileName, fileContent);
-
-            MessageBox.Show($"File successfully saved to {saveFileDialog.FileName}");
-
-            OpenExcelFile(path + saveFileDialog.FileName);
 
         }
 

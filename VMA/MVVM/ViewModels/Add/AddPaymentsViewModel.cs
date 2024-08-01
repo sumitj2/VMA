@@ -736,10 +736,70 @@ namespace VMA.MVVM.ViewModels.Add
             IsBranchNameVisible = false;
             IsTDSTextBoxVisible = false;
         }
-
+        string errorMsg = "";
         private bool ValidatePAymentDetails()
         {
-            return true;
+            bool validData;
+
+            if (SelectedVendorModel==null)
+            {
+                errorMsg += nameof(SelectedVendorModel);
+                validData = false;
+            }
+            else
+            {
+                validData = true;
+            }
+
+            if (SelectedVendorDetailService == null)
+            {
+                errorMsg +=", "+ nameof(SelectedVendorDetailService);
+                validData = false;
+            }
+            else
+            {
+                validData = true;
+            }
+
+            if (IsGSTDetailsVisible == true)
+            {
+                if (SelectedGSTModel == null)
+                {
+                    errorMsg +=", "+ nameof(SelectedGSTModel);
+                    validData = false;
+                }
+                else
+                {
+                    validData = true;
+                }
+            }
+
+            if (IsBranchNameVisible == true)
+            {
+                if (BankBranchName == null|| BankBranchName==""|| string.IsNullOrEmpty(BankBranchName)||string.IsNullOrWhiteSpace(BankBranchName))
+                {
+                    errorMsg +=" ," + nameof(BankBranchName);
+                    validData = false;
+                }
+                else
+                {
+                    validData = true;
+                }
+            }
+
+            if(IsTDSTextBoxVisible)
+            {
+                if (VendorPaymentTdsamountNew == null|| VendorPaymentTdsamountNew=="" ||string.IsNullOrEmpty(VendorPaymentTdsamountNew)|| string.IsNullOrWhiteSpace(VendorPaymentTdsamountNew))
+                {
+                    errorMsg += " ," + nameof(VendorPaymentTdsamountNew);
+                    validData = false;
+                }
+                else
+                {
+                    validData = true;
+                }
+            }
+            return validData;
         }
 
         private async Task SubmitPaymentDetails(VendorPaymentModel model)

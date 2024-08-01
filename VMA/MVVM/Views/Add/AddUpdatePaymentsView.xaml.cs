@@ -33,5 +33,6 @@ namespace VMA.MVVM.Views.Add
                 e.Handled = true;
             }
         }
+
     }
 }
