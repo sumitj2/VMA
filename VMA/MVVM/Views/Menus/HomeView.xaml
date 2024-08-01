@@ -99,7 +99,7 @@
 
                     <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding FinancialYear,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="145,30,40,40" />
 
-                    <lvc:PieChart Series="{Binding SeriesCollection,UpdateSourceTrigger=PropertyChanged}" Width="302" Margin="49,0,49,0">
+                    <lvc:PieChart Series="{Binding SeriesCollectionPieChart,UpdateSourceTrigger=PropertyChanged}" Width="302" Margin="49,0,49,0">
                         <lvc:PieChart.ToolTip>
                             <ToolTip Content="{Binding DataContext.Formatter, RelativeSource={RelativeSource AncestorType=Window}}"/>
                         </lvc:PieChart.ToolTip>

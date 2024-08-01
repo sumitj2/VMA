@@ -7,13 +7,17 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using BusinessLogic.Abstraction.VMA.Models;
 
 namespace VMA.MVVM.ViewModels.Menus
 {
+    
     public class HomeViewModel : ViewModelBase
     {
-        private int _CountOfVendors;
+        #region Pie Chart
 
+        private int _CountOfVendors;
         public int CountOfVendors
         {
             get { return _CountOfVendors; }
@@ -25,7 +29,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private int _CountOfServices;
-
         public int CountOfServices
         {
             get { return _CountOfServices; }
@@ -37,7 +40,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private decimal _TotalSanctionAmount;
-
         public decimal TotalSanctionAmount
         {
             get { return _TotalSanctionAmount; }
@@ -49,7 +51,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private decimal _TotalPaidAmount;
-
         public decimal TotalPaidAmount
         {
             get { return _TotalPaidAmount; }
@@ -67,29 +68,45 @@ namespace VMA.MVVM.ViewModels.Menus
             set
             {
                 _financialYear = value;
+                FyTitle = "FY-" + FinancialYear;
                 OnPropertyChanged(nameof(FinancialYear));
             }
         }
-        private readonly IHomePageBusinessLogic _homePageBusinessLogic;
-        private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
-        // public SeriesCollection SeriesCollection { get; set; }
 
-        private SeriesCollection _SeriesCollection;
-
-        public SeriesCollection SeriesCollection
+        private string? _FyTitle;
+        public string? FyTitle
         {
-            get { return _SeriesCollection; }
+            get { return _FyTitle; }
             set
             {
-                
-                _SeriesCollection = value;
-                OnPropertyChanged(nameof(SeriesCollection));
+                _FyTitle = value;
+                OnPropertyChanged(nameof(FyTitle));
             }
         }
 
-        public string[] Labels { get; set; }
-        public Func<double, string> Formatter { get; set; }
+        private SeriesCollection _SeriesCollectionPieChart;
+        public SeriesCollection SeriesCollectionPieChart
+        {
+            get { return _SeriesCollectionPieChart; }
+            set
+            {
 
+                _SeriesCollectionPieChart = value;
+                OnPropertyChanged(nameof(SeriesCollectionPieChart));
+            }
+        }
+        public string[] LabelPieChart { get; set; }
+        public Func<double, string> FormatterPieChart { get; set; }
+        #endregion
+
+        #region Bar Chart       
+
+        #endregion
+
+        private readonly IHomePageBusinessLogic _homePageBusinessLogic;
+        private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
+
+        
         public HomeViewModel(IHomePageBusinessLogic homePageBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic)
         {
             _homePageBusinessLogic = homePageBusinessLogic;
@@ -97,10 +114,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
             _ = CallAync();
 
-            
-
-            Labels = new[] { "Sanctioned Amount", "Amount Paid" };
-            Formatter = value => value.ToString("C");
+            LabelPieChart = ["Sanctioned Amount", "Amount Paid"];
+            FormatterPieChart = value => value.ToString("C");        
         }
         private async Task CallAync()
         {
@@ -129,7 +144,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 TotalPaidAmount = details.TotalPaidAmount;
                 TotalSanctionAmount = details.TotalSanctionAmount;
             }
-            SeriesCollection = new SeriesCollection
+            SeriesCollectionPieChart = new SeriesCollection
             {
                 new PieSeries
                 {
