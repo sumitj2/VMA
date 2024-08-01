@@ -15,7 +15,7 @@ using System.Reflection;
 
 namespace VMA.MVVM.ViewModels.Login
 {
-    public class LoginViewModel: ViewModelBase
+    public class LoginViewModel : ViewModelBase
     {
         private readonly IUserBusinessLogic _userBusinessLogic;
 
@@ -115,10 +115,7 @@ namespace VMA.MVVM.ViewModels.Login
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-#if DEBUG
-            Username = "admin";
-#endif
-            _userBusinessLogic = userBusinessLogic; 
+            _userBusinessLogic = userBusinessLogic;
         }
 
         private bool CanExecuteLoginCommand(object obj)
@@ -161,7 +158,7 @@ namespace VMA.MVVM.ViewModels.Login
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to Authorize user", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Authorize user", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
 

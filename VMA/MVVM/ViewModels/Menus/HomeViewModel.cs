@@ -195,7 +195,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 new ColumnSeries
                 {
                     Title = "Remaining Tenure",
-                    Values = new ChartValues<int>(filteredVendorServices.Select(vs => vs.RemainingTerms))
+                    Values = new ChartValues<int>(filteredVendorServices.Select(vs => vs.TotalTermsCompleted))
                 }
             };
 

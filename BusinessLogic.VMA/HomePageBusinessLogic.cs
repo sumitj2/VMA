@@ -51,7 +51,8 @@ namespace BusinessLogic.VMA
                     TotalPaymentsMade = yearRepor.TotalPaymentsMade,
                     TotalVendorPaymentAmount = yearRepor.TotalVendorPaymentAmount != null?(decimal)yearRepor.TotalVendorPaymentAmount:0,
                     VendorName = yearRepor.VendorName,  
-                    VendorServiceName=yearRepor.VendorServiceName       
+                    VendorServiceName=yearRepor.VendorServiceName ,
+                    TotalTermsCompleted= yearRepor.NumberOfTerms- yearRepor.RemainingTerms
                 });
             }
             return dashboardServiceModel;

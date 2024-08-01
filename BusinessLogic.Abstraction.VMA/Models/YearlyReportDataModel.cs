@@ -17,5 +17,7 @@ namespace BusinessLogic.Abstraction.VMA.Models
         public int RemainingTerms { get; set; }
         public decimal TotalVendorPaymentAmount { get; set; }
         public decimal? RemainingAmount { get; set; }
+        public int TotalTermsCompleted { get; set; }
+
     }
 }
