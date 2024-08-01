@@ -10,5 +10,6 @@ namespace BusinessLogic.Abstraction.VMA.Contract
     public interface IHomePageBusinessLogic
     {
         Task<DashboardDetailsModel> GetDashboardDetails(string? financialYear);
+        Task<List<YearlyReportDataModel>> GetDashboardServicesBarChartDetails(string? financialYear);
     }
 }

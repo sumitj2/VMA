@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BusinessLogic.Abstraction.VMA.Models
+{
+    public class YearlyReportDataModel
+    {
+        public string? VendorName { get; set; }
+        public string? VendorServiceName { get; set; }
+        public string? ServicePaymentType { get; set; }
+        public decimal ServiceSantionAmount { get; set; }
+        public int NumberOfTerms { get; set; }
+        public decimal TotalPaymentsMade { get; set; }
+        public int RemainingTerms { get; set; }
+        public decimal TotalVendorPaymentAmount { get; set; }
+        public decimal? RemainingAmount { get; set; }
+    }
+}

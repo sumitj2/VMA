@@ -107,10 +107,10 @@ namespace VMA.MVVM.ViewModels.Menus
         #endregion
 
         #region Bar Chart       
-        private ObservableCollection<PDFYearlyData> _vendorServices;
+        private ObservableCollection<YearlyReportDataModel> _vendorServices;
         private ObservableCollection<string> _services;
         private string _selectedService;
-        public ObservableCollection<PDFYearlyData> VendorServices
+        public ObservableCollection<YearlyReportDataModel> VendorServices
         {
             get { return _vendorServices; }
             set
@@ -147,19 +147,19 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private void UpdateChart()
         {
-            var filteredVendorServices = VendorServices.Where(vs => vs.ServiceName == SelectedService).ToList();
+            var filteredVendorServices = VendorServices.Where(vs => vs.VendorServiceName == SelectedService).ToList();
 
             SeriesCollection = new SeriesCollection
             {
                 new ColumnSeries
                 {
                     Title = "Sanctioned Amount",
-                    Values = new ChartValues<double>(filteredVendorServices.Select(vs => vs.SanctionedAmount))
+                    Values = new ChartValues<decimal>(filteredVendorServices.Select(vs => vs.ServiceSantionAmount))
                 },
                 new ColumnSeries
                 {
                     Title = "Paid Amount",
-                    Values = new ChartValues<double>(filteredVendorServices.Select(vs => vs.PaidAmount))
+                    Values = new ChartValues<decimal>(filteredVendorServices.Select(vs => vs.TotalVendorPaymentAmount))
                 }
             };
 
@@ -186,23 +186,18 @@ namespace VMA.MVVM.ViewModels.Menus
 
             LabelPieChart = ["Sanctioned Amount", "Amount Paid"];
             FormatterPieChart = value => value.ToString("C");
-            LoadDataForBarChart();
         }
 
-        private void LoadDataForBarChart()
+        private async Task LoadDataForBarChart()
         {
-            VendorServices = new ObservableCollection<PDFYearlyData>
+            List<YearlyReportDataModel> data=new List<YearlyReportDataModel>();
+            await Task.Run(() =>
             {
-                new PDFYearlyData { VendorName = "Fassile", ServiceName = "B2B", SanctionedAmount = 30000, PaidAmount = 30000 },
-                new PDFYearlyData { VendorName = "Finacus", ServiceName = "IMPS", SanctionedAmount = 300000, PaidAmount = 0 },
-                new PDFYearlyData { VendorName = "Finacus", ServiceName = "UPI", SanctionedAmount = 200000, PaidAmount = 200000 },
-                new PDFYearlyData { VendorName = "Forbes", ServiceName = "ATM Kiosk", SanctionedAmount = 200000, PaidAmount = 200000 },
-                new PDFYearlyData { VendorName = "Forbes", ServiceName = "Forbes Ureka", SanctionedAmount = 200000, PaidAmount = 0 },
-                new PDFYearlyData { VendorName = "Quality Kiosk", ServiceName = "Quality Check", SanctionedAmount = 76890, PaidAmount = 76890 },
-                new PDFYearlyData { VendorName = "Quality Kiosk", ServiceName = "Testing ATM", SanctionedAmount = 500000, PaidAmount = 0 }
-            };
-
-            Services = new ObservableCollection<string>(VendorServices.Select(vs => vs.ServiceName).Distinct());
+                data = _homePageBusinessLogic.GetDashboardServicesBarChartDetails(FinancialYear).GetAwaiter().GetResult();
+            });
+            VendorServices = new ObservableCollection<YearlyReportDataModel>(data);
+           
+            Services = new ObservableCollection<string>(VendorServices.Select(vs => vs.VendorServiceName).Distinct());
 
             SelectedService = Services.FirstOrDefault();
         }
@@ -215,7 +210,7 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurationByKey("FinancialYear").ConfigureAwait(true);
 
-            string? financialYear = allConfigurations.CfgValue; //= allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
+            string? financialYear = allConfigurations.CfgValue;
 
             FinancialYear = financialYear;
         }
@@ -223,6 +218,8 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             await GetFinancilYearFromConfiguraton();
             await GetDashboardDetails(FinancialYear);
+            await LoadDataForBarChart();
+            await Task.Delay(1000);
         }
         private async Task GetDashboardDetails(string? FinancialYear)
         {

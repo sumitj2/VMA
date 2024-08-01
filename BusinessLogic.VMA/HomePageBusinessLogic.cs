@@ -33,5 +33,28 @@ namespace BusinessLogic.VMA
             }
             return dashboardDetailsModel;
         }
+
+        public async Task<List<YearlyReportDataModel>> GetDashboardServicesBarChartDetails(string? financialYear)
+        {
+            var result = await _storeProcedureExecutionRepository.GetYearlyReportDataAsync(financialYear);
+            List<YearlyReportDataModel> dashboardServiceModel = new();
+
+            foreach (var yearRepor in result)
+            {
+                dashboardServiceModel.Add(new YearlyReportDataModel() 
+                {
+                    NumberOfTerms = yearRepor.NumberOfTerms,
+                    RemainingAmount = yearRepor.RemainingAmount,
+                    RemainingTerms = yearRepor.RemainingTerms,
+                    ServicePaymentType = yearRepor.ServicePaymentType,  
+                    ServiceSantionAmount=yearRepor.ServiceSantionAmount,
+                    TotalPaymentsMade = yearRepor.TotalPaymentsMade,
+                    TotalVendorPaymentAmount = yearRepor.TotalVendorPaymentAmount != null?(decimal)yearRepor.TotalVendorPaymentAmount:0,
+                    VendorName = yearRepor.VendorName,  
+                    VendorServiceName=yearRepor.VendorServiceName       
+                });
+            }
+            return dashboardServiceModel;
+        }
     }
 }
