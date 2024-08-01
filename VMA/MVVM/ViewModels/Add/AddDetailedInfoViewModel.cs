@@ -1,5 +1,6 @@
 ﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Collections.ObjectModel;
 using System.Reflection;
@@ -204,7 +205,9 @@ namespace VMA.MVVM.ViewModels.Add
         public SearchModel? SelectPaymentType
         {
             get { return _selectPaymentType; }
-            set { _selectPaymentType = value;
+            set
+            {
+                _selectPaymentType = value;
                 OnPropertyChanged(nameof(SelectPaymentType));
             }
         }
@@ -484,7 +487,7 @@ namespace VMA.MVVM.ViewModels.Add
             _vendorDetailViewModel = vendorDetailViewModel;
             _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
-            _vendorBusinessLogic = vendorBusinessLogic;            
+            _vendorBusinessLogic = vendorBusinessLogic;
             SubmitCommand = new ViewModelAsyncCommand<VendorDetailModel>(SaveVendorServiceDetails, ValidateVendorServiceDetails);
             ClearFormCommand = new ViewModelAsyncCommand<VendorDetailModel>(ClearFormFields);
             if (_vendorDetailViewModel != null)
@@ -526,13 +529,82 @@ namespace VMA.MVVM.ViewModels.Add
 
             });
         }
-
+        string errorMsg = "";
         private bool ValidateVendorServiceDetails()
         {
-            return true;
+            bool validData;
+
+
+            if (SelectedVendorDetailService == null)
+            {
+                validData = false;
+                errorMsg += nameof(SelectedVendorDetailService);
+            }
+            else
+            {
+                validData = true;
+            }
+            if (SelectedDepartment == null)
+            {
+                validData = false;
+                errorMsg += nameof(SelectedDepartment);
+            }
+            else
+            {
+                validData = true;
+            }
+            if (selectedExpenditure == null)
+            {
+                validData = false;
+                errorMsg += nameof(selectedExpenditure);
+            }
+            else
+            {
+                validData = true;
+            }
+            if (SelectPaymentType == null)
+            {
+                validData = false;
+                errorMsg += nameof(SelectPaymentType);
+            }
+            else
+            {
+                validData = true;
+            }
+
+            if (SantionedDate == null)
+            {
+                validData = false;
+                errorMsg += nameof(SantionedDate);
+            }
+            else
+            {
+                validData = true;
+            }
+
+            if (ServiceSantionAmount == null)
+            {
+                validData = false;
+                errorMsg += nameof(ServiceSantionAmount);
+            }
+            else
+            {
+                validData = true;
+            }
+
+            if (SelectedSanction == null)
+            {
+                validData = false;
+                errorMsg += nameof(SelectedSanction);
+            }
+            else
+            {
+                validData = true;
+            }
+            return validData;
         }
 
-        
+
         public async Task GetAllConfigurations()
         {
             try
@@ -580,7 +652,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to get all the configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get all the configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to load All configurations, Please contact to Administrator", false, true);
             }
@@ -674,7 +746,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed save vendor service details, please try again or contact to administrator", false, true);
 
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to Save vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Save vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
 
@@ -741,7 +813,7 @@ namespace VMA.MVVM.ViewModels.Add
                 var paymentType = ComboxPaymentMethods.ToList().Find(x => x.NameSearch == _vendorDetailViewModel?.ServicePaymentType);
                 if (paymentType != null)
                 {
-                    SelectPaymentType =ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentType)];
+                    SelectPaymentType = ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentType)];
                 }
 
             }
@@ -769,7 +841,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to load vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to load vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
             }
         }
@@ -791,7 +863,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to load vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to load vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
             }
         }
 

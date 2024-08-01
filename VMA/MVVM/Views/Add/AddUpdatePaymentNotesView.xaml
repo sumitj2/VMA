@@ -69,7 +69,7 @@
                                               Foreground="{StaticResource plainTextColor3}"
                                               BorderBrush="{StaticResource plainTextColor3}"
                                               BorderThickness="0,0,0,1" VerticalAlignment="Center" Grid.Column="1" Grid.Row="1"/>
-                                    <TextBox x:Name="txtBoxVendor"
+                                    <TextBox x:Name="txtBoxVendor"   Grid.Column="1" Grid.Row="1"
                                              Text="{Binding SelectedVendorName ,UpdateSourceTrigger=PropertyChanged}"
                                              Visibility="{Binding HideSelectedVendor}"
                                              IsEnabled="False"
@@ -108,9 +108,9 @@
                                                Style="{StaticResource FormTextBlock}"/>
                                     
                                     <TextBlock Text="{Binding PaymentNoteId,UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Grid.Row="2"
-                                               FontSize="13" FontStyle="Oblique"  FontWeight="DemiBold"  Style="{StaticResource FormTextBlock}"/>
+                                               FontSize="13" Visibility="Hidden"  FontWeight="DemiBold"  Style="{StaticResource FormTextBlock}"/>
 
-                                    <TextBox x:Name="txtPaymentNoteNo" Grid.Column="1" Grid.Row="2" Padding="120 8 0 0"
+                                    <TextBox x:Name="txtPaymentNoteNo" Grid.Column="1" Grid.Row="2" Padding="0"
                                              Text="{Binding PaymentNoteNo ,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource FormTextBox}" 
                                              IsEnabled="False"/>

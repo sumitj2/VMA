@@ -256,12 +256,34 @@ namespace VMA.MVVM.ViewModels.Add
             string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
             string? noteId = allConfigurations.FirstOrDefault(x => x.Cfgkey == "NoteId")?.CfgValue;
             PaymentNoteYear = financialYear;
-            PaymentNoteId = noteId+PaymentNoteNo;
+            PaymentNoteNo=PaymentNoteId = noteId+PaymentNoteNo;
         }
 
+        string errorMsg = "";
         private bool ValidatePaymentNote()
         {
-            return true;
+            bool validData;
+
+            if ( SelectedVendorModel == null)
+            {
+                validData = false;
+                errorMsg += nameof(SelectedVendorModel);
+            }
+            else
+            {
+                validData = true;
+            }
+            if (PaymentNoteDate == null)
+            {
+                errorMsg +=", "+ nameof(PaymentNoteDate);
+
+                validData = false;
+            }
+            else
+            {
+                validData = true;
+            }
+            return validData;
         }
 
         private async Task SubmitPaymentNote(VenderPaymentNoteModel model)
