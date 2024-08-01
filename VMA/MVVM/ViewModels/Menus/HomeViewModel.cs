@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using BusinessLogic.Abstraction.VMA.Models;
 using Database.VMA.Entities;
+using DocumentFormat.OpenXml.Drawing;
 
 namespace VMA.MVVM.ViewModels.Menus
 {
@@ -106,7 +107,7 @@ namespace VMA.MVVM.ViewModels.Menus
         public Func<double, string> FormatterPieChart { get; set; }
         #endregion
 
-        #region Bar Chart       
+        #region Bar Chart for Amount     
         private ObservableCollection<YearlyReportDataModel> _vendorServices;
         private ObservableCollection<string> _services;
         private string _selectedService;
@@ -137,19 +138,20 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 _selectedService = value;
                 OnPropertyChanged(nameof(SelectedService));
+                UpdateAmountChart();
                 UpdateChart();
             }
         }
 
-        public SeriesCollection SeriesCollection { get; set; }
-        public string[] Labels { get; set; }
-        public Func<double, string> Formatter { get; set; }
+        public SeriesCollection SeriesCollectionForAmount { get; set; }
+        public string[] LabelsForAmount { get; set; }
+        public Func<double, string> FormatterForAmount { get; set; }
 
-        private void UpdateChart()
+        private void UpdateAmountChart()
         {
             var filteredVendorServices = VendorServices.Where(vs => vs.VendorServiceName == SelectedService).ToList();
 
-            SeriesCollection = new SeriesCollection
+            SeriesCollectionForAmount = new SeriesCollection
             {
                 new ColumnSeries
                 {
@@ -163,7 +165,41 @@ namespace VMA.MVVM.ViewModels.Menus
                 }
             };
 
-            Labels = filteredVendorServices?.Select(vs => vs.VendorName).ToArray();
+            LabelsForAmount = filteredVendorServices?.Select(vs => vs.VendorName).ToArray();
+            FormatterForAmount = value => value.ToString("N");
+
+            OnPropertyChanged(nameof(SeriesCollectionForAmount));
+            OnPropertyChanged(nameof(LabelsForAmount));
+            OnPropertyChanged(nameof(FormatterForAmount));
+        }
+
+        #endregion
+
+        #region Bar Chart For Tenure
+
+        public SeriesCollection SeriesCollection { get; set; }
+        public string[] Labels { get; set; }
+        public Func<double, string> Formatter { get; set; }
+        private void UpdateChart()
+        {
+
+            var filteredVendorServices = VendorServices.Where(vs => vs.VendorServiceName == SelectedService).ToList();
+
+            SeriesCollection = new SeriesCollection
+            {
+                new ColumnSeries
+                {
+                    Title = "Total Tenure",
+                    Values = new ChartValues<int>(filteredVendorServices.Select(vs => vs.NumberOfTerms))
+                },
+                new ColumnSeries
+                {
+                    Title = "Remaining Tenure",
+                    Values = new ChartValues<int>(filteredVendorServices.Select(vs => vs.RemainingTerms))
+                }
+            };
+
+            Labels = filteredVendorServices.Select(vs => vs.VendorName).ToArray();
             Formatter = value => value.ToString("N");
 
             OnPropertyChanged(nameof(SeriesCollection));
@@ -190,13 +226,13 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task LoadDataForBarChart()
         {
-            List<YearlyReportDataModel> data=new List<YearlyReportDataModel>();
+            List<YearlyReportDataModel> data = new List<YearlyReportDataModel>();
             await Task.Run(() =>
             {
                 data = _homePageBusinessLogic.GetDashboardServicesBarChartDetails(FinancialYear).GetAwaiter().GetResult();
             });
             VendorServices = new ObservableCollection<YearlyReportDataModel>(data);
-           
+
             Services = new ObservableCollection<string>(VendorServices.Select(vs => vs.VendorServiceName).Distinct());
 
             SelectedService = Services.FirstOrDefault();
@@ -236,13 +272,13 @@ namespace VMA.MVVM.ViewModels.Menus
                 new PieSeries
                 {
                     Title = "Sanctioned Amount",
-                    Values = new ChartValues<double> {Convert.ToDouble(TotalSanctionAmount)},
+                    Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalSanctionAmount))},
                     DataLabels = true
                 },
                 new PieSeries
                 {
                     Title = "Amount Paid",
-                    Values = new ChartValues<double> { Convert.ToDouble(TotalPaidAmount) },
+                    Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalPaidAmount) )},
                     DataLabels = true
                 }
             };
