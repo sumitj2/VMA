@@ -11,8 +11,8 @@ namespace BusinessLogic.Abstraction.VMA.Models
         public int? SrNo { get; set; }
         public string? VendorName { get; set; }
         public string? ServiceName { get; set; }
-        public decimal? SanctionedAmount { get; set; }
-        public decimal? PaidAmount { get; set; }
+        public double SanctionedAmount { get; set; }
+        public double PaidAmount { get; set; }
         public decimal? PendingAmount { get; set; }
 
     }

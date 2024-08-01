@@ -9,10 +9,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using BusinessLogic.Abstraction.VMA.Models;
+using Database.VMA.Entities;
 
 namespace VMA.MVVM.ViewModels.Menus
 {
-    
+    public class VendorService
+    {
+        public string VendorName { get; set; }
+        public string ServiceName { get; set; }
+        public double SanctionedAmt { get; set; }
+        public double PaidAmt { get; set; }
+    }
     public class HomeViewModel : ViewModelBase
     {
         #region Pie Chart
@@ -100,13 +107,76 @@ namespace VMA.MVVM.ViewModels.Menus
         #endregion
 
         #region Bar Chart       
+        private ObservableCollection<PDFYearlyData> _vendorServices;
+        private ObservableCollection<string> _services;
+        private string _selectedService;
+        public ObservableCollection<PDFYearlyData> VendorServices
+        {
+            get { return _vendorServices; }
+            set
+            {
+                _vendorServices = value;
+                OnPropertyChanged(nameof(VendorServices));
+            }
+        }
+
+        public ObservableCollection<string> Services
+        {
+            get { return _services; }
+            set
+            {
+                _services = value;
+                OnPropertyChanged(nameof(Services));
+            }
+        }
+
+        public string SelectedService
+        {
+            get { return _selectedService; }
+            set
+            {
+                _selectedService = value;
+                OnPropertyChanged(nameof(SelectedService));
+                UpdateChart();
+            }
+        }
+
+        public SeriesCollection SeriesCollection { get; set; }
+        public string[] Labels { get; set; }
+        public Func<double, string> Formatter { get; set; }
+
+        private void UpdateChart()
+        {
+            var filteredVendorServices = VendorServices.Where(vs => vs.ServiceName == SelectedService).ToList();
+
+            SeriesCollection = new SeriesCollection
+            {
+                new ColumnSeries
+                {
+                    Title = "Sanctioned Amount",
+                    Values = new ChartValues<double>(filteredVendorServices.Select(vs => vs.SanctionedAmount))
+                },
+                new ColumnSeries
+                {
+                    Title = "Paid Amount",
+                    Values = new ChartValues<double>(filteredVendorServices.Select(vs => vs.PaidAmount))
+                }
+            };
+
+            Labels = filteredVendorServices?.Select(vs => vs.VendorName).ToArray();
+            Formatter = value => value.ToString("N");
+
+            OnPropertyChanged(nameof(SeriesCollection));
+            OnPropertyChanged(nameof(Labels));
+            OnPropertyChanged(nameof(Formatter));
+        }
 
         #endregion
 
         private readonly IHomePageBusinessLogic _homePageBusinessLogic;
         private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
 
-        
+
         public HomeViewModel(IHomePageBusinessLogic homePageBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic)
         {
             _homePageBusinessLogic = homePageBusinessLogic;
@@ -115,8 +185,28 @@ namespace VMA.MVVM.ViewModels.Menus
             _ = CallAync();
 
             LabelPieChart = ["Sanctioned Amount", "Amount Paid"];
-            FormatterPieChart = value => value.ToString("C");        
+            FormatterPieChart = value => value.ToString("C");
+            LoadDataForBarChart();
         }
+
+        private void LoadDataForBarChart()
+        {
+            VendorServices = new ObservableCollection<PDFYearlyData>
+            {
+                new PDFYearlyData { VendorName = "Fassile", ServiceName = "B2B", SanctionedAmount = 30000, PaidAmount = 30000 },
+                new PDFYearlyData { VendorName = "Finacus", ServiceName = "IMPS", SanctionedAmount = 300000, PaidAmount = 0 },
+                new PDFYearlyData { VendorName = "Finacus", ServiceName = "UPI", SanctionedAmount = 200000, PaidAmount = 200000 },
+                new PDFYearlyData { VendorName = "Forbes", ServiceName = "ATM Kiosk", SanctionedAmount = 200000, PaidAmount = 200000 },
+                new PDFYearlyData { VendorName = "Forbes", ServiceName = "Forbes Ureka", SanctionedAmount = 200000, PaidAmount = 0 },
+                new PDFYearlyData { VendorName = "Quality Kiosk", ServiceName = "Quality Check", SanctionedAmount = 76890, PaidAmount = 76890 },
+                new PDFYearlyData { VendorName = "Quality Kiosk", ServiceName = "Testing ATM", SanctionedAmount = 500000, PaidAmount = 0 }
+            };
+
+            Services = new ObservableCollection<string>(VendorServices.Select(vs => vs.ServiceName).Distinct());
+
+            SelectedService = Services.FirstOrDefault();
+        }
+
         private async Task CallAync()
         {
             await MainTask();

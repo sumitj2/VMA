@@ -94,24 +94,33 @@
                         <ColumnDefinition Width="400"/>
                     </Grid.ColumnDefinitions>
 
-                    <!--<StackPanel x:Name="CompanyDetails" Grid.Row="0"
-                                 Orientation="Horizontal" Margin="20">-->
+                    <StackPanel x:Name="CompanyDetails" Grid.Row="0"
+                                 Orientation="Vertical" Margin="20">
 
-                    <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding FinancialYear,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="145,30,40,40" />
+                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding FinancialYear,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0" />
 
-                    <lvc:PieChart Series="{Binding SeriesCollectionPieChart,UpdateSourceTrigger=PropertyChanged}" Width="302" Margin="49,0,49,0">
-                        <lvc:PieChart.ToolTip>
-                            <ToolTip Content="{Binding DataContext.Formatter, RelativeSource={RelativeSource AncestorType=Window}}"/>
-                        </lvc:PieChart.ToolTip>
-                    </lvc:PieChart>
+                        <lvc:PieChart Series="{Binding SeriesCollectionPieChart,UpdateSourceTrigger=PropertyChanged}" Width="275" Margin="0" Height="213">
+                            <lvc:PieChart.ToolTip>
+                                <ToolTip Content="{Binding DataContext.Formatter, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                            </lvc:PieChart.ToolTip>
+                        </lvc:PieChart>
 
 
-                    <!--</StackPanel>-->
+                    </StackPanel>
 
                     <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
                                          Orientation="Vertical">
-                        <Calendar Background="#F6F6F8" materialDesign:BadgedAssist.BadgeBackground="AliceBlue" Margin="50"></Calendar>
-
+                        <StackPanel>
+                            <ComboBox ItemsSource="{Binding Services}" SelectedItem="{Binding SelectedService}" Width="200" Margin="10" />
+                            <lvc:CartesianChart Series="{Binding SeriesCollection}" Height="196" Width="380">
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Title="Vendor Name" Labels="{Binding Labels}"></lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Title="Amount" LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+                        </StackPanel>
                     </StackPanel>
 
                 </Grid>
