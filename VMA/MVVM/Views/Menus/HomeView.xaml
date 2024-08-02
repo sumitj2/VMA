@@ -27,7 +27,7 @@
                         <materialDesign:Card  UniformCornerRadius="1" BorderThickness="5"
               BorderBrush="White" Width="148" Height="100"  Background="#F6F6F8">
                             <StackPanel Margin="5">
-                                <materialDesign:PackIcon Kind="UserGroup">
+                                <materialDesign:PackIcon Kind="UserGroup" HorizontalAlignment="Center">
                                     <materialDesign:PackIcon.Foreground>
                                         <LinearGradientBrush StartPoint="1,0" EndPoint="0.5,1">
                                             <GradientStop Color="#912A73" Offset="0" />
@@ -35,8 +35,8 @@
                                         </LinearGradientBrush>
                                     </materialDesign:PackIcon.Foreground>
                                 </materialDesign:PackIcon>
-                                <TextBlock FontSize="12" Text="Total Vendors"  />
-                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfVendors ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 10 0 0" />
+                                <TextBlock FontSize="12"  TextAlignment="Center" Text="Total Vendors"  />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" TextAlignment="Center" Text="{Binding CountOfVendors ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 0 0 0" />
 
                             </StackPanel>
                         </materialDesign:Card>
@@ -45,7 +45,7 @@
                         <materialDesign:Card UniformCornerRadius="1" BorderThickness="5"
               BorderBrush="White" Width="148" Height="100"  Background="#F6F6F8">
                             <StackPanel Margin="5">
-                                <materialDesign:PackIcon Kind="AccountService">
+                                <materialDesign:PackIcon Kind="AccountService" HorizontalAlignment="Center">
                                     <materialDesign:PackIcon.Foreground>
                                         <LinearGradientBrush StartPoint="1,0" EndPoint="0.5,1">
                                             <GradientStop Color="#912A73" Offset="0" />
@@ -53,23 +53,20 @@
                                         </LinearGradientBrush>
                                     </materialDesign:PackIcon.Foreground>
                                 </materialDesign:PackIcon>
-                                <TextBlock FontSize="12" Text="Total Services" />
-                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding CountOfServices,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 10 0 0" />
+                                <TextBlock FontSize="12" TextAlignment="Center" Text="Total Services" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" TextAlignment="Center"  Text="{Binding CountOfServices,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 0 0 0" />
 
 
                             </StackPanel>
                         </materialDesign:Card>
                     </Border>
                     <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15">
-                        <materialDesign:Card UniformCornerRadius="1" BorderThickness="5"
+                        <materialDesign:Card UniformCornerRadius="1" BorderThickness="5" HorizontalAlignment="Center"
                BorderBrush="White" Width="148" Height="100" Background="#F6F6F8">
-                            <StackPanel Margin="5">
-                                <materialDesign:PackIcon Kind="Rupee" Foreground="Red" />
-                                <TextBlock FontSize="12" Text="Total Santioned Amount" />
-                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding TotalSanctionAmount,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 10 0 0" />
-
-
-
+                            <StackPanel Margin="5" >
+                                <materialDesign:PackIcon Kind="Rupee" Foreground="Red" HorizontalAlignment="Center" />
+                                <TextBlock FontSize="12"  TextAlignment="Center" Text="Total Santioned Amount" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" TextAlignment="Center"  Text="{Binding TotalSanctionAmount,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 0 0 0" />
                             </StackPanel>
                         </materialDesign:Card>
                     </Border>
@@ -77,9 +74,9 @@
                         <materialDesign:Card  UniformCornerRadius="1" BorderThickness="5"
             BorderBrush="White" Width="148" Height="100"   Background="#F6F6F8">
                             <StackPanel Margin="10">
-                                <materialDesign:PackIcon Kind="AccountPending" Foreground="#29A3EC" />
-                                <TextBlock FontSize="12" Text="Amount Paid" />
-                                <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding TotalPaidAmount ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 10 0 0" />
+                                <materialDesign:PackIcon Kind="AccountPending" Foreground="#29A3EC" HorizontalAlignment="Center" />
+                                <TextBlock FontSize="12"  TextAlignment="Center" Text="Amount Paid" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25"   TextAlignment="Center" Text="{Binding TotalPaidAmount ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 0 0 0" />
 
                             </StackPanel>
                         </materialDesign:Card>
