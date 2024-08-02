@@ -271,8 +271,8 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 new PieSeries
                 {
-                    Title = "Sanctioned Amount",
-                    Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalSanctionAmount))},
+                    Title = "Remaining Amount",
+                    Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalSanctionAmount)-Convert.ToDouble(TotalPaidAmount) )},
                     DataLabels = true
                 },
                 new PieSeries

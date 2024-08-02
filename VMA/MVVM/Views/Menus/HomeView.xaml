@@ -21,8 +21,8 @@
                 <RowDefinition Height="120"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <StackPanel>
-                <WrapPanel HorizontalAlignment="Center">
+            <StackPanel >
+                <WrapPanel HorizontalAlignment="Center" Margin="30">
                     <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15">
                         <materialDesign:Card  UniformCornerRadius="1" BorderThickness="5"
               BorderBrush="White" Width="148" Height="100"  Background="#F6F6F8">
@@ -90,14 +90,14 @@
 
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="400"/>
-                        <ColumnDefinition Width="400"/>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="800"/>
                     </Grid.ColumnDefinitions>
 
                     <StackPanel x:Name="CompanyDetails" Grid.Row="0"
                                  Orientation="Vertical" Margin="20">
 
-                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding FinancialYear,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0" />
+                        <TextBlock FontWeight="SemiBold" FontSize="25" Text="{Binding FyTitle,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="40" />
 
                         <lvc:PieChart Series="{Binding SeriesCollectionPieChart,UpdateSourceTrigger=PropertyChanged}" Width="275" Margin="0" Height="213">
                             <lvc:PieChart.ToolTip>
@@ -109,29 +109,38 @@
                     </StackPanel>
 
                     <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
-                                         Orientation="Vertical">
-                        <StackPanel>
-                            <TextBlock  FontSize="15" Text="select Service" Margin="0,10,20,-10" />
+                                         Orientation="Vertical" Margin="40">
+                        <StackPanel Orientation="Vertical">
+                            <StackPanel Margin="40,20,20,-10">
+                                <TextBlock FontWeight="SemiBold" FontSize="20"  Text="Select Service" Margin="0,10,20,-10" />
+                                <ComboBox Style="{StaticResource vendorCombobox}" 
+                                          ItemsSource="{Binding Services}" 
+                                          SelectedItem="{Binding SelectedService}" Width="200" Margin="0,-10,20,10" />
 
-                            <ComboBox ItemsSource="{Binding Services}" SelectedItem="{Binding SelectedService}" Width="200" Margin="40,-10,20,10" />
-                            <lvc:CartesianChart Series="{Binding SeriesCollectionForAmount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="196" Width="380">
-                                <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis Title="Vendor Name" Labels="{Binding LabelsForAmount}"></lvc:Axis>
-                                </lvc:CartesianChart.AxisX>
-                                <lvc:CartesianChart.AxisY>
-                                    <lvc:Axis Title="Amount" LabelFormatter="{Binding FormatterForAmount}"></lvc:Axis>
-                                </lvc:CartesianChart.AxisY>
-                            </lvc:CartesianChart>
-                            <TextBlock FontWeight="SemiBold" FontSize="13" Text="Payment Tenure" Margin="0" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="10">
+                                <lvc:CartesianChart Series="{Binding SeriesCollectionForAmount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10" Height="196" Width="250">
+                                    <lvc:CartesianChart.AxisX >
+                                        <lvc:Axis Title="Vendor Name" Labels="{Binding LabelsForAmount}"></lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                    <lvc:CartesianChart.AxisY >
+                                        <lvc:Axis Title="Amount" LabelFormatter="{Binding FormatterForAmount}"></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                </lvc:CartesianChart>
+                                <TextBlock FontWeight="SemiBold" FontSize="18"  Text="Payment Chart" Margin="-190,240,20,10" />
 
-                            <lvc:CartesianChart Series="{Binding SeriesCollection}" Height="196" Width="380">
-                                <lvc:CartesianChart.AxisX>
-                                    <lvc:Axis Title="Vendor Name" Labels="{Binding Labels}"></lvc:Axis>
-                                </lvc:CartesianChart.AxisX>
-                                <lvc:CartesianChart.AxisY>
-                                    <lvc:Axis Title="Tenure (months)" LabelFormatter="{Binding Formatter}"></lvc:Axis>
-                                </lvc:CartesianChart.AxisY>
-                            </lvc:CartesianChart>
+
+                                <lvc:CartesianChart Series="{Binding SeriesCollection}" Margin="10" Height="196" Width="250">
+                                    <lvc:CartesianChart.AxisX>
+                                        <lvc:Axis Title="Vendor Name"  Labels="{Binding Labels}"></lvc:Axis>
+                                    </lvc:CartesianChart.AxisX>
+                                    <lvc:CartesianChart.AxisY >
+                                        <lvc:Axis Title="Tenure (months)"  LabelFormatter="{Binding Formatter}"></lvc:Axis>
+                                    </lvc:CartesianChart.AxisY>
+                                </lvc:CartesianChart>
+                                <TextBlock FontWeight="SemiBold" FontSize="18"  Text="Term Char" Margin="-190,240,20,10" />
+
+                            </StackPanel>
                         </StackPanel>
                     </StackPanel>
 
