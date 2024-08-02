@@ -28,8 +28,11 @@ namespace BusinessLogic.VMA
             if (path != null)
             {
                 var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear).ConfigureAwait(true);
-
-                if (result != null)
+                if (result == null || result?.Count == 0)
+                {
+                    MessageBox.Show("No Payment found for "+serviceName);
+                }
+                else
                 {
                     var location = path + "\\" + serviceName + "_PaymentNote.docx";
                     // Ensure the directory exists
@@ -52,7 +55,7 @@ namespace BusinessLogic.VMA
                         RunProperties paragraphRunProperties1 = new();
                         FontSize paragraphFontSize1 = new() { Val = "28" }; // 14pt font
                         Bold paragraphBold1 = new(); // Bold text
-                        Justification justify = new() { Val = JustificationValues.Left };
+                        Justification justify = new() { Val = JustificationValues.Center };
                         //Color paragraphColor1 = new() { Val = "0000FF" }; // Blue color
                         paragraphRunProperties1.Append(paragraphFontSize1);
                         paragraphRunProperties1.Append(paragraphBold1);
@@ -231,7 +234,7 @@ namespace BusinessLogic.VMA
                         //paragraphRunPropertiesAfter.Append(paragraphColorAfter);
 
                         // Create a Run and apply the RunProperties
-                        Run paragraphRunAfter = new Run(new Text("This is a custom paragraph with bold, 14pt blue text." + bodyTextAfter));
+                        Run paragraphRunAfter = new Run(new Text(bodyTextAfter));
                         paragraphRun.PrependChild(paragraphRunPropertiesAfter);
 
                         // Add the Run to the Paragraph
@@ -264,7 +267,7 @@ namespace BusinessLogic.VMA
                         rowFooter1.Append
                             (
                             new TableCell(new Paragraph(new Run(new Text("UTR No: ")))),
-                            new TableCell(new Paragraph(new Run(new Text(result?.FirstOrDefault().VendorPaymentUtrnumber)))),
+                            new TableCell(new Paragraph(new Run(new Text(result.Count()!=0?result?.FirstOrDefault().VendorPaymentUtrnumber:null)))),
                             new TableCell(new Paragraph(new Run(new Text("Amount: ")))),
                             new TableCell(new Paragraph(new Run(new Text(" "))))
                             );

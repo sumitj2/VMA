@@ -28,7 +28,11 @@ namespace BusinessLogic.VMA
         {
             List<ExportPaymentNoteData> exportData = [];
             var payments = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetailsToExport(financialYear).ConfigureAwait(true);
-            if (payments != null ||  payments?.Count!=0 )
+            if(payments?.Count == 0) 
+            {
+                MessageBox.Show("No Payments found for Finacial Year "+financialYear);
+            }
+            else
             {
                 var orderByPayments = payments?.OrderBy(x => x.PaymentNoteNo).ThenBy(x => x.VendorPaymentDate);
                 foreach (var item in orderByPayments)

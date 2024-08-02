@@ -30,6 +30,10 @@ namespace BusinessLogic.VMA
 
         private void GeneratePdf(List<YearlyReportData> Data, string? path, string? financilaYear)
         {
+            if(Data.Count==0 |Data==null)
+            {
+                MessageBox.Show("No Payment Data found");
+            }
             if (Data != null)
             {
                 var document = new Document();
