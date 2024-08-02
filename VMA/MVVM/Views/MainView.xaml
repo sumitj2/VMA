@@ -11,7 +11,7 @@
         xmlns:addViews="clr-namespace:VMA.MVVM.Views.Add" xmlns:local1="clr-namespace:VMA.MVVM.Views.Menus"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
-        Title="MainWindowView" Height="650" Width="860"
+        Title="MainWindowView" Height="720" Width="860"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None" Icon="/Images/logo.png"
         Background="Transparent"
@@ -236,7 +236,7 @@
                                 Background="Transparent"
                                 MouseLeftButtonDown="PnlControlBar_MouseLeftButtonDown"
                                 MouseEnter="PnlControlBar_MouseEnter">
-
+                        
                         <Button x:Name="btnClose"
                                 Style="{StaticResource controlButton}"
                                 Tag="{ StaticResource color4 }"
@@ -257,9 +257,18 @@
                                 Click="BtnMinimize_Click">
                             <fa:IconImage Icon="WindowMinimize" Style="{StaticResource controlButtonIcon}"></fa:IconImage>
                         </Button>
-
+                       
                     </StackPanel>
-
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Text="Vendor Management Application"
+                                   Foreground="White"
+                                   FontWeight="Medium"
+                                   FontSize="15"
+                                   FontFamily="Montserrat"
+                                   Grid.Column="0"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                    </StackPanel>
 
                     <!--header/caption-->
                     <Grid Grid.Row="1">

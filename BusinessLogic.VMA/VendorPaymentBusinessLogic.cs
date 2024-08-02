@@ -148,7 +148,6 @@ namespace Database.VMA.Repositories
 
         private decimal HandleNone(decimal? santionedAmount)
         {
-
             return santionedAmount ?? 0;
         }
 
