@@ -109,7 +109,7 @@ namespace BusinessLogic.VMA
                 // Render the document
                 var pdfRenderer = new PdfDocumentRenderer(true) { Document = document };
                 pdfRenderer.RenderDocument();
-                path = path + "\\" + financilaYear + DateTime.Now.ToString("ff") + "YearlyRepor.pdf";
+                path = path + "\\"+ "YearlyRepor_"+financilaYear+".pdf";
                 pdfRenderer.PdfDocument.Save(path);
                 OpenPdf(path);
             }

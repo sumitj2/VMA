@@ -109,26 +109,11 @@
 
                     <!--Logo-->
                     <StackPanel Orientation="Horizontal"
-                                Height="60"
-                                Margin="5,25,0,40">
+                                Height="180"
+                                Margin="0,5,0,10">
 
-                        <Image Source="/Images/Logo.png" HorizontalAlignment="Center" Height="54" Width="58"/>
-                        <StackPanel>
-                            <TextBlock Text="Thane Bharat Bank"
-                                       Foreground="{StaticResource titleColor2}"
-                                       FontSize="20"
-                                       FontFamily="Montserrat"
-                                       FontWeight="Medium"
-                                       Margin="0,9,0,0" Width="190"
-                                       TextAlignment="Left"/>
-                            <TextBlock Text="Vendor Management"
-                                       Foreground="{StaticResource titleColor2}"
-                                       FontSize="15"
-                                       FontFamily="Montserrat"
-                                       FontWeight="Medium"
-                                       Margin="0,9,0,0" Width="190"
-                                       TextAlignment="Left"/>
-                        </StackPanel>
+                        <Image Source="/Images/Logo.png" Height="172" Width="254"/>
+
                     </StackPanel>
 
 
@@ -279,11 +264,12 @@
                     <!--header/caption-->
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="43*"></ColumnDefinition>
+                            <ColumnDefinition Width="555*"/>
                         </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="1"
+                        <StackPanel
                                     Orientation="Horizontal"
-                                    VerticalAlignment="Center" >
+                                    VerticalAlignment="Center" Grid.ColumnSpan="2" >
                             <fa:IconImage Icon="{Binding Icon}"
                                           Height="20"
                                           Width="20"
@@ -298,11 +284,11 @@
                         </StackPanel>
 
                         <!--user option-->
-                        <StackPanel Grid.Column="1"
+                        <StackPanel
                                     Orientation="Horizontal"
                                     FlowDirection="RightToLeft"
                                     VerticalAlignment="Center"
-                                    Margin="0,0,10,0">
+                                    Margin="0,0,10,0" Grid.ColumnSpan="2">
                             <Button Style="{StaticResource iconButton}"
                                     Tag="{StaticResource color1}">
                                 <fa:IconImage Icon="AngleDown" Style="{StaticResource iconButtonIcon }"/>

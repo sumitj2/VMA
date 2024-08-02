@@ -55,7 +55,7 @@ namespace VMA.MVVM.ViewModels.Menus
             get { return _From; }
             set
             {
-                _From = value;
+                _From = value;                
                 OnPropertyChanged(nameof(From));
             }
         }
@@ -66,7 +66,7 @@ namespace VMA.MVVM.ViewModels.Menus
             get { return _To; }
             set
             {
-                _To = value;
+                _To = value;                
                 OnPropertyChanged(nameof(To));
             }
         }
@@ -196,7 +196,8 @@ namespace VMA.MVVM.ViewModels.Menus
         public ReportsViewModel(IReportExportToExcelPaymentNote reportExportToExcelPaymentNote, IVendorBusinessLogic vendorBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord, IYearlyMonthlyReportPDF yearlyReportPDF)
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
-
+            To = "Sr.Officer - Central Office";
+            From = "Chief Manager - IT";
             _reportExportToExcelPaymentNote = reportExportToExcelPaymentNote;
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
@@ -213,7 +214,11 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task GenerateYearlyReport(Database.VMA.Entities.CustomEntities.ExportPaymentNoteData note)
         {
-            await _yearlyReportPDF.GenerateYearlyReport(_vendorPaymentYear, pathExcel).ConfigureAwait(true);
+            if (pathWord == null || pathWord.Length == 0)
+            {
+                MessageBox.Show("Please Set file storage location in settings ");
+            }
+            await _yearlyReportPDF.GenerateYearlyReport(_vendorPaymentYear, pathWord).ConfigureAwait(true);
         }
 
         private async Task GenerateMonthlyReport(Database.VMA.Entities.CustomEntities.ExportPaymentNoteData note)
@@ -223,7 +228,11 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task GeneratePaymentNote(CreateWordDocumentPaymentNote note)
         {
-            await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From, To, BeforeInvocie, AfterInvoice,_vendorPaymentYear,pathWord).ConfigureAwait(true);
+            if (pathWord == null || pathWord.Length == 0)
+            {
+                MessageBox.Show("Please Set file storage location in settings ");
+            }
+            await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From, To, BeforeInvocie+"The summary of the invoice is as under", AfterInvoice+ " "+To,_vendorPaymentYear,pathWord).ConfigureAwait(true);
         }
 
         private async Task CallAync()
