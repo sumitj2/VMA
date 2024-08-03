@@ -130,7 +130,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             set
             {
-                if (value.Count() <= 6)
+                if (value.Count() <= 10)
                 {
                     _vendorPhoneNo = value;
                     OnPropertyChanged(nameof(VendorPhoneNo));
