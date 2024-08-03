@@ -786,6 +786,15 @@ namespace VMA.MVVM.ViewModels.Add
                     validData = true;
                 }
             }
+            if(VendorPaymentDate==null)
+            {
+                errorMsg += " ," + nameof(VendorPaymentDate);
+                validData=false;
+            }
+            else
+            {
+                validData = true;
+            }
             return validData;
         }
 
@@ -803,7 +812,7 @@ namespace VMA.MVVM.ViewModels.Add
                         FkNoteId = _vendorPaymentModel.NoteId,
                         Notes = VendorPaymentNotesDetails,
 
-                        VendorPaymentDate = VendorPaymentDate.Value,
+                        VendorPaymentDate = VendorPaymentDate!=null? VendorPaymentDate.Value: DateOnly.MinValue,
                         VendorPaymentAmount = VendorPaymentAmount,
                         VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
 
