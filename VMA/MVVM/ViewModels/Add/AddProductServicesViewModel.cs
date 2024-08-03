@@ -1,9 +1,11 @@
-﻿using BusinessLogic.Abstraction.VMA.Contract;
+﻿using Azure.Messaging;
+using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
 using Serilog;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows.Input;
+using VMA.Constants;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
 
@@ -124,11 +126,11 @@ namespace VMA.MVVM.ViewModels.Add
             this.SelectedProductVendorService = SelectedVendorService;
             if (SelectedVendorService != null)
             {
-                SaveButtonName = "Update";
+                SaveButtonName = GeneralConstants.Update;
             }
             else
             {
-                SaveButtonName = "Submit";
+                SaveButtonName = GeneralConstants.Submit;
             }
            
             productServicesViewModel = parentViewModel;
@@ -178,7 +180,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task SaveVendorService(object obj)
         {
-            if (SaveButtonName == "Update")
+            if (SaveButtonName == GeneralConstants.Update)
             {
                 VendorServiceModel model = new VendorServiceModel()
                 {
@@ -189,7 +191,7 @@ namespace VMA.MVVM.ViewModels.Add
                 };
                 await _vendorServiceBusinessLogic.EditUpdateVendorService(model);
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.ProductServiceUpdated, true);
             }
             else
             {
@@ -205,7 +207,7 @@ namespace VMA.MVVM.ViewModels.Add
                 await _vendorServiceBusinessLogic.AddVendorService(model);
 
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.ProductServiceAdded, true);
             }
 
             await HideVendorServiceForm(this);
@@ -220,7 +222,6 @@ namespace VMA.MVVM.ViewModels.Add
         {
             if (SelectedProductVendorService != null)
             {
-
                 VendorCode = SelectedProductVendorService.VendorCode ?? "";
                 VendorName = SelectedProductVendorService.VendorName ?? "";
                 VendorServiceName = SelectedProductVendorService.VendorServiceName ?? "";
@@ -229,7 +230,6 @@ namespace VMA.MVVM.ViewModels.Add
                 if (vendorID != null)
                 {
                     SelectedVendor = Vendors[Vendors.IndexOf(vendorID)];
-
                 }
             }
         }

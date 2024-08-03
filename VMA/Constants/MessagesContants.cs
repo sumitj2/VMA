@@ -32,6 +32,10 @@ namespace VMA.Constants
         public const string PaymentSubmitErroMsg = "Failed to save Payment Details, Please contact to Administrator";
         public const string PaymentMsgSantionAmtHigh = "Total Amount cannot be greater than santioned amount";
 
+        public const string ProductServiceUpdated = "Product Services Updated Successfully";
+        public const string ProductServiceAdded = "Product Services Added Successfully";
+
+
 
     }
 }
