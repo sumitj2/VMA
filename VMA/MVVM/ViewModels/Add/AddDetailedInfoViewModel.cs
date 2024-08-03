@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Input;
+using VMA.Constants;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
 
@@ -44,7 +45,7 @@ namespace VMA.MVVM.ViewModels.Add
                 _selectedVendorDetailService = value;
                 OnPropertyChanged(nameof(SelectedVendorDetailService));
                 var res = _detailsLsit.FirstOrDefault(x => x.VendorServiceName == _selectedVendorDetailService?.VendorServiceName);
-                var msg1 = @$"Vendor Details alreday added for {_selectedVendorDetailService?.VendorServiceName}";
+                var msg1 = @$"{MessagesContants.VendorDetailMsg} {_selectedVendorDetailService?.VendorServiceName}";
 
                 if (res != null)
                 {
@@ -496,7 +497,7 @@ namespace VMA.MVVM.ViewModels.Add
                 IsComboBoxServiceVisible = false;
                 IsTextBoxSelectedVendorVisible = true;
                 IsTextBoxServiceVisible = true;
-                SaveButtonName = "Update";
+                SaveButtonName = GeneralConstants.Update;
             }
             else
             {
@@ -504,7 +505,7 @@ namespace VMA.MVVM.ViewModels.Add
                 IsComboBoxServiceVisible = true;
                 IsTextBoxSelectedVendorVisible = false;
                 IsTextBoxServiceVisible = false;
-                SaveButtonName = "Submit";
+                SaveButtonName = GeneralConstants.Submit;
             }
             _detailedInfoViewModel = detailedInfoViewModel;
             HideDetailInfoFormCommand = new ViewModelAsyncCommand<VendorDetailModel>(HideDetailInfoForm);
@@ -603,19 +604,17 @@ namespace VMA.MVVM.ViewModels.Add
             }
             return validData;
         }
-
-
         public async Task GetAllConfigurations()
         {
             try
             {
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting all the configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting all the configuration", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
                 string? departmentConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Menus.Department))?.CfgValue;
                 string? expenditureConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Expenditure))?.CfgValue;
                 string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
-                string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
+                string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == GeneralConstants.CFGKeyFinacialYear)?.CfgValue;
                 string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
 
                 NoteId = noteID;
@@ -648,13 +647,13 @@ namespace VMA.MVVM.ViewModels.Add
                     Sanctions = new ObservableCollection<Sanction>();
                 }
 
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved all the configuration Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved all the configuration Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get all the configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get all the configuration", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to load All configurations, Please contact to Administrator", false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, MessagesContants.ErrorMsgConfiguration, false, true);
             }
         }
         private async Task SaveVendorServiceDetails(VendorDetailModel model)
@@ -663,7 +662,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into save Vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-                if (SaveButtonName == "Update")
+                if (SaveButtonName == GeneralConstants.Update)
                 {
                     VendorDetailModel vendorModel = new()
                     {
@@ -698,9 +697,9 @@ namespace VMA.MVVM.ViewModels.Add
                     };
                     await _vendorDetailsBusinessLogic.EditUpdateVendorDetails(vendorModel);
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.SuccessVendorDetailsUpdated, true);
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Updated Vendor service details Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Updated Vendor service details Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
                 }
                 else
                 {
@@ -735,18 +734,18 @@ namespace VMA.MVVM.ViewModels.Add
                     };
                     await _vendorDetailsBusinessLogic.AddVendorDetails(vendorModel);
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Saved Vendor service details Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Saved Vendor service details Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.SuccessVendorDetailsAdded, true);
                 }
 
                 await HideDetailInfoForm(this);
             }
             catch (Exception ex)
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed save vendor service details, please try again or contact to administrator", false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, MessagesContants.ErrorMessageVendorDetailsSave, false, true);
 
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Save vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Save vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 
@@ -770,14 +769,11 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 ServiceYear = _vendorDetailViewModel.DetailsYear;
                 SantionedDate = _vendorDetailViewModel?.SantionedDate != null ? (DateOnly)_vendorDetailViewModel.SantionedDate : DateOnly.MinValue;
-                // ServiceSantionedBy = _vendorDetailViewModel?.ServiceSantionedBy ?? "";
                 ServiceStartDate = _vendorDetailViewModel?.ServiceStartDate != null ? (DateOnly)_vendorDetailViewModel.ServiceStartDate : DateOnly.MinValue;
                 ServiceEndDate = _vendorDetailViewModel?.ServiceEndDate != null ? (DateOnly)_vendorDetailViewModel.ServiceEndDate : DateOnly.MinValue;
                 ServiceSantionAmount = _vendorDetailViewModel?.ServiceSantionAmount ?? 0;
                 RatePerUnit = _vendorDetailViewModel?.RatePerUnit ?? "";
                 QuantityOfUnit = _vendorDetailViewModel?.QuantityOfUnit ?? 0;
-                // ServiceType = _vendorDetailViewModel?.ServiceType ?? "";
-                // VendorDetailCategory = _vendorDetailViewModel?.VendorDetailCategory ?? "";
                 SantionedNoteNo = _vendorDetailViewModel?.SantionedNoteNo ?? "";
                 bool amc = _vendorDetailViewModel?.IsAmc ?? false;
                 if (amc)
@@ -815,10 +811,8 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     SelectPaymentType = ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentType)];
                 }
-
             }
         }
-
 
         #region Combobox load vendors and services on combo box selection 
 
@@ -830,18 +824,18 @@ namespace VMA.MVVM.ViewModels.Add
         {
             try
             {
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loading vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loading vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 var vendorServiceDetails = await _vendorServiceBusinessLogic.GetAllVendorServices().ConfigureAwait(true);
 
                 VendorDetailServices = new ObservableCollection<VendorServiceModel>(vendorServiceDetails.Where(x => x.FkVendorId == vendorId));
 
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loaded vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loaded vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to load vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to load vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             }
         }
@@ -854,16 +848,16 @@ namespace VMA.MVVM.ViewModels.Add
         {
             try
             {
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loading vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loading vendors", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
                 VendorModels = new ObservableCollection<VendorModel>(vendors);
 
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loaded vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loaded vendors", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to load vendors", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to load vendors", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 

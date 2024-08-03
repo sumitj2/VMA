@@ -11,5 +11,7 @@ namespace VMA.Constants
         public const string Update = "Update";
         public const string Delete = "Delete";
         public const string Submit = "Submit";
+
+        public const string CFGKeyFinacialYear= "FinancialYear";
     }
 }
