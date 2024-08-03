@@ -11,11 +11,16 @@ using System.Security.Cryptography.Xml;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Add;
 using VMA.MVVM.ViewModels.Menus;
+using VMA.MVVM.Views;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace VMA.MVVM.ViewModels
 {
@@ -34,7 +39,7 @@ namespace VMA.MVVM.ViewModels
         private IConfigurationBusinessLogic _configurationBusinessLogic;
         private IPaymentNoteInWord _paymentNoteInWord;
         private IYearlyMonthlyReportPDF _yearlyMonthlyReportPDF;
-        private IHomePageBusinessLogic _homePageBusinessLogic;  
+        private IHomePageBusinessLogic _homePageBusinessLogic;
         //private UserAccountModel _currentUserAccount;
 
         //public UserAccountModel CurrentUserAccount
@@ -99,8 +104,7 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowReportViewCommand { get; }
         public ICommand ShowSettingViewCommand { get; }
         public ICommand ShowGSTViewCommand { get; }
-
-
+        public ICommand LogOutCommand { get; }
         public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic,
                              IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic,
                              IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic,
@@ -129,7 +133,8 @@ namespace VMA.MVVM.ViewModels
             ShowPaymentNoteViewCommand = new ViewModelCommand(ExecutePaymentNoteViewCommand);
             ShowReportViewCommand = new ViewModelCommand(ExecuteShowReportViewCommand);
             ShowSettingViewCommand = new ViewModelCommand(ExecuteShowSettingViewCommand);
-            ShowGSTViewCommand = new ViewModelCommand(ExecuteShowGSTViewCommand);            
+            ShowGSTViewCommand = new ViewModelCommand(ExecuteShowGSTViewCommand);
+            LogOutCommand = new ViewModelAsyncCommand<Window>(ExecuteLogOut);
             _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
             _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
             _reportExportToExcelPaymentNote = reportExportToExcelPaymentNote;
@@ -137,6 +142,22 @@ namespace VMA.MVVM.ViewModels
             //Default view
             ExecuteShowHomeViewCommand(null);
             _ = LoadCurrentUserData();
+        }
+
+        private async Task ExecuteLogOut(Window window)
+        {
+            const string message = "Are you sure that you would like to Log Out?";
+            const string caption = "Log Out";
+            var result = MessageBox.Show(message, caption,
+                         MessageBoxButtons.YesNo,
+                         MessageBoxIcon.Question);
+            
+            if (result == DialogResult.Yes)
+            {                                 
+                LoginView loginView = new LoginView(null);
+                loginView.Show();
+                window?.Close();
+            }
         }
 
         private void ExecuteShowGSTViewCommand(object t)
@@ -171,7 +192,7 @@ namespace VMA.MVVM.ViewModels
         {
             try
             {
-                CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote, _vendorBusinessLogic, _vendorDetailsBusinessLogic, _configurationBusinessLogic, _paymentNoteInWord,_yearlyMonthlyReportPDF);
+                CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote, _vendorBusinessLogic, _vendorDetailsBusinessLogic, _configurationBusinessLogic, _paymentNoteInWord, _yearlyMonthlyReportPDF);
                 Caption = "Reports";
                 Icon = IconChar.File;
             }
@@ -255,7 +276,7 @@ namespace VMA.MVVM.ViewModels
         {
             try
             {
-                CurrentChildView = new HomeViewModel(_homePageBusinessLogic,_configurationBusinessLogic);
+                CurrentChildView = new HomeViewModel(_homePageBusinessLogic, _configurationBusinessLogic);
                 Caption = "Home";
                 Icon = IconChar.Home;
             }

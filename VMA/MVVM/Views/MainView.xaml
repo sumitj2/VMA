@@ -236,7 +236,7 @@
                                 Background="Transparent"
                                 MouseLeftButtonDown="PnlControlBar_MouseLeftButtonDown"
                                 MouseEnter="PnlControlBar_MouseEnter">
-                        
+
                         <Button x:Name="btnClose"
                                 Style="{StaticResource controlButton}"
                                 Tag="{ StaticResource color4 }"
@@ -257,7 +257,7 @@
                                 Click="BtnMinimize_Click">
                             <fa:IconImage Icon="WindowMinimize" Style="{StaticResource controlButtonIcon}"></fa:IconImage>
                         </Button>
-                       
+
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text="Vendor Management Application"
@@ -299,8 +299,10 @@
                                     VerticalAlignment="Center"
                                     Margin="0,0,10,0" Grid.ColumnSpan="2">
                             <Button Style="{StaticResource iconButton}"
-                                    Tag="{StaticResource color1}">
-                                <fa:IconImage Icon="AngleDown" Style="{StaticResource iconButtonIcon }"/>
+                                    Tag="{StaticResource color11}"
+                                    Command="{Binding LogOutCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                                <fa:IconImage Icon="PowerOff" Style="{StaticResource iconButtonIcon }"/>
                             </Button>
                             <TextBlock Text="{Binding CurrentUserAccount.Username}"
                                        Foreground="{StaticResource titleColor3}"
