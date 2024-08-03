@@ -23,10 +23,12 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
                 <WrapPanel HorizontalAlignment="Center" Margin="0 30 0 0 ">
-                    <Border BorderBrush="White" BorderThickness="2" Margin="20 0" CornerRadius="5">
-                        <materialDesign:Card VerticalContentAlignment="Center"
-              BorderBrush="White" Width="148" Height="100"  Background="#F6F6F8">
-                            <StackPanel Margin="5">
+                    <Border BorderBrush="White" BorderThickness="1" Margin="20 0" CornerRadius="5">
+                        <materialDesign:Card VerticalContentAlignment="Center" Width="148" Height="100" Background="#F6F6F8">
+                            <materialDesign:Card.Effect>
+                                <DropShadowEffect BlurRadius="10" Opacity="0.4" ShadowDepth="2"/>
+                            </materialDesign:Card.Effect>
+                            <StackPanel>
                                 <materialDesign:PackIcon Kind="UserGroup" HorizontalAlignment="Center">
                                     <materialDesign:PackIcon.Foreground>
                                         <LinearGradientBrush StartPoint="1,0" EndPoint="0.5,1">
