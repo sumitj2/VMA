@@ -107,7 +107,7 @@
 
                                     <TextBox x:Name="txtVendorPan"
                                            Text="{Binding VendorPAN,UpdateSourceTrigger=PropertyChanged}"                                         
-                                           Style="{StaticResource FormTextBox}" Typography.Capitals="AllPetiteCaps"/>
+                                           Style="{StaticResource FormTextBox}" CharacterCasing="Upper"/>
 
                                     <TextBlock Text="Bank Name"
                                            Style="{StaticResource FormTextBlock}"
