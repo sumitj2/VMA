@@ -154,7 +154,7 @@
                                         Margin="0,0,0,9">
                                 <Button Style="{StaticResource RepotItemsButton}"
                                         Command="{Binding ExportPaymentNoteCommand}"                            
-                                        Content="AMC Excel Repor"                            
+                                        Content="AMC Excel Report"                            
                                         FontSize="12"
                                         FontFamily="Montserrat"
                                         Cursor="Hand"
@@ -174,7 +174,7 @@
 
                                 <Button Style="{StaticResource RepotItemsButton}"
                                         Command="{Binding YearlyReportCommand}"                            
-                                        Content="Yearly PDF Repor"                            
+                                        Content="Yearly PDF Report"                            
                                         FontSize="12"
                                         FontFamily="Montserrat"
                                         Cursor="Hand"
