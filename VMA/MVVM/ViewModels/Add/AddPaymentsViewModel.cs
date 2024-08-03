@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using VMA.Constants;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
 
@@ -51,7 +52,6 @@ namespace VMA.MVVM.ViewModels.Add
                     OnPropertyChanged(nameof(TextBoxGSTCategoryVisibility));
                     OnPropertyChanged(nameof(ComboBoxGSTCategoryVisibility));
                     OnPropertyChanged(nameof(IsGSTDetailsVisible));
-                    //VendorPaymentIsGst = true;
                 }
             }
         }
@@ -588,18 +588,6 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        //private decimal? _vendorPaymentTdsamount;
-        //public decimal? VendorPaymentTdsamount
-        //{
-        //    get { return _vendorPaymentTdsamount; }
-        //    set
-        //    {
-        //        _vendorPaymentTdsamount = value;
-        //        VendorPaymentTdsamountNew = Convert.ToString(value);
-        //        OnPropertyChanged(nameof(VendorPaymentTdsamount));
-        //    }
-        //}
-
         private string? _vendorPaymentTdsamountNew;
 
         [RegularExpression("^[0-9.]+$")]
@@ -609,7 +597,6 @@ namespace VMA.MVVM.ViewModels.Add
             set
             {
                 _vendorPaymentTdsamountNew = value;
-                //  VendorPaymentTdsamount = Convert.ToDecimal(value);
                 OnPropertyChanged(nameof(VendorPaymentTdsamountNew));
             }
         }
@@ -631,7 +618,7 @@ namespace VMA.MVVM.ViewModels.Add
                 IsComboBoxServiceVisible = false;
                 IsTextBoxSelectedVendorVisible = true;
                 IsTextBoxServiceVisible = true;
-                SaveButtonName = "Update";
+                SaveButtonName =GeneralConstants.Update;
             }
             else
             {
@@ -639,7 +626,7 @@ namespace VMA.MVVM.ViewModels.Add
                 IsComboBoxServiceVisible = true;
                 IsTextBoxSelectedVendorVisible = false;
                 IsTextBoxServiceVisible = false;
-                SaveButtonName = "Submit";
+                SaveButtonName = GeneralConstants.Submit;
             }
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
@@ -658,7 +645,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
 
-            string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
+            string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == GeneralConstants.CFGKeyFinacialYear)?.CfgValue;
 
             VendorPaymentYear = financialYear;
         }
@@ -808,7 +795,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the SubmitPaymentDetails", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                if (SaveButtonName == "Update")
+                if (SaveButtonName == GeneralConstants.Update)
                 {
                     VendorPaymentModel payment = new VendorPaymentModel()
                     {
@@ -852,7 +839,7 @@ namespace VMA.MVVM.ViewModels.Add
 
                     Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Payment Details Updated Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.PaymentNoteDataUpdated, true);
                 }
                 else
                 {
@@ -896,7 +883,7 @@ namespace VMA.MVVM.ViewModels.Add
 
                     Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Payment Details Added Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.PaymentNoteDataAdded, true);
                 }
 
                 await HidePaymentForm(this);
@@ -905,7 +892,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to submit Payment Details.", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to save Payment Details, Please contact to Administrator", false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, MessagesContants.PaymentSubmitErroMsg, false, true);
             }
         }
 
@@ -948,7 +935,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             try
             {
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting payment amount", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting payment amount", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
                 decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
@@ -961,7 +948,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, res.Meassage, false, true);
 
-                    if (res?.Meassage == "Total Amount cannot be greater than santioned amount")
+                    if (res?.Meassage ==MessagesContants.PaymentMsgSantionAmtHigh)
                     {
                         await HidePaymentForm(this);
                     }

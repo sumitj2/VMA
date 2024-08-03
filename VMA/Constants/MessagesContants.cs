@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Drawing;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,11 @@ namespace VMA.Constants
         public const string PaymentNoteAlreadyGeneratedMsg = "Payment Note alreday genrated for ";
         public const string PaymentNoteDataUpdated = "Payment Note Data Updated Successfully";
         public const string PaymentNoteDataAdded = "Payment Note Data Added Successfully";
+        public const string PaymentDataUpdate = "Payment Data Updated Successfully";
+        public const string PaymentDataAdded="Payment Data Added Successfully";
+
+        public const string PaymentSubmitErroMsg = "Failed to save Payment Details, Please contact to Administrator";
+        public const string PaymentMsgSantionAmtHigh = "Total Amount cannot be greater than santioned amount";
 
 
     }
