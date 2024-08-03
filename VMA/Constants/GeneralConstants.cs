@@ -13,5 +13,7 @@ namespace VMA.Constants
         public const string Submit = "Submit";
 
         public const string CFGKeyFinacialYear= "FinancialYear";
+        public const string CFGKeyNoteID = "NoteId";
+
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using VMA.Constants;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
 
@@ -112,7 +113,7 @@ namespace VMA.MVVM.ViewModels.Add
                 //_ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
                 if (res != null)
                 {
-                    var msg1 = @$"Payment Note alreday genrated for {_SelectedVendorModel?.VendorName}";
+                    var msg1 = @$"{MessagesContants.PaymentNoteAlreadyGeneratedMsg} {_SelectedVendorModel?.VendorName}";
 
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, msg1, false, true);
 
@@ -218,8 +219,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, VenderPaymentNoteModel? editPaymentNote, IConfigurationBusinessLogic configurationBusinessLogic)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
-
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             
             _paymentNotesViewModel = paymentNotesViewModel;
             _editPaymentNote = editPaymentNote;
@@ -229,7 +229,7 @@ namespace VMA.MVVM.ViewModels.Add
                 IsComboBoxServiceVisible = false;
                 IsTextBoxSelectedVendorVisible = true;
                 IsTextBoxServiceVisible = true;
-                SaveButtonName = "Update";
+                SaveButtonName = GeneralConstants.Update;
             }
             else
             {
@@ -237,7 +237,7 @@ namespace VMA.MVVM.ViewModels.Add
                 IsComboBoxServiceVisible = true;
                 IsTextBoxSelectedVendorVisible = false;
                 IsTextBoxServiceVisible = false;
-                SaveButtonName = "Submit";
+                SaveButtonName =GeneralConstants.Submit;
             }
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
@@ -253,8 +253,8 @@ namespace VMA.MVVM.ViewModels.Add
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
 
-            string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
-            string? noteId = allConfigurations.FirstOrDefault(x => x.Cfgkey == "NoteId")?.CfgValue;
+            string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == GeneralConstants.CFGKeyFinacialYear)?.CfgValue;
+            string? noteId = allConfigurations.FirstOrDefault(x => x.Cfgkey == GeneralConstants.CFGKeyNoteID)?.CfgValue;
             PaymentNoteYear = financialYear;
             PaymentNoteNo=PaymentNoteId = noteId+PaymentNoteNo;
         }
@@ -290,9 +290,9 @@ namespace VMA.MVVM.ViewModels.Add
         {
             try
             {
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the SubmitPaymentNote", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the SubmitPaymentNote", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                if (SaveButtonName == "Update")
+                if (SaveButtonName == GeneralConstants.Update)
                 {
                     VenderPaymentNoteModel payment = new()
                     {
@@ -306,9 +306,9 @@ namespace VMA.MVVM.ViewModels.Add
                     };
                     await _venderPaymentNotesBusinessLogic.EditUpdatePaymentNotes(payment);
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor payment updated Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor payment updated Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.PaymentNoteDataUpdated, true);
                 }
                 else
                 {
@@ -324,17 +324,17 @@ namespace VMA.MVVM.ViewModels.Add
                     };
                     await _venderPaymentNotesBusinessLogic.AddPaymentNotes(paymentNote);
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor payment saved Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor payment saved Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.PaymentNoteDataAdded, true);
                 }
 
                 await HidePaymentNoteForm(this);
             }
             catch(Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to save vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to save vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to save vendor payments, Please contact to Administrator", false, true);
             }

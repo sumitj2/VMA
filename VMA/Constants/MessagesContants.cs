@@ -22,5 +22,10 @@ namespace VMA.Constants
 
         public const string ErrorMessageVendorDetailsSave = "Failed to Save vendor service details, Please try again or contact to administrator";
 
+        public const string PaymentNoteAlreadyGeneratedMsg = "Payment Note alreday genrated for ";
+        public const string PaymentNoteDataUpdated = "Payment Note Data Updated Successfully";
+        public const string PaymentNoteDataAdded = "Payment Note Data Added Successfully";
+
+
     }
 }
