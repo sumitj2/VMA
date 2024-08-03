@@ -7,12 +7,13 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseWPF>true</UseWPF>
 		<SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
-		<ApplicationIcon>logo-icon.ico</ApplicationIcon>
+		<ApplicationIcon>Images\logo-icon.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<None Remove="Images\back-image.jpg" />
 		<None Remove="Images\key-icon.png" />
+		<None Remove="Images\logo-icon.ico" />
 		<None Remove="Images\logo.png" />
 		<None Remove="Images\user-icon.png" />
 		<None Remove="MVVM\ViewModels\Menus\SettingsViewModel.cs~RF38c95223.TMP" />
@@ -54,6 +55,7 @@
 	<ItemGroup>
 		<Resource Include="Images\back-image.jpg" />
 		<Resource Include="Images\key-icon.png" />
+		<Resource Include="Images\logo-icon.ico" />
 		<Resource Include="Images\logo.png" />
 		<Resource Include="Images\user-icon.png" />
 	</ItemGroup>
