@@ -55,7 +55,7 @@ namespace VMA.MVVM.ViewModels.Menus
             get { return _From; }
             set
             {
-                _From = value;                
+                _From = value;
                 OnPropertyChanged(nameof(From));
             }
         }
@@ -66,7 +66,7 @@ namespace VMA.MVVM.ViewModels.Menus
             get { return _To; }
             set
             {
-                _To = value;                
+                _To = value;
                 OnPropertyChanged(nameof(To));
             }
         }
@@ -151,8 +151,8 @@ namespace VMA.MVVM.ViewModels.Menus
                 if (SelectedVendorModel != null)
                 {
                     OnPropertyChanged(nameof(SelectedVendorModel));
-                    BeforeInvocie +=" "+ SelectedVendorModel.VendorName;
-                    AfterInvoice +=" "+ SelectedVendorModel.VendorName;
+                    BeforeInvocie += " " + SelectedVendorModel.VendorName;
+                    AfterInvoice += " " + SelectedVendorModel.VendorName;
                     _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
                 }
             }
@@ -216,23 +216,36 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             if (pathWord == null || pathWord.Length == 0)
             {
-                MessageBox.Show("Please Set file storage location in settings ");
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Please Set file storage location in settings", false, true);
             }
-            await _yearlyReportPDF.GenerateYearlyReport(_vendorPaymentYear, pathWord).ConfigureAwait(true);
+            else
+            {
+                await _yearlyReportPDF.GenerateYearlyReport(_vendorPaymentYear, pathWord).ConfigureAwait(true);
+            }
         }
 
         private async Task GenerateMonthlyReport(Database.VMA.Entities.CustomEntities.ExportPaymentNoteData note)
         {
-            await _yearlyReportPDF.GenerateMonthlyReport(_vendorPaymentYear,"month_need_to_pass", pathExcel).ConfigureAwait(true);
+            if (pathWord == null || pathWord.Length == 0)
+            {
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Please Set file storage location in settings", false, true);
+            }
+            else
+            {
+                await _yearlyReportPDF.GenerateMonthlyReport(_vendorPaymentYear, "month_need_to_pass", pathExcel).ConfigureAwait(true);
+            }
         }
 
         private async Task GeneratePaymentNote(CreateWordDocumentPaymentNote note)
         {
             if (pathWord == null || pathWord.Length == 0)
             {
-                MessageBox.Show("Please Set file storage location in settings ");
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Please Set file storage location in settings", false, true);
             }
-            await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From, To, BeforeInvocie+"The summary of the invoice is as under", AfterInvoice+ " "+To,_vendorPaymentYear,pathWord).ConfigureAwait(true);
+            else
+            {
+                await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord).ConfigureAwait(true);
+            }
         }
 
         private async Task CallAync()
@@ -248,7 +261,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task ExportPaymentNote(Database.VMA.Entities.CustomEntities.ExportPaymentNoteData data)
         {
-            await _reportExportToExcelPaymentNote.ExportPaymentNotes(_vendorPaymentYear,pathExcel).ConfigureAwait(true);
+            await _reportExportToExcelPaymentNote.ExportPaymentNotes(_vendorPaymentYear, pathExcel).ConfigureAwait(true);
         }
 
         private async Task LoadVendors()
@@ -265,13 +278,13 @@ namespace VMA.MVVM.ViewModels.Menus
         public async Task GetAllConfigurations()
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
-            VendorPaymentYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue; 
-            pathWord = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FilePathWord")?.CfgValue;            
+            VendorPaymentYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
+            pathWord = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FilePathWord")?.CfgValue;
 
             pathExcel = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FilePathExcel")?.CfgValue;
-            if (pathWord == null || pathExcel==null)
+            if (pathWord == null || pathExcel == null)
             {
-                MessageBox.Show("Please Set file storage configuration in settings ");   
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Please Set file storage location in settings", false, true);
             }
 
         }

@@ -22,21 +22,23 @@ namespace BusinessLogic.VMA
         public async Task<ConfigurationModel> GetConfigurationByKey(string cfgKey)
         {
             var configurationResult = await _configurationsRepository.GetConfigurationByKey(cfgKey);
-
-            ConfigurationModel configuration = new ConfigurationModel()
+            if (configurationResult != null)
             {
-                Id = configurationResult.Id,
-                Cfgkey = configurationResult.Cfgkey,
-                CfgValue = configurationResult.Cfgvalue
-            };
+                ConfigurationModel configuration = new ConfigurationModel()
+                {
+                    Id = configurationResult.Id,
+                    Cfgkey = configurationResult.Cfgkey,
+                    CfgValue = configurationResult.Cfgvalue
+                };
+                return configuration;
+            }
+            return null;
 
-
-            return configuration;
         }
 
         public async Task<IEnumerable<ConfigurationModel>> GetConfigurations()
         {
-           var configurationResult = await _configurationsRepository.GetAllConfigurations();
+            var configurationResult = await _configurationsRepository.GetAllConfigurations();
 
             List<ConfigurationModel> configurationlist = new List<ConfigurationModel>();
 

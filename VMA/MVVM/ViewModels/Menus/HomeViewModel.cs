@@ -245,10 +245,11 @@ namespace VMA.MVVM.ViewModels.Menus
         public async Task GetFinancilYearFromConfiguraton()
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurationByKey("FinancialYear").ConfigureAwait(true);
-
-            string? financialYear = allConfigurations.CfgValue;
-
-            FinancialYear = financialYear;
+            if (allConfigurations != null)
+            {
+                string? financialYear = allConfigurations.CfgValue;
+                FinancialYear = financialYear;
+            }
         }
         public async Task MainTask()
         {
@@ -266,22 +267,23 @@ namespace VMA.MVVM.ViewModels.Menus
                 CountOfServices = details.CountOfServices;
                 TotalPaidAmount = details.TotalPaidAmount;
                 TotalSanctionAmount = details.TotalSanctionAmount;
+
+                SeriesCollectionPieChart = new SeriesCollection
+                {
+                    new PieSeries
+                    {
+                        Title = "Remaining Amount",
+                        Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalSanctionAmount)-Convert.ToDouble(TotalPaidAmount) )},
+                        DataLabels = true
+                    },
+                    new PieSeries
+                    {
+                        Title = "Amount Paid",
+                        Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalPaidAmount) )},
+                        DataLabels = true
+                    }
+                };
             }
-            SeriesCollectionPieChart = new SeriesCollection
-            {
-                new PieSeries
-                {
-                    Title = "Remaining Amount",
-                    Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalSanctionAmount)-Convert.ToDouble(TotalPaidAmount) )},
-                    DataLabels = true
-                },
-                new PieSeries
-                {
-                    Title = "Amount Paid",
-                    Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalPaidAmount) )},
-                    DataLabels = true
-                }
-            };
         }
     }
 }

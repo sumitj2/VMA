@@ -85,17 +85,14 @@ namespace VMA.MVVM.ViewModels.Add
             get { return _selectedVendor; }
             set
             {
-
                 _selectedVendor = value;
-                OnPropertyChanged("SelectedVendor");
-
+                OnPropertyChanged(nameof(SelectedVendor));
             }
         }
 
 
 
         #endregion
-
 
         #region Observable collections
         private ObservableCollection<VendorModel> _vendors;
@@ -139,10 +136,34 @@ namespace VMA.MVVM.ViewModels.Add
             _vendorBusinessLogic = vendorBusinessLogic;
           
             HideVendorProductServiceFormCommand = new ViewModelAsyncCommand<VendorServiceModel>(HideVendorServiceForm);
-            SubmitCommand = new ViewModelAsyncCommand<VendorServiceModel>(SaveVendorService);
+            SubmitCommand = new ViewModelAsyncCommand<VendorServiceModel>(SaveVendorService, ValidateDetailsService);
             ClearFormCommand = new ViewModelAsyncCommand<VendorServiceModel>(ClearValues);
 
             CallAync();
+        }
+
+        private bool ValidateDetailsService()
+        {
+            bool validData;
+
+            if (string.IsNullOrWhiteSpace(VendorServiceName) || string.IsNullOrEmpty(VendorServiceName))
+            {
+                validData = false;
+            }
+            else
+            {
+                validData = true;
+            }
+            if (SelectedVendor==null)
+            {
+                validData = false;
+            }
+            else
+            {
+                validData = true;
+            }
+
+            return validData;
         }
 
         private async void CallAync()
