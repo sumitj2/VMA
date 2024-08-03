@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Windows.Input;
+using VMA.Constants;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Menus;
 
@@ -79,7 +80,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        [Required(ErrorMessage = "*Vendor Name is Required")]
+        [Required(ErrorMessage = MessagesContants.RequireVendorName)]
         public string VendorName
         {
             get
@@ -138,7 +139,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
-        [EmailAddress(ErrorMessage = "Invalid email address")]
+        [EmailAddress(ErrorMessage = MessagesContants.InvalidEmail)]
         public string VendorEmailId
         {
             get
@@ -213,11 +214,11 @@ namespace VMA.MVVM.ViewModels.Add
             this.SelectedVendor = SelectedVendor;
             if (SelectedVendor != null)
             {
-                SaveButtonName = "Update";
+                SaveButtonName = GeneralConstants.Update;
             }
             else
             {
-                SaveButtonName = "Submit";
+                SaveButtonName = GeneralConstants.Submit;
             }            
             VendorCode = Convert.ToString(parentViewModel.Vendors.Count + 1);
 
@@ -267,7 +268,6 @@ namespace VMA.MVVM.ViewModels.Add
             await Task.Run(() =>
             {
                 VendorAccountNumber = "";
-                //VendorCode = "";
                 VendorAddress = "";
                 VendorBankName = "";
                 VendorEmailId = "";
@@ -283,9 +283,9 @@ namespace VMA.MVVM.ViewModels.Add
         {
             try
             {
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Saving Vendor Details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Saving Vendor Details", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                if (SaveButtonName == "Update")
+                if (SaveButtonName == GeneralConstants.Update)
                 {
                     VendorModel vendorModel = new()
                     {
@@ -307,9 +307,9 @@ namespace VMA.MVVM.ViewModels.Add
                     };
                     await _vendorbusinessLogic.EditUpdateVendor(vendorModel);
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor Details Updated Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor Details Updated Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Updated Successfully", true);
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.SuccessVendorUpdated, true);
                 }
                 else
                 {
@@ -331,16 +331,16 @@ namespace VMA.MVVM.ViewModels.Add
                     };
                     await _vendorbusinessLogic.AddVendor(vendorModel);
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor Details Added Successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor Details Added Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, "Data Added Successfully", true);
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success,MessagesContants.SuccessVendorAdded, true);
                 }
 
                 await HideVendorForm(this);
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to save vendor details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to save vendor details", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             }
         }
