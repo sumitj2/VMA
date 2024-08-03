@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using VMA.Constants;
 
 namespace BusinessLogic.VMA
 {
@@ -30,7 +31,7 @@ namespace BusinessLogic.VMA
             var payments = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetailsToExport(financialYear).ConfigureAwait(true);
             if(payments?.Count == 0) 
             {
-                MessageBox.Show("No Payments found for Finacial Year "+financialYear);
+                MessageBox.Show(MessagesContants.ReportExcelNoPaymentFoud + financialYear);
             }
             else
             {
@@ -75,7 +76,7 @@ namespace BusinessLogic.VMA
                 
                 File.WriteAllBytes(location, fileContent);
 
-                MessageBox.Show($"File successfully saved to {saveFileDialog.FileName}");
+                MessageBox.Show($"{MessagesContants.FileSavedToSucesfully} {saveFileDialog.FileName}");
 
                 OpenExcelFile(location);
             }
@@ -190,7 +191,7 @@ namespace BusinessLogic.VMA
             catch (Exception ex)
             {
                 // Handle exceptions
-                Debug.WriteLine($"Error opening file: {ex.Message}");
+                Debug.WriteLine($"{MessagesContants.ErrorOpeningFile} {ex.Message}");
             }
         }
     }

@@ -1,14 +1,8 @@
-﻿using DocumentFormat.OpenXml.Drawing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VMA.Constants
+﻿namespace VMA.Constants
 {
     public static class MessagesContants
     {
+        public const string BankName = "Thane Bharat Sahakari Bank";
         public const string RequireVendorName = "*Vendor Name is Required";
         public const string InvalidEmail = "Invalid email address";
         public const string SuccessVendorUpdated = "Vendor Data Updated Successfully";
@@ -35,6 +29,15 @@ namespace VMA.Constants
         public const string ProductServiceUpdated = "Product Services Updated Successfully";
         public const string ProductServiceAdded = "Product Services Added Successfully";
 
+        public const string ReportExcelNoPaymentFoud = "No Payments found for Finacial Year ";
+        public const string FileSavedToSucesfully = "File successfully saved to ";
+        public const string ErrorOpeningFile = "Error opening file: ";
+        public const string NoPaymentFound="No Payment found for ";
+
+
+        public const string YearlyReport = "Yearly Vendor Service Report";
+
+        public const string FileNotFound = "File not found.";
 
 
     }

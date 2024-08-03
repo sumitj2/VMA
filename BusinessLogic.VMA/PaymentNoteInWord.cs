@@ -14,6 +14,7 @@ using System.Windows;
 using Color = DocumentFormat.OpenXml.Wordprocessing.Color;
 using BusinessLogic.Abstraction.VMA.Contract;
 using DocumentFormat.OpenXml.Drawing.Charts;
+using VMA.Constants;
 
 namespace BusinessLogic.VMA
 {
@@ -31,7 +32,7 @@ namespace BusinessLogic.VMA
                 var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear).ConfigureAwait(true);
                 if (result == null || result?.Count == 0)
                 {
-                    MessageBox.Show("No Payment found for " + serviceName);
+                    MessageBox.Show(MessagesContants.NoPaymentFound + serviceName);
                 }
                 else
                 {
@@ -428,7 +429,7 @@ namespace BusinessLogic.VMA
             catch (Exception ex)
             {
                 // Handle any exceptions that occur during opening the file
-                Debug.WriteLine($"Error opening the file: {ex.Message}");
+                Debug.WriteLine($"{MessagesContants.ErrorOpeningFile} {ex.Message}");
             }
         }
     }

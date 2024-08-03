@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using VMA.Constants;
 using Style = MigraDoc.DocumentObjectModel.Style;
 
 namespace BusinessLogic.VMA
@@ -32,7 +33,7 @@ namespace BusinessLogic.VMA
         {
             if(Data.Count==0 |Data==null)
             {
-                MessageBox.Show("No Payment Data found");
+                MessageBox.Show(MessagesContants.NoPaymentFound);
             }
             if (Data != null)
             {
@@ -46,12 +47,12 @@ namespace BusinessLogic.VMA
                 headingStyle.Font.Bold = true;
 
                 // Add a heading
-                Paragraph heading = section.AddParagraph("Thane Bharat Bank", "Heading1");
+                Paragraph heading = section.AddParagraph(MessagesContants.BankName, "Heading1");
                 heading.Format.Alignment = ParagraphAlignment.Center;
                 section.AddParagraph(); // Adds an empty paragraph to create space
 
                 // Add the additional paragraph
-                Paragraph additionalText = section.AddParagraph("Yearly Vendor Service Report");
+                Paragraph additionalText = section.AddParagraph(MessagesContants.YearlyReport);
                 additionalText.Format.Alignment = ParagraphAlignment.Center;
 
 
@@ -128,7 +129,7 @@ namespace BusinessLogic.VMA
             else
             {
                 // Handle file not found scenario
-                MessageBox.Show("File not found.");
+                MessageBox.Show(MessagesContants.FileNotFound);
             }
         }
         public async Task GenerateYearlyReport(string? financilaYear, string? path)
