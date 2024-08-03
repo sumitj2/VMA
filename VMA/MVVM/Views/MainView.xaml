@@ -259,15 +259,15 @@
                         </Button>
                        
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text="Vendor Management Application"
                                    Foreground="White"
                                    FontWeight="Medium"
-                                   FontSize="15"
+                                   FontSize="18"
                                    FontFamily="Montserrat"
                                    Grid.Column="0"
                                    VerticalAlignment="Center"
-                                   Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                                   Margin="10,10,0,0" HorizontalAlignment="Center"/>
                     </StackPanel>
 
                     <!--header/caption-->
