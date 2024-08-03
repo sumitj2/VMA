@@ -6,6 +6,40 @@
              xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" xmlns:menus="clr-namespace:VMA.MVVM.ViewModels.Menus" xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" d:DataContext="{d:DesignInstance Type=menus:HomeViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="materialDesign:Card" x:Key="HoverCardDesignStyle">
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1" />
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                                 To="1.2" Duration="0:0:0.2" />
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                                 To="1.2" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                                 To="1.0" Duration="0:0:0.2" />
+                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                                 To="1.0" Duration="0:0:0.2" />
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Border CornerRadius="10"                    
  BorderThickness="0"
      Background="white" Opacity="0.95">
@@ -23,8 +57,10 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
                 <WrapPanel HorizontalAlignment="Center" Margin="0 30 0 0 ">
+                    
                     <Border BorderBrush="White" BorderThickness="1" Margin="20 0" CornerRadius="5">
-                        <materialDesign:Card VerticalContentAlignment="Center" Width="148" Height="100" Background="#F6F6F8">
+
+                        <materialDesign:Card Style="{StaticResource HoverCardDesignStyle}" VerticalContentAlignment="Center" Width="148" Height="100" Background="#F6F6F8">
                             <materialDesign:Card.Effect>
                                 <DropShadowEffect BlurRadius="10" Opacity="0.4" ShadowDepth="2"/>
                             </materialDesign:Card.Effect>
@@ -38,14 +74,17 @@
                                     </materialDesign:PackIcon.Foreground>
                                 </materialDesign:PackIcon>
                                 <TextBlock FontSize="12"  TextAlignment="Center" Text="Total Vendors"  />
-                                <TextBlock FontWeight="SemiBold" FontSize="25" TextAlignment="Center" Text="{Binding CountOfVendors ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 0 0 0" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" TextAlignment="Center" Text="{Binding CountOfVendors ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
                             </StackPanel>
                         </materialDesign:Card>
                     </Border>
-                    <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15">
-                        <materialDesign:Card UniformCornerRadius="1" BorderThickness="5"
-              BorderBrush="White" Width="148" Height="100"  Background="#F6F6F8">
-                            <StackPanel Margin="5">
+                    
+                    <Border BorderBrush="White" BorderThickness="1" Margin="20 0" CornerRadius="5">
+                        <materialDesign:Card Style="{StaticResource HoverCardDesignStyle}" VerticalContentAlignment="Center" Width="148" Height="100" Background="#F6F6F8">
+                            <materialDesign:Card.Effect>
+                                <DropShadowEffect BlurRadius="10" Opacity="0.4" ShadowDepth="2"/>
+                            </materialDesign:Card.Effect>
+                            <StackPanel>
                                 <materialDesign:PackIcon Kind="AccountService" HorizontalAlignment="Center">
                                     <materialDesign:PackIcon.Foreground>
                                         <LinearGradientBrush StartPoint="1,0" EndPoint="0.5,1">
@@ -55,37 +94,40 @@
                                     </materialDesign:PackIcon.Foreground>
                                 </materialDesign:PackIcon>
                                 <TextBlock FontSize="12" TextAlignment="Center" Text="Total Services" />
-                                <TextBlock FontWeight="SemiBold" FontSize="25" TextAlignment="Center"  Text="{Binding CountOfServices,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 0 0 0" />
-
-
+                                <TextBlock FontWeight="SemiBold" FontSize="25" TextAlignment="Center"  Text="{Binding CountOfServices,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
                             </StackPanel>
                         </materialDesign:Card>
                     </Border>
-                    <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15">
-                        <materialDesign:Card UniformCornerRadius="1" BorderThickness="5" HorizontalAlignment="Center"
-               BorderBrush="White" Width="148" Height="100" Background="#F6F6F8">
-                            <StackPanel Margin="5" >
+                    
+                    <Border BorderBrush="White" BorderThickness="1" Margin="20 0" CornerRadius="5">
+                        <materialDesign:Card Style="{StaticResource HoverCardDesignStyle}" VerticalContentAlignment="Center" Width="148" Height="100" Background="#F6F6F8">
+                            <materialDesign:Card.Effect>
+                                <DropShadowEffect BlurRadius="10" Opacity="0.4" ShadowDepth="2"/>
+                            </materialDesign:Card.Effect>
+                            <StackPanel >
                                 <materialDesign:PackIcon Kind="Rupee" Foreground="Red" HorizontalAlignment="Center" />
                                 <TextBlock FontSize="12"  TextAlignment="Center" Text="Total Santioned Amount" />
-                                <TextBlock FontWeight="SemiBold" FontSize="25" TextAlignment="Center"  Text="{Binding TotalSanctionAmount,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 0 0 0" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25" TextAlignment="Center"  Text="{Binding TotalSanctionAmount,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
                             </StackPanel>
                         </materialDesign:Card>
                     </Border>
-                    <Border BorderBrush="White" BorderThickness="5" Margin="20 0" CornerRadius="15">
-                        <materialDesign:Card  UniformCornerRadius="1" BorderThickness="5"
-            BorderBrush="White" Width="148" Height="100"   Background="#F6F6F8">
-                            <StackPanel Margin="10">
+                    
+                    <Border BorderBrush="White" BorderThickness="1" Margin="20 0" CornerRadius="5">
+                        <materialDesign:Card Style="{StaticResource HoverCardDesignStyle}" VerticalContentAlignment="Center" Width="148" Height="100" Background="#F6F6F8">
+                            <materialDesign:Card.Effect>
+                                <DropShadowEffect BlurRadius="10" Opacity="0.4" ShadowDepth="2"/>
+                            </materialDesign:Card.Effect>
+                            <StackPanel>
                                 <materialDesign:PackIcon Kind="AccountPending" Foreground="#29A3EC" HorizontalAlignment="Center" />
                                 <TextBlock FontSize="12"  TextAlignment="Center" Text="Amount Paid" />
-                                <TextBlock FontWeight="SemiBold" FontSize="25"   TextAlignment="Center" Text="{Binding TotalPaidAmount ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Margin="0 0 0 0" />
-
+                                <TextBlock FontWeight="SemiBold" FontSize="25"   TextAlignment="Center" Text="{Binding TotalPaidAmount ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
                             </StackPanel>
                         </materialDesign:Card>
                     </Border>
                 </WrapPanel>
             </StackPanel>
-            <Grid Grid.Row="1">
 
+            <Grid Grid.Row="1">
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>
