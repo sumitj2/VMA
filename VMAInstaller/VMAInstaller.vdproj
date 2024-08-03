@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_6AF40DAEDB73475FA5AB796173285A44"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6C455DE777C54AA3B1E9438756AD15C6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -130,6 +136,26 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6AF40DAEDB73475FA5AB796173285A44"
+            {
+            "SourcePath" = "8:..\\VMA\\Images\\logo-icon.ico"
+            "TargetName" = "8:logo-icon.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_850F6FF5CB1F4303AF4BA0D0B9042617"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6C455DE777C54AA3B1E9438756AD15C6"
             {
             "SourcePath" = "8:..\\VMA\\bin\\Release\\net8.0-windows\\publish\\VMA.deps.json"
@@ -207,7 +233,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:VMA"
         "ProductCode" = "8:{F316C3C3-3AC7-48A6-BFE7-CEBE19C75B5B}"
-        "PackageCode" = "8:{B954E753-894C-4500-8CEF-9581F430DB3A}"
+        "PackageCode" = "8:{DD81C8BF-0245-466F-B223-604C197EB77A}"
         "UpgradeCode" = "8:{D5FD6599-E267-4105-A4AB-47FA0EB6294D}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -327,6 +353,34 @@
         }
         "Shortcut"
         {
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_D3F16AE8ACB74BCD8314B64B24539EC0"
+            {
+            "Name" = "8:VMA"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_E407A96B0D9145C4B5BDF0F56EC6786A"
+            "Folder" = "8:_4C3B7AAEB60448A3840EE6A8B54D471F"
+            "WorkingFolder" = "8:_850F6FF5CB1F4303AF4BA0D0B9042617"
+            "Icon" = "8:_6AF40DAEDB73475FA5AB796173285A44"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_F4C62BDD814845899F85C76D2D53FB39"
+            {
+            "Name" = "8:VMA"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_E407A96B0D9145C4B5BDF0F56EC6786A"
+            "Folder" = "8:_885B8384A66E474D975F3732B3C8A25B"
+            "WorkingFolder" = "8:_850F6FF5CB1F4303AF4BA0D0B9042617"
+            "Icon" = "8:_6AF40DAEDB73475FA5AB796173285A44"
+            "Feature" = "8:"
+            }
         }
         "UserInterface"
         {
@@ -728,7 +782,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E407A96B0D9145C4B5BDF0F56EC6786A"
             {
-            "SourcePath" = "8:..\\VMA\\obj\\Release\\net8.0-windows\\apphost.exe"
+            "SourcePath" = "8:..\\VMA\\obj\\Debug\\net8.0-windows\\apphost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_850F6FF5CB1F4303AF4BA0D0B9042617"
