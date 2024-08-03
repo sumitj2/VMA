@@ -71,12 +71,13 @@ namespace BusinessLogic.VMA
                     FileName = "AMC_Payment_Details_" + DateTime.UtcNow.ToString("dd_t") + ".xlsx"
                 };
 
-                //string path = "D:\\Notes\\";
-                File.WriteAllBytes(path + "\\" + saveFileDialog.FileName, fileContent);
+                string location = path + "\\" + saveFileDialog.FileName;
+                
+                File.WriteAllBytes(location, fileContent);
 
                 MessageBox.Show($"File successfully saved to {saveFileDialog.FileName}");
 
-                OpenExcelFile(path + saveFileDialog.FileName);
+                OpenExcelFile(location);
             }
 
         }
