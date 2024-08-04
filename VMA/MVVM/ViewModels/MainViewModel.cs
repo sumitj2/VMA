@@ -2,6 +2,7 @@
 using BusinessLogic.VMA;
 using Database.VMA.Repositories;
 using FontAwesome.Sharp;
+using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -114,7 +115,7 @@ namespace VMA.MVVM.ViewModels
                              IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord,
                              IYearlyMonthlyReportPDF yearlyMonthlyReportPDF, IHomePageBusinessLogic homePageBusinessLogic)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));            
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
@@ -153,12 +154,19 @@ namespace VMA.MVVM.ViewModels
             var result = MessageBox.Show(message, caption,
                          MessageBoxButtons.YesNo,
                          MessageBoxIcon.Question);
-            
+
             if (result == DialogResult.Yes)
-            {                                 
-                LoginView loginView = new LoginView(this._loginViewModel);
-                loginView.Show();
-                window?.Close();
+            {
+                //Not working as its shows login screen but not able to login so commenting below code and just closing the application
+                //Application.Current.Dispatcher.Invoke(() =>
+                //{
+                //    window?.Close();
+                //    var loginWindow = new LoginView(this._loginViewModel);
+                //    loginWindow.Show();
+                //    Application.Current.MainWindow.Close();
+                //    Application.Current.MainWindow = loginWindow;
+                //});
+                Application.Current.Shutdown();
             }
         }
 

@@ -232,7 +232,7 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             else
             {
-                await _yearlyReportPDF.GenerateMonthlyReport(_vendorPaymentYear, "month_need_to_pass", pathExcel).ConfigureAwait(true);
+               // await _yearlyReportPDF.GenerateMonthlyReport(_vendorPaymentYear, "month_need_to_pass", pathExcel).ConfigureAwait(true);
             }
         }
 
