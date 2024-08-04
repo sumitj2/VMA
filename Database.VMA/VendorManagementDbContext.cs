@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Database.VMA.Models;
+﻿using Database.VMA.Entities;
+using Database.VMA.Entities.CustomEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Database.VMA;
@@ -15,31 +14,145 @@ public partial class VendorManagementDbContext : DbContext
         : base(options)
     {
     }
+    public virtual DbSet<DashboardDetails> DashboardData { get; set; }
+
+    public virtual DbSet<YearlyReportData> YearlyReportData { get; set; }
+    public virtual DbSet<GstcalculationMaster> GstcalculationMasters { get; set; }
+
+    public virtual DbSet<InvoiceDetail> InvoiceDetails { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("server=SUMITSLAPTOP\\SQLEXPRESS;Database=VendorManagementDB;Trusted_Connection=true;Encrypt=false");
+    public virtual DbSet<Vendor> Vendors { get; set; }
+
+    public virtual DbSet<VendorDetail> VendorDetails { get; set; }
+
+    public virtual DbSet<VendorPayment> VendorPayments { get; set; }
+
+    public virtual DbSet<VendorPaymentNote> VendorPaymentNotes { get; set; }
+
+    public virtual DbSet<VendorService> VendorServices { get; set; }
+
+    public virtual DbSet<Configuration> Configurations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<DashboardDetails>().HasNoKey();
+        modelBuilder.Entity<YearlyReportData>().HasNoKey();
+
+        modelBuilder.Entity<Configuration>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Configur__3214EC07FB9FBC06");
+
+            entity.Property(e => e.Cfgkey).HasColumnName("CFGKey");
+            entity.Property(e => e.Cfgvalue).HasColumnName("CFGValue");
+        });
+
+        modelBuilder.Entity<GstcalculationMaster>(entity =>
+        {
+            entity.HasKey(e => e.SrNo).HasName("PK__GSTCalcu__C3A4D3AC16F8356B");
+
+            entity.ToTable("GSTCalculationMaster");
+
+            entity.Property(e => e.CgstPercentage).HasColumnName("CGST_Percentage");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.GstCategoryName).HasColumnName("GST_Category_Name");
+            entity.Property(e => e.IgstPercentage).HasColumnName("IGST_Percentage");
+            entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.SgstPercentage).HasColumnName("SGST_Percentage");
+        });
+
+        modelBuilder.Entity<InvoiceDetail>(entity =>
+        {
+            entity.HasKey(e => e.InvoiceId).HasName("PK__InvoiceD__D796AAD590836049");
+
+            entity.Property(e => e.InvoiceId).HasColumnName("InvoiceID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.InvoiceDate).HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
+        });
+
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__User__3214EC07A2A57614");
+            entity.HasKey(e => e.Id).HasName("PK__User__3214EC07A9DF6A75");
 
             entity.ToTable("User");
+        });
 
-            entity.HasIndex(e => e.Username, "UQ__User__536C85E4D3A90032").IsUnique();
+        modelBuilder.Entity<Vendor>(entity =>
+        {
+            entity.HasKey(e => e.VendorId).HasName("PK__Vendors__FC8618D31F71923A");
 
-            entity.HasIndex(e => e.Email, "UQ__User__A9D10534E1ED7423").IsUnique();
+            entity.Property(e => e.VendorId).HasColumnName("VendorID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.VendorGstnumber).HasColumnName("VendorGSTNumber");
+            entity.Property(e => e.VendorIfsccode).HasColumnName("VendorIFSCCode");
+        });
 
-            entity.Property(e => e.Id).HasDefaultValueSql("(newid())");
-            entity.Property(e => e.Email).HasMaxLength(100);
-            entity.Property(e => e.LastName).HasMaxLength(50);
-            entity.Property(e => e.Name).HasMaxLength(50);
-            entity.Property(e => e.Password).HasMaxLength(100);
-            entity.Property(e => e.Username).HasMaxLength(50);
+        modelBuilder.Entity<VendorDetail>(entity =>
+        {
+            entity.HasKey(e => e.VendorDetailId).HasName("PK__VendorDe__6458FAB5198C8DA0");
+
+            entity.Property(e => e.VendorDetailId).HasColumnName("VendorDetailID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.DetailsYear).HasMaxLength(20);
+            entity.Property(e => e.FkVendorId).HasColumnName("FK_VendorID");
+            entity.Property(e => e.FkVendorServiceId).HasColumnName("FK_VendorServiceID");
+            entity.Property(e => e.IsAmc).HasColumnName("IsAMC");
+            entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.ServiceSantionAmount).HasColumnType("decimal(18, 0)");
+        });
+
+        modelBuilder.Entity<VendorPayment>(entity =>
+        {
+            entity.HasKey(e => e.VendorPaymentId).HasName("PK__VendorPa__68C7C3D296A2B8CF");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.FkGstmasterSrNo).HasColumnName("FK_GSTMasterSrNo");
+            entity.Property(e => e.FkInvoiceId).HasColumnName("FK_InvoiceID");
+            entity.Property(e => e.FkNoteId).HasColumnName("FK_NoteId");
+            entity.Property(e => e.FkVendorDetailId).HasColumnName("FK_VendorDetailID");
+            entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.PaymentYear).HasMaxLength(20);
+            entity.Property(e => e.VendorPaymentAmount).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.VendorPaymentCgst)
+                .HasColumnType("decimal(18, 0)")
+                .HasColumnName("VendorPaymentCGST");
+            entity.Property(e => e.VendorPaymentIgst)
+                .HasColumnType("decimal(18, 0)")
+                .HasColumnName("VendorPaymentIGST");
+            entity.Property(e => e.VendorPaymentIsGst).HasColumnName("VendorPaymentIsGST");
+            entity.Property(e => e.VendorPaymentIsTdsapplicable).HasColumnName("VendorPaymentIsTDSApplicable");
+            entity.Property(e => e.VendorPaymentRtgsAmount).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.VendorPaymentSgst)
+                .HasColumnType("decimal(18, 0)")
+                .HasColumnName("VendorPaymentSGST");
+            entity.Property(e => e.VendorPaymentTdsamount)
+                .HasColumnType("decimal(18, 0)")
+                .HasColumnName("VendorPaymentTDSAmount");
+            entity.Property(e => e.VendorPaymentTotalAmountPaid).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.VendorPaymentUtrnumber).HasColumnName("VendorPaymentUTRNumber");
+        });
+
+        modelBuilder.Entity<VendorPaymentNote>(entity =>
+        {
+            entity.HasKey(e => e.NoteId).HasName("PK__VendorPa__EACE355F54B084AC");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.FkVendorId).HasColumnName("FK_VendorID");
+            entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.PaymentNoteDate).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<VendorService>(entity =>
+        {
+            entity.HasKey(e => e.VendorServiceId).HasName("PK__VendorSe__5116B960D8CAAE81");
+
+            entity.Property(e => e.VendorServiceId).HasColumnName("VendorServiceID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.FkVendorId).HasColumnName("FK_VendorID");
+            entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
         });
 
         OnModelCreatingPartial(modelBuilder);

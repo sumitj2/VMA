@@ -1,0 +1,56 @@
+﻿using Database.Abstraction.VMA.Contract;
+using Database.VMA.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Database.VMA.Repositories
+{
+    public class ConfigurationsRepository : IConfigurationsRepository
+    {
+        private readonly VendorManagementDbContext _context;
+        public ConfigurationsRepository(VendorManagementDbContext context)
+        {
+            _context = context;
+        }
+        public async Task AddConfiguration(Configuration ConfigurationEntity)
+        {
+            var existingEntity = _context.Configurations.FirstOrDefault(e => e.Cfgkey == ConfigurationEntity.Cfgkey);
+            if (existingEntity == null)
+            {
+                await _context.Configurations.AddAsync(ConfigurationEntity).ConfigureAwait(true);
+            }
+            else
+            {
+                existingEntity.Cfgvalue = ConfigurationEntity.Cfgvalue;
+                await UpdateDeleteConfigurations(existingEntity);
+            }
+            await _context.SaveChangesAsync();  
+        }
+
+        public async Task UpdateDeleteConfigurations(Configuration ConfigurationEntity)
+        {
+            var existingEntity = _context.Configurations.Find(ConfigurationEntity.Id);
+            if (existingEntity == null)
+            {
+                _context.Attach(ConfigurationEntity);
+            }
+            else
+            {
+                _context.Entry(existingEntity).CurrentValues.SetValues(ConfigurationEntity);
+            }
+            await _context.SaveChangesAsync();
+        }
+        public async Task<IEnumerable<Configuration>> GetAllConfigurations()
+        {
+            return await _context.Configurations.AsNoTracking().ToListAsync();
+        }
+        public async Task<Configuration?> GetConfigurationByKey(string CFGKey)
+        {
+            return await _context.Configurations.AsNoTracking().Where(x => x.Cfgkey == CFGKey).FirstOrDefaultAsync();
+        }
+    }
+}
