@@ -16,6 +16,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Add;
+using VMA.MVVM.ViewModels.Login;
 using VMA.MVVM.ViewModels.Menus;
 using VMA.MVVM.Views;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
@@ -105,6 +106,7 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowSettingViewCommand { get; }
         public ICommand ShowGSTViewCommand { get; }
         public ICommand LogOutCommand { get; }
+        LoginViewModel _loginViewModel;
         public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic,
                              IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic,
                              IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic,
@@ -112,8 +114,7 @@ namespace VMA.MVVM.ViewModels
                              IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord,
                              IYearlyMonthlyReportPDF yearlyMonthlyReportPDF, IHomePageBusinessLogic homePageBusinessLogic)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
-
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));            
             _userBusinessLogic = userBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
@@ -142,6 +143,7 @@ namespace VMA.MVVM.ViewModels
             //Default view
             ExecuteShowHomeViewCommand(null);
             _ = LoadCurrentUserData();
+            _loginViewModel = new LoginViewModel(userBusinessLogic);
         }
 
         private async Task ExecuteLogOut(Window window)
@@ -154,7 +156,7 @@ namespace VMA.MVVM.ViewModels
             
             if (result == DialogResult.Yes)
             {                                 
-                LoginView loginView = new LoginView(null);
+                LoginView loginView = new LoginView(this._loginViewModel);
                 loginView.Show();
                 window?.Close();
             }
@@ -170,7 +172,7 @@ namespace VMA.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 
@@ -184,7 +186,7 @@ namespace VMA.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 
@@ -198,7 +200,7 @@ namespace VMA.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 
@@ -212,7 +214,7 @@ namespace VMA.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 
@@ -226,7 +228,7 @@ namespace VMA.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 
@@ -240,7 +242,7 @@ namespace VMA.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 
@@ -254,7 +256,7 @@ namespace VMA.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 
@@ -268,7 +270,7 @@ namespace VMA.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 
@@ -282,7 +284,7 @@ namespace VMA.MVVM.ViewModels
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Load Submenu", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 

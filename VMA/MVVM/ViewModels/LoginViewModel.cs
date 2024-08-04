@@ -148,7 +148,7 @@ namespace VMA.MVVM.ViewModels.Login
                     Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Username), null);
                     IsViewVisible = false;
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - User Authenticated", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - User Authenticated", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
                 }
                 else
                 {

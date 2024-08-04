@@ -178,7 +178,7 @@
                                         <lvc:Axis Title="Tenure (months)"  LabelFormatter="{Binding Formatter}"></lvc:Axis>
                                     </lvc:CartesianChart.AxisY>
                                 </lvc:CartesianChart>
-                                <TextBlock FontWeight="SemiBold" FontSize="18"  Text="Term Char" Margin="-190,240,20,10" />
+                                <TextBlock FontWeight="SemiBold" FontSize="18"  Text="Payment Tenure Chart" Margin="-190,240,20,10" />
 
                             </StackPanel>
                         </StackPanel>
