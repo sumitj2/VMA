@@ -16,8 +16,8 @@ namespace VMA.MVVM.ViewModels.Menus
 {
     public class VendorService
     {
-        public string VendorName { get; set; }
-        public string ServiceName { get; set; }
+        public string? VendorName { get; set; }
+        public string? ServiceName { get; set; }
         public double SanctionedAmt { get; set; }
         public double PaidAmt { get; set; }
     }
@@ -109,8 +109,8 @@ namespace VMA.MVVM.ViewModels.Menus
 
         #region Bar Chart for Amount     
         private ObservableCollection<YearlyReportDataModel> _vendorServices;
-        private ObservableCollection<string> _services;
-        private string _selectedService;
+        private ObservableCollection<string?> _services;
+        private string? _selectedService;
         public ObservableCollection<YearlyReportDataModel> VendorServices
         {
             get { return _vendorServices; }
@@ -121,7 +121,7 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        public ObservableCollection<string> Services
+        public ObservableCollection<string?> Services
         {
             get { return _services; }
             set
@@ -131,7 +131,7 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        public string SelectedService
+        public string? SelectedService
         {
             get { return _selectedService; }
             set
@@ -144,7 +144,7 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         public SeriesCollection SeriesCollectionForAmount { get; set; }
-        public string[] LabelsForAmount { get; set; }
+        public string?[] LabelsForAmount { get; set; }
         public Func<double, string> FormatterForAmount { get; set; }
 
         private void UpdateAmountChart()
@@ -160,12 +160,12 @@ namespace VMA.MVVM.ViewModels.Menus
                 },
                 new ColumnSeries
                 {
-                    Title = "Paid Amount",
-                    Values = new ChartValues<decimal>(filteredVendorServices.Select(vs => vs.TotalVendorPaymentAmount))
+                    Title = "Remaining Amount",
+                    Values = new ChartValues<decimal>(filteredVendorServices.Select(vs => vs.RemainingAmount??0))
                 }
             };
 
-            LabelsForAmount = filteredVendorServices?.Select(vs => vs.VendorName).ToArray();
+            LabelsForAmount = filteredVendorServices.Select(vs => vs.VendorName).ToArray();
             FormatterForAmount = value => value.ToString("N");
 
             OnPropertyChanged(nameof(SeriesCollectionForAmount));
@@ -178,7 +178,7 @@ namespace VMA.MVVM.ViewModels.Menus
         #region Bar Chart For Tenure
 
         public SeriesCollection SeriesCollection { get; set; }
-        public string[] Labels { get; set; }
+        public string?[] Labels { get; set; }
         public Func<double, string> Formatter { get; set; }
         private void UpdateChart()
         {
@@ -195,7 +195,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 new ColumnSeries
                 {
                     Title = "Remaining Tenure",
-                    Values = new ChartValues<int>(filteredVendorServices.Select(vs => vs.TotalTermsCompleted))
+                    Values = new ChartValues<int>(filteredVendorServices.Select(vs => vs.RemainingTerms))
                 }
             };
 
@@ -233,7 +233,7 @@ namespace VMA.MVVM.ViewModels.Menus
             });
             VendorServices = new ObservableCollection<YearlyReportDataModel>(data);
 
-            Services = new ObservableCollection<string>(VendorServices.Select(vs => vs.VendorServiceName).Distinct());
+            Services = new ObservableCollection<string?>(VendorServices.Select(vs => vs.VendorServiceName).Distinct());
 
             SelectedService = Services.FirstOrDefault();
         }
