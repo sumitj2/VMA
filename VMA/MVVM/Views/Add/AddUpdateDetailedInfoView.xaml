@@ -192,7 +192,7 @@
 
                                     <ComboBox Style="{StaticResource vendorCombobox}"   
                                               ItemsSource="{Binding Sanctions}"   
-                                              SelectedItem="{Binding SelectedSanction, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  
+                                              SelectedItem="{Binding SelectedSanction, Mode=TwoWay,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True}"  
                                               DisplayMemberPath="SanctionName" 
                                               SelectedValuePath="Id"
                                               SelectedValue="{Binding SelectedSanction.Id, Mode=TwoWay}"
@@ -214,7 +214,7 @@
                                        Margin="20,20,0,0"/>
 
                                     <TextBox x:Name="txtSantionedAmount"
-                                       Text="{Binding ServiceSantionAmount ,UpdateSourceTrigger=PropertyChanged}"                                         
+                                       Text="{Binding ServiceSantionAmount ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True}"                                         
                                        Style="{StaticResource FormTextBox}"/>
 
                                     <TextBlock Text="Service Santioned Date"
@@ -254,9 +254,10 @@
                                                Style="{StaticResource FormTextBlock}"
                                                Margin="20,20,230,0"/>
 
-                                    <ComboBox Style="{StaticResource vendorCombobox}"                              
+                                    <ComboBox Style="{StaticResource vendorCombobox}"   
+                                              Visibility="{Binding HidePaymentTypeSelectComboBox}"
                                               ItemsSource="{Binding ComboxPaymentMethods}"   
-                                              SelectedItem="{Binding SelectPaymentType, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  
+                                              SelectedItem="{Binding SelectPaymentType, UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}"  
                                               DisplayMemberPath="NameSearch" 
                                               SelectedValuePath="SearchId"
                                               SelectedValue="{Binding SelectPaymentType.SearchId,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -273,6 +274,13 @@
                                               Foreground="{StaticResource plainTextColor3}"
                                               BorderBrush="{StaticResource plainTextColor3}"
                                               BorderThickness="0,0,0,1" />
+                                    <TextBox x:Name="txtPaymentType"
+                                             Text="{Binding SelectedPaymentTypeText ,UpdateSourceTrigger=PropertyChanged}"
+                                             Style="{StaticResource FormTextBox}"
+                                             TextWrapping="Wrap"
+                                             Visibility="{Binding HideSelectedPaymentType}"
+                                             AcceptsReturn="True"
+                                             IsEnabled="False"/>
 
                                     <TextBlock Text="Is AMC"
                                                Style="{StaticResource FormTextBlock}"

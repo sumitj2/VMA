@@ -408,7 +408,7 @@ namespace BusinessLogic.VMA
         private void SetTableProperties(Table table)
         {
             TableProperties tableProperties = new TableProperties(
-                new TableWidth() { Width = "5000", Type = TableWidthUnitValues.Dxa },
+                new TableWidth() { Width = "10000", Type = TableWidthUnitValues.Dxa },
                 new TableBorders(
                     new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
                     new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },

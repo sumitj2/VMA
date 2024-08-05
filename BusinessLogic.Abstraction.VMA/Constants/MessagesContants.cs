@@ -40,5 +40,8 @@
         public const string FileNotFound = "File not found.";
 
 
+        public const string PaymentTypeRequired = "* Payment Type is Required";
+
+        public const string SantionedAmtReq = "* Santioned Amount Required";
     }
 }
