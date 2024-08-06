@@ -36,7 +36,7 @@ namespace BusinessLogic.VMA
                 }
                 else
                 {
-                    var location = path + "\\" + serviceName + "_PaymentNote.docx";
+                    string? location = path + "\\" + serviceName + "_PaymentNote.docx";
                     // Ensure the directory exists
                     Directory.CreateDirectory(Path.GetDirectoryName(location));
 
