@@ -14,6 +14,8 @@ namespace VMA.Constants
 
         public const string CFGKeyFinacialYear= "FinancialYear";
         public const string CFGKeyNoteID = "NoteId";
+        public const string CFGKeyWordPath = "FilePathWord";
+        public const string CFGKeyExcelPath = "FilePathExcel";
 
     }
 }

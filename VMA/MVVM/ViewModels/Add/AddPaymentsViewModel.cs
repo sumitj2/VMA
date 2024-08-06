@@ -717,8 +717,7 @@ namespace VMA.MVVM.ViewModels.Add
             VendorPaymentTdsamountNew = "";
             VendorPaymentRtgsAmount = 0;
             VendorPaymentUtrnumber = "";
-            VendorPaymentTotalAmountPaid = 0;
-            VendorPaymentYear = "";
+            VendorPaymentTotalAmountPaid = 0;           
             IsGSTDetailsVisible = false;
             IsBranchNameVisible = false;
             IsTDSTextBoxVisible = false;

@@ -65,7 +65,8 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _SelectedVendorModel = value;
                 OnPropertyChanged(nameof(SelectedVendorModel));
-                _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
+                if (SelectedVendorModel != null)
+                    _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
             }
         }
 
@@ -618,7 +619,7 @@ namespace VMA.MVVM.ViewModels.Add
                 validData = true;
             }
 
-            if (ServiceSantionAmount == null || ServiceSantionAmount==0 || ServiceSantionAmount.Value==0 )
+            if (ServiceSantionAmount == null || ServiceSantionAmount == 0 || ServiceSantionAmount.Value == 0)
             {
                 validData = false;
                 errorMsg += nameof(ServiceSantionAmount);
@@ -847,7 +848,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     SelectPaymentType = ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentType)];
                 }
-                SelectedPaymentTypeText = _vendorDetailViewModel?.ServicePaymentType ;
+                SelectedPaymentTypeText = _vendorDetailViewModel?.ServicePaymentType;
             }
         }
 

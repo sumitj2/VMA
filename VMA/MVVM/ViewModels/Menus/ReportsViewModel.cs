@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using VMA.Constants;
 
 namespace VMA.MVVM.ViewModels.Menus
 {
@@ -182,10 +183,15 @@ namespace VMA.MVVM.ViewModels.Menus
         }
         #endregion
 
+        #region Command
+        
         public ICommand ExportPaymentNoteCommand { get; }
         public ICommand GenerateCommand { get; }
         public ICommand MonthlyReportCommand { get; }
         public ICommand YearlyReportCommand { get; }
+        public ICommand ClearFormCommand { get; }
+
+        #endregion
 
         public readonly IReportExportToExcelPaymentNote _reportExportToExcelPaymentNote;
         public readonly IVendorBusinessLogic _vendorBusinessLogic;
@@ -195,9 +201,9 @@ namespace VMA.MVVM.ViewModels.Menus
         public readonly IYearlyMonthlyReportPDF _yearlyReportPDF;
         public ReportsViewModel(IReportExportToExcelPaymentNote reportExportToExcelPaymentNote, IVendorBusinessLogic vendorBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord, IYearlyMonthlyReportPDF yearlyReportPDF)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
-            To = "Sr.Officer - Central Office";
-            From = "Chief Manager - IT";
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
+            To = MessagesContants.ReportTo;
+            From = MessagesContants.ReportFrom;
             _reportExportToExcelPaymentNote = reportExportToExcelPaymentNote;
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
@@ -209,14 +215,27 @@ namespace VMA.MVVM.ViewModels.Menus
             GenerateCommand = new ViewModelAsyncCommand<CreateWordDocumentPaymentNote>(GeneratePaymentNote);
             MonthlyReportCommand = new ViewModelAsyncCommand<Database.VMA.Entities.CustomEntities.ExportPaymentNoteData>(GenerateMonthlyReport);
             YearlyReportCommand = new ViewModelAsyncCommand<Database.VMA.Entities.CustomEntities.ExportPaymentNoteData>(GenerateYearlyReport);
+            ClearFormCommand=new ViewModelAsyncCommand<Database.VMA.Entities.CustomEntities.ExportPaymentNoteData>(ClearForm);
             _ = CallAync();
+        }
+
+        private async Task ClearForm(object o)
+        {
+            await Task.Run(() =>
+            {
+                SelectedVendorName = null;
+                SelctedVendorServiceName = null;
+                BeforeInvocie = "";
+                AfterInvoice = "";
+                NoteGenerationDate= DateOnly.MinValue;                
+            });
         }
 
         private async Task GenerateYearlyReport(Database.VMA.Entities.CustomEntities.ExportPaymentNoteData note)
         {
             if (pathWord == null || pathWord.Length == 0)
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Please Set file storage location in settings", false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, MessagesContants.MsgStorageLocationNotFound, false, true);
             }
             else
             {
@@ -228,7 +247,7 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             if (pathWord == null || pathWord.Length == 0)
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Please Set file storage location in settings", false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, MessagesContants.MsgStorageLocationNotFound, false, true);
             }
             else
             {
@@ -240,7 +259,7 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             if (pathWord == null || pathWord.Length == 0)
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Please Set file storage location in settings", false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, MessagesContants.MsgStorageLocationNotFound, false, true);
             }
             else
             {
@@ -278,13 +297,13 @@ namespace VMA.MVVM.ViewModels.Menus
         public async Task GetAllConfigurations()
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
-            VendorPaymentYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FinancialYear")?.CfgValue;
-            pathWord = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FilePathWord")?.CfgValue;
+            VendorPaymentYear = allConfigurations.FirstOrDefault(x => x.Cfgkey ==GeneralConstants.CFGKeyFinacialYear)?.CfgValue;
+            pathWord = allConfigurations.FirstOrDefault(x => x.Cfgkey == GeneralConstants.CFGKeyWordPath)?.CfgValue;
 
-            pathExcel = allConfigurations.FirstOrDefault(x => x.Cfgkey == "FilePathExcel")?.CfgValue;
+            pathExcel = allConfigurations.FirstOrDefault(x => x.Cfgkey == GeneralConstants.CFGKeyExcelPath)?.CfgValue;
             if (pathWord == null || pathExcel == null)
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Please Set file storage location in settings", false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure,MessagesContants.MsgStorageLocationNotFound, false, true);
             }
 
         }
