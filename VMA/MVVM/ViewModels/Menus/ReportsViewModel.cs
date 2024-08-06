@@ -265,6 +265,7 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord).ConfigureAwait(true);
             }
+            await ClearForm(note);
         }
 
         private async Task CallAync()

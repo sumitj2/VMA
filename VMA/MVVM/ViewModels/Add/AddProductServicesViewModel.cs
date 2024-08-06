@@ -121,7 +121,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         public AddProductServicesViewModel(IVendorBusinessLogic vendorBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, ProductServicesViewModel parentViewModel, VendorServiceModel SelectedVendorService)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             this.SelectedProductVendorService = SelectedVendorService;
             if (SelectedVendorService != null)
@@ -175,7 +175,7 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task ClearValues(VendorServiceModel model)
         {
-           
+            VendorServiceName = "";
         }
 
         private async Task SaveVendorService(object obj)
