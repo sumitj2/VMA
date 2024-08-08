@@ -157,6 +157,10 @@ namespace VMA.MVVM.ViewModels.Menus
                 {
                     Title = "Sanctioned Amount",
                     Values = new ChartValues<decimal>(filteredVendorServices.Select(vs => vs.ServiceSantionAmount))
+                },new ColumnSeries
+                {
+                    Title = "Paid Amount",
+                    Values = new ChartValues<decimal>(filteredVendorServices.Select(vs => vs.TotalVendorPaymentAmount))
                 },
                 new ColumnSeries
                 {
@@ -191,6 +195,11 @@ namespace VMA.MVVM.ViewModels.Menus
                 {
                     Title = "Total Tenure",
                     Values = new ChartValues<int>(filteredVendorServices.Select(vs => vs.NumberOfTerms))
+                },
+                new ColumnSeries
+                {
+                    Title = "Tenure Completed",
+                    Values = new ChartValues<int>(filteredVendorServices.Select(vs => vs.TotalTermsCompleted))
                 },
                 new ColumnSeries
                 {
