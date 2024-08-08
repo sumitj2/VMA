@@ -120,6 +120,8 @@ namespace VMA.MVVM.ViewModels.Add
                     _=HidePaymentNoteForm(this);
 
                 }
+                PaymentNoteNo = PaymentNoteId + _SelectedVendorModel?.VendorId;
+
             }
         }
         #endregion
@@ -246,7 +248,6 @@ namespace VMA.MVVM.ViewModels.Add
             SubmitCommand = new ViewModelAsyncCommand<VenderPaymentNoteModel>(SubmitPaymentNote, ValidatePaymentNote);
             _configurationBusinessLogic = configurationBusinessLogic;
             CallAync();
-            PaymentNoteNo = PaymentNoteId + Convert.ToString(paymentNotesViewModel.VendorPaymentNotes?.Count + 1);
         }
 
         public async Task GetAllConfigurations()
@@ -314,7 +315,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     VenderPaymentNoteModel paymentNote = new()
                     {
-                        PaymentNoteNo =  PaymentNoteNo ?? "",
+                        PaymentNoteNo = PaymentNoteId ?? "",
                         PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
                         CreatedBy = UserAccountModel.Username,
                         CreatedDate = DateTime.UtcNow,
