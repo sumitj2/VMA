@@ -79,19 +79,23 @@ namespace Database.VMA.Repositories
         public async Task<VenderPaymentNoteModel?> GetPaymentNoteByVendorId(int vendorId)
         {
             var repositoryResult = await _venderPaymentNotesRepository.GetVendorsPaymentNoteByIVendorId(vendorId).ConfigureAwait(true);
-            VenderPaymentNoteModel vendorModel = new()
+            if (repositoryResult != null)
             {
-                CreatedBy = repositoryResult?.CreatedBy,
-                CreatedDate = repositoryResult?.CreatedDate,
-                IsActive = repositoryResult?.IsActive,
-                LastUpdateBy = repositoryResult?.LastUpdateBy,
-                LastUpdatedDate = repositoryResult?.LastUpdatedDate,
-                NoteId = repositoryResult!.NoteId,
-                PaymentNoteDate = repositoryResult.PaymentNoteDate,
-                PaymentNoteNo = repositoryResult.PaymentNoteNo,
-                PaymentNoteYear = repositoryResult.PaymentNoteYear
-            };
-            return vendorModel;
+                VenderPaymentNoteModel vendorModel = new()
+                {
+                    CreatedBy = repositoryResult?.CreatedBy,
+                    CreatedDate = repositoryResult?.CreatedDate,
+                    IsActive = repositoryResult?.IsActive,
+                    LastUpdateBy = repositoryResult?.LastUpdateBy,
+                    LastUpdatedDate = repositoryResult?.LastUpdatedDate,
+                    NoteId = repositoryResult!.NoteId,
+                    PaymentNoteDate = repositoryResult.PaymentNoteDate,
+                    PaymentNoteNo = repositoryResult.PaymentNoteNo,
+                    PaymentNoteYear = repositoryResult.PaymentNoteYear
+                };
+                return vendorModel;
+            }
+            return null;
 
         }
         public async Task RemovePaymentNote(VenderPaymentNoteModel paymentNoteModel)

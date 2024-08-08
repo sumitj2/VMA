@@ -40,5 +40,14 @@
         public const string FileNotFound = "File not found.";
 
 
+        public const string PaymentTypeRequired = "* Payment Type is Required";
+
+        public const string SantionedAmtReq = "* Santioned Amount Required";
+
+        public const string MsgStorageLocationNotFound = "Please Set file storage location in settings";
+
+        public const string ReportTo = "Sr.Officer - Central Office";
+
+        public const string ReportFrom = "Chief Manager - IT";
     }
 }

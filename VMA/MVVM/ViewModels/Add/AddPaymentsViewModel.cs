@@ -65,6 +65,8 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 isGSTDetailsNotVisible = value;
                 OnPropertyChanged(nameof(IsGSTDetailsNotVisible));
+                SelectedGSTModel = null;
+                VendorPaymentTotalAmountPaid = Convert.ToDecimal(0 + Convert.ToDouble(VendorPaymentAmount));
             }
         }
 
@@ -618,7 +620,7 @@ namespace VMA.MVVM.ViewModels.Add
                 IsComboBoxServiceVisible = false;
                 IsTextBoxSelectedVendorVisible = true;
                 IsTextBoxServiceVisible = true;
-                SaveButtonName =GeneralConstants.Update;
+                SaveButtonName = GeneralConstants.Update;
             }
             else
             {
@@ -638,7 +640,7 @@ namespace VMA.MVVM.ViewModels.Add
             ClearFormCommand = new ViewModelAsyncCommand<VendorPaymentModel>(ClearPaymentForm);
             _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
             _configurationBusinessLogic = configurationBusinessLogic;
-           _= CallAync();
+            _ = CallAync();
         }
 
         public async Task GetAllConfigurations()
@@ -718,7 +720,6 @@ namespace VMA.MVVM.ViewModels.Add
             VendorPaymentRtgsAmount = 0;
             VendorPaymentUtrnumber = "";
             VendorPaymentTotalAmountPaid = 0;
-            VendorPaymentYear = "";
             IsGSTDetailsVisible = false;
             IsBranchNameVisible = false;
             IsTDSTextBoxVisible = false;
@@ -728,7 +729,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             bool validData;
 
-            if (SelectedVendorModel==null)
+            if (SelectedVendorModel == null)
             {
                 errorMsg += nameof(SelectedVendorModel);
                 validData = false;
@@ -740,7 +741,7 @@ namespace VMA.MVVM.ViewModels.Add
 
             if (SelectedVendorDetailService == null)
             {
-                errorMsg +=", "+ nameof(SelectedVendorDetailService);
+                errorMsg += ", " + nameof(SelectedVendorDetailService);
                 validData = false;
             }
             else
@@ -752,7 +753,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 if (SelectedGSTModel == null)
                 {
-                    errorMsg +=", "+ nameof(SelectedGSTModel);
+                    errorMsg += ", " + nameof(SelectedGSTModel);
                     validData = false;
                 }
                 else
@@ -763,9 +764,9 @@ namespace VMA.MVVM.ViewModels.Add
 
             if (IsBranchNameVisible == true)
             {
-                if (BankBranchName == null|| BankBranchName==""|| string.IsNullOrEmpty(BankBranchName)||string.IsNullOrWhiteSpace(BankBranchName))
+                if (BankBranchName == null || BankBranchName == "" || string.IsNullOrEmpty(BankBranchName) || string.IsNullOrWhiteSpace(BankBranchName))
                 {
-                    errorMsg +=" ," + nameof(BankBranchName);
+                    errorMsg += " ," + nameof(BankBranchName);
                     validData = false;
                 }
                 else
@@ -774,9 +775,9 @@ namespace VMA.MVVM.ViewModels.Add
                 }
             }
 
-            if(IsTDSTextBoxVisible)
+            if (IsTDSTextBoxVisible)
             {
-                if (VendorPaymentTdsamountNew == null|| VendorPaymentTdsamountNew=="" ||string.IsNullOrEmpty(VendorPaymentTdsamountNew)|| string.IsNullOrWhiteSpace(VendorPaymentTdsamountNew))
+                if (VendorPaymentTdsamountNew == null || VendorPaymentTdsamountNew == "" || string.IsNullOrEmpty(VendorPaymentTdsamountNew) || string.IsNullOrWhiteSpace(VendorPaymentTdsamountNew))
                 {
                     errorMsg += " ," + nameof(VendorPaymentTdsamountNew);
                     validData = false;
@@ -786,10 +787,10 @@ namespace VMA.MVVM.ViewModels.Add
                     validData = true;
                 }
             }
-            if(VendorPaymentDate==null)
+            if (VendorPaymentDate == null)
             {
                 errorMsg += " ," + nameof(VendorPaymentDate);
-                validData=false;
+                validData = false;
             }
             else
             {
@@ -812,7 +813,7 @@ namespace VMA.MVVM.ViewModels.Add
                         FkNoteId = _vendorPaymentModel.NoteId,
                         Notes = VendorPaymentNotesDetails,
 
-                        VendorPaymentDate = VendorPaymentDate!=null? VendorPaymentDate.Value: DateOnly.MinValue,
+                        VendorPaymentDate = VendorPaymentDate != null ? VendorPaymentDate.Value : DateOnly.MinValue,
                         VendorPaymentAmount = VendorPaymentAmount,
                         VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
 
@@ -897,9 +898,9 @@ namespace VMA.MVVM.ViewModels.Add
 
                 await HidePaymentForm(this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Log.Logger.Error(ex,string.Format("Class: {0}, Method: {1} - Failed to submit Payment Details.", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to submit Payment Details.", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, MessagesContants.PaymentSubmitErroMsg, false, true);
             }
@@ -957,7 +958,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, res.Meassage, false, true);
 
-                    if (res?.Meassage ==MessagesContants.PaymentMsgSantionAmtHigh)
+                    if (res?.Meassage == MessagesContants.PaymentMsgSantionAmtHigh)
                     {
                         await HidePaymentForm(this);
                     }
@@ -965,7 +966,7 @@ namespace VMA.MVVM.ViewModels.Add
                     Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved payment amount", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get payment amount.", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }

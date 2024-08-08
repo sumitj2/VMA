@@ -74,19 +74,22 @@ namespace Database.VMA.Repositories
         {
             
             var repositoryResult= await _vendorServiceRepository.GetVendorServiceById(vendorId);
-            VendorServiceModel vendorServiceModel = new() 
+            if (repositoryResult != null)
             {
-                CreatedBy=repositoryResult?.CreatedBy,
-                CreatedDate=repositoryResult?.CreatedDate,
-                FkVendorId=repositoryResult.FkVendorId,
-                IsActive=repositoryResult?.IsActive,  
-                LastUpdateBy=repositoryResult?.LastUpdateBy,
-                LastUpdatedDate=repositoryResult?.LastUpdatedDate,    
-                VendorServiceId=repositoryResult!.VendorServiceId,   
-                VendorServiceName = repositoryResult?.VendorServiceName 
-            };
-            return vendorServiceModel;
-
+                VendorServiceModel vendorServiceModel = new()
+                {
+                    CreatedBy = repositoryResult?.CreatedBy,
+                    CreatedDate = repositoryResult?.CreatedDate,
+                    FkVendorId = repositoryResult.FkVendorId,
+                    IsActive = repositoryResult?.IsActive,
+                    LastUpdateBy = repositoryResult?.LastUpdateBy,
+                    LastUpdatedDate = repositoryResult?.LastUpdatedDate,
+                    VendorServiceId = repositoryResult!.VendorServiceId,
+                    VendorServiceName = repositoryResult?.VendorServiceName
+                };
+                return vendorServiceModel;
+            }
+            return null;
         }
         public async Task RemoveVendorService(VendorServiceModel serviceModel)
         {

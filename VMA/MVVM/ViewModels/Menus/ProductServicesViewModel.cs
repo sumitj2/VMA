@@ -118,7 +118,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ProductServicesViewModel(IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, MainViewModel parentViewModel)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             _vendorBusinessLogic = vendorBusinessLogic;
             _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
@@ -131,8 +131,6 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task EditVendor(VendorServiceModel model)
         {
-            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...", true);
-
             _parentViewModel.CurrentChildView = new AddProductServicesViewModel(_vendorBusinessLogic, _vendorServiceBusinessLogic, this, model);
         }
        
@@ -152,16 +150,16 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             try
             {
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting vendor services", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting vendor services", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 var vendors = await _vendorServiceBusinessLogic.GetAllVendorServices().ConfigureAwait(true);
                 VendorsServices = TempVendorServices = new ObservableCollection<VendorServiceModel>(vendors);
 
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved vendor services", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved vendor services", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get vendor services", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get vendor services", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
     }

@@ -3,6 +3,7 @@ using BusinessLogic.Abstraction.VMA.Models;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Text.Json;
 using System.Windows;
@@ -64,7 +65,8 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _SelectedVendorModel = value;
                 OnPropertyChanged(nameof(SelectedVendorModel));
-                _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
+                if (SelectedVendorModel != null)
+                    _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
             }
         }
 
@@ -139,6 +141,8 @@ namespace VMA.MVVM.ViewModels.Add
         }
 
         private decimal? _serviceSantionAmount;
+
+        [Required(ErrorMessage = MessagesContants.SantionedAmtReq)]
         public decimal? ServiceSantionAmount
         {
             get
@@ -203,6 +207,7 @@ namespace VMA.MVVM.ViewModels.Add
         }
 
         private SearchModel? _selectPaymentType;
+        [Required(ErrorMessage = MessagesContants.PaymentTypeRequired)]
         public SearchModel? SelectPaymentType
         {
             get { return _selectPaymentType; }
@@ -232,6 +237,18 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _isAmcNo = value;
                 OnPropertyChanged(nameof(IsAmcNo));
+            }
+        }
+
+        private string? _SelectedPaymentTypeText;
+
+        public string? SelectedPaymentTypeText
+        {
+            get { return _SelectedPaymentTypeText; }
+            set
+            {
+                _SelectedPaymentTypeText = value;
+                OnPropertyChanged(nameof(SelectedPaymentTypeText));
             }
         }
 
@@ -368,6 +385,18 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
+        private bool _IsComboPaymentVisible;
+
+        public bool IsComboPaymentVisible
+        {
+            get { return _IsComboPaymentVisible; }
+            set
+            {
+                _IsComboPaymentVisible = value;
+                OnPropertyChanged(nameof(HidePaymentTypeSelectComboBox));
+            }
+        }
+
         private bool _IsComboBoxVendorVisible;
 
         public bool IsComboBoxVendorVisible
@@ -423,6 +452,11 @@ namespace VMA.MVVM.ViewModels.Add
         public Visibility HideVendorSelectComboBox
         {
             get { return IsComboBoxServiceVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public Visibility HidePaymentTypeSelectComboBox
+        {
+            get { return IsComboPaymentVisible ? Visibility.Visible : Visibility.Collapsed; }
         }
         #endregion
 
@@ -493,6 +527,7 @@ namespace VMA.MVVM.ViewModels.Add
             ClearFormCommand = new ViewModelAsyncCommand<VendorDetailModel>(ClearFormFields);
             if (_vendorDetailViewModel != null)
             {
+                IsComboPaymentVisible = false;
                 IsComboBoxVendorVisible = false;
                 IsComboBoxServiceVisible = false;
                 IsTextBoxSelectedVendorVisible = true;
@@ -501,6 +536,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             else
             {
+                IsComboPaymentVisible = true;
                 IsComboBoxVendorVisible = true;
                 IsComboBoxServiceVisible = true;
                 IsTextBoxSelectedVendorVisible = false;
@@ -573,7 +609,7 @@ namespace VMA.MVVM.ViewModels.Add
                 validData = true;
             }
 
-            if (SantionedDate == null)
+            if (SantionedDate == DateOnly.MinValue)
             {
                 validData = false;
                 errorMsg += nameof(SantionedDate);
@@ -583,7 +619,7 @@ namespace VMA.MVVM.ViewModels.Add
                 validData = true;
             }
 
-            if (ServiceSantionAmount == null)
+            if (ServiceSantionAmount == null || ServiceSantionAmount == 0 || ServiceSantionAmount.Value == 0)
             {
                 validData = false;
                 errorMsg += nameof(ServiceSantionAmount);
@@ -602,6 +638,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 validData = true;
             }
+
             return validData;
         }
         public async Task GetAllConfigurations()
@@ -811,6 +848,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     SelectPaymentType = ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentType)];
                 }
+                SelectedPaymentTypeText = _vendorDetailViewModel?.ServicePaymentType;
             }
         }
 
