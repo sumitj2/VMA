@@ -92,7 +92,6 @@ namespace Database.VMA.Repositories
         }
         public async Task<VendorModel?> GetVendorById(int vendorId)
         {
-
             var repositoryResult = await _vendorRepository.GetVendorsById(vendorId);
             VendorModel vendorModel = new()
             {
