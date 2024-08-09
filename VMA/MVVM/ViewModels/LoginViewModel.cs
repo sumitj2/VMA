@@ -12,6 +12,12 @@ using BusinessLogic.Abstraction.VMA.Contract;
 using Microsoft.VisualBasic;
 using Serilog;
 using System.Reflection;
+using Microsoft.Data.SqlClient;
+using System.Windows;
+using System.Configuration;
+using System.Drawing;
+using System.Text.RegularExpressions;
+using VMA.Constants;
 
 namespace VMA.MVVM.ViewModels.Login
 {
@@ -26,6 +32,18 @@ namespace VMA.MVVM.ViewModels.Login
         private bool _isViewVisible = true;
 
         //Properties
+        private string _dbStatus;
+
+        public string DbStatus
+        {
+            get { return _dbStatus; }
+            set
+            {
+                _dbStatus = value;
+                OnPropertyChanged(nameof(DbStatus));
+            }
+        }
+
         public string Username
         {
             get
@@ -113,9 +131,8 @@ namespace VMA.MVVM.ViewModels.Login
         //Constructor
         public LoginViewModel(IUserBusinessLogic userBusinessLogic)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
-
-            _userBusinessLogic = userBusinessLogic;
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));            
+            _userBusinessLogic = userBusinessLogic;           
         }
 
         private bool CanExecuteLoginCommand(object obj)
@@ -134,31 +151,64 @@ namespace VMA.MVVM.ViewModels.Login
 
             return validData;
         }
+        private async Task CheckDatabaseConnectionAsync()
+        {
+            string cs = ConfigurationManager.ConnectionStrings["VMA"].ConnectionString;
+            try
+            {
+                using var connection = new SqlConnection(cs);
+                await connection.OpenAsync();
+                DbStatus = GeneralConstants.Success;
+            }
+            catch (Exception ex)
+            {
+                DbStatus = GeneralConstants.Error;
+                var csWithotPass= RemovePasswordFromConnectionString(cs);                
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - CheckDatabaseConnectionAsync", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
+                Log.Logger.Information(csWithotPass);
+            }
+        }
+        public string RemovePasswordFromConnectionString(string connectionString)
+        {
+            // This regex looks for "Password=" or "Pwd=" followed by any characters until it hits either a semicolon or end of string
+            string pattern = @"(?i)(Password|Pwd)=.*?(;|$)";
 
+            // Replace the password section with an empty string
+            string sanitizedConnectionString = Regex.Replace(connectionString, pattern, string.Empty);
+
+            return sanitizedConnectionString;
+        }
         private async void ExecuteLoginCommand(object obj)
         {
             try
             {
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the Login Command", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
-
-                var isValidUser = await _userBusinessLogic.AuthenticateUser(new NetworkCredential(Username, Password));
-
-                if (isValidUser)
+                _ = CheckDatabaseConnectionAsync();
+                if (DbStatus == GeneralConstants.Success)
                 {
-                    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Username), null);
-                    IsViewVisible = false;
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the Login Command", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - User Authenticated", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
+                    var isValidUser = await _userBusinessLogic.AuthenticateUser(new NetworkCredential(Username, Password));
+
+                    if (isValidUser)
+                    {
+                        Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Username), null);
+                        IsViewVisible = false;
+
+                        Log.Logger.Information(string.Format("Class: {0}, Method: {1} - User Authenticated", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
+                    }
+                    else
+                    {
+                        ErrorMessage = MessagesContants.InvalidUser;
+                    }
                 }
                 else
                 {
-                    ErrorMessage = "* Invalid username or password";
+                    ErrorMessage = MessagesContants.DbNotConnected;
                 }
-
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Authorize user", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to Authorize user", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
 

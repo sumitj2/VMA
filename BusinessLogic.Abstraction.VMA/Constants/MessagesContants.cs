@@ -2,6 +2,9 @@
 {
     public static class MessagesContants
     {
+        public const string DbNotConnected = "* Database not connected";
+        public const string InvalidUser= "* Invalid username or password";
+
         public const string BankName = "Thane Bharat Sahakari Bank";
         public const string RequireVendorName = "*Vendor Name is Required";
         public const string InvalidEmail = "Invalid email address";

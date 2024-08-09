@@ -17,5 +17,9 @@ namespace VMA.Constants
         public const string CFGKeyWordPath = "FilePathWord";
         public const string CFGKeyExcelPath = "FilePathExcel";
 
+        public const string Success = "Success";
+        public const string Error = "Error";
+        public const string Failure = "Failure";
+
     }
 }
