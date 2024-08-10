@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography.Xml;
@@ -158,18 +159,21 @@ namespace VMA.MVVM.ViewModels
             if (result == DialogResult.Yes)
             {
                 //Not working as its shows login screen but not able to login so commenting below code and just closing the application
-                //Application.Current.Dispatcher.Invoke(() =>
-                //{
-                //    window?.Close();
-                //    var loginWindow = new LoginView(this._loginViewModel);
-                //    loginWindow.Show();
-                //    Application.Current.MainWindow.Close();
-                //    Application.Current.MainWindow = loginWindow;
-                //});
-                Application.Current.Shutdown();
+
+                RestartApplication();
             }
         }
+        private static void RestartApplication()
+        {
+            // Get the path to the executable file
+            var fileName = Process.GetCurrentProcess().MainModule?.FileName;
 
+            // Start a new instance of the application
+            Process.Start(fileName?? "");
+
+            // Close the current application
+            Application.Current.Shutdown();
+        }
         private void ExecuteShowGSTViewCommand(object t)
         {
             try

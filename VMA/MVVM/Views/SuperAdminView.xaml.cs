@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -44,6 +45,17 @@ namespace VMA.MVVM.Views
         }
         private void BtnClose_Click(object sender, RoutedEventArgs e)
         {
+            RestartApplication();
+        }
+        private static void RestartApplication()
+        {
+            // Get the path to the executable file
+            var fileName = Process.GetCurrentProcess().MainModule?.FileName;
+
+            // Start a new instance of the application
+            Process.Start(fileName??"");
+
+            // Close the current application
             Application.Current.Shutdown();
         }
         private void BtnMinimize_Click(object sender, RoutedEventArgs e)
