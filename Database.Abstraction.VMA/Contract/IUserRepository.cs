@@ -7,5 +7,7 @@ namespace Database.Abstraction.VMA.Contract
     {
         Task<bool> AuthenticateUser(NetworkCredential credential);
         Task<User> GetByUsername(string username);
+        Task<List<User>> GetAllActiveUser();
+        Task Add(User userModel);
     }
 }

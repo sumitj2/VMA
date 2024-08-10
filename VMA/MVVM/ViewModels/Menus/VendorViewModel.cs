@@ -119,8 +119,8 @@ namespace VMA.MVVM.ViewModels.Menus
             _vendorBusinessLogic = vendorBusinessLogic;
             _parentViewModel = parentViewModel;
             AddShowVendorFormCommand = new ViewModelCommand(ShowVendorForm);
-            HideVendorFormCommand = new ViewModelAsyncCommand<VendorModel>(HideVendorForm);
-            EditVendorCommand = new ViewModelAsyncCommand<VendorModel>(EditVendor);
+            HideVendorFormCommand = new ViewModelAsyncCommand<object>(HideVendorForm);
+            EditVendorCommand = new ViewModelAsyncCommand<object>(EditVendor);
             _ = GetVendors();
         }
 

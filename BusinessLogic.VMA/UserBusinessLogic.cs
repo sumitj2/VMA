@@ -2,6 +2,7 @@
 using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
 using Database.Abstraction.VMA.Contract;
+using Database.VMA.Entities;
 using System.Net;
 
 namespace BusinessLogic.VMA
@@ -35,6 +36,43 @@ namespace BusinessLogic.VMA
                 };
             }
             return userModel;
+
+        }
+        public async Task AddUser(UserModel userModel)
+        {
+            User userEntity=new User()
+            {
+                Email=userModel.Email,
+                IsActive=true,
+                LastName=userModel.LastName,    
+                Name= userModel.Name,
+                Password=userModel.Password,
+                Username=userModel.Username
+            };
+            await _userRepository.Add(userEntity);
+        }
+
+        public async Task<List<UserModel>> GetAllUSers()
+        {
+            List<UserModel> userModels = new();
+            var users = await _userRepository.GetAllActiveUser().ConfigureAwait(false);
+
+            if (users != null && users.Count > 0) 
+            {
+                foreach (var user in users) 
+                {
+                    userModels.Add(new UserModel()
+                    {
+                        Email = user.Email,
+                        LastName= user.LastName,
+                        Name = user.Name,
+                        Username= user.Username,
+                        Id=user.Id,
+                        Password=user.Password
+                    });
+                }
+            }
+            return userModels;
 
         }
     }

@@ -12,5 +12,7 @@ namespace BusinessLogic.Abstraction.VMA.Contract
     {
         Task<UserModel> GetByUsername(string username);
         Task<bool> AuthenticateUser(NetworkCredential credential);
+        Task AddUser(UserModel userModel);
+        Task<List<UserModel>> GetAllUSers();
     }
 }

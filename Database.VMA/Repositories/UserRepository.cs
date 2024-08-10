@@ -38,9 +38,24 @@ namespace Database.VMA.Repositories
             return user!;
         }
 
-        public void Add(User userModel)
+        public async Task<List<User>> GetAllActiveUser()
         {
-            throw new NotImplementedException();
+            var user = await _context.Users.Where(x=>x.IsActive==true).ToListAsync().ConfigureAwait(false);
+            return user!;
+        }
+
+        public async Task Add(User userModel)
+        {
+            try
+            {
+                await _context.Users.AddAsync(userModel);
+                await _context.SaveChangesAsync();
+            }
+            catch ( Exception  ex)
+            {
+
+            }
+            
         }
         public void Edit(User userModel)
         {

@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using VMA.MVVM.ViewModels;
 using VMA.MVVM.ViewModels.Login;
@@ -80,7 +81,8 @@ namespace VMA
             //Register services and view models
             services.AddSingleton(x => new LoginViewModel(x.GetRequiredService<IUserBusinessLogic>()));
             services.AddSingleton(x => new LoginView(x.GetRequiredService<LoginViewModel>()));
-
+            services.AddSingleton(x => new SuperAdminViewModel(x.GetRequiredService<IUserBusinessLogic>()));
+            services.AddSingleton(x => new SuperAdminView(x.GetRequiredService<SuperAdminViewModel>()));
             services.AddSingleton(x => new MainViewModel(x.GetRequiredService<IUserBusinessLogic>(),
                                                          x.GetRequiredService<IVendorBusinessLogic>(),
                                                          x.GetRequiredService<IVendorServiceBusinessLogic>(),
@@ -94,6 +96,7 @@ namespace VMA
                                                          x.GetRequiredService<IYearlyMonthlyReportPDF>(),
                                                          x.GetRequiredService<IHomePageBusinessLogic>()));
             services.AddSingleton(x => new MainView(x.GetRequiredService<MainViewModel>()));
+           
         }
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -119,14 +122,41 @@ namespace VMA
 
             loginView.IsVisibleChanged += (s, ev) =>
             {
-                if (loginView.IsVisible == false && loginView.IsLoaded)
+                var res = GetPropertyValue<bool>(loginView.DataContext, "IsSuperAdmin");
+                if (loginView.IsVisible == false && loginView.IsLoaded && !res)
                 {
                     var mainView = _serviceProvider.GetService<MainView>();
                     mainView!.Show();
                 }
+                else
+                {
+                    var superAdmin = _serviceProvider.GetService<SuperAdminView>();
+                    superAdmin!.Show();
+                }
             };
         }
+        private T? GetPropertyValue<T>(object dataContext, string propertyName)
+        {
+            if (dataContext == null) throw new ArgumentNullException(nameof(dataContext));
+            if (string.IsNullOrWhiteSpace(propertyName)) throw new ArgumentException("Property name cannot be null or empty", nameof(propertyName));
 
+            // Get the type of the DataContext
+            Type type = dataContext.GetType();
+
+            // Get the property by name
+            PropertyInfo? propertyInfo = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+
+            if (propertyInfo == null)
+            {
+                throw new ArgumentException($"Property '{propertyName}' not found on '{type.FullName}'", nameof(propertyName));
+            }
+
+            // Get the value of the property
+            object? value = propertyInfo.GetValue(dataContext);
+
+            // Return the value as the specified type
+            return (T)value;
+        }
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             // Log the exception
