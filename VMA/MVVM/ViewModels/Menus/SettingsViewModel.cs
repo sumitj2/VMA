@@ -37,7 +37,6 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-
         private ObservableCollection<Department>? departments;
         public ObservableCollection<Department>? Departments
         {
@@ -289,12 +288,9 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public ICommand BrowseWordLocationCommand { get; }
 
-        //public ICommand SaveLocationCommand { get; }
-
         #endregion
 
         #endregion
-
 
         /// <summary>
         /// New Document commmnad
@@ -485,12 +481,17 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public async Task GetAllConfigurations()
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting All configurations", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             try
             {
-                var allConfigurations = await _configBusinessLogic.GetConfigurations().ConfigureAwait(true);
-                AllConfigurations = new ObservableCollection<ConfigurationModel>(allConfigurations);
+                List<ConfigurationModel> allConfigurations = new() ;
+                await Task.Run(() =>
+                {
+                     allConfigurations = (List<ConfigurationModel>)_configBusinessLogic.GetConfigurations().GetAwaiter().GetResult();
+                    AllConfigurations = new ObservableCollection<ConfigurationModel>(allConfigurations);
+                });
+              
 
                 if (allConfigurations != null)
                 {
@@ -749,8 +750,6 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             return true;
         }
-
-
 
         private async Task SaveConfiguration(int id, string cfgkey, object cfgvalue, string operation)
         {

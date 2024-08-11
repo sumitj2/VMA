@@ -2,6 +2,7 @@
 {
     public static class MessagesContants
     {
+        public const string InvalidUserNotLogIn = "Invalid user, not logged in";
         public const string DbNotConnected = "* Database not connected";
         public const string InvalidUser= "* Invalid username or password";
 

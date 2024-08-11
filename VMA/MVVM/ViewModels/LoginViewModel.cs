@@ -173,20 +173,21 @@ namespace VMA.MVVM.ViewModels.Login
             catch (Exception ex)
             {
                 DbStatus = GeneralConstants.Error;
-                var csWithotPass = RemovePasswordFromConnectionString(cs);
+                var csWithotPass = ReplacePasswordValueFromConnectionString(cs);
                 Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - CheckDatabaseConnectionAsync", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
                 Log.Logger.Information(csWithotPass);
             }
         }
-        public string RemovePasswordFromConnectionString(string connectionString)
+        public static string ReplacePasswordValueFromConnectionString(string connectionString)
         {
             // This regex looks for "Password=" or "Pwd=" followed by any characters until it hits either a semicolon or end of string
-            string pattern = @"(?i)(Password|Pwd)=.*?(;|$)";
+            string pattern = @"(?i)(Password|Pwd)=([^;]*)";
 
-            // Replace the password section with an empty string
-            string sanitizedConnectionString = Regex.Replace(connectionString, pattern, string.Empty);
+            // Replace the password value with asterisks
+            string maskedConnectionString = Regex.Replace(connectionString, pattern, "$1=*****");
 
-            return sanitizedConnectionString;
+
+            return maskedConnectionString;
         }
         private async void ExecuteLoginCommand(object obj)
         {

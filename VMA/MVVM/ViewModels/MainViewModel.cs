@@ -1,4 +1,6 @@
-﻿using BusinessLogic.Abstraction.VMA.Contract;
+﻿using Azure.Messaging;
+using BusinessLogic.Abstraction.VMA.Contract;
+using BusinessLogic.Abstraction.VMA.Models;
 using BusinessLogic.VMA;
 using Database.VMA.Repositories;
 using FontAwesome.Sharp;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -16,6 +19,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
+using VMA.Constants;
 using VMA.MVVM.Models;
 using VMA.MVVM.ViewModels.Add;
 using VMA.MVVM.ViewModels.Login;
@@ -125,7 +129,10 @@ namespace VMA.MVVM.ViewModels
             _configurationBusinessLogic = configurationBusinessLogic;
             _paymentNoteInWord = paymentNoteInWord;
             _yearlyMonthlyReportPDF = yearlyMonthlyReportPDF;
-            // _currentUserAccount = new UserAccountModel();
+            _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
+            _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
+            _reportExportToExcelPaymentNote = reportExportToExcelPaymentNote;
+            _homePageBusinessLogic = homePageBusinessLogic;
 
             //Initialize command
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
@@ -138,14 +145,20 @@ namespace VMA.MVVM.ViewModels
             ShowSettingViewCommand = new ViewModelCommand(ExecuteShowSettingViewCommand);
             ShowGSTViewCommand = new ViewModelCommand(ExecuteShowGSTViewCommand);
             LogOutCommand = new ViewModelAsyncCommand<Window>(ExecuteLogOut);
-            _vendorServiceBusinessLogic = vendorServiceBusinessLogic;
-            _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
-            _reportExportToExcelPaymentNote = reportExportToExcelPaymentNote;
-            _homePageBusinessLogic = homePageBusinessLogic;
-            //Default view
-            ExecuteShowHomeViewCommand(null);
+            
             _ = LoadCurrentUserData();
+            GetConfiguration();
             _loginViewModel = new LoginViewModel(userBusinessLogic);
+
+            if (settings == null||settings?.Count == 0 || settings?.ToList()?.FirstOrDefault()?.Cfgkey == "")
+            {
+                ExecuteShowSettingViewCommand(null);
+            }
+            else
+            {
+                //Default view
+                ExecuteShowHomeViewCommand(null);
+            }
         }
 
         private async Task ExecuteLogOut(Window window)
@@ -158,8 +171,6 @@ namespace VMA.MVVM.ViewModels
 
             if (result == DialogResult.Yes)
             {
-                //Not working as its shows login screen but not able to login so commenting below code and just closing the application
-
                 RestartApplication();
             }
         }
@@ -169,7 +180,7 @@ namespace VMA.MVVM.ViewModels
             var fileName = Process.GetCurrentProcess().MainModule?.FileName;
 
             // Start a new instance of the application
-            Process.Start(fileName?? "");
+            Process.Start(fileName ?? "");
 
             // Close the current application
             Application.Current.Shutdown();
@@ -300,23 +311,35 @@ namespace VMA.MVVM.ViewModels
             }
         }
 
+        private ObservableCollection<ConfigurationModel> settings;
+
+        public ObservableCollection<ConfigurationModel> Settings
+        {
+            get { return settings; }
+            set { settings = value; }
+        }
+
         private async Task LoadCurrentUserData()
         {
             var user = await _userBusinessLogic.GetByUsername(Thread.CurrentPrincipal?.Identity?.Name ?? "").ConfigureAwait(false);
             if (user != null)
             {
-
-                //CurrentUserAccount.Username = user.Username;
-                //CurrentUserAccount.DisplayName = $"Welcome {user.Name} {user.LastName} ;)";
                 UserAccountModel.Username = user.Username;
                 UserAccountModel.DisplayName = $"Welcome {user.Name} {user.LastName} ;)";
 
             }
             else
             {
-                //CurrentUserAccount.DisplayName = "Invalid user, not logged in";
-                UserAccountModel.DisplayName = $"Invalid user, not logged in";
+                UserAccountModel.DisplayName = MessagesContants.InvalidUserNotLogIn;
             }
+        }
+
+        private void  GetConfiguration()
+        {
+            Task.Run(() =>
+            {
+                settings = new ObservableCollection<ConfigurationModel>(_configurationBusinessLogic.GetConfigurations().GetAwaiter().GetResult());                
+            }).Wait();
         }
     }
 }
