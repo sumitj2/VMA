@@ -9,8 +9,8 @@ namespace VMA.MVVM.Models
 {
     public static class UserAccountModel
     {
-        public static string Username { get; set; }
-        public static string DisplayName { get; set; }
+        public static string? Username { get; set; }
+        public static string? DisplayName { get; set; }
        
     }
 }

@@ -441,14 +441,23 @@ namespace VMA.MVVM.ViewModels.Menus
             string operation = "";
             if (getNoteId)
             {
-                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId)).Id, nameof(NoteId), NoteId, operation);
+                await SaveGenralSettings(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId)).Id, nameof(NoteId), AddTrailingSlash(NoteId), operation);
             }
             else
             {
                 operation = "add";
 
-                await SaveGenralSettings(0, nameof(NoteId), NoteId, operation);
+                await SaveGenralSettings(0, nameof(NoteId), AddTrailingSlash(NoteId), operation);
             }
+        }
+
+        private static string AddTrailingSlash(string? input)
+        {
+            if (!input.EndsWith("/"))
+            {
+                input += "/";
+            }
+            return input;
         }
         private async Task SaveFinancialYearSettings(object model)
         {
@@ -485,13 +494,13 @@ namespace VMA.MVVM.ViewModels.Menus
 
             try
             {
-                List<ConfigurationModel> allConfigurations = new() ;
+                List<ConfigurationModel> allConfigurations = new();
                 await Task.Run(() =>
                 {
-                     allConfigurations = (List<ConfigurationModel>)_configBusinessLogic.GetConfigurations().GetAwaiter().GetResult();
+                    allConfigurations = (List<ConfigurationModel>)_configBusinessLogic.GetConfigurations().GetAwaiter().GetResult();
                     AllConfigurations = new ObservableCollection<ConfigurationModel>(allConfigurations);
                 });
-              
+
 
                 if (allConfigurations != null)
                 {
@@ -500,8 +509,8 @@ namespace VMA.MVVM.ViewModels.Menus
                     string? sanctionConfigJson = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Sanction))?.CfgValue;
                     string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FinancialYear))?.CfgValue;
                     string? noteID = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(NoteId))?.CfgValue;
-                    FilePathWord=allConfigurations.FirstOrDefault(x=>x.Cfgkey == nameof(FilePathWord))?.CfgValue;
-                    FilePathExcel=allConfigurations.FirstOrDefault(x=>x.Cfgkey== nameof(FilePathExcel))?.CfgValue;
+                    FilePathWord = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FilePathWord))?.CfgValue;
+                    FilePathExcel = allConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(FilePathExcel))?.CfgValue;
                     NoteId = noteID;
                     FinancialYear = financialYear;
 
@@ -569,7 +578,7 @@ namespace VMA.MVVM.ViewModels.Menus
                         SelectedDepartment = null;
                     }
 
-                    SaveConfiguration(AllConfigurations.FirstOrDefault(x => x.Cfgkey == nameof(Department)).Id, nameof(Department), Departments, operation);
+                    await SaveConfiguration((int)(AllConfigurations?.FirstOrDefault(x => x.Cfgkey == nameof(Department)).Id), nameof(Department), Departments, operation);
                 }
                 else
                 {
@@ -761,7 +770,7 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             try
             {
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Trying to save configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Trying to save configuration", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 if (operation != "add")
                 {
@@ -772,13 +781,13 @@ namespace VMA.MVVM.ViewModels.Menus
                     await _configBusinessLogic.AddConfiguration(new ConfigurationModel() { Id = id, Cfgkey = cfgkey, CfgValue = cfgvaluejson });
                 }
 
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Configuration has been saved successfully", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Configuration has been saved successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 await GetAllConfigurations();
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to save configuration", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to save configuration", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to save configuration, please try again or contact to administrator", false, true);
             }
@@ -787,14 +796,13 @@ namespace VMA.MVVM.ViewModels.Menus
         private async Task SaveGenralSettings(int id, string cfgkey, string cfgvalue, string operation)
         {
             await Save(id, cfgkey, operation, cfgvalue);
-
         }
     }
 
     public class Department : ViewModelBase
     {
-        private string id;
-        public string Id
+        private string? id;
+        public string? Id
         {
             get { return id; }
             set

@@ -2,6 +2,18 @@
 {
     public static class MessagesContants
     {
+        public const string CaptionHome = "Home";
+        public const string CaptionVendors = "Vendors";
+        public const string CaptionProductServices = "Products Services";
+        public const string CaptionDetailedInfo="Detailed Info";
+        public const string CaptionPayment = "Payments";
+        public const string CaptionPaymentNotes="Payment Notes";
+        public const string CaptionReports = "Reports";
+        public const string CaptionSettings = "Settings";
+        public const string CaptionGSTMaster = "GTS Master";
+        public const string CaptionLogOut = "Log Out";
+        public const string LogOutMsg = "Are you sure that you would like to Log Out?";
+        public const string PleaseAddConfiguratonDetails = "Please fill configuration details";
         public const string UserAddedSucessfully = "User Add Successfully";
         public const string InvalidUserNotLogIn = "Invalid user, not logged in";
         public const string DbNotConnected = "* Database not connected";

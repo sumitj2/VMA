@@ -1,31 +1,17 @@
-﻿using Azure.Messaging;
-using BusinessLogic.Abstraction.VMA.Contract;
+﻿using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
-using BusinessLogic.VMA;
-using Database.VMA.Repositories;
 using FontAwesome.Sharp;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Security.Cryptography.Xml;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using VMA.Constants;
 using VMA.MVVM.Models;
-using VMA.MVVM.ViewModels.Add;
 using VMA.MVVM.ViewModels.Login;
 using VMA.MVVM.ViewModels.Menus;
-using VMA.MVVM.Views;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.Forms.MessageBox;
 
@@ -145,13 +131,14 @@ namespace VMA.MVVM.ViewModels
             ShowSettingViewCommand = new ViewModelCommand(ExecuteShowSettingViewCommand);
             ShowGSTViewCommand = new ViewModelCommand(ExecuteShowGSTViewCommand);
             LogOutCommand = new ViewModelAsyncCommand<Window>(ExecuteLogOut);
-            
+
             _ = LoadCurrentUserData();
             GetConfiguration();
             _loginViewModel = new LoginViewModel(userBusinessLogic);
 
-            if (settings == null||settings?.Count == 0 || settings?.ToList()?.FirstOrDefault()?.Cfgkey == "")
+            if (settings == null || settings?.Count == 0 || settings?.ToList()?.FirstOrDefault()?.Cfgkey == "")
             {
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, MessagesContants.PleaseAddConfiguratonDetails, false, true);
                 ExecuteShowSettingViewCommand(null);
             }
             else
@@ -163,8 +150,8 @@ namespace VMA.MVVM.ViewModels
 
         private async Task ExecuteLogOut(Window window)
         {
-            const string message = "Are you sure that you would like to Log Out?";
-            const string caption = "Log Out";
+            const string message = MessagesContants.LogOutMsg;
+            const string caption = MessagesContants.CaptionLogOut;
             var result = MessageBox.Show(message, caption,
                          MessageBoxButtons.YesNo,
                          MessageBoxIcon.Question);
@@ -190,7 +177,7 @@ namespace VMA.MVVM.ViewModels
             try
             {
                 CurrentChildView = new GSTViewModel(_gstcalculationMasterBusinessLogic, this);
-                Caption = "GTS Master";
+                Caption = MessagesContants.CaptionGSTMaster;
                 Icon = IconChar.RankingStar;
             }
             catch (Exception ex)
@@ -199,12 +186,12 @@ namespace VMA.MVVM.ViewModels
             }
         }
 
-        private void ExecuteShowSettingViewCommand(object obj)
+        private void ExecuteShowSettingViewCommand(object? obj)
         {
             try
             {
                 CurrentChildView = new SettingsViewModel(_configurationBusinessLogic);
-                Caption = "Settings";
+                Caption = MessagesContants.CaptionSettings;
                 Icon = IconChar.Gears;
             }
             catch (Exception ex)
@@ -218,7 +205,7 @@ namespace VMA.MVVM.ViewModels
             try
             {
                 CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote, _vendorBusinessLogic, _vendorDetailsBusinessLogic, _configurationBusinessLogic, _paymentNoteInWord, _yearlyMonthlyReportPDF);
-                Caption = "Reports";
+                Caption = MessagesContants.CaptionReports;
                 Icon = IconChar.File;
             }
             catch (Exception ex)
@@ -232,7 +219,7 @@ namespace VMA.MVVM.ViewModels
             try
             {
                 CurrentChildView = new PaymentNotesViewModel(this, _venderPaymentNotesBusinessLogic, _vendorDetailsBusinessLogic, _vendorBusinessLogic, _configurationBusinessLogic);
-                Caption = "Payment Notes";
+                Caption = MessagesContants.CaptionPaymentNotes;
                 Icon = IconChar.NoteSticky;
             }
             catch (Exception ex)
@@ -246,7 +233,7 @@ namespace VMA.MVVM.ViewModels
             try
             {
                 CurrentChildView = new PaymentsViewModel(this, _vendorPaymentBusinessLogic, _vendorDetailsBusinessLogic, _gstcalculationMasterBusinessLogic, _vendorBusinessLogic, _venderPaymentNotesBusinessLogic, _configurationBusinessLogic);
-                Caption = "Payments";
+                Caption = MessagesContants.CaptionPayment;
                 Icon = IconChar.Paypal;
             }
             catch (Exception ex)
@@ -260,7 +247,7 @@ namespace VMA.MVVM.ViewModels
             try
             {
                 CurrentChildView = new DetailedInfoViewModel(this, _vendorDetailsBusinessLogic, _vendorServiceBusinessLogic, _vendorBusinessLogic, _configurationBusinessLogic);
-                Caption = "Detailed Info";
+                Caption = MessagesContants.CaptionDetailedInfo;
                 Icon = IconChar.InfoCircle;
             }
             catch (Exception ex)
@@ -274,7 +261,7 @@ namespace VMA.MVVM.ViewModels
             try
             {
                 CurrentChildView = new ProductServicesViewModel(_vendorServiceBusinessLogic, _vendorBusinessLogic, this);
-                Caption = "Products Services";
+                Caption = MessagesContants.CaptionProductServices;
                 Icon = IconChar.ProductHunt;
             }
             catch (Exception ex)
@@ -288,7 +275,7 @@ namespace VMA.MVVM.ViewModels
             try
             {
                 CurrentChildView = new VendorViewModel(_vendorBusinessLogic, this);
-                Caption = "Vendors";
+                Caption = MessagesContants.CaptionVendors;
                 Icon = IconChar.UserGroup;
             }
             catch (Exception ex)
@@ -297,12 +284,12 @@ namespace VMA.MVVM.ViewModels
             }
         }
 
-        private void ExecuteShowHomeViewCommand(object obj)
+        private void ExecuteShowHomeViewCommand(object? obj)
         {
             try
             {
                 CurrentChildView = new HomeViewModel(_homePageBusinessLogic, _configurationBusinessLogic);
-                Caption = "Home";
+                Caption = MessagesContants.CaptionHome;
                 Icon = IconChar.Home;
             }
             catch (Exception ex)
@@ -321,7 +308,7 @@ namespace VMA.MVVM.ViewModels
 
         private async Task LoadCurrentUserData()
         {
-            var user = await _userBusinessLogic.GetByUsername(Thread.CurrentPrincipal?.Identity?.Name ?? "").ConfigureAwait(false);
+            var user = await _userBusinessLogic.GetByUsername(Thread.CurrentPrincipal?.Identity?.Name ?? "").ConfigureAwait(true);
             if (user != null)
             {
                 UserAccountModel.Username = user.Username;
@@ -334,11 +321,11 @@ namespace VMA.MVVM.ViewModels
             }
         }
 
-        private void  GetConfiguration()
+        private void GetConfiguration()
         {
             Task.Run(() =>
             {
-                settings = new ObservableCollection<ConfigurationModel>(_configurationBusinessLogic.GetConfigurations().GetAwaiter().GetResult());                
+                settings = new ObservableCollection<ConfigurationModel>(_configurationBusinessLogic.GetConfigurations().GetAwaiter().GetResult());
             }).Wait();
         }
     }
