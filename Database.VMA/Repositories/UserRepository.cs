@@ -44,16 +44,17 @@ namespace Database.VMA.Repositories
             return user!;
         }
 
-        public async Task Add(User userModel)
+        public async Task<int> Add(User userModel)
         {
             try
             {
                 await _context.Users.AddAsync(userModel);
                 await _context.SaveChangesAsync();
+                return userModel.Id;
             }
             catch ( Exception  ex)
             {
-
+                return 0;
             }
             
         }

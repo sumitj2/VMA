@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using VMA.Constants;
 
 namespace VMA.MVVM.ViewModels
 {
@@ -31,7 +32,9 @@ namespace VMA.MVVM.ViewModels
         public string UserName
         {
             get { return _UserName; }
-            set { _UserName = value;
+            set
+            {
+                _UserName = value;
                 OnPropertyChanged(nameof(UserName));
             }
         }
@@ -40,7 +43,9 @@ namespace VMA.MVVM.ViewModels
         public string Password
         {
             get { return _Password; }
-            set { _Password = value;
+            set
+            {
+                _Password = value;
                 OnPropertyChanged(nameof(Password));
             }
         }
@@ -49,7 +54,9 @@ namespace VMA.MVVM.ViewModels
         public string FirstName
         {
             get { return _FirstName; }
-            set { _FirstName = value;
+            set
+            {
+                _FirstName = value;
                 OnPropertyChanged(nameof(FirstName));
             }
         }
@@ -58,7 +65,9 @@ namespace VMA.MVVM.ViewModels
         public string LastName
         {
             get { return _LastName; }
-            set { _LastName = value;
+            set
+            {
+                _LastName = value;
                 OnPropertyChanged(nameof(LastName));
             }
         }
@@ -79,7 +88,7 @@ namespace VMA.MVVM.ViewModels
         private readonly IUserBusinessLogic _userBusinessLogic;
         public SuperAdminViewModel(IUserBusinessLogic userBusinessLogic)
         {
-            SubmitCommand = new ViewModelCommand(SaveUser,ValidateUser);
+            SubmitCommand = new ViewModelCommand(SaveUser, ValidateUser);
             _userBusinessLogic = userBusinessLogic;
             _ = GetUsers();
         }
@@ -89,7 +98,7 @@ namespace VMA.MVVM.ViewModels
             return true;
         }
 
-        private void SaveUser(object obj)
+        private async void SaveUser(object obj)
         {
             UserModel model = new UserModel()
             {
@@ -99,8 +108,11 @@ namespace VMA.MVVM.ViewModels
                 Name = FirstName,
                 Username = UserName
             };
-            _userBusinessLogic.AddUser(model);
-            MessageBox.Show("User Add Successfully");
+            int id = await _userBusinessLogic.AddUser(model).ConfigureAwait(true);
+            if (id != 0)
+            {
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.UserAddedSucessfully, true);
+            }
             _ = GetUsers();
             ClearForm();
         }

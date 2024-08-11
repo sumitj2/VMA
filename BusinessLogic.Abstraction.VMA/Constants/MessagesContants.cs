@@ -2,6 +2,7 @@
 {
     public static class MessagesContants
     {
+        public const string UserAddedSucessfully = "User Add Successfully";
         public const string InvalidUserNotLogIn = "Invalid user, not logged in";
         public const string DbNotConnected = "* Database not connected";
         public const string InvalidUser= "* Invalid username or password";
@@ -53,5 +54,7 @@
         public const string ReportTo = "Sr.Officer - Central Office";
 
         public const string ReportFrom = "Chief Manager - IT";
+
+        public const string MsgPleaseFillDetails = "Please fill details";
     }
 }

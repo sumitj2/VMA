@@ -38,7 +38,7 @@ namespace BusinessLogic.VMA
             return userModel;
 
         }
-        public async Task AddUser(UserModel userModel)
+        public async Task<int> AddUser(UserModel userModel)
         {
             User userEntity=new User()
             {
@@ -49,7 +49,7 @@ namespace BusinessLogic.VMA
                 Password=userModel.Password,
                 Username=userModel.Username
             };
-            await _userRepository.Add(userEntity);
+            return await _userRepository.Add(userEntity);
         }
 
         public async Task<List<UserModel>> GetAllUSers()

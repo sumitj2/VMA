@@ -424,7 +424,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         public SettingsViewModel(IConfigurationBusinessLogic configBusinessLogic)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             _configBusinessLogic = configBusinessLogic;
 
@@ -789,7 +789,6 @@ namespace VMA.MVVM.ViewModels.Menus
             await Save(id, cfgkey, operation, cfgvalue);
 
         }
-
     }
 
     public class Department : ViewModelBase
@@ -805,9 +804,9 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private string departmentName;
+        private string? departmentName;
 
-        public string DepartmentName
+        public string? DepartmentName
         {
             get { return departmentName; }
             set
@@ -858,7 +857,6 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         private string? sanctionName;
-
         public string? SanctionName
         {
             get { return sanctionName; }

@@ -47,8 +47,8 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private decimal _TotalSanctionAmount;
-        public decimal TotalSanctionAmount
+        private decimal? _TotalSanctionAmount;
+        public decimal? TotalSanctionAmount
         {
             get { return _TotalSanctionAmount; }
             set
@@ -58,8 +58,8 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
-        private decimal _TotalPaidAmount;
-        public decimal TotalPaidAmount
+        private decimal? _TotalPaidAmount;
+        public decimal? TotalPaidAmount
         {
             get { return _TotalPaidAmount; }
             set
@@ -269,13 +269,18 @@ namespace VMA.MVVM.ViewModels.Menus
         }
         private async Task GetDashboardDetails(string? FinancialYear)
         {
-            var details = await _homePageBusinessLogic.GetDashboardDetails(FinancialYear).ConfigureAwait(true);
+            DashboardDetailsModel details = new DashboardDetailsModel();
+            await Task.Run(() =>
+            {
+                details = _homePageBusinessLogic.GetDashboardDetails(FinancialYear).GetAwaiter().GetResult();
+            });
+            //var details = await _homePageBusinessLogic.GetDashboardDetails(FinancialYear).ConfigureAwait(true);            //var details = await _homePageBusinessLogic.GetDashboardDetails(FinancialYear).ConfigureAwait(true);
             if (details != null)
             {
                 CountOfVendors = details.CountOfVendors;
                 CountOfServices = details.CountOfServices;
-                TotalPaidAmount = details.TotalPaidAmount;
-                TotalSanctionAmount = details.TotalSanctionAmount;
+                TotalPaidAmount = details.TotalPaidAmount!=null? details.TotalPaidAmount :0;
+                TotalSanctionAmount = details.TotalSanctionAmount!=null? details.TotalSanctionAmount:0;
 
                 SeriesCollectionPieChart = new SeriesCollection
                 {

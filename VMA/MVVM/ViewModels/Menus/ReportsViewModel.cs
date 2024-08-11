@@ -184,7 +184,7 @@ namespace VMA.MVVM.ViewModels.Menus
         #endregion
 
         #region Command
-        
+
         public ICommand ExportPaymentNoteCommand { get; }
         public ICommand GenerateCommand { get; }
         public ICommand MonthlyReportCommand { get; }
@@ -215,7 +215,7 @@ namespace VMA.MVVM.ViewModels.Menus
             GenerateCommand = new ViewModelAsyncCommand<CreateWordDocumentPaymentNote>(GeneratePaymentNote);
             MonthlyReportCommand = new ViewModelAsyncCommand<Database.VMA.Entities.CustomEntities.ExportPaymentNoteData>(GenerateMonthlyReport);
             YearlyReportCommand = new ViewModelAsyncCommand<Database.VMA.Entities.CustomEntities.ExportPaymentNoteData>(GenerateYearlyReport);
-            ClearFormCommand=new ViewModelAsyncCommand<Database.VMA.Entities.CustomEntities.ExportPaymentNoteData>(ClearForm);
+            ClearFormCommand = new ViewModelAsyncCommand<Database.VMA.Entities.CustomEntities.ExportPaymentNoteData>(ClearForm);
             _ = CallAync();
         }
 
@@ -227,7 +227,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 SelctedVendorServiceName = null;
                 BeforeInvocie = "";
                 AfterInvoice = "";
-                NoteGenerationDate= DateOnly.MinValue;                
+                NoteGenerationDate = DateOnly.MinValue;
             });
         }
 
@@ -251,7 +251,7 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             else
             {
-               // await _yearlyReportPDF.GenerateMonthlyReport(_vendorPaymentYear, "month_need_to_pass", pathExcel).ConfigureAwait(true);
+                // await _yearlyReportPDF.GenerateMonthlyReport(_vendorPaymentYear, "month_need_to_pass", pathExcel).ConfigureAwait(true);
             }
         }
 
@@ -263,7 +263,11 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             else
             {
-                await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord).ConfigureAwait(true);
+                if (note != null)
+                    await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord).ConfigureAwait(true);
+                else
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, MessagesContants.MsgPleaseFillDetails, false, true);
+
             }
             await ClearForm(note);
         }
@@ -298,13 +302,13 @@ namespace VMA.MVVM.ViewModels.Menus
         public async Task GetAllConfigurations()
         {
             var allConfigurations = await _configurationBusinessLogic.GetConfigurations().ConfigureAwait(true);
-            VendorPaymentYear = allConfigurations.FirstOrDefault(x => x.Cfgkey ==GeneralConstants.CFGKeyFinacialYear)?.CfgValue;
+            VendorPaymentYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == GeneralConstants.CFGKeyFinacialYear)?.CfgValue;
             pathWord = allConfigurations.FirstOrDefault(x => x.Cfgkey == GeneralConstants.CFGKeyWordPath)?.CfgValue;
 
             pathExcel = allConfigurations.FirstOrDefault(x => x.Cfgkey == GeneralConstants.CFGKeyExcelPath)?.CfgValue;
             if (pathWord == null || pathExcel == null)
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure,MessagesContants.MsgStorageLocationNotFound, false, true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, MessagesContants.MsgStorageLocationNotFound, false, true);
             }
 
         }

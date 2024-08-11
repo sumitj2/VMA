@@ -21,11 +21,11 @@ namespace BusinessLogic.Abstraction.VMA.Models
         /// <summary>
         /// Gets or sets the total sanctioned amount.
         /// </summary>
-        public decimal TotalSanctionAmount { get; set; }
+        public decimal? TotalSanctionAmount { get; set; }
 
         /// <summary>
         /// Gets or sets the total amount paid.
         /// </summary>
-        public decimal TotalPaidAmount { get; set; }
+        public decimal? TotalPaidAmount { get; set; }
     }
 }

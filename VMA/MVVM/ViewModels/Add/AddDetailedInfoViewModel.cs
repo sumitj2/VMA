@@ -434,6 +434,18 @@ namespace VMA.MVVM.ViewModels.Add
             }
         }
 
+        private bool _IsTextBoxPaymentVisible;
+
+        public bool IsTextBoxPaymentVisible
+        {
+            get { return _IsTextBoxPaymentVisible; }
+            set { _IsTextBoxPaymentVisible = value; }
+        }
+
+        public Visibility HideSelectedPaymentType
+        {
+            get { return IsTextBoxPaymentVisible ? Visibility.Visible : Visibility.Collapsed; }
+        }
         public Visibility HideSelectedVendor
         {
             get { return IsTextBoxSelectedVendorVisible ? Visibility.Visible : Visibility.Collapsed; }
@@ -532,6 +544,7 @@ namespace VMA.MVVM.ViewModels.Add
                 IsComboBoxServiceVisible = false;
                 IsTextBoxSelectedVendorVisible = true;
                 IsTextBoxServiceVisible = true;
+                IsTextBoxPaymentVisible = true;
                 SaveButtonName = GeneralConstants.Update;
             }
             else
@@ -541,6 +554,7 @@ namespace VMA.MVVM.ViewModels.Add
                 IsComboBoxServiceVisible = true;
                 IsTextBoxSelectedVendorVisible = false;
                 IsTextBoxServiceVisible = false;
+                IsTextBoxPaymentVisible = false;
                 SaveButtonName = GeneralConstants.Submit;
             }
             _detailedInfoViewModel = detailedInfoViewModel;
