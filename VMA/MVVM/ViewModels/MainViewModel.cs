@@ -323,10 +323,18 @@ namespace VMA.MVVM.ViewModels
 
         private void GetConfiguration()
         {
-            Task.Run(() =>
+            try
             {
-                settings = new ObservableCollection<ConfigurationModel>(_configurationBusinessLogic.GetConfigurations().GetAwaiter().GetResult());
-            }).Wait();
+                Task.Run(() =>
+                {
+                    settings = new ObservableCollection<ConfigurationModel>(_configurationBusinessLogic.GetConfigurations().GetAwaiter().GetResult());
+                }).Wait();
+            }
+            catch (Exception ex)
+            {
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to GetConfiguration", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
+            }
+            
         }
     }
 }

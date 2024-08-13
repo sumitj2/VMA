@@ -65,7 +65,7 @@ namespace VMA
             services.AddSingleton<IGstcalculationMasterBusinessLogic, GstcalculationMasterBusinessLogic>();
             services.AddSingleton<IGstcalculationMasterRepository, GstcalculationMasterRepository>();
 
-            services.AddSingleton<IConfigurationsRepository, ConfigurationsRepository>();
+            services.AddScoped<IConfigurationsRepository, ConfigurationsRepository>();
             services.AddSingleton<IConfigurationBusinessLogic, ConfigurationBusinessLogic>();
 
             services.AddSingleton<IReportExportToExcelPaymentNote, ReportExportToExcelPaymentNote>();
