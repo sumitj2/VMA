@@ -299,7 +299,7 @@ namespace VMA.MVVM.ViewModels.Add
                     {
                         LastUpdateBy = UserAccountModel.Username,
                         IsActive = true,
-                        PaymentNoteNo = PaymentNoteId ?? "",
+                        PaymentNoteNo = PaymentNoteNo ?? "",
                         PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
                         NoteId = _editPaymentNote?.NoteId.Value,
                         FkVendorId = _editPaymentNote?.VendorId,
@@ -315,7 +315,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     VenderPaymentNoteModel paymentNote = new()
                     {
-                        PaymentNoteNo = PaymentNoteId ?? "",
+                        PaymentNoteNo = PaymentNoteNo ?? "",
                         PaymentNoteDate = Convert.ToDateTime(PaymentNoteDate),
                         CreatedBy = UserAccountModel.Username,
                         CreatedDate = DateTime.UtcNow,
@@ -362,7 +362,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 //PaymentNoteId = "";
                 PaymentNoteYear= _editPaymentNote.PaymentNoteYear;
-                PaymentNoteNo = _editPaymentNote.PaymentNoteNo.Replace(PaymentNoteId,"");
+                PaymentNoteNo = _editPaymentNote.PaymentNoteNo;
                 PaymentNoteDate = _editPaymentNote.PaymentNoteDate;
                 SelectedVendorName = VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName ?? "";
             }

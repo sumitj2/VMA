@@ -68,5 +68,7 @@
         public const string ReportFrom = "Chief Manager - IT";
 
         public const string MsgPleaseFillDetails = "Please fill details";
+
+        public const string MsgSelectService = "Please select the service";
     }
 }

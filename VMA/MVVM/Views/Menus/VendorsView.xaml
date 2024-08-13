@@ -106,6 +106,7 @@
                 CornerRadius="10" 
                 Padding="10">
             <DataGrid 
+                FrozenColumnCount="1"
                 Style="{DynamicResource DataGridStyle1}" 
                 CellStyle="{DynamicResource DataGridCellStyle1}" 
                 ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
@@ -123,7 +124,7 @@
                     <DataGridTextColumn Header="Account Number" Binding="{Binding VendorAccountNumber}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="IFSC Code" Binding="{Binding VendorIfsccode}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="GST Number" Binding="{Binding VendorGstnumber}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                    <DataGridTemplateColumn DisplayIndex="0" Header="Operations" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

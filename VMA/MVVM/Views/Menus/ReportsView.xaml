@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:VMA.MVVM.Views" xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" xmlns:menus="clr-namespace:VMA.MVVM.ViewModels.Menus" d:DataContext="{d:DesignInstance Type=menus:ReportsViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="460" d:DesignWidth="800">
     <Border CornerRadius="10"                    
      BorderThickness="0"
          Background="white" Opacity="0.95">
@@ -18,8 +18,7 @@
         </Border.BorderBrush>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="410"/>
-                <RowDefinition/>
+                <RowDefinition Height="440"/>                
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -96,7 +95,9 @@
                                              Text="{Binding From ,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource FormTextBox}"
                                              TextWrapping="Wrap"
-                                             AcceptsReturn="True" />
+                                             AcceptsReturn="True"
+                                             Width="302" 
+                                             Margin="10,-20,-30,30"/>
 
                                     <TextBlock Text="To"
                                                Style="{StaticResource FormTextBlock}"/>
@@ -105,13 +106,26 @@
                                              Text="{Binding To ,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource FormTextBox}"
                                              TextWrapping="Wrap"
-                                             AcceptsReturn="True" />
+                                             AcceptsReturn="True" Width="302" 
+                                             Margin="10,-20,-30,45" />
+                                   
+                                    <Button Style="{StaticResource vendorSaveButton}"
+                                            HorizontalAlignment="Right"
+                                            Command="{Binding GenerateCommand}"                            
+                                            Content="Generate"                            
+                                            FontSize="12"
+                                            FontFamily="Montserrat"
+                                            Cursor="Hand"
+                                            BorderThickness="0"
+                                            Foreground="White"
+                                            VerticalAlignment="Top"
+                                            Margin="0,-8,20,0"/>
+
 
                                 </StackPanel>
 
                                 <StackPanel x:Name="CompanyDetail2" Grid.Column="1"
                                             Orientation="Vertical">
-
 
                                     <TextBlock Text="Note Generation Date"
                                                Style="{StaticResource FormTextBlock}"
@@ -127,7 +141,7 @@
                                              VerticalScrollBarVisibility="Visible"
                                              HorizontalScrollBarVisibility="Visible"
                                              Margin="10"
-                                             TextWrapping="Wrap" Width="344" Height="118"/>
+                                             TextWrapping="Wrap" Width="344" Height="102"/>
 
                                     <TextBlock Text="Body After Invoice"
                                                Style="{StaticResource FormTextBlock}"/>
@@ -136,13 +150,23 @@
                                              VerticalScrollBarVisibility="Visible"
                                              HorizontalScrollBarVisibility="Visible"
                                              Margin="10"
-                                             TextWrapping="Wrap" Width="344" Height="63"/>
+                                             TextWrapping="Wrap" Width="344" Height="72" />
 
-
+                                    <Button Style="{StaticResource vendorClearButton}"
+                                            Command="{Binding ClearFormCommand }"                            
+                                            Content="Clear"                            
+                                            FontSize="12"
+                                            FontFamily="Montserrat"
+                                            Cursor="Hand"
+                                            BorderThickness="0"
+                                            Foreground="White"
+                                            HorizontalAlignment="Left"/>
                                 </StackPanel>
 
                             </Grid>
+                            
                         </AdornerDecorator>
+                        
                     </TabItem>
 
                     <TabItem Header="Report" Style="{DynamicResource TabItemStyle}" Height="39">
@@ -186,38 +210,10 @@
                         </AdornerDecorator>
                     </TabItem>
                 </TabControl>
+
             </Grid>
 
-            <!--buttons setting in footer-->
-            <StackPanel Grid.Row="2" 
-                    Orientation="Horizontal"
-                    VerticalAlignment="Bottom"
-                    HorizontalAlignment="Center"
-                    Margin="0,0,0,9" Visibility="Visible">
-
-                <Button Style="{StaticResource vendorSaveButton}"
-                    Command="{Binding GenerateCommand}"                            
-                    Content="Generate"                            
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    VerticalAlignment="Top" />
-
-                <Button Style="{StaticResource vendorClearButton}"
-                    Command="{Binding ClearFormCommand }"                            
-                    Content="Clear"                            
-                    FontSize="12"
-                    FontFamily="Montserrat"
-                    Cursor="Hand"
-                    BorderThickness="0"
-                    Foreground="White"
-                    VerticalAlignment="Top"/>
-
-
-            </StackPanel>
-
+           
         </Grid>
     </Border>
 </UserControl>

@@ -263,7 +263,14 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             else
             {
-                await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord).ConfigureAwait(true);
+                if (SelectedVendorDetailService?.VendorServiceName != null)
+                {
+                    await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord).ConfigureAwait(true);
+                }
+                else
+                {
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, MessagesContants.MsgSelectService, false, true);
+                }
             }
             await ClearForm(note);
         }
