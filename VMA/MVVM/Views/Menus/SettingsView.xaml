@@ -53,7 +53,7 @@ BorderThickness="0"
                                             Foreground="White"
                                             VerticalAlignment="Top"
                                             Margin="280,-40,20,30" />
-                                    <TextBlock Text="Enter Note ID"
+                                    <TextBlock Text="Enter Note ID Format"
                                            Style="{StaticResource FormTextBlock}"/>
 
                                     <TextBox x:Name="txtNoteId"
@@ -98,7 +98,6 @@ BorderThickness="0"
                             </Grid>
 
                         </AdornerDecorator>
-
                     </TabItem>
 
                     <TabItem Header="Settings" Style="{DynamicResource TabItemStyle}" Height="39">
@@ -276,6 +275,33 @@ Text="{Binding ExpenditureName,UpdateSourceTrigger=PropertyChanged}" FontSize="1
                                         </StackPanel>
                                     </StackPanel>
                                 </GroupBox>
+                            </Grid>
+                        </AdornerDecorator>
+                    </TabItem>
+
+                    <TabItem Header="Import" Style="{DynamicResource TabItemStyle}" Height="39">
+                        <AdornerDecorator>
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="400"/>
+                                    <ColumnDefinition Width="400"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel x:Name="Import" Grid.Row="1"  Orientation="Vertical">
+
+                                   
+
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="0" >
+                                    <TextBlock Text="Vendors Import from Excel"     Style="{StaticResource FormTextBlock}"/>
+                                    <TextBox Style="{StaticResource FormTextBox}" Text="{Binding FileImportPathExcel, UpdateSourceTrigger=PropertyChanged}" Width="350" Margin="0,20,1,10"/>
+                                    <Button Style="{StaticResource vendorSaveButton}" Command="{Binding BrowseImportVendorExcelLocationCommand}" Content="Browse" Width="100" Margin="10,-50,-290,0"/>
+                                    <Button Style="{StaticResource vendorSaveButton}" Command="{Binding ImportVendor}" Content="Import"/>
+
+
+                                </StackPanel>
+
                             </Grid>
                         </AdornerDecorator>
                     </TabItem>

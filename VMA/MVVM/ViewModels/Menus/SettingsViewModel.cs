@@ -207,6 +207,18 @@ namespace VMA.MVVM.ViewModels.Menus
         }
 
         #region FIle Storage
+
+        private string? _fileImportPathExcel;
+
+        public string? FileImportPathExcel
+        {
+            get { return _fileImportPathExcel; }
+            set
+            {
+                _fileImportPathExcel = value;
+                OnPropertyChanged(nameof(FileImportPathExcel));
+            }
+        }
         private string? _filePathExcel;
 
         public string? FilePathExcel
@@ -231,6 +243,19 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
+        private async Task BrowseVendorExcelFile(object arg)
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog()
+            {
+                Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*",
+                Title = "Select an Excel File"
+
+            };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                FileImportPathExcel = openFileDialog.FileName;
+            }
+        }
         private async Task BrowseExcelLocation(object obj)
         {
             // Implement file browsing logic here
@@ -287,6 +312,10 @@ namespace VMA.MVVM.ViewModels.Menus
         public ICommand BrowseExcelLocationCommand { get; }
 
         public ICommand BrowseWordLocationCommand { get; }
+
+        public ICommand BrowseImportVendorExcelLocationCommand { get; }
+
+        public ICommand ImportVendor { get; }
 
         #endregion
 
@@ -434,7 +463,15 @@ namespace VMA.MVVM.ViewModels.Menus
             SubmitNoteIdCommand = new ViewModelAsyncCommand<object>(SaveNoteFormat);
             BrowseExcelLocationCommand = new ViewModelAsyncCommand<object>(BrowseExcelLocation);
             BrowseWordLocationCommand = new ViewModelAsyncCommand<object>(BrowseWordLocation);
+            BrowseImportVendorExcelLocationCommand = new ViewModelAsyncCommand<object>(BrowseVendorExcelFile);
+            ImportVendor=new ViewModelAsyncCommand<object>(ImportVendorsToDB);
         }
+
+        private async Task ImportVendorsToDB(object arg)
+        {
+          
+        }
+
         private async Task SaveNoteFormat(object model)
         {
             bool getNoteId = AllConfigurations.Any(x => x?.Cfgkey == nameof(NoteId));
