@@ -149,7 +149,7 @@ BorderThickness="0"
                                            Style="{StaticResource FormTextBlock}"/>
 
                                     <DatePicker x:Name="paymentDate"
-                                         Text="{Binding VendorPaymentDate ,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Width="353"/>
+                                         Text="{Binding VendorPaymentDate ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="353"/>
 
                                     <TextBlock Text="Total Amount Paid(Non-taxable)"
                                                Style="{StaticResource FormTextBlock}"/>
@@ -326,7 +326,7 @@ BorderThickness="0"
 
 
                                     <DatePicker Name="invoiceDate"
-                                                Text="{Binding  InvoiceDate ,UpdateSourceTrigger=LostFocus,Mode=TwoWay}" Width="359"/>
+                                                Text="{Binding  InvoiceDate ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="359"/>
 
                                     <TextBlock Text="Invoice Particular"
                                                 Style="{StaticResource FormTextBlock}"/>
@@ -361,7 +361,7 @@ BorderThickness="0"
                                                    Margin="20,20,0,0"/>
 
                                     <DatePicker x:Name="RTGSDate" 
-                                                    Text="{Binding VendorPaymentRtgsDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361"                                         
+                                                    Text="{Binding VendorPaymentRtgsDate ,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361"                                         
                                                     />
 
                                     <TextBlock Text="RTGS Amount"

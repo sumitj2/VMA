@@ -132,7 +132,7 @@
                                                Margin="20,20,230,0"/>
 
                                     <DatePicker x:Name="txtserviceStartDate"
-                                                Text="{Binding NoteGenerationDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361" />
+                                                Text="{Binding NoteGenerationDate ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="361" />
 
                                     <TextBlock Text="Body Befor Invoice"
                                                Style="{StaticResource FormTextBlock}"/>

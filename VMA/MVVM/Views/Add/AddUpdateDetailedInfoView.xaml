@@ -162,13 +162,13 @@
                                                Margin="20,20,230,0"/>
 
                                     <DatePicker x:Name="txtserviceStartDate"
-                                       Text="{Binding ServiceStartDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361" />
+                                       Text="{Binding ServiceStartDate ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="361" />
 
                                     <TextBlock Text="Service End Date"
                                         Style="{StaticResource FormTextBlock}"/>
 
                                     <DatePicker x:Name="txtServiceEndDate" 
-                                       Text="{Binding ServiceEndDate,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="354" />
+                                       Text="{Binding ServiceEndDate,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="354" />
 
                                 </StackPanel>
 
