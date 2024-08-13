@@ -70,5 +70,11 @@
         public const string MsgPleaseFillDetails = "Please fill details";
 
         public const string MsgSelectService = "Please select the service";
+
+        public const string ErrMsgSelectFileFirst = "Please select a file first.";
+
+        public const string SuccesMsgImportSuccesfull = "Data imported successfully!";
+        public const string ErrorMsgImportNotSuccesfull = "Data not imported successfully!";
+
     }
 }

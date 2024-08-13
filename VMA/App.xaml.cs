@@ -76,6 +76,8 @@ namespace VMA
 
             services.AddSingleton<IHomePageBusinessLogic, HomePageBusinessLogic>();
             services.AddSingleton<IStoreProcedureExecutionRepository, StoreProcedureExecutionRepository>();
+
+            services.AddSingleton<IImportFromExcel,ImportFromExcel>();
             //services.AddSingleton(x =>new VenderPaymentNotesBusinesslogic(x.GetRequiredService<IVenderPaymentNotesRepository>(),
             //                                                              x.GetRequiredService<IInvoiceDetailsBusinessLogic>()));
             //Register services and view models
@@ -94,7 +96,8 @@ namespace VMA
                                                          x.GetRequiredService<IConfigurationBusinessLogic>(),
                                                          x.GetRequiredService<IPaymentNoteInWord>(),
                                                          x.GetRequiredService<IYearlyMonthlyReportPDF>(),
-                                                         x.GetRequiredService<IHomePageBusinessLogic>()));
+                                                         x.GetRequiredService<IHomePageBusinessLogic>(),
+                                                         x.GetRequiredService<IImportFromExcel>()));
             services.AddSingleton(x => new MainView(x.GetRequiredService<MainViewModel>()));
            
         }

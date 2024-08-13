@@ -99,12 +99,13 @@ namespace VMA.MVVM.ViewModels
         public ICommand ShowGSTViewCommand { get; }
         public ICommand LogOutCommand { get; }
         LoginViewModel _loginViewModel;
+        private readonly IImportFromExcel _importFromExcel;
         public MainViewModel(IUserBusinessLogic userBusinessLogic, IVendorBusinessLogic vendorBusinessLogic,
                              IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic,
                              IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic,
                              IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IReportExportToExcelPaymentNote reportExportToExcelPaymentNote,
                              IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord,
-                             IYearlyMonthlyReportPDF yearlyMonthlyReportPDF, IHomePageBusinessLogic homePageBusinessLogic)
+                             IYearlyMonthlyReportPDF yearlyMonthlyReportPDF, IHomePageBusinessLogic homePageBusinessLogic, IImportFromExcel importFromExcel)
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             _userBusinessLogic = userBusinessLogic;
@@ -119,7 +120,7 @@ namespace VMA.MVVM.ViewModels
             _gstcalculationMasterBusinessLogic = gstcalculationMasterBusinessLogic;
             _reportExportToExcelPaymentNote = reportExportToExcelPaymentNote;
             _homePageBusinessLogic = homePageBusinessLogic;
-
+            _importFromExcel = importFromExcel;
             //Initialize command
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowVendorViewCommand = new ViewModelCommand(ExecuteShowVendorViewCommand);
@@ -190,7 +191,7 @@ namespace VMA.MVVM.ViewModels
         {
             try
             {
-                CurrentChildView = new SettingsViewModel(_configurationBusinessLogic);
+                CurrentChildView = new SettingsViewModel(_configurationBusinessLogic,_importFromExcel);
                 Caption = MessagesContants.CaptionSettings;
                 Icon = IconChar.Gears;
             }

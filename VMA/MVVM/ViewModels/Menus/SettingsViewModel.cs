@@ -1,11 +1,13 @@
 ﻿using Azure;
 using BusinessLogic.Abstraction.VMA.Contract;
 using BusinessLogic.Abstraction.VMA.Models;
+using BusinessLogic.VMA;
 using Serilog;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Text.Json;
 using System.Windows.Input;
+using VMA.Constants;
 
 namespace VMA.MVVM.ViewModels.Menus
 {
@@ -450,26 +452,39 @@ namespace VMA.MVVM.ViewModels.Menus
         public ICommand SubmitNoteIdCommand { get; }
 
         public ICommand SubmitFinancialYearCommand { get; }
-
-        public SettingsViewModel(IConfigurationBusinessLogic configBusinessLogic)
+        private readonly IImportFromExcel _importFromExcel;
+        public SettingsViewModel(IConfigurationBusinessLogic configBusinessLogic, IImportFromExcel importFromExcel)
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             _configBusinessLogic = configBusinessLogic;
 
             _ = GetAllConfigurations();
-
+            _importFromExcel= importFromExcel;
             SubmitFinancialYearCommand = new ViewModelAsyncCommand<object>(SaveFinancialYearSettings, ValidateGeneralSettings);
             SubmitNoteIdCommand = new ViewModelAsyncCommand<object>(SaveNoteFormat);
             BrowseExcelLocationCommand = new ViewModelAsyncCommand<object>(BrowseExcelLocation);
             BrowseWordLocationCommand = new ViewModelAsyncCommand<object>(BrowseWordLocation);
             BrowseImportVendorExcelLocationCommand = new ViewModelAsyncCommand<object>(BrowseVendorExcelFile);
-            ImportVendor=new ViewModelAsyncCommand<object>(ImportVendorsToDB);
+            ImportVendor = new ViewModelAsyncCommand<object>(ImportVendorsToDB);
         }
 
         private async Task ImportVendorsToDB(object arg)
         {
-          
+            if (string.IsNullOrEmpty(FileImportPathExcel))
+            {
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, MessagesContants.ErrMsgSelectFileFirst, false, true);
+                return;
+            }
+            int result=await _importFromExcel.ImportVendors(FileImportPathExcel);
+            if (result != 0)
+            {
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.SuccesMsgImportSuccesfull, true);
+            }
+            else
+            {
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.ErrorMsgImportNotSuccesfull, true);
+            }
         }
 
         private async Task SaveNoteFormat(object model)
@@ -578,20 +593,20 @@ namespace VMA.MVVM.ViewModels.Menus
                         Sanctions = [];
                     }
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loaded All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loaded All configurations", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 }
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to load All configurations", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to load All configurations", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Failed to load All configurations, Please contact to Administrator", false, true);
             }
         }
         private async void AddOrUpdateDepartments()
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into AddOrUpdate Departments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into AddOrUpdate Departments", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             bool isDepartmentExist = Departments?.Count(x => x.DepartmentName == NeworExistingDepartment) > 0;
 
@@ -635,7 +650,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 await SaveConfiguration(0, nameof(Department), Departments, operation);
             }
 
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Done AddOrUpdate Departments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Done AddOrUpdate Departments", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
         }
 
@@ -646,7 +661,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private void DeleteDepartment(object department)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into Delete Department", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into Delete Department", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             string operation = "";
             Department localdepartment = (Department)department;
