@@ -215,7 +215,7 @@
 
                                     <TextBox x:Name="txtSantionedAmount"
                                        Text="{Binding ServiceSantionAmount ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True}"                                         
-                                       Style="{StaticResource FormTextBox}"/>
+                                       Style="{StaticResource FormTextBox}" IsEnabled="{Binding EnableDisableSantionedAmt}"/>
 
                                     <TextBlock Text="Service Santioned Date"
                                                Style="{StaticResource FormTextBlock}"

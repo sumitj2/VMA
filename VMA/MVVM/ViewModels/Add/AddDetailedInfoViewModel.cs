@@ -142,7 +142,18 @@ namespace VMA.MVVM.ViewModels.Add
 
         private decimal? _serviceSantionAmount;
 
-        [Required(ErrorMessage = MessagesContants.SantionedAmtReq)]
+        private bool _enableDisableSantionedAmt;
+
+        public bool EnableDisableSantionedAmt
+        {
+            get { return _enableDisableSantionedAmt; }
+            set
+            {
+                _enableDisableSantionedAmt = value;
+                OnPropertyChanged(nameof(EnableDisableSantionedAmt));
+            }
+        }
+
         public decimal? ServiceSantionAmount
         {
             get
@@ -214,6 +225,15 @@ namespace VMA.MVVM.ViewModels.Add
             set
             {
                 _selectPaymentType = value;
+                if (_selectPaymentType?.NameSearch == GeneralConstants.PaymentTypeNone)
+                {
+                    EnableDisableSantionedAmt=false;
+                    ServiceSantionAmount = null;
+                }
+                else
+                {
+                    EnableDisableSantionedAmt = true;
+                }
                 OnPropertyChanged(nameof(SelectPaymentType));
             }
         }
@@ -517,6 +537,7 @@ namespace VMA.MVVM.ViewModels.Add
         ObservableCollection<VendorDetailModel> _detailsLsit;
         public AddDetailedInfoViewModel(DetailedInfoViewModel detailedInfoViewModel, VendorDetailModel vendorDetailViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, ObservableCollection<VendorDetailModel> detailsLsit, IConfigurationBusinessLogic configurationBusinessLogic)
         {
+            EnableDisableSantionedAmt = true;
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             _configurationBusinessLogic = configurationBusinessLogic;

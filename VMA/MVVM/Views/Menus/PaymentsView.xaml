@@ -114,7 +114,7 @@
                     <DataGridTextColumn Header="Service Name" Binding="{Binding VendorServiceName}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="PaymentNoteNo" Binding="{Binding PaymentNoteNo}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Payment Date" Binding="{Binding VendorPaymentDate}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="NoteS" Binding="{Binding Notes}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Non Taxable Amount" Binding="{Binding VendorPaymentAmount}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Taxable Amount" Binding="{Binding VendorPaymentTotalAmountPaid}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Branch Name"  Binding="{Binding BankBranchName}" IsReadOnly="True" Width="auto"/>

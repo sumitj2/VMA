@@ -318,7 +318,7 @@ namespace VMA.MVVM.ViewModels.Add
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
 
                     _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId));
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...", true);
+                    //SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...", true);
                     _ = GetAmountToBepaid();
                 }
             }
