@@ -37,6 +37,7 @@
         public const string PaymentNoteAlreadyGeneratedMsg = "Payment Note alreday genrated for ";
         public const string PaymentNoteDataUpdated = "Payment Note Data Updated Successfully";
         public const string PaymentNoteDataAdded = "Payment Note Data Added Successfully";
+        public const string PaymentNoteAlert = "Please add Payment Note ,to process payment";
         public const string PaymentDataUpdate = "Payment Data Updated Successfully";
         public const string PaymentDataAdded="Payment Data Added Successfully";
 

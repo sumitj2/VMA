@@ -115,7 +115,7 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Vendor Code" Binding="{Binding VendorCode}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Vendor Name" Binding="{Binding VendorName}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Vendor PAN" Binding="{Binding VendorPan}" IsReadOnly="True" Width="auto"/>
+                    <DataGridTextColumn Header="PAN" Binding="{Binding VendorPan}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Phone No" Binding="{Binding VendorPhoneNo}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Email Id" Binding="{Binding VendorEmailId}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Address"  Binding="{Binding VendorAddress}" IsReadOnly="True" Width="auto"/>

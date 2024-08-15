@@ -1008,6 +1008,11 @@ namespace VMA.MVVM.ViewModels.Add
                 PaymentNoteDetails = paymentNotesDetails;
                 PaymentNoteNo = paymentNotesDetails?.PaymentNoteNo ?? "";
             }
+            else
+            {
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.PaymentNoteAlert, true,true);
+
+            }
         }
 
         /// <summary>

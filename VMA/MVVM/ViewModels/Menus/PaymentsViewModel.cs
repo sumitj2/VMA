@@ -128,7 +128,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private readonly IConfigurationBusinessLogic _configurationBusinessLogic;
         public PaymentsViewModel(MainViewModel parentViewModel, IVendorPaymentBusinessLogic vendorPaymentBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IGstcalculationMasterBusinessLogic gstcalculationMasterBusinessLogic, IVendorBusinessLogic vendorBusinessLogic,IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             _configurationBusinessLogic = configurationBusinessLogic;
             _vendorPaymentBusinessLogic = vendorPaymentBusinessLogic;
@@ -164,16 +164,16 @@ namespace VMA.MVVM.ViewModels.Menus
         {
             try
             {
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 var vendors = await _vendorPaymentBusinessLogic.GetAllVendorPayment().ConfigureAwait(true);
                 VendorsPayment = TempVendorsPayment = new ObservableCollection<VendorPaymentModel>(vendors);
 
-                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
             catch (Exception ex)
             {
-                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+                Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to get vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }
         }
     }
