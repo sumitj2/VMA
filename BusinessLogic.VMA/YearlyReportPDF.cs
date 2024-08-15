@@ -31,7 +31,7 @@ namespace BusinessLogic.VMA
 
         private void GeneratePdf(List<YearlyReportData> Data, string? path, string? financilaYear)
         {
-            if(Data.Count==0 |Data==null)
+            if (Data.Count == 0 | Data == null)
             {
                 MessageBox.Show(MessagesContants.NoPaymentFound);
             }
@@ -91,13 +91,13 @@ namespace BusinessLogic.VMA
                     row.Cells[0].AddParagraph(count.ToString());
                     row.Cells[1].AddParagraph(item?.VendorName);
                     row.Cells[2].AddParagraph(item.VendorServiceName);
-                    row.Cells[3].AddParagraph(item?.ServiceSantionAmount.ToString());
+                    row.Cells[3].AddParagraph(item?.ServiceSantionAmount != null ? item?.ServiceSantionAmount.ToString() : 0.ToString());
                     row.Cells[4].AddParagraph(item?.TotalVendorPaymentAmount != null ? item?.TotalVendorPaymentAmount.ToString() : 0.ToString());
-                    row.Cells[5].AddParagraph(item?.RemainingAmount.ToString());
+                    row.Cells[5].AddParagraph(item?.RemainingAmount != null ? item?.RemainingAmount.ToString() : 0.ToString());
                     count++;
-                    santionedAmtTotal += item?.ServiceSantionAmount;
+                    santionedAmtTotal += item?.ServiceSantionAmount ?? 0;
                     TotalAmountPaid += item?.TotalVendorPaymentAmount != null ? item?.TotalVendorPaymentAmount : 0;
-                    TotalRemainingAmt += item?.RemainingAmount;
+                    TotalRemainingAmt += item?.RemainingAmount ?? 0;
                 }
                 row = table.AddRow();
                 row.Cells[0].AddParagraph("Total");
@@ -110,7 +110,7 @@ namespace BusinessLogic.VMA
                 // Render the document
                 var pdfRenderer = new PdfDocumentRenderer(true) { Document = document };
                 pdfRenderer.RenderDocument();
-                path = path + "\\"+ "YearlyRepor_"+financilaYear+".pdf";
+                path = path + "\\" + "YearlyRepor_" + financilaYear + ".pdf";
                 pdfRenderer.PdfDocument.Save(path);
                 OpenPdf(path);
             }

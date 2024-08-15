@@ -11,7 +11,7 @@ namespace BusinessLogic.Abstraction.VMA.Models
         public string? VendorName { get; set; }
         public string? VendorServiceName { get; set; }
         public string? ServicePaymentType { get; set; }
-        public decimal ServiceSantionAmount { get; set; }
+        public decimal? ServiceSantionAmount { get; set; }
         public int NumberOfTerms { get; set; }
         public decimal TotalPaymentsMade { get; set; }
         public int RemainingTerms { get; set; }

@@ -154,7 +154,7 @@ BorderThickness="0"
                                     <TextBlock Text="Total Amount Paid(Non-taxable)"
                                                Style="{StaticResource FormTextBlock}"/>
 
-                                    <TextBox x:Name="txtTotalAmtPaid" IsEnabled="False"
+                                    <TextBox x:Name="txtTotalAmtPaid" IsEnabled="{Binding EnableTotalPaidAmt}"
                                              Text="{Binding VendorPaymentAmount ,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource FormTextBox}"  AcceptsReturn="True"/>
                                     <TextBlock Text="Total Amount Including Tax"

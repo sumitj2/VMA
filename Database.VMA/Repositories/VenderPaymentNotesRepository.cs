@@ -97,7 +97,9 @@ namespace Database.VMA.Repositories
                                           VendorPaymentRtgsDate = payment.VendorPaymentRtgsDate,
                                           VendorName = vendor.VendorName,
                                           VendorPaymentDate = payment.VendorPaymentDate,
-                                          IsAmc = details.IsAmc
+                                          IsAmc = details.IsAmc,
+                                          PaymentType = details.ServicePaymentType,
+                                          Notes=payment.Notes
                                       };
             return await productsWithVendors.ToListAsync();
 

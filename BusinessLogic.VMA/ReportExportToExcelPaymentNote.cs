@@ -25,11 +25,11 @@ namespace BusinessLogic.VMA
             _venderPaymentNotesRepository = venderPaymentNotesRepository;
         }
 
-        public async Task ExportPaymentNotes(string? financialYear,string? path)
+        public async Task ExportPaymentNotes(string? financialYear, string? path)
         {
             List<ExportPaymentNoteData> exportData = [];
             var payments = await _venderPaymentNotesRepository.GetAllPaymentDetailsWithServiceDetailsToExport(financialYear).ConfigureAwait(true);
-            if(payments?.Count == 0) 
+            if (payments?.Count == 0)
             {
                 MessageBox.Show(MessagesContants.ReportExcelNoPaymentFoud + financialYear);
             }
@@ -59,7 +59,9 @@ namespace BusinessLogic.VMA
                         VendorPaymentRtgsDate = item.VendorPaymentRtgsDate,
                         VendorPaymentTdsamount = item.VendorPaymentTdsamount,
                         VendorPaymentDate = item.VendorPaymentDate,
-                        IsAmc = item.IsAmc
+                        IsAmc = item.IsAmc,
+                        PaymentType=item.PaymentType,
+                        Notes=item.Notes
                     });
                 }
                 var fileContent = ExportToExcel(exportData);
@@ -73,7 +75,7 @@ namespace BusinessLogic.VMA
                 };
 
                 string location = path + "\\" + saveFileDialog.FileName;
-                
+
                 File.WriteAllBytes(location, fileContent);
 
                 MessageBox.Show($"{MessagesContants.FileSavedToSucesfully} {saveFileDialog.FileName}");
@@ -121,58 +123,74 @@ namespace BusinessLogic.VMA
                 // Add Venor Name + Service Name
                 worksheet.Cell(counter + 2, 1).Value = service?.FirstOrDefault()?.VendorName + " " + service?.Key;
                 counter++;
-
-                for (int i = 0; i < service?.ToList().Count; i++)
+                if (service != null)
                 {
-                    worksheet.Cell(counter + 2, 1).Value = srNo;
-                    worksheet.Cell(counter + 2, 2).Value = service.ToList()[i].VendorPaymentYearRange;
-                    worksheet.Cell(counter + 2, 3).Value = service.ToList()[i].PaymentNoteNo;
-                    worksheet.Cell(counter + 2, 4).Value = service.ToList()[i].PaymentNoteDate;
-                    worksheet.Cell(counter + 2, 5).Value = service.ToList()[i].VendorName;
-                    worksheet.Cell(counter + 2, 6).Value = service.ToList()[i].VendorServiceName;
-                    worksheet.Cell(counter + 2, 7).Value = service.ToList()[i].ServiceSantionAmount;
-                    if (i == 0)
+                    for (int i = 0; i < service?.ToList().Count; i++)
                     {
-                        worksheet.Cell(counter + 2, 8).Value = service.ToList()[i].ServiceSantionAmount - service.ToList()[i].VendorPaymentAmount;//amt due
-                    }
-                    else
-                    {
-                        worksheet.Cell(counter + 2, 8).Value = (decimal)worksheet.Cell((counter + 2) - 1, 8).Value.GetNumber() - service.ToList()[i].VendorPaymentAmount;
-                    }
+                        worksheet.Cell(counter + 2, 1).Value = srNo;
+                        worksheet.Cell(counter + 2, 2).Value = service?.ToList()[i].VendorPaymentYearRange;
+                        worksheet.Cell(counter + 2, 3).Value = service?.ToList()[i].PaymentNoteNo;
+                        worksheet.Cell(counter + 2, 4).Value = service?.ToList()[i].PaymentNoteDate;
+                        worksheet.Cell(counter + 2, 5).Value = service?.ToList()[i].VendorName;
+                        worksheet.Cell(counter + 2, 6).Value = service?.ToList()[i].PaymentType=="None"? service?.ToList()[i].VendorServiceName+" "+ service?.ToList()[i].Notes: service?.ToList()[i].VendorServiceName;
+                        worksheet.Cell(counter + 2, 7).Value = service?.ToList()[i].ServiceSantionAmount;
+                        if (service?.ToList()[i].PaymentType == "None")
+                        {
+                            worksheet.Cell(counter + 2, 8).Value = service?.ToList()[i].ServiceSantionAmount - service?.ToList()[i].VendorPaymentAmount;//amt due
+                        }
+                        else
+                        {
+                            if (i == 0)
+                            {
+                                worksheet.Cell(counter + 2, 8).Value = service?.ToList()[i].ServiceSantionAmount - service?.ToList()[i].VendorPaymentAmount;//amt due
+                            }
+                            else
+                            {
+                                worksheet.Cell(counter + 2, 8).Value = (decimal)worksheet.Cell((counter + 2) - 1, 8).Value.GetNumber() - service?.ToList()[i].VendorPaymentAmount;
+                            }
+                        }
+                        worksheet.Cell(counter + 2, 9).Value = (i + 1) + "Period Amout";//Period
+                        worksheet.Cell(counter + 2, 10).Value = service?.ToList()[i].VendorPaymentAmount;//"Period Amount Paid"
+                        worksheet.Cell(counter + 2, 11).Value = service?.ToList()[i].VendorPaymentDate.ToString();
 
-                    worksheet.Cell(counter + 2, 9).Value = (i + 1) + "Period Amout";//Period
-                    worksheet.Cell(counter + 2, 10).Value = service.ToList()[i].VendorPaymentAmount;//"Period Amount Paid"
-                    worksheet.Cell(counter + 2, 11).Value = service.ToList()[i].VendorPaymentDate.ToString();
+                        if (service?.ToList()[i].PaymentType == "None")
+                        {
+                            worksheet.Cell(counter + 2, 12).Value = service?.ToList()[i].VendorPaymentAmount; ;//totla amt paid tilll no                           
 
-                    if (i == 0)
-                    {
-                        worksheet.Cell(counter + 2, 12).Value = service.ToList()[i].VendorPaymentAmount; ;//totla amt paid tilll no                           
-                    }
-                    else
-                    {
-                        worksheet.Cell(counter + 2, 12).Value = (decimal)worksheet.Cell((counter + 2) - 1, 12).Value.GetNumber() + service.ToList()[i].VendorPaymentAmount;//totla amt paid tilll now
-                    }
-                    worksheet.Cell(counter + 2, 13).Value = service.ToList()[i].InvoiceNumber;
-                    worksheet.Cell(counter + 2, 14).Value = service.ToList()[i].InvoiceDate;
-                    worksheet.Cell(counter + 2, 15).Value = service.ToList()[i].InvoiceParticulars;
-                    worksheet.Cell(counter + 2, 16).Value = service.ToList()[i].VendorDetailCategory;
-                    if (service?.ToList()[i].IsAmc == true)
-                    {
-                        worksheet.Cell(counter + 2, 17).Value = "Yes";
-                    }
-                    else
-                    {
-                        worksheet.Cell(counter + 2, 17).Value = "No";
-                    }
+                        }
+                        else
+                        {
+                            if (i == 0)
+                            {
+                                worksheet.Cell(counter + 2, 12).Value = service?.ToList()[i].VendorPaymentAmount; ;//totla amt paid tilll no                           
+                            }
+                            else
+                            {
+                                worksheet.Cell(counter + 2, 12).Value = (decimal)worksheet.Cell((counter + 2) - 1, 12).Value.GetNumber() + service?.ToList()[i].VendorPaymentAmount;//totla amt paid tilll now
+                            }
+                        }
+                        worksheet.Cell(counter + 2, 13).Value = service?.ToList()[i].InvoiceNumber;
+                        worksheet.Cell(counter + 2, 14).Value = service?.ToList()[i].InvoiceDate;
+                        worksheet.Cell(counter + 2, 15).Value = service?.ToList()[i].InvoiceParticulars;
+                        worksheet.Cell(counter + 2, 16).Value = service?.ToList()[i].VendorDetailCategory;
+                        if (service?.ToList()[i].IsAmc == true)
+                        {
+                            worksheet.Cell(counter + 2, 17).Value = "Yes";
+                        }
+                        else
+                        {
+                            worksheet.Cell(counter + 2, 17).Value = "No";
+                        }
 
-                    worksheet.Cell(counter + 2, 18).Value = service.ToList()[i].ServiceType;
-                    worksheet.Cell(counter + 2, 19).Value = service.ToList()[i].ServiceSantionedBy;
-                    worksheet.Cell(counter + 2, 20).Value = service.ToList()[i].VendorPaymentTdsamount;
-                    worksheet.Cell(counter + 2, 21).Value = service.ToList()[i].VendorPaymentRtgsAmount;
-                    worksheet.Cell(counter + 2, 22).Value = service.ToList()[i].VendorPaymentUtrnumber;
-                    worksheet.Cell(counter + 2, 23).Value = service.ToList()[i].VendorPaymentRtgsDate.ToString();
-                    counter++;
-                    srNo++;
+                        worksheet.Cell(counter + 2, 18).Value = service?.ToList()[i].ServiceType;
+                        worksheet.Cell(counter + 2, 19).Value = service?.ToList()[i].ServiceSantionedBy;
+                        worksheet.Cell(counter + 2, 20).Value = service?.ToList()[i].VendorPaymentTdsamount;
+                        worksheet.Cell(counter + 2, 21).Value = service?.ToList()[i].VendorPaymentRtgsAmount;
+                        worksheet.Cell(counter + 2, 22).Value = service?.ToList()[i].VendorPaymentUtrnumber;
+                        worksheet.Cell(counter + 2, 23).Value = service?.ToList()[i].VendorPaymentRtgsDate.ToString();
+                        counter++;
+                        srNo++;
+                    }
                 }
             }
             using (var stream = new MemoryStream())

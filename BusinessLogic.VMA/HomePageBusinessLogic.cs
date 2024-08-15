@@ -43,9 +43,9 @@ namespace BusinessLogic.VMA
             {
                 dashboardServiceModel.Add(new YearlyReportDataModel() 
                 {
-                    NumberOfTerms = yearRepor.NumberOfTerms,
+                    NumberOfTerms = yearRepor.ServicePaymentType == "None" ? yearRepor.TotalPaymentsMade : yearRepor.NumberOfTerms,
                     RemainingAmount = yearRepor.RemainingAmount,
-                    RemainingTerms = yearRepor.RemainingTerms,
+                    RemainingTerms = yearRepor.ServicePaymentType=="None"? 0:yearRepor.RemainingTerms,
                     ServicePaymentType = yearRepor.ServicePaymentType,  
                     ServiceSantionAmount=yearRepor.ServiceSantionAmount,
                     TotalPaymentsMade = yearRepor.TotalPaymentsMade,

@@ -369,6 +369,18 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(VendorPaymentDate));
             }
         }
+        private bool _EnableTotalPaidAmt;
+
+        public bool EnableTotalPaidAmt
+        {
+            get { return _EnableTotalPaidAmt; }
+            set
+            {
+                _EnableTotalPaidAmt = value;
+                OnPropertyChanged(nameof(EnableTotalPaidAmt));
+            }
+        }
+
 
         //Non Taxable
         private decimal? _VendorPaymentAmount;
@@ -950,7 +962,15 @@ namespace VMA.MVVM.ViewModels.Add
                 string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
                 decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
                 int? vendorDetaillID = SelectedVendorDetailService?.VendorDetailId;
+                if (paymentType == "None")
+                {
+                    EnableTotalPaidAmt = true;
+                }
+                else
+                {
+                    EnableTotalPaidAmt = false;
 
+                }
                 var res = await _vendorPaymentBusinessLogic.GetAmoutToBePaidDetails(vendorDetaillID, santionedAmt, paymentType).ConfigureAwait(true);
                 VendorPaymentAmount = res?.TotalPaymentNotTaxable;
 

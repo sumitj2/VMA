@@ -156,7 +156,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 new ColumnSeries
                 {
                     Title = "Sanctioned Amount",
-                    Values = new ChartValues<decimal>(filteredVendorServices.Select(vs => vs.ServiceSantionAmount))
+                    Values = new ChartValues<decimal>(filteredVendorServices.Select(vs => vs.ServiceSantionAmount??0))
                 },new ColumnSeries
                 {
                     Title = "Paid Amount",
@@ -279,8 +279,8 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 CountOfVendors = details.CountOfVendors;
                 CountOfServices = details.CountOfServices;
-                TotalPaidAmount = details.TotalPaidAmount!=null? details.TotalPaidAmount :0;
-                TotalSanctionAmount = details.TotalSanctionAmount!=null? details.TotalSanctionAmount:0;
+                TotalPaidAmount = details.TotalPaidAmount != null ? details.TotalPaidAmount : 0;
+                TotalSanctionAmount = details.TotalSanctionAmount != null ? details.TotalSanctionAmount : 0;
 
                 SeriesCollectionPieChart = new SeriesCollection
                 {

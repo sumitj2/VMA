@@ -38,5 +38,8 @@ namespace BusinessLogic.Abstraction.VMA.Models
         public DateOnly? VendorPaymentRtgsDate { get; set; }//RTGS_Date
 
         public bool? IsAmc { get; set; }
+        public string? PaymentType{ get; set; }
+        public string? Notes { get; set; }
+
     }
 }
