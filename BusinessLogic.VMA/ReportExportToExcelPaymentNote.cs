@@ -132,9 +132,9 @@ namespace BusinessLogic.VMA
                         worksheet.Cell(counter + 2, 3).Value = service?.ToList()[i].PaymentNoteNo;
                         worksheet.Cell(counter + 2, 4).Value = service?.ToList()[i].PaymentNoteDate;
                         worksheet.Cell(counter + 2, 5).Value = service?.ToList()[i].VendorName;
-                        worksheet.Cell(counter + 2, 6).Value = service?.ToList()[i].PaymentType=="None"? service?.ToList()[i].VendorServiceName+" "+ service?.ToList()[i].Notes: service?.ToList()[i].VendorServiceName;
+                        worksheet.Cell(counter + 2, 6).Value = service?.ToList()[i].PaymentType== GeneralConstants.PaymentTypeNone ? service?.ToList()[i].VendorServiceName+" "+ service?.ToList()[i].Notes: service?.ToList()[i].VendorServiceName;
                         worksheet.Cell(counter + 2, 7).Value = service?.ToList()[i].ServiceSantionAmount;
-                        if (service?.ToList()[i].PaymentType == "None")
+                        if (service?.ToList()[i].PaymentType == GeneralConstants.PaymentTypeNone)
                         {
                             worksheet.Cell(counter + 2, 8).Value = service?.ToList()[i].ServiceSantionAmount - service?.ToList()[i].VendorPaymentAmount;//amt due
                         }
@@ -153,7 +153,7 @@ namespace BusinessLogic.VMA
                         worksheet.Cell(counter + 2, 10).Value = service?.ToList()[i].VendorPaymentAmount;//"Period Amount Paid"
                         worksheet.Cell(counter + 2, 11).Value = service?.ToList()[i].VendorPaymentDate.ToString();
 
-                        if (service?.ToList()[i].PaymentType == "None")
+                        if (service?.ToList()[i].PaymentType == GeneralConstants.PaymentTypeNone)
                         {
                             worksheet.Cell(counter + 2, 12).Value = service?.ToList()[i].VendorPaymentAmount; ;//totla amt paid tilll no                           
 

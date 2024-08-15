@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VMA.Constants;
 
 namespace BusinessLogic.VMA
 {
@@ -43,9 +44,9 @@ namespace BusinessLogic.VMA
             {
                 dashboardServiceModel.Add(new YearlyReportDataModel() 
                 {
-                    NumberOfTerms = yearRepor.ServicePaymentType == "None" ? yearRepor.TotalPaymentsMade : yearRepor.NumberOfTerms,
+                    NumberOfTerms = yearRepor.ServicePaymentType == GeneralConstants.PaymentTypeNone ? yearRepor.TotalPaymentsMade : yearRepor.NumberOfTerms,
                     RemainingAmount = yearRepor.RemainingAmount,
-                    RemainingTerms = yearRepor.ServicePaymentType=="None"? 0:yearRepor.RemainingTerms,
+                    RemainingTerms = yearRepor.ServicePaymentType==GeneralConstants.PaymentTypeNone? 0:yearRepor.RemainingTerms,
                     ServicePaymentType = yearRepor.ServicePaymentType,  
                     ServiceSantionAmount=yearRepor.ServiceSantionAmount,
                     TotalPaymentsMade = yearRepor.TotalPaymentsMade,

@@ -21,5 +21,11 @@ namespace VMA.Constants
         public const string Error = "Error";
         public const string Failure = "Failure";
 
+        public const string PaymentTypeMonthly = "Monthly";
+        public const string PaymentTypeYearly = "Yearly";
+        public const string PaymentTypeQuarterly = "Quarterly";
+        public const string PaymentTypeHalfYearly = "Half Yearly";
+        public const string PaymentTypeNone = "None";
+
     }
 }

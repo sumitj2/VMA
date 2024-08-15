@@ -517,18 +517,18 @@ namespace VMA.MVVM.ViewModels.Add
         ObservableCollection<VendorDetailModel> _detailsLsit;
         public AddDetailedInfoViewModel(DetailedInfoViewModel detailedInfoViewModel, VendorDetailModel vendorDetailViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorServiceBusinessLogic vendorServiceBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, ObservableCollection<VendorDetailModel> detailsLsit, IConfigurationBusinessLogic configurationBusinessLogic)
         {
-            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
             _configurationBusinessLogic = configurationBusinessLogic;
 
             _detailsLsit = detailsLsit;
             ComboxPaymentMethods =
             [
-                new(){NameSearch="Monthly",SearchId=1},
-                new(){NameSearch="Quarterly",SearchId=2},
-                new(){NameSearch="Half Yearly",SearchId=3},
-                new(){NameSearch="Yearly",SearchId=4},
-                new(){NameSearch="None",SearchId=5},
+                new(){NameSearch=GeneralConstants.PaymentTypeMonthly,SearchId=1},
+                new(){NameSearch=GeneralConstants.PaymentTypeQuarterly,SearchId=2},
+                new(){NameSearch=GeneralConstants.PaymentTypeHalfYearly,SearchId=3},
+                new(){NameSearch=GeneralConstants.PaymentTypeYearly,SearchId=4},
+                new(){NameSearch=GeneralConstants.PaymentTypeNone,SearchId=5},
             ];
 
             _vendorDetailViewModel = vendorDetailViewModel;

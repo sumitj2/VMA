@@ -2,6 +2,7 @@
 using BusinessLogic.Abstraction.VMA.Models;
 using Database.Abstraction.VMA.Contract;
 using Database.VMA.Entities;
+using VMA.Constants;
 
 namespace Database.VMA.Repositories
 {
@@ -102,19 +103,19 @@ namespace Database.VMA.Repositories
         {
             switch (paymentType)
             {
-                case "Monthly":
+                case GeneralConstants.PaymentTypeMonthly:
                     return HandleMonthly(ServiceSantionAmount);
 
-                case "Quarterly":
+                case GeneralConstants.PaymentTypeQuarterly:
                     return HandleQuarterLy(ServiceSantionAmount);
 
-                case "Half Yearly":
+                case GeneralConstants.PaymentTypeHalfYearly:
                     return HandleHalfEarly(ServiceSantionAmount);
 
-                case "Yearly":
+                case GeneralConstants.PaymentTypeYearly:
                     return HandleYearly(ServiceSantionAmount);
 
-                case "None":
+                case GeneralConstants.PaymentTypeNone:
                     return HandleNone(ServiceSantionAmount);
 
                 default:

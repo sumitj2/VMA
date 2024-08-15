@@ -962,7 +962,7 @@ namespace VMA.MVVM.ViewModels.Add
                 string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
                 decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
                 int? vendorDetaillID = SelectedVendorDetailService?.VendorDetailId;
-                if (paymentType == "None")
+                if (paymentType == GeneralConstants.PaymentTypeNone)
                 {
                     EnableTotalPaidAmt = true;
                 }
