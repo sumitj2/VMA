@@ -265,7 +265,7 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 if (SelectedVendorDetailService?.VendorServiceName != null)
                 {
-                    await _paymentNoteInWord.CreateAndOpenWordFile(SelectedVendorDetailService.VendorServiceName, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord).ConfigureAwait(true);
+                    await _paymentNoteInWord.CreateAndOpenWordFile(new List<string>(){ SelectedVendorDetailService.VendorServiceName}, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord).ConfigureAwait(true);
                 }
                 else
                 {

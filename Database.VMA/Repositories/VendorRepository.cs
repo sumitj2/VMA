@@ -45,8 +45,6 @@ namespace Database.VMA.Repositories
         }
         public int SaveImportedVendorsToDatabase(DataTable dataTable)
         {
-            //using (var context = new VendorManagementDbContext())
-            //{
             using (var transaction = _context.Database.BeginTransaction())
             {
                 try
@@ -94,8 +92,7 @@ namespace Database.VMA.Repositories
 
                     return 0;
                 }
-            }
-            // }
+            }            
         }
 
     }

@@ -99,13 +99,13 @@ namespace Database.VMA.Repositories
                                           VendorPaymentDate = payment.VendorPaymentDate,
                                           IsAmc = details.IsAmc,
                                           PaymentType = details.ServicePaymentType,
-                                          Notes=payment.Notes
+                                          Notes = payment.Notes
                                       };
             return await productsWithVendors.ToListAsync();
 
         }
 
-        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(string? serviceName, string? financialYear)
+        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(List<string> serviceNameList, string? financialYear)
         {
             var productsWithVendors = from payment in _context.VendorPayments
                                       join details in _context.VendorDetails
@@ -119,8 +119,8 @@ namespace Database.VMA.Repositories
                                       join paymentNote in _context.VendorPaymentNotes
                                       on payment.FkNoteId equals paymentNote.NoteId
                                       where payment.IsActive == true &&
-                                            service.VendorServiceName == serviceName &&
-                                            payment.PaymentYear == payment.PaymentYear
+                                            serviceNameList.Contains(service.VendorServiceName) &&
+                                            payment.PaymentYear == financialYear
                                       select new CreateWordDocumentPaymentNote
                                       {
                                           VendorServiceName = service.VendorServiceName,
@@ -146,7 +146,9 @@ namespace Database.VMA.Repositories
                                           RatePerUnit = details.RatePerUnit,
                                           SantionedDate = details.SantionedDate,
                                           TotalAmountPaid = payment.VendorPaymentTotalAmountPaid,
-                                          TotalGST = payment.VendorPaymentIgst + payment.VendorPaymentSgst + payment.VendorPaymentCgst,
+                                          TotalGST = (payment.VendorPaymentIgst ?? 0) +
+                                                     (payment.VendorPaymentSgst ?? 0) +
+                                                     (payment.VendorPaymentCgst ?? 0),
                                           UTRNo = payment.VendorPaymentUtrnumber
                                       };
             return await productsWithVendors.ToListAsync();
