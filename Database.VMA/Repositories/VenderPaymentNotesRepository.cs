@@ -105,7 +105,7 @@ namespace Database.VMA.Repositories
 
         }
 
-        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(List<string> serviceNameList, string? financialYear)
+        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(List<string> serviceNameList, string? financialYear,string vendorName)
         {
             var productsWithVendors = from payment in _context.VendorPayments
                                       join details in _context.VendorDetails
@@ -120,6 +120,7 @@ namespace Database.VMA.Repositories
                                       on payment.FkNoteId equals paymentNote.NoteId
                                       where payment.IsActive == true &&
                                             serviceNameList.Contains(service.VendorServiceName) &&
+                                            vendor.VendorName == vendorName &&
                                             payment.PaymentYear == financialYear
                                       select new CreateWordDocumentPaymentNote
                                       {

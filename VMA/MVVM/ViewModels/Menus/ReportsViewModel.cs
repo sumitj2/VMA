@@ -7,6 +7,7 @@ using Serilog;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using VMA.Constants;
 
@@ -129,7 +130,27 @@ namespace VMA.MVVM.ViewModels.Menus
                 OnPropertyChanged(nameof(SelctedVendorServiceName));
             }
         }
+        private bool _IsPaymentTypeYes;
+        public bool IsPaymentTypeYes
+        {
+            get { return _IsPaymentTypeYes; }
+            set
+            {
+                _IsPaymentTypeYes = value;
+                OnPropertyChanged(nameof(IsPaymentTypeYes));
+            }
+        }
 
+        private bool _IsPaymentTypeNo;
+        public bool IsPaymentTypeNo
+        {
+            get { return _IsPaymentTypeNo; }
+            set
+            {
+                _IsPaymentTypeNo = value;
+                OnPropertyChanged(nameof(IsPaymentTypeNo));
+            }
+        }
         private string _SelectedVendorName;
         public string SelectedVendorName
         {
@@ -263,9 +284,16 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             else
             {
-                if (SelectedVendorDetailService?.VendorServiceName != null)
+                if (SelectedVendorDetailService?.VendorServiceName != null|| !IsPaymentTypeYes)
                 {
-                    await _paymentNoteInWord.CreateAndOpenWordFile(new List<string>(){ SelectedVendorDetailService.VendorServiceName}, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord).ConfigureAwait(true);
+                    if (IsPaymentTypeYes) 
+                    {
+                        await _paymentNoteInWord.CreateAndOpenWordFile(  VendorServiceDetails?.Select(x=>x.VendorServiceName).ToList(), From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord,SelectedVendorModel.VendorName).ConfigureAwait(true);
+                    }
+                    else
+                    {
+                        await _paymentNoteInWord.CreateAndOpenWordFile(new List<string>() { SelectedVendorDetailService.VendorServiceName }, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord,SelectedVendorName).ConfigureAwait(true);
+                    }
                 }
                 else
                 {
@@ -299,7 +327,14 @@ namespace VMA.MVVM.ViewModels.Menus
         private async Task LoadVendorServiceDetails(int vendorId)
         {
             var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
-            VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails.Where(x => x.VendorId == vendorId));
+            if (IsPaymentTypeYes)
+            {
+                VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails.Where(x => x.VendorId == vendorId && x.ServicePaymentType == GeneralConstants.PaymentTypeNone));
+            }
+            else
+            {
+                VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails.Where(x => x.VendorId == vendorId && x.ServicePaymentType != GeneralConstants.PaymentTypeNone));
+            }
         }
 
         public async Task GetAllConfigurations()

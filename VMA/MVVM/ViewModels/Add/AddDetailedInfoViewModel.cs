@@ -45,7 +45,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _selectedVendorDetailService = value;
                 OnPropertyChanged(nameof(SelectedVendorDetailService));
-                var res = _detailsLsit.FirstOrDefault(x => x.VendorServiceName == _selectedVendorDetailService?.VendorServiceName);
+                var res = _detailsLsit.FirstOrDefault(x => x.VendorServiceName == _selectedVendorDetailService?.VendorServiceName && x.FkVendorId== _selectedVendorDetailService.FkVendorId);
                 var msg1 = @$"{MessagesContants.VendorDetailMsg} {_selectedVendorDetailService?.VendorServiceName}";
 
                 if (res != null)

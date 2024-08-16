@@ -36,12 +36,18 @@
                                             Orientation="Vertical">
                                     <TextBlock Text="Service Year"
                                                Style="{StaticResource FormTextBlock}"
-                                               Margin="20,20,230,0"/>
+                                               Margin="20,0,0,0"/>
                                     <TextBox x:Name="txtServiceYear"
                                              Text="{Binding VendorPaymentYear ,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource FormTextBox}"
                                              TextWrapping="Wrap"
-                                             AcceptsReturn="True" IsEnabled="False" />
+                                             AcceptsReturn="True" IsEnabled="False"
+                                             Width="232" 
+                                             Margin="100,-20,0,30"/>
+                                    <TextBlock Text="Do you want payment Type None data?" Style="{StaticResource FormTextBlock}"/>
+
+                                    <RadioButton x:Name="PT_Yes" IsChecked="{Binding IsPaymentTypeYes}" Margin="20,5,320,0" GroupName="None" >Yes</RadioButton>
+                                    <RadioButton x:Name="PT_No" IsChecked="{Binding IsPaymentTypeNo}" Margin="90,-15,250,0" GroupName="None" >No</RadioButton>
 
                                     <TextBlock Text="Select Vendor"
                                                Style="{StaticResource FormTextBlock}"

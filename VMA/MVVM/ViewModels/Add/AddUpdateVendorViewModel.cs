@@ -220,7 +220,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 SaveButtonName = GeneralConstants.Submit;
             }            
-            VendorCode = Convert.ToString(parentViewModel.Vendors.Count + 1);
+            VendorCode = Convert.ToString(parentViewModel?.Vendors?.Count + 1);
 
             PopulateValues();
             _vendorbusinessLogic = vendorBusinessLogic;

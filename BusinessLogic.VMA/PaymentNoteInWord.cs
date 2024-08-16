@@ -25,11 +25,11 @@ namespace BusinessLogic.VMA
         {
             _venderPaymentNotesRepository = venderPaymentNotesRepository;
         }
-        public async Task CreateAndOpenWordFile(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path)
+        public async Task CreateAndOpenWordFileForNone(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path,string vendorName)
         {
             if (path != null)
             {
-                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear).ConfigureAwait(true);
+                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear,vendorName).ConfigureAwait(true);
                 if (result == null || result?.Count == 0)
                 {
                     MessageBox.Show(MessagesContants.NoPaymentFound + string.Join(",", serviceName));
@@ -257,18 +257,18 @@ namespace BusinessLogic.VMA
             }
         }
 
-        public async Task CreateAndOpenWordFileForNone(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path)
+        public async Task CreateAndOpenWordFile(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName)
         {
             if (path != null)
             {
-                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear).ConfigureAwait(true);
+                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear,vendorName).ConfigureAwait(true);
                 if (result == null || result?.Count == 0)
                 {
                     MessageBox.Show(MessagesContants.NoPaymentFound + serviceName);
                 }
                 else
                 {
-                    string? location = path + "\\" + serviceName + "_PaymentNote.docx";
+                    string? location = path + "\\" + vendorName + "_PaymentNote.docx";
                     // Ensure the directory exists
                     Directory.CreateDirectory(Path.GetDirectoryName(location));
 
@@ -394,8 +394,10 @@ namespace BusinessLogic.VMA
                         );
                         tableInvocie.Append(rowInvoice);
                         int srNo = 1;
+                        decimal totalAmountPaid=0;
                         if (result != null)
                         {
+                            
                             foreach (var invoice in result)
                             {
                                 TableRow rowInvoice1 = new();
@@ -413,7 +415,23 @@ namespace BusinessLogic.VMA
                                 );
                                 srNo++;
                                 tableInvocie.Append(rowInvoice1);
+                                totalAmountPaid = Convert.ToDecimal(totalAmountPaid + invoice?.TotalAmountPaid);
                             }
+                            TableRow rowInvoice2 = new();
+                            rowInvoice2.Append
+                                 (
+                                   new TableCell(new Paragraph(new Run(new Text()))),
+                                   new TableCell(new Paragraph(new Run(new Text()))),
+                                   new TableCell(new Paragraph(new Run(new Text()))),
+                                   new TableCell(new Paragraph(new Run(new Text()))),
+                                   new TableCell(new Paragraph(new Run(new Text()))),
+                                   new TableCell(new Paragraph(new Run(new Text()))),
+                                   new TableCell(new Paragraph(new Run(new Text()))),
+                                   new TableCell(new Paragraph(new Run(new Text("Total")))),
+                                   new TableCell(new Paragraph(new Run(new Text(totalAmountPaid.ToString()))))
+                                 );
+                            srNo++;
+                            tableInvocie.Append(rowInvoice2);
                         }
                         body.Append(tableInvocie);
                         #endregion
