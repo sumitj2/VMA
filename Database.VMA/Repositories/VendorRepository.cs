@@ -2,6 +2,7 @@
 using Database.VMA.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using System.Net;
 
 namespace Database.VMA.Repositories
 {
@@ -56,9 +57,22 @@ namespace Database.VMA.Repositories
                     {
                         var entity = new Vendor
                         {
-                            //Column1 = row["Column1"].ToString(),
-                            //Column2 = row["Column2"].ToString()
-                            // Add more mappings as needed
+                            VendorCode = row["Vendor Code"]?.ToString(),
+                            VendorName = row["VendorName"]?.ToString(),
+                            VendorAddress= $"{row["Vendor Address"]?.ToString()} {row["City"]} {row["Destric"]}",  
+                            VendorPinCode= row["VendorPinCode"]?.ToString(),
+                            VendorPhoneNo= row["VendorPhoneNo"]?.ToString(),
+                            VendorEmailId = row["VendorEmailId"]?.ToString(),
+                            VendorBankName = row["VendorBankName"]?.ToString(),
+                            VendorAccountNumber = row["VendorAccountNumber"]?.ToString(),
+                            VendorIfsccode = row["VendorIFSCCode"]?.ToString(),
+                            VendorGstnumber = row["VendorGSTNumber"]?.ToString(),
+                            CreatedDate = DateTime.Now,
+                            CreatedBy = "Imported",
+                            IsActive =true,
+                            LastUpdateBy = null,
+                            LastUpdatedDate =null,
+                            VendorPan = row["VendorPan"]?.ToString()                            
                         };
                         entities.Add(entity);
                     }
