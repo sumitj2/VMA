@@ -89,6 +89,7 @@ namespace Database.VMA.Repositories
                     LastUpdateBy = res?.LastUpdateBy,
                     LastUpdatedDate = res?.LastUpdatedDate
                 };
+                return invoiceDetailsModel;
             }
             return null;
         }
