@@ -28,7 +28,7 @@ namespace BusinessLogic.VMA
             {
                 dashboardDetailsModel.CountOfVendors = result.CountOfVendors;
                 dashboardDetailsModel.CountOfServices = result.CountOfServices;
-                dashboardDetailsModel.TotalPaidAmount = result.TotalPaidAmount;
+                dashboardDetailsModel.TotalPaidAmount = result.SantionedAmtPaid;
                 dashboardDetailsModel.TotalSanctionAmount = result.TotalSanctionAmount;
 
             }

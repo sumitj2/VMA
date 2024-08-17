@@ -14,13 +14,6 @@ using DocumentFormat.OpenXml.Drawing;
 
 namespace VMA.MVVM.ViewModels.Menus
 {
-    public class VendorService
-    {
-        public string? VendorName { get; set; }
-        public string? ServiceName { get; set; }
-        public double SanctionedAmt { get; set; }
-        public double PaidAmt { get; set; }
-    }
     public class HomeViewModel : ViewModelBase
     {
         #region Pie Chart
@@ -274,7 +267,6 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 details = _homePageBusinessLogic.GetDashboardDetails(FinancialYear).GetAwaiter().GetResult();
             });
-            //var details = await _homePageBusinessLogic.GetDashboardDetails(FinancialYear).ConfigureAwait(true);            //var details = await _homePageBusinessLogic.GetDashboardDetails(FinancialYear).ConfigureAwait(true);
             if (details != null)
             {
                 CountOfVendors = details.CountOfVendors;

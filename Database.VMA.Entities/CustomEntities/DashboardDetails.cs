@@ -26,7 +26,12 @@ namespace Database.VMA.Entities.CustomEntities
         /// <summary>
         /// Gets or sets the total amount paid.
         /// </summary>
-        public decimal? TotalPaidAmount { get; set; }
+        public decimal? SantionedAmtPaid { get; set; }
+
+        /// <summary>
+        /// OtherAmtPaid
+        /// </summary>
+        public decimal? OtherAmtPaid { get; set; }
     }
 
 }
