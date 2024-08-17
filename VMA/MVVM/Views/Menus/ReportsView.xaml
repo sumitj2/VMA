@@ -166,7 +166,8 @@
                                             Cursor="Hand"
                                             BorderThickness="0"
                                             Foreground="White"
-                                            HorizontalAlignment="Left"/>
+                                            HorizontalAlignment="Left"
+                                            Margin="10,20,20,0"/>
                                 </StackPanel>
 
                             </Grid>

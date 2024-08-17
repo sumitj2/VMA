@@ -136,6 +136,7 @@ namespace VMA.MVVM.ViewModels.Menus
             get { return _IsPaymentTypeYes; }
             set
             {
+                _ = ClearForm(null);
                 _IsPaymentTypeYes = value;
                 OnPropertyChanged(nameof(IsPaymentTypeYes));
             }
@@ -147,6 +148,7 @@ namespace VMA.MVVM.ViewModels.Menus
             get { return _IsPaymentTypeNo; }
             set
             {
+                _ = ClearForm(null);
                 _IsPaymentTypeNo = value;
                 OnPropertyChanged(nameof(IsPaymentTypeNo));
             }
@@ -172,6 +174,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
                 if (SelectedVendorModel != null)
                 {
+                    _=ClearForm(null);
                     OnPropertyChanged(nameof(SelectedVendorModel));
                     BeforeInvocie += " " + SelectedVendorModel.VendorName;
                     AfterInvoice += " " + SelectedVendorModel.VendorName;
@@ -222,6 +225,7 @@ namespace VMA.MVVM.ViewModels.Menus
         public readonly IYearlyMonthlyReportPDF _yearlyReportPDF;
         public ReportsViewModel(IReportExportToExcelPaymentNote reportExportToExcelPaymentNote, IVendorBusinessLogic vendorBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord, IYearlyMonthlyReportPDF yearlyReportPDF)
         {
+            IsPaymentTypeNo = true;
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             To = MessagesContants.ReportTo;
             From = MessagesContants.ReportFrom;
@@ -249,6 +253,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 BeforeInvocie = "";
                 AfterInvoice = "";
                 NoteGenerationDate = DateOnly.MinValue;
+              //  IsPaymentTypeNo = true;
             });
         }
 
