@@ -604,77 +604,78 @@ namespace VMA.MVVM.ViewModels.Add
         string errorMsg = "";
         private bool ValidateVendorServiceDetails()
         {
-            bool validData;
+            return true;
+            //bool validData;
 
 
-            if (SelectedVendorDetailService == null)
-            {
-                validData = false;
-                errorMsg += nameof(SelectedVendorDetailService);
-            }
-            else
-            {
-                validData = true;
-            }
-            if (SelectedDepartment == null)
-            {
-                validData = false;
-                errorMsg += nameof(SelectedDepartment);
-            }
-            else
-            {
-                validData = true;
-            }
-            if (selectedExpenditure == null)
-            {
-                validData = false;
-                errorMsg += nameof(selectedExpenditure);
-            }
-            else
-            {
-                validData = true;
-            }
-            if (SelectPaymentType == null)
-            {
-                validData = false;
-                errorMsg += nameof(SelectPaymentType);
-            }
-            else
-            {
-                validData = true;
-            }
+            //if (SelectedVendorDetailService == null)
+            //{
+            //    validData = false;
+            //    errorMsg += nameof(SelectedVendorDetailService);
+            //}
+            //else
+            //{
+            //    validData = true;
+            //}
+            //if (SelectedDepartment == null)
+            //{
+            //    validData = false;
+            //    errorMsg += nameof(SelectedDepartment);
+            //}
+            //else
+            //{
+            //    validData = true;
+            //}
+            //if (selectedExpenditure == null)
+            //{
+            //    validData = false;
+            //    errorMsg += nameof(selectedExpenditure);
+            //}
+            //else
+            //{
+            //    validData = true;
+            //}
+            //if (SelectPaymentType == null)
+            //{
+            //    validData = false;
+            //    errorMsg += nameof(SelectPaymentType);
+            //}
+            //else
+            //{
+            //    validData = true;
+            //}
 
-            if (SantionedDate == DateOnly.MinValue)
-            {
-                validData = false;
-                errorMsg += nameof(SantionedDate);
-            }
-            else
-            {
-                validData = true;
-            }
+            //if (SantionedDate == DateOnly.MinValue)
+            //{
+            //    validData = false;
+            //    errorMsg += nameof(SantionedDate);
+            //}
+            //else
+            //{
+            //    validData = true;
+            //}
 
-            if (ServiceSantionAmount == null || ServiceSantionAmount == 0 || ServiceSantionAmount.Value == 0)
-            {
-                validData = false;
-                errorMsg += nameof(ServiceSantionAmount);
-            }
-            else
-            {
-                validData = true;
-            }
+            //if (ServiceSantionAmount == null || ServiceSantionAmount == 0 || ServiceSantionAmount.Value == 0)
+            //{
+            //    validData = false;
+            //    errorMsg += nameof(ServiceSantionAmount);
+            //}
+            //else
+            //{
+            //    validData = true;
+            //}
 
-            if (SelectedSanction == null)
-            {
-                validData = false;
-                errorMsg += nameof(SelectedSanction);
-            }
-            else
-            {
-                validData = true;
-            }
+            //if (SelectedSanction == null)
+            //{
+            //    validData = false;
+            //    errorMsg += nameof(SelectedSanction);
+            //}
+            //else
+            //{
+            //    validData = true;
+            //}
 
-            return validData;
+            //return validData;
         }
         public async Task GetAllConfigurations()
         {
