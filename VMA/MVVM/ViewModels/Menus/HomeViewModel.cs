@@ -271,7 +271,7 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 CountOfVendors = details.CountOfVendors;
                 CountOfServices = details.CountOfServices;
-                TotalPaidAmount = details.TotalPaidAmount != null ? details.TotalPaidAmount : 0;
+                TotalPaidAmount = details.SantionedAmtPiad != null ? details.SantionedAmtPiad : 0;
                 TotalSanctionAmount = details.TotalSanctionAmount != null ? details.TotalSanctionAmount : 0;
 
                 SeriesCollectionPieChart = new SeriesCollection

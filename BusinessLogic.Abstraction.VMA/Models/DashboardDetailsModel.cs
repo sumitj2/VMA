@@ -26,6 +26,12 @@ namespace BusinessLogic.Abstraction.VMA.Models
         /// <summary>
         /// Gets or sets the total amount paid.
         /// </summary>
-        public decimal? TotalPaidAmount { get; set; }
+        public decimal? SantionedAmtPiad { get; set; }
+
+        /// <summary>
+        /// OtherAmtPaid
+        /// </summary>
+        public decimal? OtherAmtPaid { get; set; }
+
     }
 }
