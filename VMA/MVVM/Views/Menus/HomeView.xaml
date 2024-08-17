@@ -119,8 +119,21 @@
                             </materialDesign:Card.Effect>
                             <StackPanel>
                                 <materialDesign:PackIcon Kind="AccountPending" Foreground="#29A3EC" HorizontalAlignment="Center" />
-                                <TextBlock FontSize="12"  TextAlignment="Center" Text="Amount Paid" />
-                                <TextBlock FontWeight="SemiBold" FontSize="25"   TextAlignment="Center" Text="{Binding TotalPaidAmount ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                                <TextBlock FontSize="12"  TextAlignment="Center" Text="Santioned Amount Paid" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25"   TextAlignment="Center" Text="{Binding TotalSantionedAmountPaid ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
+                            </StackPanel>
+                        </materialDesign:Card>
+                    </Border>
+
+                    <Border BorderBrush="White" BorderThickness="1" Margin="20 0" CornerRadius="5">
+                        <materialDesign:Card Style="{StaticResource HoverCardDesignStyle}" VerticalContentAlignment="Center" Width="148" Height="100" Background="#F6F6F8">
+                            <materialDesign:Card.Effect>
+                                <DropShadowEffect BlurRadius="10" Opacity="0.4" ShadowDepth="2"/>
+                            </materialDesign:Card.Effect>
+                            <StackPanel>
+                                <materialDesign:PackIcon Kind="AccountPending" Foreground="#29A3EC" HorizontalAlignment="Center" />
+                                <TextBlock FontSize="12"  TextAlignment="Center" Text="Other Amount Paid" />
+                                <TextBlock FontWeight="SemiBold" FontSize="25"   TextAlignment="Center" Text="{Binding OtherAmtPaid ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"/>
                             </StackPanel>
                         </materialDesign:Card>
                     </Border>

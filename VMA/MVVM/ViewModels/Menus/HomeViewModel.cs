@@ -51,14 +51,27 @@ namespace VMA.MVVM.ViewModels.Menus
             }
         }
 
+        private decimal? _otherAmtPaid;
+
+        public decimal? OtherAmtPaid
+        {
+            get { return _otherAmtPaid; }
+            set
+            {
+                _otherAmtPaid = value;
+                OnPropertyChanged(nameof(OtherAmtPaid));
+            }
+        }
+
+
         private decimal? _TotalPaidAmount;
-        public decimal? TotalPaidAmount
+        public decimal? TotalSantionedAmountPaid
         {
             get { return _TotalPaidAmount; }
             set
             {
                 _TotalPaidAmount = value;
-                OnPropertyChanged(nameof(TotalPaidAmount));
+                OnPropertyChanged(nameof(TotalSantionedAmountPaid));
             }
         }
 
@@ -271,21 +284,28 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 CountOfVendors = details.CountOfVendors;
                 CountOfServices = details.CountOfServices;
-                TotalPaidAmount = details.SantionedAmtPiad != null ? details.SantionedAmtPiad : 0;
+                TotalSantionedAmountPaid = details.SantionedAmtPiad != null ? details.SantionedAmtPiad : 0;
                 TotalSanctionAmount = details.TotalSanctionAmount != null ? details.TotalSanctionAmount : 0;
+                OtherAmtPaid=details.OtherAmtPaid != null ? details.OtherAmtPaid : 0;
 
                 SeriesCollectionPieChart = new SeriesCollection
                 {
                     new PieSeries
                     {
-                        Title = "Remaining Amount",
-                        Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalSanctionAmount)-Convert.ToDouble(TotalPaidAmount) )},
+                        Title = "Remaining Santioned Amount",
+                        Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalSanctionAmount)-Convert.ToDouble(TotalSantionedAmountPaid) )},
                         DataLabels = true
                     },
                     new PieSeries
                     {
-                        Title = "Amount Paid",
-                        Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalPaidAmount) )},
+                        Title = "Santioned Amount Paid",
+                        Values = new ChartValues<double> {Math.Round( Convert.ToDouble(TotalSantionedAmountPaid)) },
+                        DataLabels = true
+                    },
+                    new PieSeries
+                    {
+                        Title = "Other Amount Paid",
+                        Values = new ChartValues<double> {Math.Round( Convert.ToDouble(OtherAmtPaid) )},
                         DataLabels = true
                     }
                 };
