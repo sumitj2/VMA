@@ -3,6 +3,7 @@ using BusinessLogic.Abstraction.VMA.Models;
 using Serilog;
 using System.Collections.ObjectModel;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using VMA.Constants;
@@ -117,10 +118,16 @@ namespace VMA.MVVM.ViewModels.Add
 
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, msg1, false, true);
 
-                    _=HidePaymentNoteForm(this);
+                    _ = HidePaymentNoteForm(this);
 
                 }
-                PaymentNoteNo = PaymentNoteId + _SelectedVendorModel?.VendorId;
+                Task.Run(async () =>
+                {
+                    int countOfnotes = await _venderPaymentNotesBusinessLogic.GetAllVendorsPaymentNotesCount().ConfigureAwait(true);
+                    countOfnotes++;
+                    PaymentNoteNo = PaymentNoteId + countOfnotes;//_SelectedVendorModel?.VendorId;
+                });
+
 
             }
         }
@@ -222,7 +229,7 @@ namespace VMA.MVVM.ViewModels.Add
         public AddPaymentNotesViewModel(PaymentNotesViewModel paymentNotesViewModel, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IVendorBusinessLogic vendorBusinessLogic, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic, VenderPaymentNoteModel? editPaymentNote, IConfigurationBusinessLogic configurationBusinessLogic)
         {
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
-            
+
             _paymentNotesViewModel = paymentNotesViewModel;
             _editPaymentNote = editPaymentNote;
             if (_editPaymentNote != null)
@@ -239,7 +246,7 @@ namespace VMA.MVVM.ViewModels.Add
                 IsComboBoxServiceVisible = true;
                 IsTextBoxSelectedVendorVisible = false;
                 IsTextBoxServiceVisible = false;
-                SaveButtonName =GeneralConstants.Submit;
+                SaveButtonName = GeneralConstants.Submit;
             }
             _vendorDetailsBusinessLogic = vendorDetailsBusinessLogic;
             _vendorBusinessLogic = vendorBusinessLogic;
@@ -257,7 +264,7 @@ namespace VMA.MVVM.ViewModels.Add
             string? financialYear = allConfigurations.FirstOrDefault(x => x.Cfgkey == GeneralConstants.CFGKeyFinacialYear)?.CfgValue;
             string? noteId = allConfigurations.FirstOrDefault(x => x.Cfgkey == GeneralConstants.CFGKeyNoteID)?.CfgValue;
             PaymentNoteYear = financialYear;
-            PaymentNoteNo=PaymentNoteId = noteId+PaymentNoteNo;
+            PaymentNoteNo = PaymentNoteId = noteId + PaymentNoteNo;
         }
 
         string errorMsg = "";
@@ -265,7 +272,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             bool validData;
 
-            if ( SelectedVendorModel == null)
+            if (SelectedVendorModel == null)
             {
                 validData = false;
                 errorMsg += nameof(SelectedVendorModel);
@@ -276,7 +283,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             if (PaymentNoteDate == null)
             {
-                errorMsg +=", "+ nameof(PaymentNoteDate);
+                errorMsg += ", " + nameof(PaymentNoteDate);
 
                 validData = false;
             }
@@ -333,7 +340,7 @@ namespace VMA.MVVM.ViewModels.Add
 
                 await HidePaymentNoteForm(this);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Log.Logger.Error(ex, string.Format("Class: {0}, Method: {1} - Failed to save vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
@@ -361,10 +368,29 @@ namespace VMA.MVVM.ViewModels.Add
             if (_editPaymentNote != null)
             {
                 //PaymentNoteId = "";
-                PaymentNoteYear= _editPaymentNote.PaymentNoteYear;
-                PaymentNoteNo = _editPaymentNote.PaymentNoteNo;
+                PaymentNoteYear = _editPaymentNote.PaymentNoteYear;
+                PaymentNoteNo = IncrementNoteId(_editPaymentNote.PaymentNoteNo);
                 PaymentNoteDate = _editPaymentNote.PaymentNoteDate;
                 SelectedVendorName = VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName ?? "";
+            }
+        }
+        static string IncrementNoteId(string noteId)
+        {
+            // Regular expression to extract the numeric part
+            string pattern = @"(\d+)$";
+            var match = Regex.Match(noteId, pattern);
+
+            if (match.Success)
+            {
+                // Convert the numeric part to an integer and increment it
+                int number = int.Parse(match.Value) + 1;
+
+                // Reassemble the string with the incremented number
+                return Regex.Replace(noteId, pattern, number.ToString());
+            }
+            else
+            {
+                throw new ArgumentException("The Note ID does not contain a valid numeric part.");
             }
         }
 

@@ -25,11 +25,11 @@ namespace BusinessLogic.VMA
         {
             _venderPaymentNotesRepository = venderPaymentNotesRepository;
         }
-        public async Task CreateAndOpenWordFileForNone(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path,string vendorName)
+        public async Task CreateAndOpenWordFileForNone(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path,string vendorName,string paymentNoteNo)
         {
             if (path != null)
             {
-                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear,vendorName).ConfigureAwait(true);
+                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear,vendorName,paymentNoteNo).ConfigureAwait(true);
                 if (result == null || result?.Count == 0)
                 {
                     MessageBox.Show(MessagesContants.NoPaymentFound + string.Join(",", serviceName));
@@ -257,14 +257,14 @@ namespace BusinessLogic.VMA
             }
         }
 
-        public async Task CreateAndOpenWordFile(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName)
+        public async Task CreateAndOpenWordFile(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName,string paymentNoteNo)
         {
             if (path != null)
             {
-                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear,vendorName).ConfigureAwait(true);
+                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear,vendorName,paymentNoteNo).ConfigureAwait(true);
                 if (result == null || result?.Count == 0)
                 {
-                    MessageBox.Show(MessagesContants.NoPaymentFound + serviceName);
+                    MessageBox.Show(MessagesContants.NoPaymentFound + string.Join(",", serviceName));
                 }
                 else
                 {

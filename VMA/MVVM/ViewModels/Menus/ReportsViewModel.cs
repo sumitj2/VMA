@@ -174,7 +174,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
                 if (SelectedVendorModel != null)
                 {
-                    _=ClearForm(null);
+                    _ = ClearForm(null);
                     OnPropertyChanged(nameof(SelectedVendorModel));
                     BeforeInvocie += " " + SelectedVendorModel.VendorName;
                     AfterInvoice += " " + SelectedVendorModel.VendorName;
@@ -217,14 +217,16 @@ namespace VMA.MVVM.ViewModels.Menus
 
         #endregion
 
+        public readonly IVenderPaymentNotesBusinessLogic _venderPaymentNotesBusinessLogic;
         public readonly IReportExportToExcelPaymentNote _reportExportToExcelPaymentNote;
         public readonly IVendorBusinessLogic _vendorBusinessLogic;
         public readonly IVendorDetailsBusinessLogic _vendorDetailsBusinessLogic;
         public readonly IConfigurationBusinessLogic _configurationBusinessLogic;
         public readonly IPaymentNoteInWord _paymentNoteInWord;
         public readonly IYearlyMonthlyReportPDF _yearlyReportPDF;
-        public ReportsViewModel(IReportExportToExcelPaymentNote reportExportToExcelPaymentNote, IVendorBusinessLogic vendorBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord, IYearlyMonthlyReportPDF yearlyReportPDF)
+        public ReportsViewModel(IReportExportToExcelPaymentNote reportExportToExcelPaymentNote, IVendorBusinessLogic vendorBusinessLogic, IVendorDetailsBusinessLogic vendorDetailsBusinessLogic, IConfigurationBusinessLogic configurationBusinessLogic, IPaymentNoteInWord paymentNoteInWord, IYearlyMonthlyReportPDF yearlyReportPDF, IVenderPaymentNotesBusinessLogic venderPaymentNotesBusinessLogic)
         {
+            _venderPaymentNotesBusinessLogic = venderPaymentNotesBusinessLogic;
             IsPaymentTypeNo = true;
             Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the constructor", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             To = MessagesContants.ReportTo;
@@ -253,7 +255,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 BeforeInvocie = "";
                 AfterInvoice = "";
                 NoteGenerationDate = DateOnly.MinValue;
-              //  IsPaymentTypeNo = true;
+                //  IsPaymentTypeNo = true;
             });
         }
 
@@ -289,15 +291,16 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             else
             {
-                if (SelectedVendorDetailService?.VendorServiceName != null|| !IsPaymentTypeYes)
+                if (SelectedVendorDetailService?.VendorServiceName != null || !IsPaymentTypeYes)
                 {
-                    if (IsPaymentTypeYes) 
+                    var paymentNoteNo = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorId(Convert.ToInt32(SelectedVendorModel?.VendorId));
+                    if (IsPaymentTypeYes)
                     {
-                        await _paymentNoteInWord.CreateAndOpenWordFile(  VendorServiceDetails?.Select(x=>x.VendorServiceName).ToList(), From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord,SelectedVendorModel.VendorName).ConfigureAwait(true);
+                        await _paymentNoteInWord.CreateAndOpenWordFile(VendorServiceDetails?.Select(x => x.VendorServiceName).ToList(), From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo).ConfigureAwait(true);
                     }
                     else
                     {
-                        await _paymentNoteInWord.CreateAndOpenWordFile(new List<string>() { SelectedVendorDetailService.VendorServiceName }, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord,SelectedVendorName).ConfigureAwait(true);
+                        await _paymentNoteInWord.CreateAndOpenWordFile(new List<string>() { SelectedVendorDetailService.VendorServiceName }, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, null).ConfigureAwait(true);
                     }
                 }
                 else

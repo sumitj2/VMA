@@ -24,12 +24,8 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdateVendorPaymentNotes(VendorPaymentNote VenderPaymentNoteEntity)
         {
-            var result = await GetVendorsPaymentNoteByIVendorId(VenderPaymentNoteEntity.NoteId);
-            if (result != null)
-            {
-                _context.VendorPaymentNotes.Update(result);
-                await _context.SaveChangesAsync();
-            }
+            _context.VendorPaymentNotes.Update(VenderPaymentNoteEntity);
+            await _context.SaveChangesAsync();
         }
         public async Task<List<PaymentNotesWithInvoiceServiceDetails>> GetAllPaymentDetailsWithServiceDetails()
         {
@@ -105,7 +101,7 @@ namespace Database.VMA.Repositories
 
         }
 
-        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(List<string> serviceNameList, string? financialYear,string vendorName)
+        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(List<string> serviceNameList, string? financialYear, string vendorName,string paymentNoteNo)
         {
             var productsWithVendors = from payment in _context.VendorPayments
                                       join details in _context.VendorDetails
@@ -121,7 +117,8 @@ namespace Database.VMA.Repositories
                                       where payment.IsActive == true &&
                                             serviceNameList.Contains(service.VendorServiceName) &&
                                             vendor.VendorName == vendorName &&
-                                            payment.PaymentYear == financialYear
+                                            payment.PaymentYear == financialYear &&
+                                            (paymentNoteNo == null || paymentNote.PaymentNoteNo == paymentNoteNo)
                                       select new CreateWordDocumentPaymentNote
                                       {
                                           VendorServiceName = service.VendorServiceName,
@@ -152,12 +149,19 @@ namespace Database.VMA.Repositories
                                                      (payment.VendorPaymentCgst ?? 0),
                                           UTRNo = payment.VendorPaymentUtrnumber
                                       };
+
+            return await productsWithVendors.ToListAsync();
+
             return await productsWithVendors.ToListAsync();
 
         }
         public async Task<IEnumerable<VendorPaymentNote>> GetAllVendorsPaymentNotes()
         {
             return await _context.VendorPaymentNotes.Where(x => x.IsActive == true).ToListAsync();
+        }
+        public async Task<int> GetAllVendorsPaymentNotesCount()
+        {
+            return await _context.VendorPaymentNotes.Where(x => x.IsActive == true).CountAsync();
         }
         public async Task<VendorPaymentNote?> GetVendorsPaymentNoteByIVendorId(int? vendorId)
         {

@@ -22,7 +22,7 @@ namespace Database.VMA.Repositories
                 CreatedBy = paymentNotesModel.CreatedBy,
                 CreatedDate = DateTime.Now,
                 IsActive = paymentNotesModel.IsActive,
-                NoteId = paymentNotesModel.NoteId,
+                //NoteId = paymentNotesModel.NoteId,
                 PaymentNoteDate = paymentNotesModel.PaymentNoteDate,
                 PaymentNoteNo = paymentNotesModel.PaymentNoteNo,
                 FkVendorId = paymentNotesModel.FkVendorId,
@@ -32,8 +32,9 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdatePaymentNotes(VenderPaymentNoteModel paymentNotesModel)
         {
-            var paymentNotesEntity = await _venderPaymentNotesRepository.GetVendorsPaymentNoteByIVendorId(paymentNotesModel?.NoteId);
+            var paymentNotesEntity = await _venderPaymentNotesRepository.GetVendorsPaymentNoteByIVendorId(paymentNotesModel?.FkVendorId);
 
+            //make inactive
             if (paymentNotesEntity != null)
             {
                 paymentNotesEntity.LastUpdateBy = paymentNotesModel?.LastUpdateBy;
@@ -44,8 +45,15 @@ namespace Database.VMA.Repositories
                 paymentNotesEntity.NoteId = paymentNotesModel!.NoteId;
                 paymentNotesEntity.FkVendorId = paymentNotesModel.FkVendorId;
                 paymentNotesEntity.PaymentNoteYear = paymentNotesModel?.PaymentNoteYear;
-                await _venderPaymentNotesRepository.EditUpdateVendorPaymentNotes(paymentNotesEntity);
+                paymentNotesEntity.IsActive = false;
+                await _venderPaymentNotesRepository.EditUpdateVendorPaymentNotes(paymentNotesEntity).ConfigureAwait(true);
             }
+            //add fresh entry
+            await AddPaymentNotes(paymentNotesModel);
+        }
+        public async Task<int> GetAllVendorsPaymentNotesCount() 
+        {
+            return await _venderPaymentNotesRepository.GetAllVendorsPaymentNotesCount();
         }
         public async Task<IEnumerable<VenderPaymentNoteModel>> GetAllPaymentNotes()
         {

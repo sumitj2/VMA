@@ -205,7 +205,7 @@ namespace VMA.MVVM.ViewModels
         {
             try
             {
-                CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote, _vendorBusinessLogic, _vendorDetailsBusinessLogic, _configurationBusinessLogic, _paymentNoteInWord, _yearlyMonthlyReportPDF);
+                CurrentChildView = new ReportsViewModel(_reportExportToExcelPaymentNote, _vendorBusinessLogic, _vendorDetailsBusinessLogic, _configurationBusinessLogic, _paymentNoteInWord, _yearlyMonthlyReportPDF,_venderPaymentNotesBusinessLogic);
                 Caption = MessagesContants.CaptionReports;
                 Icon = IconChar.File;
             }
