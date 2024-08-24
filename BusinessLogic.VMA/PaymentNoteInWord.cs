@@ -25,11 +25,11 @@ namespace BusinessLogic.VMA
         {
             _venderPaymentNotesRepository = venderPaymentNotesRepository;
         }
-        public async Task CreateAndOpenWordFileForNone(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path,string vendorName,string paymentNoteNo)
+        public async Task CreateAndOpenWordFileForNone(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName, string paymentNoteNo)
         {
             if (path != null)
             {
-                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear,vendorName,paymentNoteNo).ConfigureAwait(true);
+                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear, vendorName, paymentNoteNo).ConfigureAwait(true);
                 if (result == null || result?.Count == 0)
                 {
                     MessageBox.Show(MessagesContants.NoPaymentFound + string.Join(",", serviceName));
@@ -161,6 +161,15 @@ namespace BusinessLogic.VMA
                           new TableCell(new Paragraph(new Run(new Text("Amount "))))
                         );
                         tableInvocie.Append(rowInvoice);
+
+
+                        TableRow rowHeaderMege = new TableRow();
+                        TableCell mergedCellInvoice = new TableCell(new TableCellProperties(new GridSpan() { Val = 9 }));
+                        mergedCellInvoice.Append(new Paragraph(new Run(new Text("Bill for month of "))));
+                        rowHeaderMege.Append(mergedCellInvoice);
+
+                        tableInvocie.Append(rowHeaderMege);
+
                         int srNo = 1;
                         if (result != null)
                         {
@@ -257,11 +266,11 @@ namespace BusinessLogic.VMA
             }
         }
 
-        public async Task CreateAndOpenWordFile(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName,string paymentNoteNo)
+        public async Task CreateAndOpenWordFile(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName, string paymentNoteNo)
         {
             if (path != null)
             {
-                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear,vendorName,paymentNoteNo).ConfigureAwait(true);
+                var result = await _venderPaymentNotesRepository.GetAllServicePayments(serviceName, financilaYear, vendorName, paymentNoteNo).ConfigureAwait(true);
                 if (result == null || result?.Count == 0)
                 {
                     MessageBox.Show(MessagesContants.NoPaymentFound + string.Join(",", serviceName));
@@ -291,13 +300,20 @@ namespace BusinessLogic.VMA
                         runPropertiesheading.Append(paragraphBold1);
                         runPropertiesheading.Append(paragraphFontSize1);
 
+                        ParagraphProperties paragraphProperties = new ParagraphProperties();
+                        Justification justification = new Justification() { Val = JustificationValues.Center };
+                        paragraphProperties.Append(justification);
+
+                        // Apply the properties to the paragraph.
+                        headingParagraph.Append(paragraphProperties);
+
                         headingRun.Append(new Text("Thane Bharat Sahakari Bank Ltd"));
                         headingParagraph.Append(headingRun);
                         body.Append(headingParagraph);
                         headingRun.PrependChild(runPropertiesheading);
 
                         // Add the subheading.
-                        Paragraph subheadingParagraph = new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Left }));
+                        Paragraph subheadingParagraph = new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Right }));
                         Run subheadingRun = new Run(new RunProperties(new FontSize() { Val = "18" }));
                         subheadingRun.Append(new Text("(Scheduled Bank)"));
                         subheadingParagraph.Append(subheadingRun);
@@ -341,7 +357,7 @@ namespace BusinessLogic.VMA
 
                         TableRow rowHeader4 = new TableRow();
                         rowHeader4.Append(
-                            new TableCell(new Paragraph(new Run(new Text("Date :" + DateTime.Now)))),//Row 2, Cell 1
+                            new TableCell(new Paragraph(new Run(new Text("Date :" + DateTime.Now.ToShortDateString())))),//Row 2, Cell 1
                             new TableCell(new Paragraph(new Run(new Text("Pay Note : " + result?.FirstOrDefault()?.PaymentNoteNo))))
 
                         );
@@ -385,19 +401,26 @@ namespace BusinessLogic.VMA
                           new TableCell(new Paragraph(new Run(new Text("SrNo ")))),
                           new TableCell(new Paragraph(new Run(new Text("Invoice No")))),
                           new TableCell(new Paragraph(new Run(new Text("Date ")))),
-                          new TableCell(new Paragraph(new Run(new Text("Description")))),
-                          new TableCell(new Paragraph(new Run(new Text("Qty ")))),
-                          new TableCell(new Paragraph(new Run(new Text("Rate")))),
-                          new TableCell(new Paragraph(new Run(new Text("Amount ")))),
-                          new TableCell(new Paragraph(new Run(new Text("18% GST")))),
+                          new TableCell(new Paragraph(new Run(new Text("Sub Total")))),
+                          new TableCell(new Paragraph(new Run(new Text("CGST ")))),
+                          new TableCell(new Paragraph(new Run(new Text("SGST")))),
+                          new TableCell(new Paragraph(new Run(new Text("IGST")))),
                           new TableCell(new Paragraph(new Run(new Text("Amount "))))
                         );
+
+
+                        TableRow rowHeaderMege = new TableRow();
+                        TableCell mergedCellInvoice = new TableCell(new TableCellProperties(new GridSpan() { Val = 9 }));
+                        mergedCellInvoice.Append(new Paragraph(new Run(new Text("Bill for month of "))));
+                        rowHeaderMege.Append(mergedCellInvoice);
+
                         tableInvocie.Append(rowInvoice);
+                        tableInvocie.Append(rowHeaderMege);
                         int srNo = 1;
-                        decimal totalAmountPaid=0;
+                        decimal totalAmountPaid = 0;
                         if (result != null)
                         {
-                            
+
                             foreach (var invoice in result)
                             {
                                 TableRow rowInvoice1 = new();
@@ -405,12 +428,11 @@ namespace BusinessLogic.VMA
                                 (
                                   new TableCell(new Paragraph(new Run(new Text(srNo.ToString())))),
                                   new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceNumber ?? "")))),
-                                  new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceDate.ToString() ?? "")))),
-                                  new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceParticulars ?? "")))),
-                                  new TableCell(new Paragraph(new Run(new Text(invoice?.QuantityOfUnit.ToString() ?? "")))),
-                                  new TableCell(new Paragraph(new Run(new Text(invoice?.RatePerUnit ?? "")))),
+                                  new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceDate.Value.ToShortDateString().ToString() ?? "")))),
                                   new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentAmount.ToString() ?? "")))),
-                                  new TableCell(new Paragraph(new Run(new Text(invoice?.TotalGST.ToString() ?? "")))),
+                                  new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentCgst.ToString() ?? "")))),
+                                  new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentSgst.ToString() ?? "")))),
+                                  new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentIgst.ToString() ?? "")))),
                                   new TableCell(new Paragraph(new Run(new Text(invoice?.TotalAmountPaid.ToString() ?? ""))))
                                 );
                                 srNo++;
@@ -420,7 +442,6 @@ namespace BusinessLogic.VMA
                             TableRow rowInvoice2 = new();
                             rowInvoice2.Append
                                  (
-                                   new TableCell(new Paragraph(new Run(new Text()))),
                                    new TableCell(new Paragraph(new Run(new Text()))),
                                    new TableCell(new Paragraph(new Run(new Text()))),
                                    new TableCell(new Paragraph(new Run(new Text()))),
@@ -469,7 +490,7 @@ namespace BusinessLogic.VMA
                             new TableCell(new Paragraph(new Run(new Text("UTR No: ")))),
                             new TableCell(new Paragraph(new Run(new Text(result.Count() != 0 ? result?.FirstOrDefault().VendorPaymentUtrnumber : null)))),
                             new TableCell(new Paragraph(new Run(new Text("Amount: ")))),
-                            new TableCell(new Paragraph(new Run(new Text(" "))))
+                            new TableCell(new Paragraph(new Run(new Text(totalAmountPaid.ToString()))))
                             );
                         tableFooter.Append(rowFooter1);
                         //subject 
@@ -483,13 +504,14 @@ namespace BusinessLogic.VMA
                             );
                         tableFooter.Append(rowFooter2);
 
+                        decimal amtPaid =Convert.ToDecimal( totalAmountPaid) - Convert.ToDecimal(result?.FirstOrDefault()?.VendorPaymentTdsamount);
                         TableRow row2 = new TableRow();
                         row2.Append
                             (
                             new TableCell(new Paragraph(new Run(new Text("      ")))),
                             new TableCell(new Paragraph(new Run(new Text("      ")))),
                             new TableCell(new Paragraph(new Run(new Text("Total Amount Paid")))),
-                            new TableCell(new Paragraph(new Run(new Text("      "))))
+                            new TableCell(new Paragraph(new Run(new Text(amtPaid.ToString()))))
                             );
                         tableFooter.Append(row2);
 

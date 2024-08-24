@@ -147,13 +147,13 @@ namespace Database.VMA.Repositories
                                           TotalGST = (payment.VendorPaymentIgst ?? 0) +
                                                      (payment.VendorPaymentSgst ?? 0) +
                                                      (payment.VendorPaymentCgst ?? 0),
-                                          UTRNo = payment.VendorPaymentUtrnumber
+                                          UTRNo = payment.VendorPaymentUtrnumber,
+                                          VendorPaymentCgst = payment.VendorPaymentCgst,
+                                          VendorPaymentIgst = payment.VendorPaymentIgst,
+                                          VendorPaymentSgst = payment.VendorPaymentSgst,
                                       };
 
             return await productsWithVendors.ToListAsync();
-
-            return await productsWithVendors.ToListAsync();
-
         }
         public async Task<IEnumerable<VendorPaymentNote>> GetAllVendorsPaymentNotes()
         {
