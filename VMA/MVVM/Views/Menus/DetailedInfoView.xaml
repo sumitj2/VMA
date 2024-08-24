@@ -103,6 +103,7 @@
                 CornerRadius="10" 
                 Padding="10">
             <DataGrid 
+                FrozenColumnCount="1"
                 Style="{DynamicResource DataGridStyle1}" 
                 CellStyle="{DynamicResource DataGridCellStyle1}" 
                 ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
@@ -123,7 +124,7 @@
                     <DataGridTextColumn Header="Payment Type" Binding="{Binding ServicePaymentType}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Rate/Unit" Binding="{Binding RatePerUnit}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Quantity of Units" Binding="{Binding QuantityOfUnit}" IsReadOnly="True" Width="auto"/>                   
-                    <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                    <DataGridTemplateColumn Header="Operations" DisplayIndex="0" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

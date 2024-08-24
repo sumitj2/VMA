@@ -103,6 +103,7 @@
                 CornerRadius="10" 
                 Padding="10">
             <DataGrid 
+                FrozenColumnCount="1"
                 Style="{DynamicResource DataGridStyle1}" 
                 CellStyle="{DynamicResource DataGridCellStyle1}" 
                 ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" 
@@ -128,7 +129,7 @@
                     <DataGridTextColumn Header="Invoice Number" Binding="{Binding InvoiceNumber}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Invoice Date" Binding="{Binding InvoiceDate}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Invoice Particular" Binding="{Binding InvoiceParticulars}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                    <DataGridTemplateColumn Header="Operations" DisplayIndex="0" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

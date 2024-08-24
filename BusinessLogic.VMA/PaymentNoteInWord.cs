@@ -279,7 +279,7 @@ namespace BusinessLogic.VMA
                 {
                     string? location = path + "\\" + vendorName + "_PaymentNote.docx";
                     // Ensure the directory exists
-                    Directory.CreateDirectory(Path.GetDirectoryName(location));
+                    DirectoryInfo directoryInfo = Directory.CreateDirectory(Path.GetDirectoryName(location)??"");
 
                     // Create and save the Word document
                     using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(location, WordprocessingDocumentType.Document))
@@ -543,12 +543,12 @@ namespace BusinessLogic.VMA
             TableProperties tableProperties = new TableProperties(
                 new TableWidth() { Width = "10000", Type = TableWidthUnitValues.Dxa },
                 new TableBorders(
-                    new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
-                    new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
-                    new LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
-                    new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
-                    new InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 },
-                    new InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 4 }
+                    new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                    new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                    new LeftBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                    new RightBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                    new InsideHorizontalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 },
+                    new InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.Single), Size = 5 }
                 )
             );
             table.AppendChild(tableProperties);
