@@ -16,7 +16,7 @@ public partial class VenderPaymentNoteModel
 
     public string PaymentNoteNo { get; set; } = null!;
 
-    public DateTime PaymentNoteDate { get; set; }
+    public string PaymentNoteDate { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 

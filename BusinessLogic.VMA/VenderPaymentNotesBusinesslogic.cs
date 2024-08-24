@@ -23,7 +23,7 @@ namespace Database.VMA.Repositories
                 CreatedDate = DateTime.Now,
                 IsActive = paymentNotesModel.IsActive,
                 //NoteId = paymentNotesModel.NoteId,
-                PaymentNoteDate = paymentNotesModel.PaymentNoteDate,
+                PaymentNoteDate = Convert.ToDateTime(paymentNotesModel.PaymentNoteDate),
                 PaymentNoteNo = paymentNotesModel.PaymentNoteNo,
                 FkVendorId = paymentNotesModel.FkVendorId,
                 PaymentNoteYear = paymentNotesModel.PaymentNoteYear
@@ -51,7 +51,7 @@ namespace Database.VMA.Repositories
             //add fresh entry
             await AddPaymentNotes(paymentNotesModel);
         }
-        public async Task<int> GetAllVendorsPaymentNotesCount() 
+        public async Task<int> GetAllVendorsPaymentNotesCount()
         {
             return await _venderPaymentNotesRepository.GetAllVendorsPaymentNotesCount();
         }
@@ -71,7 +71,7 @@ namespace Database.VMA.Repositories
                         LastUpdateBy = paymentNote.LastUpdateBy,
                         LastUpdatedDate = paymentNote.LastUpdatedDate,
                         PaymentNoteNo = paymentNote.PaymentNoteNo,
-                        PaymentNoteDate = paymentNote.PaymentNoteDate,
+                        PaymentNoteDate = paymentNote.PaymentNoteDate.ToShortDateString(),
                         NoteId = paymentNote.NoteId,
                         VendorId = paymentNote.VendorId,
                         VendorName = paymentNote.VendorName,
@@ -97,7 +97,7 @@ namespace Database.VMA.Repositories
                     LastUpdateBy = repositoryResult?.LastUpdateBy,
                     LastUpdatedDate = repositoryResult?.LastUpdatedDate,
                     NoteId = repositoryResult!.NoteId,
-                    PaymentNoteDate = repositoryResult.PaymentNoteDate,
+                    PaymentNoteDate = repositoryResult.PaymentNoteDate.ToShortDateString(),
                     PaymentNoteNo = repositoryResult.PaymentNoteNo,
                     PaymentNoteYear = repositoryResult.PaymentNoteYear
                 };

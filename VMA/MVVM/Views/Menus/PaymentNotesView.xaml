@@ -114,7 +114,7 @@
                     <DataGridTextColumn Header="Vendor Name" Binding="{Binding  VendorName}" IsReadOnly="True" Width="auto"/>
                     <DataGridTextColumn Header="Service Name" Binding="{Binding VendorServiceName}" IsReadOnly="True" Width="auto"/>                    
                     <DataGridTextColumn Header="Payment Note No" Binding="{Binding PaymentNoteNo}" IsReadOnly="True" Width="auto"/>
-                    <DataGridTextColumn Header="Payment Note Date" Binding="{Binding PaymentNoteDate.Date}" IsReadOnly="True" Width="auto"/>                  
+                    <DataGridTextColumn Header="Payment Note Date" Binding="{Binding PaymentNoteDate}" IsReadOnly="True" Width="auto"/>                  
                     <DataGridTemplateColumn Header="Operations" DisplayIndex="0" IsReadOnly="True" Width="auto">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
