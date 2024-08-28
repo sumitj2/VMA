@@ -307,7 +307,7 @@ namespace VMA.MVVM.ViewModels.Add
                         LastUpdateBy = UserAccountModel.Username,
                         IsActive = true,
                         PaymentNoteNo = PaymentNoteNo ?? "",
-                        PaymentNoteDate =PaymentNoteDate.ToString(),
+                        PaymentNoteDate = PaymentNoteDate.ToString(),
                         NoteId = _editPaymentNote?.NoteId.Value,
                         FkVendorId = _editPaymentNote?.VendorId,
                         PaymentNoteYear = PaymentNoteYear
@@ -365,11 +365,13 @@ namespace VMA.MVVM.ViewModels.Add
 
         private async Task PopulateValues()
         {
+            var countOfnotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
+            var lastPaymentNote= countOfnotes?.OrderByDescending(x => x.PaymentNoteNo)?.ToList()?.FirstOrDefault()?.PaymentNoteNo;
             if (_editPaymentNote != null)
             {
                 //PaymentNoteId = "";
                 PaymentNoteYear = _editPaymentNote.PaymentNoteYear;
-                PaymentNoteNo = IncrementNoteId(_editPaymentNote.PaymentNoteNo);
+                PaymentNoteNo = lastPaymentNote != null ? IncrementNoteId(lastPaymentNote) : IncrementNoteId(_editPaymentNote.PaymentNoteNo);
                 PaymentNoteDate = Convert.ToDateTime(_editPaymentNote.PaymentNoteDate);
                 SelectedVendorName = VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName ?? "";
             }

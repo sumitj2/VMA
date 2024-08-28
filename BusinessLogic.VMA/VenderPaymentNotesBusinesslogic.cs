@@ -36,15 +36,7 @@ namespace Database.VMA.Repositories
 
             //make inactive
             if (paymentNotesEntity != null)
-            {
-                paymentNotesEntity.LastUpdateBy = paymentNotesModel?.LastUpdateBy;
-                paymentNotesEntity.LastUpdatedDate = paymentNotesModel?.LastUpdatedDate;
-                paymentNotesEntity.IsActive = paymentNotesModel?.IsActive;
-                paymentNotesEntity.PaymentNoteNo = paymentNotesModel?.PaymentNoteNo != null ? paymentNotesModel.PaymentNoteNo : "";
-                paymentNotesEntity.PaymentNoteDate = Convert.ToDateTime(paymentNotesModel?.PaymentNoteDate);
-                paymentNotesEntity.NoteId = paymentNotesModel!.NoteId;
-                paymentNotesEntity.FkVendorId = paymentNotesModel.FkVendorId;
-                paymentNotesEntity.PaymentNoteYear = paymentNotesModel?.PaymentNoteYear;
+            {                
                 paymentNotesEntity.IsActive = false;
                 await _venderPaymentNotesRepository.EditUpdateVendorPaymentNotes(paymentNotesEntity).ConfigureAwait(true);
             }

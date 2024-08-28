@@ -428,7 +428,7 @@ namespace BusinessLogic.VMA
                                 (
                                   new TableCell(new Paragraph(new Run(new Text(srNo.ToString())))),
                                   new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceNumber ?? "")))),
-                                  new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceDate.Value.ToShortDateString().ToString() ?? "")))),
+                                  new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceDate!=null?invoice?.InvoiceDate.Value.ToShortDateString().ToString() ?? "":"")))),
                                   new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentAmount.ToString() ?? "")))),
                                   new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentCgst.ToString() ?? "")))),
                                   new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentSgst.ToString() ?? "")))),
