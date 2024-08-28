@@ -119,10 +119,9 @@
                                                Style="{StaticResource FormTextBlock}"/>
 
                                     <DatePicker Name="paymentNoteDate" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left"
-                                                Text="{Binding  PaymentNoteDate ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Height="29" Width="250"/>
-
-
-
+                                                Text="{Binding  PaymentNoteDate ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Height="29" Width="250"
+                                                SelectedDateFormat="Short"
+                                                Language="en-IN"/>
                                 </Grid>
 
                             </StackPanel>

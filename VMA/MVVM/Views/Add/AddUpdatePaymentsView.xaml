@@ -149,7 +149,9 @@ BorderThickness="0"
                                            Style="{StaticResource FormTextBlock}"/>
 
                                     <DatePicker x:Name="paymentDate"
-                                         Text="{Binding VendorPaymentDate ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="353"/>
+                                         Text="{Binding VendorPaymentDate ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="353"
+                                                SelectedDateFormat="Short"
+                                                Language="en-IN"/>
 
                                     <TextBlock Text="Total Amount Paid(Non-taxable)"
                                                Style="{StaticResource FormTextBlock}"/>
@@ -326,7 +328,9 @@ BorderThickness="0"
 
 
                                     <DatePicker Name="invoiceDate"
-                                                Text="{Binding  InvoiceDate ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="359"/>
+                                                Text="{Binding  InvoiceDate ,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="359"
+                                                SelectedDateFormat="Short"
+                                                Language="en-IN"/>
 
                                     <TextBlock Text="Invoice Particular"
                                                 Style="{StaticResource FormTextBlock}"/>
@@ -362,7 +366,8 @@ BorderThickness="0"
 
                                     <DatePicker x:Name="RTGSDate" 
                                                     Text="{Binding VendorPaymentRtgsDate ,UpdateSourceTrigger=PropertyChanged,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361"                                         
-                                                    />
+                                                    SelectedDateFormat="Short"
+                                                    Language="en-IN"/>
 
                                     <TextBlock Text="RTGS Amount"
                                                    Style="{StaticResource FormTextBlock}"
