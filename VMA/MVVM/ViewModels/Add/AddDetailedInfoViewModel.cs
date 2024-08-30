@@ -925,7 +925,7 @@ namespace VMA.MVVM.ViewModels.Add
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loading vendors", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
-                VendorModels = new ObservableCollection<VendorModel>(vendors);
+                VendorModels = new ObservableCollection<VendorModel>(vendors.ToList().OrderBy(x => x.VendorName));
 
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loaded vendors", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }

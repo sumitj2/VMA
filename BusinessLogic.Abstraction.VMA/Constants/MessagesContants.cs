@@ -52,7 +52,7 @@
         public const string ErrorOpeningFile = "Error opening file: ";
         public const string NoPaymentFound="No Payment found for ";
 
-
+        public const string FIlePresent = "Delete/Rename old file in order to generate new file";
         public const string YearlyReport = "Yearly Vendor Service Report";
 
         public const string FileNotFound = "File not found.";

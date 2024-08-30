@@ -296,11 +296,11 @@ namespace VMA.MVVM.ViewModels.Menus
                     var paymentNoteNo = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorId(Convert.ToInt32(SelectedVendorModel?.VendorId));
                     if (IsPaymentTypeYes)
                     {
-                        await _paymentNoteInWord.CreateAndOpenWordFile(VendorServiceDetails?.Select(x => x.VendorServiceName).ToList(), From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo).ConfigureAwait(true);
+                        await _paymentNoteInWord.CreateAndOpenWordFile(VendorServiceDetails?.Select(x => x.VendorServiceName).ToList(), From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " , _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo).ConfigureAwait(true);
                     }
                     else
                     {
-                        await _paymentNoteInWord.CreateAndOpenWordFile(new List<string>() { SelectedVendorDetailService.VendorServiceName }, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " + To, _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo).ConfigureAwait(true);
+                        await _paymentNoteInWord.CreateAndOpenWordFile(new List<string>() { SelectedVendorDetailService.VendorServiceName }, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " , _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo).ConfigureAwait(true);
                     }
                 }
                 else
@@ -330,7 +330,7 @@ namespace VMA.MVVM.ViewModels.Menus
         private async Task LoadVendors()
         {
             var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
-            VendorModels = new ObservableCollection<VendorModel>(vendors);
+            VendorModels = new ObservableCollection<VendorModel>(vendors.ToList().OrderBy(x => x.VendorName));
         }
         private async Task LoadVendorServiceDetails(int vendorId)
         {

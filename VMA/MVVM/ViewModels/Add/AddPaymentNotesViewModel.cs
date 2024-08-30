@@ -123,9 +123,17 @@ namespace VMA.MVVM.ViewModels.Add
                 }
                 Task.Run(async () =>
                 {
-                    int countOfnotes = await _venderPaymentNotesBusinessLogic.GetAllVendorsPaymentNotesCount().ConfigureAwait(true);
-                    countOfnotes++;
-                    PaymentNoteNo = PaymentNoteId + countOfnotes;//_SelectedVendorModel?.VendorId;
+                    
+                    var countOfnotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
+                    var lastPaymentNote = countOfnotes?.OrderByDescending(x => x.PaymentNoteNo)?.ToList()?.FirstOrDefault()?.PaymentNoteNo;
+                    if (lastPaymentNote != null)
+                    {
+                        PaymentNoteNo = PaymentNoteId + GetIncrementNoteId(lastPaymentNote);//_SelectedVendorModel?.VendorId;
+                    }
+                    else
+                    {
+                        PaymentNoteNo = PaymentNoteId + 1;
+                    }
                 });
 
 
@@ -395,6 +403,25 @@ namespace VMA.MVVM.ViewModels.Add
                 throw new ArgumentException("The Note ID does not contain a valid numeric part.");
             }
         }
+        static int GetIncrementNoteId(string noteId)
+        {
+            // Regular expression to extract the numeric part
+            string pattern = @"(\d+)$";
+            var match = Regex.Match(noteId, pattern);
+
+            if (match.Success)
+            {
+                // Convert the numeric part to an integer and increment it
+                int number = int.Parse(match.Value) + 1;
+
+                // Reassemble the string with the incremented number
+                return number;
+            }
+            else
+            {
+                throw new ArgumentException("The Note ID does not contain a valid numeric part.");
+            }
+        }
 
         #region Combobox load vendors and services on combo box selection 
 
@@ -415,7 +442,7 @@ namespace VMA.MVVM.ViewModels.Add
         private async Task LoadVendors()
         {
             var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
-            VendorModels = new ObservableCollection<VendorModel>(vendors);
+            VendorModels = new ObservableCollection<VendorModel>(vendors.ToList().OrderBy(x=>x.VendorName));
         }
 
         #endregion

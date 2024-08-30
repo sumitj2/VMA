@@ -1032,7 +1032,7 @@ namespace VMA.MVVM.ViewModels.Add
         private async Task LoadVendors()
         {
             var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
-            VendorModels = new ObservableCollection<VendorModel>(vendors);
+            VendorModels = new ObservableCollection<VendorModel>(vendors.ToList().OrderBy(x => x.VendorName));
         }
 
         #endregion

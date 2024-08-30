@@ -57,7 +57,7 @@ namespace VMA
             services.AddSingleton<IVendorPaymentRepository, VendorPaymentRepository>();
 
             services.AddSingleton<IVenderPaymentNotesBusinessLogic, VenderPaymentNotesBusinesslogic>();
-            services.AddSingleton<IVenderPaymentNotesRepository, VenderPaymentNotesRepository>();
+            services.AddScoped<IVenderPaymentNotesRepository, VenderPaymentNotesRepository>();
 
             services.AddSingleton<IInvoiceDetailsBusinessLogic, InvoiceDetailsBusinessLogic>();
             services.AddSingleton<IInvoiceDetailsRepository, InvoiceDetailsRepository>();
