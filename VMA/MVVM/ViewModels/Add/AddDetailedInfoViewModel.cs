@@ -550,6 +550,7 @@ namespace VMA.MVVM.ViewModels.Add
                 new(){NameSearch=GeneralConstants.PaymentTypeHalfYearly,SearchId=3},
                 new(){NameSearch=GeneralConstants.PaymentTypeYearly,SearchId=4},
                 new(){NameSearch=GeneralConstants.PaymentTypeNone,SearchId=5},
+                new(){NameSearch=GeneralConstants.PaymentTypeNoneWithSantionedAmt,SearchId=6}
             ];
 
             _vendorDetailViewModel = vendorDetailViewModel;

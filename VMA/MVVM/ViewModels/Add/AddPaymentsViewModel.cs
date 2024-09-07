@@ -401,8 +401,21 @@ namespace VMA.MVVM.ViewModels.Add
             get { return _vendorPaymentTotalAmountPaid; }
             set
             {
-                _vendorPaymentTotalAmountPaid = value;
+                _vendorPaymentTotalAmountPaid = CustomRound(Convert.ToDecimal(value));
                 OnPropertyChanged(nameof(VendorPaymentTotalAmountPaid));
+            }
+        }
+        decimal CustomRound(decimal number)
+        {
+            decimal fractionalPart = number - Math.Floor(number);
+
+            if (fractionalPart >= 0.5m)
+            {
+                return Math.Ceiling(number); // Round up to the next integer
+            }
+            else
+            {
+                return number; // Return the original number unchanged
             }
         }
 
@@ -1010,7 +1023,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             else
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.PaymentNoteAlert, true,true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.PaymentNoteAlert, true, true);
 
             }
         }
