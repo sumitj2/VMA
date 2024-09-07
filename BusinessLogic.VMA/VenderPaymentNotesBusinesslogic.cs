@@ -41,6 +41,7 @@ namespace Database.VMA.Repositories
                 await _venderPaymentNotesRepository.EditUpdateVendorPaymentNotes(paymentNotesEntity).ConfigureAwait(true);
             }
             //add fresh entry
+            paymentNotesModel.LastUpdatedDate=DateTime.Now;
             await AddPaymentNotes(paymentNotesModel);
         }
         public async Task<int> GetAllVendorsPaymentNotesCount()
@@ -74,7 +75,7 @@ namespace Database.VMA.Repositories
                     });
                 }
             }
-            return paymentNoteModel;
+            return paymentNoteModel.OrderBy(x=>x.PaymentNoteNo);
         }
         public async Task<VenderPaymentNoteModel?> GetPaymentNoteByVendorId(int vendorId)
         {

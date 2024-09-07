@@ -26,7 +26,7 @@ namespace VMA.Constants
         public const string PaymentTypeQuarterly = "Quarterly";
         public const string PaymentTypeHalfYearly = "Half Yearly";
         public const string PaymentTypeNone = "None";
-        public const string PaymentTypeNoneWithSantionedAmt = "NoneSantionedAmount";
+        public const string PaymentTypeNoneWithSantionedAmt = "None With Santioned Amount";
 
 
     }

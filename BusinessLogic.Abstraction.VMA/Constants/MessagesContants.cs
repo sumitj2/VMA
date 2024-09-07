@@ -5,9 +5,9 @@
         public const string CaptionHome = "Home";
         public const string CaptionVendors = "Vendors";
         public const string CaptionProductServices = "Products Services";
-        public const string CaptionDetailedInfo="Detailed Info";
+        public const string CaptionDetailedInfo = "Detailed Info";
         public const string CaptionPayment = "Payments";
-        public const string CaptionPaymentNotes="Payment Notes";
+        public const string CaptionPaymentNotes = "Payment Notes";
         public const string CaptionReports = "Reports";
         public const string CaptionSettings = "Settings";
         public const string CaptionGSTMaster = "GTS Master";
@@ -17,7 +17,7 @@
         public const string UserAddedSucessfully = "User Add Successfully";
         public const string InvalidUserNotLogIn = "Invalid user, not logged in";
         public const string DbNotConnected = "* Database not connected";
-        public const string InvalidUser= "* Invalid username or password";
+        public const string InvalidUser = "* Invalid username or password";
 
         public const string BankName = "Thane Bharat Sahakari Bank";
         public const string RequireVendorName = "*Vendor Name is Required";
@@ -39,7 +39,7 @@
         public const string PaymentNoteDataAdded = "Payment Note Data Added Successfully";
         public const string PaymentNoteAlert = "Please add Payment Note ,to process payment";
         public const string PaymentDataUpdate = "Payment Data Updated Successfully";
-        public const string PaymentDataAdded="Payment Data Added Successfully";
+        public const string PaymentDataAdded = "Payment Data Added Successfully";
 
         public const string PaymentSubmitErroMsg = "Failed to save Payment Details, Please contact to Administrator";
         public const string PaymentMsgSantionAmtHigh = "Total Amount cannot be greater than santioned amount";
@@ -50,7 +50,7 @@
         public const string ReportExcelNoPaymentFoud = "No Payments found for Finacial Year ";
         public const string FileSavedToSucesfully = "File successfully saved to ";
         public const string ErrorOpeningFile = "Error opening file: ";
-        public const string NoPaymentFound="No Payment found for ";
+        public const string NoPaymentFound = "No Payment found for ";
 
         public const string FIlePresent = "Delete/Rename old file in order to generate new file";
         public const string YearlyReport = "Yearly Vendor Service Report";
@@ -77,5 +77,7 @@
         public const string SuccesMsgImportSuccesfull = "Data imported successfully!";
         public const string ErrorMsgImportNotSuccesfull = "Data not imported successfully!";
 
+        public const string MsgTotalAmt = "Total Amount cannot be greater than santioned amount";
+        public const string MsgLastPayment = "This is the last payment";
     }
 }

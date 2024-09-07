@@ -390,7 +390,25 @@ namespace VMA.MVVM.ViewModels.Add
             set
             {
                 _VendorPaymentAmount = value;
+                PaymentYpeNoneWithSantionedAmt();
                 OnPropertyChanged(nameof(VendorPaymentAmount));
+            }
+        }
+
+        private async void PaymentYpeNoneWithSantionedAmt()
+        {
+            if (SelectedVendorDetailService?.ServicePaymentType == GeneralConstants.PaymentTypeNoneWithSantionedAmt)
+            {
+                var (res, paymentType, santionedAmt, vendorDetailID) = await GetPaymentDetailsAsync();
+                if ((res?.TotalAmoutPaidNonTaxable + VendorPaymentAmount) > santionedAmt)
+                {
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.MsgTotalAmt, true);
+                    return;
+                }
+                if ((res?.TotalAmoutPaidNonTaxable + VendorPaymentAmount) == santionedAmt)
+                {
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.MsgLastPayment, true);
+                }
             }
         }
 
@@ -829,7 +847,19 @@ namespace VMA.MVVM.ViewModels.Add
             try
             {
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the SubmitPaymentDetails", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
-
+                //if (SelectedVendorDetailService?.ServicePaymentType == GeneralConstants.PaymentTypeNoneWithSantionedAmt)
+                //{
+                //    var (res, paymentType, santionedAmt, vendorDetailID) = await GetPaymentDetailsAsync();
+                //    if ((res?.TotalAmoutPaidNonTaxable + VendorPaymentAmount) > santionedAmt)
+                //    {
+                //        SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.MsgTotalAmt, true);
+                //        return;
+                //    }
+                //    if ((res?.TotalAmoutPaidNonTaxable + VendorPaymentAmount) > santionedAmt)
+                //    {
+                //        SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.MsgLastPayment, true);
+                //    }
+                //}
                 if (SaveButtonName == GeneralConstants.Update)
                 {
                     VendorPaymentModel payment = new VendorPaymentModel()
@@ -965,17 +995,32 @@ namespace VMA.MVVM.ViewModels.Add
             GSTTotal = Convert.ToDouble(VendorPaymentCgst + VendorPaymentIgst + VendorPaymentSgst);
             VendorPaymentTotalAmountPaid = Convert.ToDecimal(GSTTotal + Convert.ToDouble(VendorPaymentAmount));
         }
+        public async Task<(VendorPayments? res, string? paymentType, decimal? santionedAmt, int? vendorDetailID)> GetPaymentDetailsAsync()
+        {
+            string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
+            decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
+            int? vendorDetailID = SelectedVendorDetailService?.VendorDetailId;
 
+            var res = await _vendorPaymentBusinessLogic
+                .GetAmoutToBePaidDetails(vendorDetailID, santionedAmt, paymentType)
+                .ConfigureAwait(true);
+
+            return (res, paymentType, santionedAmt, vendorDetailID);
+        }
         private async Task GetAmountToBepaid()
         {
             try
             {
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting payment amount", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
-                decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
-                int? vendorDetaillID = SelectedVendorDetailService?.VendorDetailId;
-                if (paymentType == GeneralConstants.PaymentTypeNone)
+                //string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
+                //decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
+                //int? vendorDetaillID = SelectedVendorDetailService?.VendorDetailId;
+                //var res = await _vendorPaymentBusinessLogic.GetAmoutToBePaidDetails(vendorDetaillID, santionedAmt, paymentType).ConfigureAwait(true);
+
+                var (res, paymentType, santionedAmt, vendorDetailID) = await GetPaymentDetailsAsync();
+
+                if (paymentType == GeneralConstants.PaymentTypeNone || paymentType == GeneralConstants.PaymentTypeNoneWithSantionedAmt)
                 {
                     EnableTotalPaidAmt = true;
                 }
@@ -984,7 +1029,7 @@ namespace VMA.MVVM.ViewModels.Add
                     EnableTotalPaidAmt = false;
 
                 }
-                var res = await _vendorPaymentBusinessLogic.GetAmoutToBePaidDetails(vendorDetaillID, santionedAmt, paymentType).ConfigureAwait(true);
+
                 VendorPaymentAmount = res?.TotalPaymentNotTaxable;
 
                 if (res?.Meassage != null)

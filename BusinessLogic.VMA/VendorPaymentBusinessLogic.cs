@@ -62,38 +62,50 @@ namespace Database.VMA.Repositories
                 int noOfPaymentDid = paymentsDetails.Count;
                 decimal? totalAmountPaid =paymentsDetails?.Sum(x => x.VendorPaymentAmount);
 
-                decimal amountToBePaid = await GetNonTaxableAmountToBePaid(ServiceSantionAmount ?? 0, paymentType);
-                if ((amountToBePaid + totalAmountPaid) > ServiceSantionAmount)
+                if (paymentType == GeneralConstants.PaymentTypeNoneWithSantionedAmt)
                 {
-                    //Show pop up amount cannot be greater tha santioned amount
-
-                    vendorPayments.Meassage = "Total Amount cannot be greater than santioned amount";
-                    return vendorPayments;
+                    if (totalAmountPaid >= ServiceSantionAmount) 
+                    {
+                        vendorPayments.Meassage = MessagesContants.MsgTotalAmt;
+                        return vendorPayments;
+                    }
+                    vendorPayments.TotalAmoutPaidNonTaxable = totalAmountPaid;
                 }
-
-                if ((amountToBePaid + totalAmountPaid) == ServiceSantionAmount)
+                else
                 {
-                    //show pop up that this is the last payment  
-                    //Return Amount to be paid ,messgae
+                    decimal amountToBePaid = await GetNonTaxableAmountToBePaid(ServiceSantionAmount ?? 0, paymentType);
+                    if ((amountToBePaid + totalAmountPaid) > ServiceSantionAmount)
+                    {
+                        //Show pop up amount cannot be greater tha santioned amount
+                        vendorPayments.Meassage = MessagesContants.MsgTotalAmt;
+                        return vendorPayments;
+                    }
+                    if ((amountToBePaid + totalAmountPaid) == ServiceSantionAmount)
+                    {
+                        //show pop up that this is the last payment  
+                        //Return Amount to be paid ,messgae
 
-                    vendorPayments.Meassage = "This is the last payment";
-                    vendorPayments.TotalPaymentNotTaxable = amountToBePaid;
-                    return vendorPayments;
+                        vendorPayments.Meassage =MessagesContants.MsgLastPayment;
+                        vendorPayments.TotalPaymentNotTaxable = amountToBePaid;
+                        return vendorPayments;
 
-                }
-                if ((amountToBePaid + totalAmountPaid) < ServiceSantionAmount)
-                {
-                    //Return Amount to be paid 
+                    }
+                    if ((amountToBePaid + totalAmountPaid) < ServiceSantionAmount)
+                    {
+                        //Return Amount to be paid 
 
-                    vendorPayments.TotalPaymentNotTaxable = amountToBePaid;
-                    return vendorPayments;
+                        vendorPayments.TotalPaymentNotTaxable = amountToBePaid;
+                        return vendorPayments;
+                    }
                 }
             }
             else
             {
                 decimal amountToBePaid = await GetNonTaxableAmountToBePaid(ServiceSantionAmount ?? 0, paymentType);
-                vendorPayments = new VendorPayments();
-                vendorPayments.TotalPaymentNotTaxable = amountToBePaid;
+                vendorPayments = new VendorPayments
+                {
+                    TotalPaymentNotTaxable = amountToBePaid
+                };
                 return vendorPayments;
             }
             return vendorPayments;

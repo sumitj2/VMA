@@ -374,7 +374,7 @@ namespace VMA.MVVM.ViewModels.Add
         private async Task PopulateValues()
         {
             var countOfnotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
-            var lastPaymentNote= countOfnotes?.OrderByDescending(x => x.PaymentNoteNo)?.ToList()?.FirstOrDefault()?.PaymentNoteNo;
+            var lastPaymentNote= countOfnotes?.OrderByDescending(x=>x.CreatedDate).OrderByDescending(x => x.LastUpdatedDate)?.ToList()?.FirstOrDefault()?.PaymentNoteNo;
             if (_editPaymentNote != null)
             {
                 //PaymentNoteId = "";
