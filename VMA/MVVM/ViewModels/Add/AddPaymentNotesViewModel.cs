@@ -227,6 +227,19 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _selectedVendorDetailService = value;
                 OnPropertyChanged(nameof(SelectedVendorDetailService));
+                Task.Run(async () =>
+                {
+                    var countOfnotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
+                    var lastPaymentNote = countOfnotes?.OrderByDescending(x => x.PaymentNoteNo)?.ToList()?.FirstOrDefault()?.PaymentNoteNo;
+                    if (lastPaymentNote != null)
+                    {
+                        PaymentNoteNo = PaymentNoteId + GetIncrementNoteId(lastPaymentNote);//_SelectedVendorModel?.VendorId;
+                    }
+                    else
+                    {
+                        PaymentNoteNo = PaymentNoteId + 1;
+                    }
+                });
             }
         }
 
@@ -318,7 +331,8 @@ namespace VMA.MVVM.ViewModels.Add
                         PaymentNoteDate = PaymentNoteDate.ToString(),
                         NoteId = _editPaymentNote?.NoteId.Value,
                         FkVendorId = _editPaymentNote?.VendorId,
-                        PaymentNoteYear = PaymentNoteYear
+                        PaymentNoteYear = PaymentNoteYear,
+                        FkVendorDetailId= _editPaymentNote.FkVendorDetailId
                     };
                     await _venderPaymentNotesBusinessLogic.EditUpdatePaymentNotes(payment);
 
@@ -336,7 +350,8 @@ namespace VMA.MVVM.ViewModels.Add
                         CreatedDate = DateTime.UtcNow,
                         IsActive = true,
                         FkVendorId = SelectedVendorModel.VendorId,
-                        PaymentNoteYear = PaymentNoteYear
+                        PaymentNoteYear = PaymentNoteYear,
+                        FkVendorDetailId =SelectedVendorDetailService.VendorDetailId
                     };
                     await _venderPaymentNotesBusinessLogic.AddPaymentNotes(paymentNote);
 
@@ -382,6 +397,7 @@ namespace VMA.MVVM.ViewModels.Add
                 PaymentNoteNo = lastPaymentNote != null ? IncrementNoteId(lastPaymentNote) : IncrementNoteId(_editPaymentNote.PaymentNoteNo);
                 PaymentNoteDate = Convert.ToDateTime(_editPaymentNote.PaymentNoteDate);
                 SelectedVendorName = VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName ?? "";
+                SelctedVendorServiceName= _editPaymentNote.VendorServiceName;
             }
         }
         static string IncrementNoteId(string noteId)

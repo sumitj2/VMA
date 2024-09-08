@@ -29,11 +29,13 @@ namespace Database.VMA.Repositories
         }
         public async Task<List<PaymentNotesWithInvoiceServiceDetails>> GetAllPaymentDetailsWithServiceDetails()
         {
-            var paymentNoteWithAllDetails = from paymentNote in _context.VendorPaymentNotes
-                                            join vendor in _context.Vendors
-                                            on paymentNote.FkVendorId equals vendor.VendorId
-                                            join vendorService in _context.VendorServices
-                                            on vendor.VendorId equals vendorService.FkVendorId
+            var paymentNoteWithAllDetails = from paymentNote in _context.VendorPaymentNotes.AsNoTracking()
+                                            join vendor in _context.Vendors.AsNoTracking()
+                                            on paymentNote.FkVendorId equals vendor.VendorId into vendorGroup
+                                            from vendor in vendorGroup.DefaultIfEmpty()  // Left join on Vendors
+                                            join vendorService in _context.VendorServices.AsNoTracking()
+                                            on paymentNote.FkVendorDetailId equals vendorService.VendorServiceId into serviceGroup
+                                            from vendorService in serviceGroup.DefaultIfEmpty()  // Left join on VendorServices
                                             where paymentNote.IsActive == true
                                             select new PaymentNotesWithInvoiceServiceDetails
                                             {
@@ -44,17 +46,18 @@ namespace Database.VMA.Repositories
                                                 LastUpdatedDate = paymentNote.LastUpdatedDate,
 
                                                 VendorServiceId = vendorService.VendorServiceId,
-                                                VendorServiceName = vendorService.VendorServiceName,
+                                                VendorServiceName = vendorService != null ? vendorService.VendorServiceName : null,
 
-                                                FkVendorId = vendorService.FkVendorId,
-                                                VendorName = vendor.VendorName,
+                                                FkVendorId = vendor != null ? vendor.VendorId : (int?)null,
+                                                VendorName = vendor != null ? vendor.VendorName : null,
                                                 VendorId = vendor.VendorId,
                                                 NoteId = paymentNote.NoteId,
                                                 PaymentNoteDate = paymentNote.PaymentNoteDate,
                                                 PaymentNoteNo = paymentNote.PaymentNoteNo,
-                                                PaymentNoteYear = paymentNote.PaymentNoteYear
-
+                                                PaymentNoteYear = paymentNote.PaymentNoteYear,
+                                                FkVendorDetailId = paymentNote.FkVendorDetailId
                                             };
+
             return await paymentNoteWithAllDetails.ToListAsync();
         }
 
@@ -95,13 +98,14 @@ namespace Database.VMA.Repositories
                                           VendorPaymentDate = payment.VendorPaymentDate,
                                           IsAmc = details.IsAmc,
                                           PaymentType = details.ServicePaymentType,
-                                          Notes = payment.Notes
+                                          Notes = payment.Notes,
+
                                       };
             return await productsWithVendors.ToListAsync();
 
         }
 
-        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(List<string> serviceNameList, string? financialYear, string vendorName,string paymentNoteNo)
+        public async Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(List<string> serviceNameList, string? financialYear, string vendorName, string paymentNoteNo)
         {
             var productsWithVendors = from payment in _context.VendorPayments
                                       join details in _context.VendorDetails

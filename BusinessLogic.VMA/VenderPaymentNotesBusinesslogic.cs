@@ -26,7 +26,8 @@ namespace Database.VMA.Repositories
                 PaymentNoteDate = Convert.ToDateTime(paymentNotesModel.PaymentNoteDate),
                 PaymentNoteNo = paymentNotesModel.PaymentNoteNo,
                 FkVendorId = paymentNotesModel.FkVendorId,
-                PaymentNoteYear = paymentNotesModel.PaymentNoteYear
+                PaymentNoteYear = paymentNotesModel.PaymentNoteYear,
+                FkVendorDetailId = paymentNotesModel.FkVendorDetailId,
             };
             await _venderPaymentNotesRepository.AddVendorPaymentNotes(vendorEntity);
         }
@@ -71,7 +72,8 @@ namespace Database.VMA.Repositories
                         FkVendorId = paymentNote.VendorId,
                         VendorServiceId = paymentNote.VendorServiceId,
                         VendorServiceName = paymentNote.VendorServiceName,
-                        PaymentNoteYear = paymentNote.PaymentNoteYear
+                        PaymentNoteYear = paymentNote.PaymentNoteYear,
+                        FkVendorDetailId=paymentNote.FkVendorDetailId
                     });
                 }
             }
@@ -92,7 +94,8 @@ namespace Database.VMA.Repositories
                     NoteId = repositoryResult!.NoteId,
                     PaymentNoteDate = repositoryResult.PaymentNoteDate.ToShortDateString(),
                     PaymentNoteNo = repositoryResult.PaymentNoteNo,
-                    PaymentNoteYear = repositoryResult.PaymentNoteYear
+                    PaymentNoteYear = repositoryResult.PaymentNoteYear,
+                    FkVendorDetailId=repositoryResult?.FkVendorDetailId
                 };
                 return vendorModel;
             }
@@ -111,7 +114,9 @@ namespace Database.VMA.Repositories
                 PaymentNoteNo = paymentNoteModel?.PaymentNoteNo != null ? paymentNoteModel.PaymentNoteNo : "",
                 PaymentNoteDate = Convert.ToDateTime(paymentNoteModel?.PaymentNoteDate),
                 PaymentNoteYear = paymentNoteModel?.PaymentNoteYear,
-                NoteId = paymentNoteModel!.NoteId
+                NoteId = paymentNoteModel!.NoteId,
+                FkVendorDetailId = paymentNoteModel?.FkVendorDetailId ,
+                FkVendorId= paymentNoteModel?.FkVendorId,   
             };
 
             await _venderPaymentNotesRepository.RemoveVendorPaymentNote(paymentNoteEntity);
