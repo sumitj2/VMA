@@ -177,6 +177,16 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(SantionedDate));
             }
         }
+        private DateOnly? _slaExpireDate;
+        public DateOnly? SlaExpireDate
+        {
+            get { return _slaExpireDate; }
+            set
+            {
+                _slaExpireDate = value;
+                OnPropertyChanged(nameof(SlaExpireDate));
+            }
+        }
 
         private string _santionedNoteNo;
         public string SantionedNoteNo
@@ -599,7 +609,7 @@ namespace VMA.MVVM.ViewModels.Add
                 VendorDetailCategory = "";
                 SelectedVendorDetailService = null;
                 SelectPaymentType = null;
-
+                SlaExpireDate = DateOnly.MinValue;
             });
         }
         string errorMsg = "";
@@ -767,7 +777,7 @@ namespace VMA.MVVM.ViewModels.Add
                         LastUpdateBy = UserAccountModel.Username,
                         VendorDetailId = _vendorDetailViewModel.VendorDetailId,
                         LastUpdatedDate = DateTime.UtcNow,
-
+                        SlaexpireDate=SlaExpireDate
                     };
                     await _vendorDetailsBusinessLogic.EditUpdateVendorDetails(vendorModel);
 
@@ -804,7 +814,8 @@ namespace VMA.MVVM.ViewModels.Add
                         FkVendorId = SelectedVendorModel.VendorId,
                         FkVendorServiceId = SelectedVendorDetailService?.VendorServiceId,
                         VendorId = SelectedVendorModel.VendorId,
-                        VendorCode = SelectedVendorModel.VendorCode
+                        VendorCode = SelectedVendorModel.VendorCode,
+                        SlaexpireDate = SlaExpireDate
                     };
                     await _vendorDetailsBusinessLogic.AddVendorDetails(vendorModel);
 
@@ -886,6 +897,7 @@ namespace VMA.MVVM.ViewModels.Add
                     SelectPaymentType = ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentType)];
                 }
                 SelectedPaymentTypeText = _vendorDetailViewModel?.ServicePaymentType;
+                SlaExpireDate = _vendorDetailViewModel?.SlaexpireDate;
             }
         }
 

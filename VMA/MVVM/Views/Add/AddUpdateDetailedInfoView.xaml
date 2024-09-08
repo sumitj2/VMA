@@ -285,7 +285,8 @@
                                              TextWrapping="Wrap"
                                              Visibility="{Binding HideSelectedPaymentType}"
                                              AcceptsReturn="True"
-                                             IsEnabled="False"/>
+                                             IsEnabled="False"
+                                             Margin="20,25,20,-1"/>
 
                                     <TextBlock Text="Is AMC"
                                                Style="{StaticResource FormTextBlock}"
@@ -294,6 +295,14 @@
                                     <RadioButton x:Name="AMC_Yes" IsChecked="{Binding IsAmcYes}" Margin="20,5,320,0" GroupName="AMC" >Yes</RadioButton>
                                     <RadioButton x:Name="AMC_No" IsChecked="{Binding IsAmcNo}" Margin="90,-15,250,0" GroupName="AMC" >No</RadioButton>
 
+                                    <TextBlock Text="SLA Expire Date"
+                                               Style="{StaticResource FormTextBlock}"
+                                               Margin="20,20,230,0"/>
+
+                                    <DatePicker x:Name="txtserviceSantionedDate_"
+                                                Text="{Binding SlaExpireDate ,UpdateSourceTrigger=LostFocus,ValidatesOnDataErrors=True,Mode=TwoWay}" Width="361"                                         
+                                                SelectedDateFormat="Short"
+                                                Language="en-IN"/>
 
 
                                 </StackPanel>
