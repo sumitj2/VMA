@@ -109,32 +109,32 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _SelectedVendorModel = value;
                 OnPropertyChanged(nameof(SelectedVendorModel));
+                _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
+                //var res = _paymentNotesViewModel.TempVendorPaymentNotes.FirstOrDefault(x => x.VendorName == _SelectedVendorModel?.VendorName);
+                ////_ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
+                //if (res != null)
+                //{
+                //    var msg1 = @$"{MessagesContants.PaymentNoteAlreadyGeneratedMsg} {_SelectedVendorModel?.VendorName}";
 
-                var res = _paymentNotesViewModel.TempVendorPaymentNotes.FirstOrDefault(x => x.VendorName == _SelectedVendorModel?.VendorName);
-                //_ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
-                if (res != null)
-                {
-                    var msg1 = @$"{MessagesContants.PaymentNoteAlreadyGeneratedMsg} {_SelectedVendorModel?.VendorName}";
+                //    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, msg1, false, true);
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, msg1, false, true);
+                //    _ = HidePaymentNoteForm(this);
 
-                    _ = HidePaymentNoteForm(this);
+                //}
+                //Task.Run(async () =>
+                //{
 
-                }
-                Task.Run(async () =>
-                {
-                    
-                    var countOfnotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
-                    var lastPaymentNote = countOfnotes?.OrderByDescending(x => x.PaymentNoteNo)?.ToList()?.FirstOrDefault()?.PaymentNoteNo;
-                    if (lastPaymentNote != null)
-                    {
-                        PaymentNoteNo = PaymentNoteId + GetIncrementNoteId(lastPaymentNote);//_SelectedVendorModel?.VendorId;
-                    }
-                    else
-                    {
-                        PaymentNoteNo = PaymentNoteId + 1;
-                    }
-                });
+                //    var countOfnotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
+                //    var lastPaymentNote = countOfnotes?.OrderByDescending(x => x.PaymentNoteNo)?.ToList()?.FirstOrDefault()?.PaymentNoteNo;
+                //    if (lastPaymentNote != null)
+                //    {
+                //        PaymentNoteNo = PaymentNoteId + GetIncrementNoteId(lastPaymentNote);//_SelectedVendorModel?.VendorId;
+                //    }
+                //    else
+                //    {
+                //        PaymentNoteNo = PaymentNoteId + 1;
+                //    }
+                //});
 
 
             }
