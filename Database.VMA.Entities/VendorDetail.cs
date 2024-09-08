@@ -48,4 +48,6 @@ public partial class VendorDetail
     public int? FkVendorServiceId { get; set; }
 
     public int? FkVendorId { get; set; }
+    
+    public DateOnly? SlaexpireDate { get; set; }
 }

@@ -101,7 +101,8 @@ public partial class VendorManagementDbContext : DbContext
             entity.Property(e => e.FkVendorServiceId).HasColumnName("FK_VendorServiceID");
             entity.Property(e => e.IsAmc).HasColumnName("IsAMC");
             entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
-            entity.Property(e => e.ServiceSantionAmount).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.ServiceSantionAmount).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.SlaexpireDate).HasColumnName("SLAExpireDate");
         });
 
         modelBuilder.Entity<VendorPayment>(entity =>
@@ -115,30 +116,30 @@ public partial class VendorManagementDbContext : DbContext
             entity.Property(e => e.FkVendorDetailId).HasColumnName("FK_VendorDetailID");
             entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.PaymentYear).HasMaxLength(20);
-            entity.Property(e => e.VendorPaymentAmount).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.VendorPaymentAmount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.VendorPaymentCgst)
-                .HasColumnType("decimal(18, 0)")
+                .HasColumnType("decimal(18, 2)")
                 .HasColumnName("VendorPaymentCGST");
             entity.Property(e => e.VendorPaymentIgst)
-                .HasColumnType("decimal(18, 0)")
+                .HasColumnType("decimal(18, 2)")
                 .HasColumnName("VendorPaymentIGST");
             entity.Property(e => e.VendorPaymentIsGst).HasColumnName("VendorPaymentIsGST");
             entity.Property(e => e.VendorPaymentIsTdsapplicable).HasColumnName("VendorPaymentIsTDSApplicable");
             entity.Property(e => e.VendorPaymentRtgsAmount).HasColumnType("decimal(18, 0)");
             entity.Property(e => e.VendorPaymentSgst)
-                .HasColumnType("decimal(18, 0)")
+                .HasColumnType("decimal(18, 2)")
                 .HasColumnName("VendorPaymentSGST");
             entity.Property(e => e.VendorPaymentTdsamount)
-                .HasColumnType("decimal(18, 0)")
+                .HasColumnType("decimal(18, 2)")
                 .HasColumnName("VendorPaymentTDSAmount");
-            entity.Property(e => e.VendorPaymentTotalAmountPaid).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.VendorPaymentTotalAmountPaid).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.VendorPaymentUtrnumber).HasColumnName("VendorPaymentUTRNumber");
         });
 
         modelBuilder.Entity<VendorPaymentNote>(entity =>
         {
             entity.HasKey(e => e.NoteId).HasName("PK__VendorPa__EACE355F54B084AC");
-
+            entity.Property(e => e.FkVendorDetailId).HasColumnName("FK_VendorDetailID");
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.FkVendorId).HasColumnName("FK_VendorID");
             entity.Property(e => e.LastUpdatedDate).HasColumnType("datetime");

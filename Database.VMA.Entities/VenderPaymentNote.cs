@@ -23,4 +23,5 @@ public partial class VendorPaymentNote
 
     public int?  FkVendorId { get; set; }
     public string? PaymentNoteYear { get; set; }
+    public int? FkVendorDetailId { get; set; }
 }
