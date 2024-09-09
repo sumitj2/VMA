@@ -173,6 +173,10 @@ namespace Database.VMA.Repositories
         {
             return await _context.VendorPaymentNotes.Where(x => x.IsActive == true).CountAsync();
         }
+        public async Task<VendorPaymentNote?> GetVendorsPaymentNoteByVendorId(int? vendorId)
+        {
+            return await _context.VendorPaymentNotes.Where(x => x.IsActive == true && x.FkVendorId == vendorId).FirstOrDefaultAsync().ConfigureAwait(true);
+        }
         public async Task<VendorPaymentNote?> GetVendorsPaymentNoteByNoteId(int? noteId)
         {
             return await _context.VendorPaymentNotes.Where(x => x.IsActive == true && x.NoteId == noteId).FirstOrDefaultAsync().ConfigureAwait(true);

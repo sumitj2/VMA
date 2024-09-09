@@ -25,7 +25,25 @@ namespace BusinessLogic.VMA
         {
             _venderPaymentNotesRepository = venderPaymentNotesRepository;
         }
-        public async Task CreateAndOpenWordFileForNone(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName, string paymentNoteNo)
+        private string GetUniqueFileName(string filePath)
+        {
+            string directory = Path.GetDirectoryName(filePath);
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+            string extension = Path.GetExtension(filePath);
+
+            int counter = 1;
+            string newFilePath = filePath;
+
+            // Loop until we find a filename that doesn't exist
+            while (File.Exists(newFilePath))
+            {
+                newFilePath = Path.Combine(directory, $"{fileNameWithoutExtension} ({counter}){extension}");
+                counter++;
+            }
+
+            return newFilePath;
+        }
+        public async Task CreateAndOpenWordFileForNone(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName, string paymentNoteNo, DateOnly noteGeneartionDate)
         {
             if (path != null)
             {
@@ -37,11 +55,12 @@ namespace BusinessLogic.VMA
                 else
                 {
                     string? location = path + "\\" + serviceName + "_PaymentNote.docx";
-                    // Ensure the directory exists
-                    Directory.CreateDirectory(Path.GetDirectoryName(location));
+                    
+                    // Ensure the file does not get overridden by generating a unique file name
+                    string uniqueLocation = GetUniqueFileName(location);
 
                     // Create and save the Word document
-                    using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(location, WordprocessingDocumentType.Document))
+                    using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(uniqueLocation, WordprocessingDocumentType.Document))
                     {
                         // Add a main document part
                         MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
@@ -109,7 +128,7 @@ namespace BusinessLogic.VMA
 
                         TableRow rowHeader4 = new TableRow();
                         rowHeader4.Append(
-                            new TableCell(new Paragraph(new Run(new Text("Date :" + DateTime.Now)))),//Row 2, Cell 1
+                            new TableCell(new Paragraph(new Run(new Text("Date :" + noteGeneartionDate)))),//Row 2, Cell 1
                             new TableCell(new Paragraph(new Run(new Text("Pay Note : " + result?.FirstOrDefault()?.PaymentNoteNo))))
 
                         );
@@ -281,12 +300,12 @@ namespace BusinessLogic.VMA
                     }
 
                     // Open the Word file
-                    OpenWordFile(location);
+                    OpenWordFile(uniqueLocation);
                 }
             }
         }
 
-        public async Task CreateAndOpenWordFile(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName, string paymentNoteNo)
+        public async Task CreateAndOpenWordFile(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName, string paymentNoteNo, DateOnly noteGeneartionDate)
         {
             if (path != null)
             {
@@ -298,13 +317,13 @@ namespace BusinessLogic.VMA
                 else
                 {
                     string? location = path + "\\" + vendorName + "_PaymentNote.docx";
-                    // Ensure the directory exists
-                    DirectoryInfo directoryInfo = Directory.CreateDirectory(Path.GetDirectoryName(location)??"");
+                    // Ensure the file does not get overridden by generating a unique file name
+                    string uniqueLocation = GetUniqueFileName(location);
 
                     try
-                    {
+                    { 
                         // Create and save the Word document
-                        using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(location, WordprocessingDocumentType.Document))
+                        using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(uniqueLocation, WordprocessingDocumentType.Document))
                         {
                             // Add a main document part
                             MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
@@ -379,7 +398,7 @@ namespace BusinessLogic.VMA
 
                             TableRow rowHeader4 = new TableRow();
                             rowHeader4.Append(
-                                new TableCell(new Paragraph(new Run(new Text("Date :" + DateTime.Now.ToShortDateString())))),//Row 2, Cell 1
+                                new TableCell(new Paragraph(new Run(new Text("Date :" + noteGeneartionDate)))),//Row 2, Cell 1
                                 new TableCell(new Paragraph(new Run(new Text("Pay Note : " + result?.FirstOrDefault()?.PaymentNoteNo))))
 
                             );
@@ -570,7 +589,7 @@ namespace BusinessLogic.VMA
                     }
 
                     // Open the Word file
-                    OpenWordFile(location);
+                    OpenWordFile(uniqueLocation);
                 }
             }
         }

@@ -293,14 +293,14 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 if (SelectedVendorDetailService?.VendorServiceName != null || !IsPaymentTypeYes)
                 {
-                    var paymentNoteNo = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorId(Convert.ToInt32(SelectedVendorModel?.VendorId));
+                    var paymentNoteNo = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorIdAndDetailServiceId(Convert.ToInt32(SelectedVendorModel?.VendorId),Convert.ToInt32(SelectedVendorDetailService?.VendorDetailId));
                     if (IsPaymentTypeYes)
                     {
-                        await _paymentNoteInWord.CreateAndOpenWordFile(VendorServiceDetails?.Select(x => x.VendorServiceName).ToList(), From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " , _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo).ConfigureAwait(true);
+                        await _paymentNoteInWord.CreateAndOpenWordFile(VendorServiceDetails?.Select(x => x.VendorServiceName).ToList(), From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " , _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo,NoteGenerationDate).ConfigureAwait(true);
                     }
                     else
                     {
-                        await _paymentNoteInWord.CreateAndOpenWordFile(new List<string>() { SelectedVendorDetailService.VendorServiceName }, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " , _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo).ConfigureAwait(true);
+                        await _paymentNoteInWord.CreateAndOpenWordFile(new List<string>() { SelectedVendorDetailService.VendorServiceName }, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " , _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo, NoteGenerationDate).ConfigureAwait(true);
                     }
                 }
                 else

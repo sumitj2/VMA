@@ -21,5 +21,6 @@ namespace Database.Abstraction.VMA.Contract
         Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(List<string> serviceNameList, string? financialYear, string vendorName,string paymentNoteNo);
         Task<int> GetAllVendorsPaymentNotesCount();
         Task<VendorPaymentNote?> GetVendorsPaymentNoteByVendorIdAndDetailServiceId(int? vendorId, int? detailsId);
+        Task<VendorPaymentNote?> GetVendorsPaymentNoteByVendorId(int? vendorId);
     }
 }

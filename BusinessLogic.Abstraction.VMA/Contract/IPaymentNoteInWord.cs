@@ -8,7 +8,7 @@ namespace BusinessLogic.Abstraction.VMA.Contract
 {
     public interface IPaymentNoteInWord
     {
-        Task CreateAndOpenWordFileForNone(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName,string paymentNoteNo);
-        Task CreateAndOpenWordFile(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName, string paymentNoteNo);
+        Task CreateAndOpenWordFileForNone(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName,string paymentNoteNo,DateOnly noteGeneartionDate);
+        Task CreateAndOpenWordFile(List<string> serviceName, string? from, string? to, string? bodyTextBefore, string? bodyTextAfter, string? financilaYear, string? path, string vendorName, string paymentNoteNo, DateOnly noteGeneartionDate);
     }
 }
