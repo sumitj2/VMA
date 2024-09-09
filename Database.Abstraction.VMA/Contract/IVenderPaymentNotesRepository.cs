@@ -14,11 +14,12 @@ namespace Database.Abstraction.VMA.Contract
         public Task AddVendorPaymentNotes(VendorPaymentNote VenderPaymentNoteEntity);
         public Task EditUpdateVendorPaymentNotes(VendorPaymentNote VenderPaymentNoteEntity);
         public Task<IEnumerable<VendorPaymentNote>> GetAllVendorsPaymentNotes();
-        public Task<VendorPaymentNote?> GetVendorsPaymentNoteByIVendorId(int? vendorId);
+        public Task<VendorPaymentNote?> GetVendorsPaymentNoteByNoteId(int? noteId);
         public Task RemoveVendorPaymentNote(VendorPaymentNote VenderPaymentNoteEntity);
         public Task<List<PaymentNotesWithInvoiceServiceDetails>> GetAllPaymentDetailsWithServiceDetails();
         public Task<List<ExportPaymentNoteData>> GetAllPaymentDetailsWithServiceDetailsToExport(string? finacialYear);
         Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(List<string> serviceNameList, string? financialYear, string vendorName,string paymentNoteNo);
         Task<int> GetAllVendorsPaymentNotesCount();
+        Task<VendorPaymentNote?> GetVendorsPaymentNoteByVendorIdAndDetailServiceId(int? vendorId, int? detailsId);
     }
 }

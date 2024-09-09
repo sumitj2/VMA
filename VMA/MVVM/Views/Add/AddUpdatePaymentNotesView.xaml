@@ -110,7 +110,7 @@
                                     <TextBox x:Name="txtPaymentNoteNo" Grid.Column="1" Grid.Row="3" Padding="0"
                                              Text="{Binding PaymentNoteNo ,UpdateSourceTrigger=PropertyChanged}"
                                              Style="{StaticResource FormTextBox}" 
-                                             IsEnabled="False"/>
+                                             />
 
                                     <TextBlock Text="Payment Note Date" Grid.Column="0" Grid.Row="4"
                                                Style="{StaticResource FormTextBlock}"/>

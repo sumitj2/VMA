@@ -317,7 +317,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
 
-                    _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId));
+                    _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId), Convert.ToInt32(SelectedVendorDetailService.VendorDetailId));
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...", true);
                     _ = GetAmountToBepaid();
                 }
@@ -400,12 +400,12 @@ namespace VMA.MVVM.ViewModels.Add
             if (SelectedVendorDetailService?.ServicePaymentType == GeneralConstants.PaymentTypeNoneWithSantionedAmt)
             {
                 var (res, paymentType, santionedAmt, vendorDetailID) = await GetPaymentDetailsAsync();
-                if ((res?.TotalAmoutPaidNonTaxable + VendorPaymentAmount) > santionedAmt)
+                if ((Convert.ToDecimal(res?.TotalAmoutPaidNonTaxable) + VendorPaymentAmount) > santionedAmt)
                 {
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.MsgTotalAmt, true);
                     return;
                 }
-                if ((res?.TotalAmoutPaidNonTaxable + VendorPaymentAmount) == santionedAmt)
+                if ((Convert.ToDecimal(res?.TotalAmoutPaidNonTaxable) + VendorPaymentAmount) == santionedAmt)
                 {
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.MsgLastPayment, true);
                 }
@@ -1058,9 +1058,9 @@ namespace VMA.MVVM.ViewModels.Add
 
         #region Combobox load vendors and services on combo box selection 
 
-        private async Task LoadVendorPaymentNotes(int vendorId)
+        private async Task LoadVendorPaymentNotes(int vendorId, int serviceDetailId)
         {
-            var paymentNotesDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorId(vendorId).ConfigureAwait(true);
+            var paymentNotesDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorIdAndDetailServiceId(vendorId, serviceDetailId).ConfigureAwait(true);
             if (paymentNotesDetails != null)
             {
                 PaymentNoteDetails = paymentNotesDetails;

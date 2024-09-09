@@ -15,5 +15,6 @@ namespace BusinessLogic.Abstraction.VMA.Contract
         public Task<VenderPaymentNoteModel?> GetPaymentNoteByVendorId(int vendorId);
         public Task RemovePaymentNote(VenderPaymentNoteModel paymentNoteModel);
         Task<int> GetAllVendorsPaymentNotesCount();
+        Task<VenderPaymentNoteModel?> GetPaymentNoteByVendorIdAndDetailServiceId(int? vendorId, int? detailServceId);
     }
 }

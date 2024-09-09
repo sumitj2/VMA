@@ -19,7 +19,7 @@ namespace Database.VMA.Repositories
         }
         public async Task AddVendorPaymentNotes(VendorPaymentNote VenderPaymentNoteEntity)
         {
-            await _context.AddAsync(VenderPaymentNoteEntity).ConfigureAwait(true);
+            await _context.VendorPaymentNotes.AddAsync(VenderPaymentNoteEntity).ConfigureAwait(true);
             await _context.SaveChangesAsync();
         }
         public async Task EditUpdateVendorPaymentNotes(VendorPaymentNote VenderPaymentNoteEntity)
@@ -33,9 +33,15 @@ namespace Database.VMA.Repositories
                                             join vendor in _context.Vendors.AsNoTracking()
                                             on paymentNote.FkVendorId equals vendor.VendorId into vendorGroup
                                             from vendor in vendorGroup.DefaultIfEmpty()  // Left join on Vendors
+
+                                            join vendorDetail in _context.VendorDetails.AsNoTracking()
+                                            on paymentNote.FkVendorDetailId equals vendorDetail.VendorDetailId into detailGroup
+                                            from vendorDetail in detailGroup.DefaultIfEmpty()  // Left join on VendorDetails
+
                                             join vendorService in _context.VendorServices.AsNoTracking()
-                                            on paymentNote.FkVendorDetailId equals vendorService.VendorServiceId into serviceGroup
+                                            on vendorDetail.FkVendorServiceId equals vendorService.VendorServiceId into serviceGroup
                                             from vendorService in serviceGroup.DefaultIfEmpty()  // Left join on VendorServices
+
                                             where paymentNote.IsActive == true
                                             select new PaymentNotesWithInvoiceServiceDetails
                                             {
@@ -45,12 +51,12 @@ namespace Database.VMA.Repositories
                                                 LastUpdateBy = paymentNote.LastUpdateBy,
                                                 LastUpdatedDate = paymentNote.LastUpdatedDate,
 
-                                                VendorServiceId = vendorService.VendorServiceId,
-                                                VendorServiceName = vendorService != null ? vendorService.VendorServiceName : null,
+                                                VendorServiceId = vendorService.VendorServiceId, // Handle nullable VendorServiceId
+                                                VendorServiceName = vendorService.VendorServiceName,  // Handle nullable VendorServiceName
 
-                                                FkVendorId = vendor != null ? vendor.VendorId : (int?)null,
-                                                VendorName = vendor != null ? vendor.VendorName : null,
-                                                VendorId = vendor.VendorId,
+                                                FkVendorId = vendor.VendorId,  // Handle nullable VendorId
+                                                VendorName = vendor.VendorName, // Handle nullable VendorName
+
                                                 NoteId = paymentNote.NoteId,
                                                 PaymentNoteDate = paymentNote.PaymentNoteDate,
                                                 PaymentNoteNo = paymentNote.PaymentNoteNo,
@@ -167,11 +173,14 @@ namespace Database.VMA.Repositories
         {
             return await _context.VendorPaymentNotes.Where(x => x.IsActive == true).CountAsync();
         }
-        public async Task<VendorPaymentNote?> GetVendorsPaymentNoteByIVendorId(int? vendorId)
+        public async Task<VendorPaymentNote?> GetVendorsPaymentNoteByNoteId(int? noteId)
         {
-            return await _context.VendorPaymentNotes.Where(x => x.IsActive == true && x.FkVendorId == vendorId).FirstOrDefaultAsync().ConfigureAwait(true);
+            return await _context.VendorPaymentNotes.Where(x => x.IsActive == true && x.NoteId == noteId).FirstOrDefaultAsync().ConfigureAwait(true);
         }
-
+        public async Task<VendorPaymentNote?> GetVendorsPaymentNoteByVendorIdAndDetailServiceId(int? vendorId,int? detailsId)
+        {
+            return await _context.VendorPaymentNotes.Where(x => x.IsActive == true && x.FkVendorId == vendorId && x.FkVendorDetailId== detailsId).FirstOrDefaultAsync().ConfigureAwait(true);
+        }
         public async Task RemoveVendorPaymentNote(VendorPaymentNote VenderPaymentNoteEntity)
         {
             _context.VendorPaymentNotes.Remove(VenderPaymentNoteEntity);

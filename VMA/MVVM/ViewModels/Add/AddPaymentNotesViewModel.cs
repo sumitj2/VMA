@@ -330,7 +330,8 @@ namespace VMA.MVVM.ViewModels.Add
                         PaymentNoteNo = PaymentNoteNo ?? "",
                         PaymentNoteDate = PaymentNoteDate.ToString(),
                         NoteId = _editPaymentNote?.NoteId.Value,
-                        FkVendorId = _editPaymentNote?.VendorId,
+                        FkVendorId = VendorModels.FirstOrDefault(x=>x.VendorName==_editPaymentNote.VendorName).VendorId ,
+                        VendorId = VendorModels.FirstOrDefault(x => x.VendorName == _editPaymentNote.VendorName).VendorId,
                         PaymentNoteYear = PaymentNoteYear,
                         FkVendorDetailId= _editPaymentNote.FkVendorDetailId
                     };
@@ -396,8 +397,8 @@ namespace VMA.MVVM.ViewModels.Add
                 PaymentNoteYear = _editPaymentNote.PaymentNoteYear;
                 PaymentNoteNo = lastPaymentNote != null ? IncrementNoteId(lastPaymentNote) : IncrementNoteId(_editPaymentNote.PaymentNoteNo);
                 PaymentNoteDate = Convert.ToDateTime(_editPaymentNote.PaymentNoteDate);
-                SelectedVendorName = VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName ?? "";
-                SelctedVendorServiceName= _editPaymentNote.VendorServiceName;
+                SelectedVendorName = _editPaymentNote.VendorName;// VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName ?? "";
+                SelctedVendorServiceName = _editPaymentNote.VendorServiceName;
             }
         }
         static string IncrementNoteId(string noteId)
