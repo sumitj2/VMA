@@ -114,7 +114,7 @@ namespace BusinessLogic.VMA
                         TableRow rowHeader2 = new TableRow();
 
                         TableCell mergedCell1 = new TableCell(new TableCellProperties(new GridSpan() { Val = 2 }));
-                        mergedCell1.Append(new Paragraph(new Run(new Text("Sub : Payment To be made to  M/S " + result?.FirstOrDefault()?.VendorName + " " + result?.FirstOrDefault()?.VendorServiceName))));
+                        mergedCell1.Append(new Paragraph(new Run(new Text("Sub : Payment To be made to  M/S " + result?.FirstOrDefault()?.VendorName))));
                         rowHeader2.Append(mergedCell1);
 
                         tableHeader.Append(rowHeader2);
@@ -122,14 +122,14 @@ namespace BusinessLogic.VMA
 
                         TableRow rowHeader3 = new TableRow();
                         TableCell mergedCell2 = new TableCell(new TableCellProperties(new GridSpan() { Val = 2 }));
-                        mergedCell2.Append(new Paragraph(new Run(new Text("Ref :" + result?.FirstOrDefault()?.ServiceSantionedBy + " " + result?.FirstOrDefault()?.SantionedDate.ToString()))));
+                        mergedCell2.Append(new Paragraph(new Run(new Text("Ref :" + result?.FirstOrDefault()?.ServiceSantionedBy + " dated " + result?.FirstOrDefault()?.SantionedDate.ToString()))));
                         rowHeader3.Append(mergedCell2);
                         tableHeader.Append(rowHeader3);
 
                         TableRow rowHeader4 = new TableRow();
                         rowHeader4.Append(
-                            new TableCell(new Paragraph(new Run(new Text("Date :" + noteGeneartionDate)))),//Row 2, Cell 1
-                            new TableCell(new Paragraph(new Run(new Text("Pay Note : " + result?.FirstOrDefault()?.PaymentNoteNo))))
+                            new TableCell(new Paragraph(new Run(new Text("Date :" + result.FirstOrDefault().VendorPaymentDate.ToString())))),//Row 2, Cell 1
+                            new TableCell(new Paragraph(new Run(new Text("Payment Note No.: " + result?.FirstOrDefault()?.PaymentNoteNo))))
 
                         );
                         tableHeader.Append(rowHeader4);
@@ -184,7 +184,7 @@ namespace BusinessLogic.VMA
 
                         TableRow rowHeaderMege = new TableRow();
                         TableCell mergedCellInvoice = new TableCell(new TableCellProperties(new GridSpan() { Val = 9 }));
-                        mergedCellInvoice.Append(new Paragraph(new Run(new Text("Bill for month of "))));
+                        mergedCellInvoice.Append(new Paragraph(new Run(new Text(result.FirstOrDefault().InvoiceParticulars.ToString()))));
                         rowHeaderMege.Append(mergedCellInvoice);
 
                         tableInvocie.Append(rowHeaderMege);
@@ -234,6 +234,26 @@ namespace BusinessLogic.VMA
 
                         #endregion
 
+                        #region To
+
+                        // Add a paragraph with custom text
+                        Paragraph paragraphBodyAfterTo = new Paragraph();
+
+                        // Create RunProperties and set the font size, bold, and other properties
+                        RunProperties paragraphRunPropertiesAfterTo = new();
+
+                        // Create a Run and apply the RunProperties
+                        Run paragraphRunAfterTo = new Run(new Text(to));
+                        paragraphRun.PrependChild(paragraphRunPropertiesAfterTo);
+
+                        // Add the Run to the Paragraph
+                        paragraphBodyAfter.Append(paragraphRunAfterTo);
+
+                        // Add the Paragraph to the Body
+                        body.Append(paragraphBodyAfterTo);
+
+                        #endregion
+
                         #region Footer Table
                         // Add a table
                         Table tableFooter = new();
@@ -255,7 +275,7 @@ namespace BusinessLogic.VMA
                         rowFooter2.Append
                             (
                             new TableCell(new Paragraph(new Run(new Text("Date")))),
-                            new TableCell(new Paragraph(new Run(new Text("      ")))),
+                            new TableCell(new Paragraph(new Run(new Text(result.FirstOrDefault().VendorPaymentDate.ToString())))),
                             new TableCell(new Paragraph(new Run(new Text("TDS")))),
                             new TableCell(new Paragraph(new Run(new Text(result?.FirstOrDefault()?.VendorPaymentTdsamount.ToString()))))
                             );
@@ -273,27 +293,7 @@ namespace BusinessLogic.VMA
 
                         body.AppendChild(tableFooter);
 
-                        #endregion
-
-                        #region To
-
-                        // Add a paragraph with custom text
-                        Paragraph paragraphBodyAfterTo = new Paragraph();
-
-                        // Create RunProperties and set the font size, bold, and other properties
-                        RunProperties paragraphRunPropertiesAfterTo = new();
-
-                        // Create a Run and apply the RunProperties
-                        Run paragraphRunAfterTo = new Run(new Text(to));
-                        paragraphRun.PrependChild(paragraphRunPropertiesAfterTo);
-
-                        // Add the Run to the Paragraph
-                        paragraphBodyAfter.Append(paragraphRunAfterTo);
-
-                        // Add the Paragraph to the Body
-                        body.Append(paragraphBodyAfterTo);
-
-                        #endregion
+                        #endregion                       
 
                         mainPart.Document.Append(body);
                         mainPart.Document.Save();
@@ -384,7 +384,7 @@ namespace BusinessLogic.VMA
                             TableRow rowHeader2 = new TableRow();
 
                             TableCell mergedCell1 = new TableCell(new TableCellProperties(new GridSpan() { Val = 2 }));
-                            mergedCell1.Append(new Paragraph(new Run(new Text("Sub : Payment To be made to  M/S " + result?.FirstOrDefault()?.VendorName + " " + result?.FirstOrDefault()?.VendorServiceName))));
+                            mergedCell1.Append(new Paragraph(new Run(new Text("Sub : Payment To be made to  M/S " + result?.FirstOrDefault()?.VendorName))));
                             rowHeader2.Append(mergedCell1);
 
                             tableHeader.Append(rowHeader2);
@@ -392,14 +392,14 @@ namespace BusinessLogic.VMA
 
                             TableRow rowHeader3 = new TableRow();
                             TableCell mergedCell2 = new TableCell(new TableCellProperties(new GridSpan() { Val = 2 }));
-                            mergedCell2.Append(new Paragraph(new Run(new Text("Ref :" + result?.FirstOrDefault()?.ServiceSantionedBy + " " + result?.FirstOrDefault()?.SantionedDate.ToString()))));
+                            mergedCell2.Append(new Paragraph(new Run(new Text("Ref :" + result?.FirstOrDefault()?.ServiceSantionedBy + " dated " + result?.FirstOrDefault()?.SantionedDate.ToString()))));
                             rowHeader3.Append(mergedCell2);
                             tableHeader.Append(rowHeader3);
 
                             TableRow rowHeader4 = new TableRow();
                             rowHeader4.Append(
-                                new TableCell(new Paragraph(new Run(new Text("Date :" + noteGeneartionDate)))),//Row 2, Cell 1
-                                new TableCell(new Paragraph(new Run(new Text("Pay Note : " + result?.FirstOrDefault()?.PaymentNoteNo))))
+                                new TableCell(new Paragraph(new Run(new Text("Date :" + result?.FirstOrDefault()?.VendorPaymentDate.ToString())))),//Row 2, Cell 1
+                                new TableCell(new Paragraph(new Run(new Text("Payment Note No.: " + result?.FirstOrDefault()?.PaymentNoteNo))))
 
                             );
                             tableHeader.Append(rowHeader4);
@@ -452,7 +452,7 @@ namespace BusinessLogic.VMA
 
                             TableRow rowHeaderMege = new TableRow();
                             TableCell mergedCellInvoice = new TableCell(new TableCellProperties(new GridSpan() { Val = 9 }));
-                            mergedCellInvoice.Append(new Paragraph(new Run(new Text("Bill for month of "))));
+                            mergedCellInvoice.Append(new Paragraph(new Run(new Text(result.FirstOrDefault().InvoiceParticulars.ToString()))));
                             rowHeaderMege.Append(mergedCellInvoice);
 
                             tableInvocie.Append(rowInvoice);
@@ -518,6 +518,26 @@ namespace BusinessLogic.VMA
 
                             #endregion
 
+                            #region To
+
+                            // Add a paragraph with custom text
+                            Paragraph paragraphBodyAfterTo = new Paragraph();
+
+                            // Create RunProperties and set the font size, bold, and other properties
+                            RunProperties paragraphRunPropertiesAfterTo = new();
+
+                            // Create a Run and apply the RunProperties
+                            Run paragraphRunAfterTo = new Run(new Text(from));
+                            paragraphRun.PrependChild(paragraphRunPropertiesAfterTo);
+
+                            // Add the Run to the Paragraph
+                            paragraphBodyAfterTo.Append(paragraphRunAfterTo);
+
+                            // Add the Paragraph to the Body
+                            body.Append(paragraphBodyAfterTo);
+
+                            #endregion
+
                             #region Footer Table
                             // Add a table
                             Table tableFooter = new();
@@ -539,7 +559,7 @@ namespace BusinessLogic.VMA
                             rowFooter2.Append
                                 (
                                 new TableCell(new Paragraph(new Run(new Text("Date")))),
-                                new TableCell(new Paragraph(new Run(new Text("      ")))),
+                                new TableCell(new Paragraph(new Run(new Text(result.FirstOrDefault().VendorPaymentDate.ToString())))),
                                 new TableCell(new Paragraph(new Run(new Text("TDS")))),
                                 new TableCell(new Paragraph(new Run(new Text(result?.FirstOrDefault()?.VendorPaymentTdsamount.ToString()))))
                                 );
@@ -559,25 +579,7 @@ namespace BusinessLogic.VMA
                             body.AppendChild(tableFooter);
 
                             #endregion
-                            #region To
-
-                            // Add a paragraph with custom text
-                            Paragraph paragraphBodyAfterTo = new Paragraph();
-
-                            // Create RunProperties and set the font size, bold, and other properties
-                            RunProperties paragraphRunPropertiesAfterTo = new();
-
-                            // Create a Run and apply the RunProperties
-                            Run paragraphRunAfterTo = new Run(new Text(from));
-                            paragraphRun.PrependChild(paragraphRunPropertiesAfterTo);
-
-                            // Add the Run to the Paragraph
-                            paragraphBodyAfterTo.Append(paragraphRunAfterTo);
-
-                            // Add the Paragraph to the Body
-                            body.Append(paragraphBodyAfterTo);
-
-                            #endregion
+                            
                             mainPart.Document.Append(body);
                             mainPart.Document.Save();
                         }
