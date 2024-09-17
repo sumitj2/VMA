@@ -19,5 +19,10 @@ namespace Database.VMA.Entities.CustomEntities
         public decimal? TotalGST { get; set; }
 
         public decimal? TotalAmountPaid { get; set; }
+        public decimal? VendorPaymentCgst { get; set; }
+
+        public decimal? VendorPaymentSgst { get; set; }
+
+        public decimal? VendorPaymentIgst { get; set; }
     }
 }

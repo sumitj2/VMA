@@ -74,20 +74,20 @@ namespace Database.VMA.Repositories
         }
         public async Task<InvoiceDetailsModel?> GetInvoiceById(int? invoiceId)
         {
-            var res = await _invoiceDetailsRepository.GetInvoiceById(invoiceId).ConfigureAwait(true);
-            if (res != null)
+            var invoice = await _invoiceDetailsRepository.GetInvoiceById(invoiceId).ConfigureAwait(true);
+            if (invoice != null)
             {
                 InvoiceDetailsModel invoiceDetailsModel = new InvoiceDetailsModel()
                 {
-                    IsActive = res?.IsActive,
-                    InvoiceParticulars = res?.InvoiceParticulars,
-                    InvoiceNumber = res?.InvoiceNumber,
-                    InvoiceId = res!.InvoiceId,
-                    InvoiceDate = res!.InvoiceDate,
-                    CreatedBy = res?.CreatedBy,
-                    CreatedDate = res!.CreatedDate,
-                    LastUpdateBy = res?.LastUpdateBy,
-                    LastUpdatedDate = res?.LastUpdatedDate
+                    IsActive = invoice?.IsActive,
+                    InvoiceParticulars = invoice?.InvoiceParticulars,
+                    InvoiceNumber = invoice?.InvoiceNumber,
+                    InvoiceId = invoice!.InvoiceId,
+                    InvoiceDate = invoice!.InvoiceDate,
+                    CreatedBy = invoice?.CreatedBy,
+                    CreatedDate = invoice!.CreatedDate,
+                    LastUpdateBy = invoice?.LastUpdateBy,
+                    LastUpdatedDate = invoice?.LastUpdatedDate
                 };
                 return invoiceDetailsModel;
             }

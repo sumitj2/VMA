@@ -36,6 +36,7 @@ namespace Database.VMA.Repositories
                 IsAmc = vendorDetailModel?.IsAmc,
                 SantionedDate = vendorDetailModel?.SantionedDate,
                 SantionedNoteNo = vendorDetailModel?.SantionedNoteNo,
+                SlaexpireDate = vendorDetailModel?.SlaexpireDate,   
             };
             await _vendorDetailsRepository.AddVendorDetails(vendorDetailEntity);
         }
@@ -64,7 +65,7 @@ namespace Database.VMA.Repositories
                 detail.FkVendorId = vendorDetailModel?.VendorId;
                 detail.IsAmc = vendorDetailModel?.IsAmc;
                 detail.SantionedNoteNo = vendorDetailModel?.SantionedNoteNo;
-
+                detail.SlaexpireDate = vendorDetailModel?.SlaexpireDate;
                 await _vendorDetailsRepository.EditUpdateVendorDetail(detail);
             }
         }
@@ -104,7 +105,8 @@ namespace Database.VMA.Repositories
                         LastUpdateBy = data.LastUpdateBy,
                         LastUpdatedDate = data.LastUpdatedDate,
                         VendorServiceId = data.VendorServiceId,
-                        VendorServiceName = data.VendorServiceName
+                        VendorServiceName = data.VendorServiceName,
+                        SlaexpireDate=data.SlaexpireDate,
                     });
                 }
             }
@@ -131,7 +133,8 @@ namespace Database.VMA.Repositories
                 ServicePaymentType = res?.ServicePaymentType,
                 ServiceSantionAmount = res?.ServiceSantionAmount,
                 ServiceType = res?.ServiceType,
-                VendorDetailId = res!.VendorDetailId
+                VendorDetailId = res!.VendorDetailId,
+                SlaexpireDate = res?.SlaexpireDate,
             };
 
             return vendorPayment;
@@ -155,7 +158,8 @@ namespace Database.VMA.Repositories
                 ServiceEndDate = VendorPaymentModel.ServiceEndDate,
                 ServiceSantionedBy = VendorPaymentModel.ServiceSantionedBy,
                 ServiceStartDate = VendorPaymentModel.ServiceStartDate,
-                VendorDetailCategory = VendorPaymentModel.VendorDetailCategory
+                VendorDetailCategory = VendorPaymentModel.VendorDetailCategory,
+                SlaexpireDate= VendorPaymentModel.SlaexpireDate,
             };
             await _vendorDetailsRepository.RemoveVendorDetails(vendorDetailEntity);
         }

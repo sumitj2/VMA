@@ -24,12 +24,9 @@ namespace Database.VMA.Repositories
         }
         public async Task EditUpdateVendorDetail(VendorDetail VendorDetailEntity)
         {
-            var result = await GetVendorDetailsId((int)VendorDetailEntity.VendorDetailId);
-            if (result != null)
-            {
-                _context.VendorDetails.Update(result);
-                await _context.SaveChangesAsync();
-            }
+            _context.VendorDetails.Update(VendorDetailEntity);
+            await _context.SaveChangesAsync();
+
         }
         public async Task<IEnumerable<VendorDetail>> GetAllVendorDetails()
         {
@@ -40,7 +37,7 @@ namespace Database.VMA.Repositories
         {
             var productsWithVendors = from vendorDetail in _context.VendorDetails
                                       join service in _context.VendorServices
-                                      on  vendorDetail.FkVendorServiceId equals service.VendorServiceId
+                                      on vendorDetail.FkVendorServiceId equals service.VendorServiceId
                                       join vendor in _context.Vendors
                                       on vendorDetail.FkVendorId equals vendor.VendorId
                                       where service.IsActive == true
@@ -67,12 +64,13 @@ namespace Database.VMA.Repositories
                                           FkVendorId = vendorDetail.FkVendorId,
                                           DetailsYear = vendorDetail.DetailsYear,
                                           IsAmc = vendorDetail.IsAmc,
-                                          SantionedDate = vendorDetail.SantionedDate,   
+                                          SantionedDate = vendorDetail.SantionedDate,
                                           SantionedNoteNo = vendorDetail.SantionedNoteNo,
                                           SantionedType = vendorDetail.SantionedType,
                                           VendorCode = vendor.VendorCode,
                                           VendorId = vendor.VendorId,
-                                          VendorName=vendor.VendorName
+                                          VendorName = vendor.VendorName,
+                                          SlaexpireDate = vendorDetail.SlaexpireDate,
                                       };
             return await productsWithVendors.ToListAsync();
         }

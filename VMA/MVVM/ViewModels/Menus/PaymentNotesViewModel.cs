@@ -164,7 +164,7 @@ namespace VMA.MVVM.ViewModels.Menus
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting payment notes", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
                 var paymentNotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
-                VendorPaymentNotes = TempVendorPaymentNotes = new ObservableCollection<VenderPaymentNoteModel>(paymentNotes);
+                VendorPaymentNotes = TempVendorPaymentNotes = new ObservableCollection<VenderPaymentNoteModel>(paymentNotes.OrderByDescending(x=>x.PaymentNoteNo));
 
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved payment notes", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 

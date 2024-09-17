@@ -317,7 +317,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
 
-                    _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId));
+                    _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId), Convert.ToInt32(SelectedVendorDetailService.VendorDetailId));
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...", true);
                     _ = GetAmountToBepaid();
                 }
@@ -390,7 +390,25 @@ namespace VMA.MVVM.ViewModels.Add
             set
             {
                 _VendorPaymentAmount = value;
+                PaymentYpeNoneWithSantionedAmt();
                 OnPropertyChanged(nameof(VendorPaymentAmount));
+            }
+        }
+
+        private async void PaymentYpeNoneWithSantionedAmt()
+        {
+            if (SelectedVendorDetailService?.ServicePaymentType == GeneralConstants.PaymentTypeNoneWithSantionedAmt)
+            {
+                var (res, paymentType, santionedAmt, vendorDetailID) = await GetPaymentDetailsAsync();
+                if ((Convert.ToDecimal(res?.TotalAmoutPaidNonTaxable) + VendorPaymentAmount) > santionedAmt)
+                {
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.MsgTotalAmt, true);
+                    return;
+                }
+                if ((Convert.ToDecimal(res?.TotalAmoutPaidNonTaxable) + VendorPaymentAmount) == santionedAmt)
+                {
+                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.MsgLastPayment, true);
+                }
             }
         }
 
@@ -401,8 +419,21 @@ namespace VMA.MVVM.ViewModels.Add
             get { return _vendorPaymentTotalAmountPaid; }
             set
             {
-                _vendorPaymentTotalAmountPaid = value;
+                _vendorPaymentTotalAmountPaid = CustomRound(Convert.ToDecimal(value));
                 OnPropertyChanged(nameof(VendorPaymentTotalAmountPaid));
+            }
+        }
+        decimal CustomRound(decimal number)
+        {
+            decimal fractionalPart = number - Math.Floor(number);
+
+            if (fractionalPart >= 0.5m)
+            {
+                return Math.Ceiling(number); // Round up to the next integer
+            }
+            else
+            {
+                return number; // Return the original number unchanged
             }
         }
 
@@ -816,7 +847,19 @@ namespace VMA.MVVM.ViewModels.Add
             try
             {
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the SubmitPaymentDetails", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
-
+                //if (SelectedVendorDetailService?.ServicePaymentType == GeneralConstants.PaymentTypeNoneWithSantionedAmt)
+                //{
+                //    var (res, paymentType, santionedAmt, vendorDetailID) = await GetPaymentDetailsAsync();
+                //    if ((res?.TotalAmoutPaidNonTaxable + VendorPaymentAmount) > santionedAmt)
+                //    {
+                //        SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.MsgTotalAmt, true);
+                //        return;
+                //    }
+                //    if ((res?.TotalAmoutPaidNonTaxable + VendorPaymentAmount) > santionedAmt)
+                //    {
+                //        SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.MsgLastPayment, true);
+                //    }
+                //}
                 if (SaveButtonName == GeneralConstants.Update)
                 {
                     VendorPaymentModel payment = new VendorPaymentModel()
@@ -952,17 +995,32 @@ namespace VMA.MVVM.ViewModels.Add
             GSTTotal = Convert.ToDouble(VendorPaymentCgst + VendorPaymentIgst + VendorPaymentSgst);
             VendorPaymentTotalAmountPaid = Convert.ToDecimal(GSTTotal + Convert.ToDouble(VendorPaymentAmount));
         }
+        public async Task<(VendorPayments? res, string? paymentType, decimal? santionedAmt, int? vendorDetailID)> GetPaymentDetailsAsync()
+        {
+            string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
+            decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
+            int? vendorDetailID = SelectedVendorDetailService?.VendorDetailId;
 
+            var res = await _vendorPaymentBusinessLogic
+                .GetAmoutToBePaidDetails(vendorDetailID, santionedAmt, paymentType)
+                .ConfigureAwait(true);
+
+            return (res, paymentType, santionedAmt, vendorDetailID);
+        }
         private async Task GetAmountToBepaid()
         {
             try
             {
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting payment amount", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
-                decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
-                int? vendorDetaillID = SelectedVendorDetailService?.VendorDetailId;
-                if (paymentType == GeneralConstants.PaymentTypeNone)
+                //string? paymentType = SelectedVendorDetailService?.ServicePaymentType;
+                //decimal? santionedAmt = SelectedVendorDetailService?.ServiceSantionAmount;
+                //int? vendorDetaillID = SelectedVendorDetailService?.VendorDetailId;
+                //var res = await _vendorPaymentBusinessLogic.GetAmoutToBePaidDetails(vendorDetaillID, santionedAmt, paymentType).ConfigureAwait(true);
+
+                var (res, paymentType, santionedAmt, vendorDetailID) = await GetPaymentDetailsAsync();
+
+                if (paymentType == GeneralConstants.PaymentTypeNone || paymentType == GeneralConstants.PaymentTypeNoneWithSantionedAmt)
                 {
                     EnableTotalPaidAmt = true;
                 }
@@ -971,7 +1029,7 @@ namespace VMA.MVVM.ViewModels.Add
                     EnableTotalPaidAmt = false;
 
                 }
-                var res = await _vendorPaymentBusinessLogic.GetAmoutToBePaidDetails(vendorDetaillID, santionedAmt, paymentType).ConfigureAwait(true);
+
                 VendorPaymentAmount = res?.TotalPaymentNotTaxable;
 
                 if (res?.Meassage != null)
@@ -1000,9 +1058,9 @@ namespace VMA.MVVM.ViewModels.Add
 
         #region Combobox load vendors and services on combo box selection 
 
-        private async Task LoadVendorPaymentNotes(int vendorId)
+        private async Task LoadVendorPaymentNotes(int vendorId, int serviceDetailId)
         {
-            var paymentNotesDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorId(vendorId).ConfigureAwait(true);
+            var paymentNotesDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorIdAndDetailServiceId(vendorId, serviceDetailId).ConfigureAwait(true);
             if (paymentNotesDetails != null)
             {
                 PaymentNoteDetails = paymentNotesDetails;
@@ -1010,7 +1068,7 @@ namespace VMA.MVVM.ViewModels.Add
             }
             else
             {
-                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.PaymentNoteAlert, true,true);
+                SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning, MessagesContants.PaymentNoteAlert, true, true);
 
             }
         }
@@ -1032,7 +1090,7 @@ namespace VMA.MVVM.ViewModels.Add
         private async Task LoadVendors()
         {
             var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
-            VendorModels = new ObservableCollection<VendorModel>(vendors);
+            VendorModels = new ObservableCollection<VendorModel>(vendors.ToList().OrderBy(x => x.VendorName));
         }
 
         #endregion

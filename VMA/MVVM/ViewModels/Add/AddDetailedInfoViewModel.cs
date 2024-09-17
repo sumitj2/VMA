@@ -177,6 +177,16 @@ namespace VMA.MVVM.ViewModels.Add
                 OnPropertyChanged(nameof(SantionedDate));
             }
         }
+        private DateOnly? _slaExpireDate;
+        public DateOnly? SlaExpireDate
+        {
+            get { return _slaExpireDate; }
+            set
+            {
+                _slaExpireDate = value;
+                OnPropertyChanged(nameof(SlaExpireDate));
+            }
+        }
 
         private string _santionedNoteNo;
         public string SantionedNoteNo
@@ -550,6 +560,7 @@ namespace VMA.MVVM.ViewModels.Add
                 new(){NameSearch=GeneralConstants.PaymentTypeHalfYearly,SearchId=3},
                 new(){NameSearch=GeneralConstants.PaymentTypeYearly,SearchId=4},
                 new(){NameSearch=GeneralConstants.PaymentTypeNone,SearchId=5},
+                new(){NameSearch=GeneralConstants.PaymentTypeNoneWithSantionedAmt,SearchId=6}
             ];
 
             _vendorDetailViewModel = vendorDetailViewModel;
@@ -598,7 +609,7 @@ namespace VMA.MVVM.ViewModels.Add
                 VendorDetailCategory = "";
                 SelectedVendorDetailService = null;
                 SelectPaymentType = null;
-
+                SlaExpireDate = DateOnly.MinValue;
             });
         }
         string errorMsg = "";
@@ -766,7 +777,7 @@ namespace VMA.MVVM.ViewModels.Add
                         LastUpdateBy = UserAccountModel.Username,
                         VendorDetailId = _vendorDetailViewModel.VendorDetailId,
                         LastUpdatedDate = DateTime.UtcNow,
-
+                        SlaexpireDate=SlaExpireDate
                     };
                     await _vendorDetailsBusinessLogic.EditUpdateVendorDetails(vendorModel);
 
@@ -803,7 +814,8 @@ namespace VMA.MVVM.ViewModels.Add
                         FkVendorId = SelectedVendorModel.VendorId,
                         FkVendorServiceId = SelectedVendorDetailService?.VendorServiceId,
                         VendorId = SelectedVendorModel.VendorId,
-                        VendorCode = SelectedVendorModel.VendorCode
+                        VendorCode = SelectedVendorModel.VendorCode,
+                        SlaexpireDate = SlaExpireDate
                     };
                     await _vendorDetailsBusinessLogic.AddVendorDetails(vendorModel);
 
@@ -885,6 +897,7 @@ namespace VMA.MVVM.ViewModels.Add
                     SelectPaymentType = ComboxPaymentMethods[ComboxPaymentMethods.IndexOf(paymentType)];
                 }
                 SelectedPaymentTypeText = _vendorDetailViewModel?.ServicePaymentType;
+                SlaExpireDate = _vendorDetailViewModel?.SlaexpireDate;
             }
         }
 
@@ -925,7 +938,7 @@ namespace VMA.MVVM.ViewModels.Add
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loading vendors", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
                 var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
-                VendorModels = new ObservableCollection<VendorModel>(vendors);
+                VendorModels = new ObservableCollection<VendorModel>(vendors.ToList().OrderBy(x => x.VendorName));
 
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Loaded vendors", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }

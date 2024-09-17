@@ -238,7 +238,7 @@ namespace VMA.MVVM.ViewModels.Add
         {
             var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
            
-            Vendors = new ObservableCollection<VendorModel>(vendors);
+            Vendors = new ObservableCollection<VendorModel>(vendors.ToList().OrderBy(x => x.VendorName));
         }
 
         public async Task ManinTasss()

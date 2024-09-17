@@ -290,7 +290,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorModel vendorModel = new()
                     {
                         VendorAccountNumber = _vendorAccountNumber,
-                        VendorCode = _vendorCode,
+                        VendorCode = VendorCode.PadLeft(3, '0'),
                         VendorAddress = _vendorAddress,
                         VendorBankName = _vendorBankName,
                         VendorEmailId = _vendorEmailId,
@@ -316,7 +316,7 @@ namespace VMA.MVVM.ViewModels.Add
                     VendorModel vendorModel = new()
                     {
                         VendorAccountNumber = _vendorAccountNumber,
-                        VendorCode = _vendorCode,
+                        VendorCode = VendorCode.PadLeft(3, '0'),
                         VendorAddress = _vendorAddress,
                         VendorBankName = _vendorBankName,
                         VendorEmailId = _vendorEmailId,
