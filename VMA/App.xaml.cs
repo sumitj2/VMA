@@ -56,7 +56,7 @@ namespace VMA
             services.AddSingleton<IVendorPaymentBusinessLogic, VendorPaymentBusinessLogic>();
             services.AddSingleton<IVendorPaymentRepository, VendorPaymentRepository>();
 
-            services.AddSingleton<IVenderPaymentNotesBusinessLogic, VenderPaymentNotesBusinesslogic>();
+            services.AddScoped<IVenderPaymentNotesBusinessLogic, VenderPaymentNotesBusinesslogic>();
             services.AddScoped<IVenderPaymentNotesRepository, VenderPaymentNotesRepository>();
 
             services.AddSingleton<IInvoiceDetailsBusinessLogic, InvoiceDetailsBusinessLogic>();
@@ -66,7 +66,7 @@ namespace VMA
             services.AddSingleton<IGstcalculationMasterRepository, GstcalculationMasterRepository>();
 
             services.AddScoped<IConfigurationsRepository, ConfigurationsRepository>();
-            services.AddSingleton<IConfigurationBusinessLogic, ConfigurationBusinessLogic>();
+            services.AddScoped<IConfigurationBusinessLogic, ConfigurationBusinessLogic>();
 
             services.AddSingleton<IReportExportToExcelPaymentNote, ReportExportToExcelPaymentNote>();
             services.AddSingleton<IPaymentNoteInWord, PaymentNoteInWord>();

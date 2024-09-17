@@ -231,13 +231,20 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     var countOfnotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
                     var lastPaymentNote = countOfnotes?.OrderByDescending(x => x.PaymentNoteNo)?.ToList()?.FirstOrDefault()?.PaymentNoteNo;
-                    if (lastPaymentNote != null)
+                    if (lastPaymentNote!=null && !lastPaymentNote.Contains(PaymentNoteYear))
                     {
-                        PaymentNoteNo = PaymentNoteId + GetIncrementNoteId(lastPaymentNote);//_SelectedVendorModel?.VendorId;
+                        PaymentNoteNo = PaymentNoteId + 1;
                     }
                     else
                     {
-                        PaymentNoteNo = PaymentNoteId + 1;
+                        if (lastPaymentNote != null)
+                        {
+                            PaymentNoteNo = PaymentNoteId + GetIncrementNoteId(lastPaymentNote);//_SelectedVendorModel?.VendorId;
+                        }
+                        else
+                        {
+                            PaymentNoteNo = PaymentNoteId + 1;
+                        }
                     }
                 });
             }
