@@ -181,9 +181,9 @@ namespace Database.VMA.Repositories
         {
             return await _context.VendorPaymentNotes.Where(x => x.IsActive == true && x.NoteId == noteId).FirstOrDefaultAsync().ConfigureAwait(true);
         }
-        public async Task<VendorPaymentNote?> GetVendorsPaymentNoteByVendorIdAndDetailServiceId(int? vendorId,int? detailsId)
+        public async Task<VendorPaymentNote?> GetVendorsPaymentNoteByVendorIdAndDetailServiceId(int? vendorId,int? detailsId,string paymentNoteYear)
         {
-            return await _context.VendorPaymentNotes.Where(x => x.IsActive == true && x.FkVendorId == vendorId && x.FkVendorDetailId== detailsId).FirstOrDefaultAsync().ConfigureAwait(true);
+            return await _context.VendorPaymentNotes.Where(x => x.IsActive == true && x.FkVendorId == vendorId && x.FkVendorDetailId== detailsId && x.PaymentNoteYear== paymentNoteYear).FirstOrDefaultAsync().ConfigureAwait(true);
         }
         public async Task RemoveVendorPaymentNote(VendorPaymentNote VenderPaymentNoteEntity)
         {

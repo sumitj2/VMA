@@ -286,7 +286,7 @@ namespace VMA.MVVM.ViewModels.Add
                 if (SelectedVendorModel != null)
                 {
                     OnPropertyChanged(nameof(SelectedVendorModel));
-                    _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
+                    _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId,VendorPaymentYear);
                     PaymentNoteNo = "";
                 }
             }
@@ -317,7 +317,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
 
-                    _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId), Convert.ToInt32(SelectedVendorDetailService.VendorDetailId));
+                    _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId), Convert.ToInt32(SelectedVendorDetailService.VendorDetailId),VendorPaymentYear);
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...", true);
                     _ = GetAmountToBepaid();
                 }
@@ -1058,9 +1058,9 @@ namespace VMA.MVVM.ViewModels.Add
 
         #region Combobox load vendors and services on combo box selection 
 
-        private async Task LoadVendorPaymentNotes(int vendorId, int serviceDetailId)
+        private async Task LoadVendorPaymentNotes(int vendorId, int serviceDetailId, string paymentNoteYear)
         {
-            var paymentNotesDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorIdAndDetailServiceId(vendorId, serviceDetailId).ConfigureAwait(true);
+            var paymentNotesDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorIdAndDetailServiceId(vendorId, serviceDetailId,paymentNoteYear).ConfigureAwait(true);
             if (paymentNotesDetails != null)
             {
                 PaymentNoteDetails = paymentNotesDetails;
@@ -1077,9 +1077,9 @@ namespace VMA.MVVM.ViewModels.Add
         /// Combobox load Vendor Service Name on selection of Vendor
         /// </summary>
         /// <returns></returns>
-        private async Task LoadVendorServiceDetails(int vendorId)
+        private async Task LoadVendorServiceDetails(int vendorId, string detailsYear)
         {
-            var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
+            var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails(detailsYear).ConfigureAwait(true);
             VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails.Where(x => x.VendorId == vendorId));
         }
 

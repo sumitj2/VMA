@@ -109,7 +109,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _SelectedVendorModel = value;
                 OnPropertyChanged(nameof(SelectedVendorModel));
-                _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
+                _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId, PaymentNoteYear);
                 //var res = _paymentNotesViewModel.TempVendorPaymentNotes.FirstOrDefault(x => x.VendorName == _SelectedVendorModel?.VendorName);
                 ////_ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
                 //if (res != null)
@@ -453,9 +453,9 @@ namespace VMA.MVVM.ViewModels.Add
         /// Combobox load Vendor Service Name on selection of Vendor
         /// </summary>
         /// <returns></returns>
-        private async Task LoadVendorServiceDetails(int vendorId)
+        private async Task LoadVendorServiceDetails(int vendorId, string detailsYear)
         {
-            var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
+            var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails(detailsYear).ConfigureAwait(true);
             VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails.Where(x => x.VendorId == vendorId));
         }
 

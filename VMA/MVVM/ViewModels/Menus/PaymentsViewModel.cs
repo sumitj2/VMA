@@ -166,8 +166,8 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                var vendors = await _vendorPaymentBusinessLogic.GetAllVendorPayment().ConfigureAwait(true);
-                VendorsPayment = TempVendorsPayment = new ObservableCollection<VendorPaymentModel>(vendors);
+                var vendorsPayment = await _vendorPaymentBusinessLogic.GetAllVendorPayment().ConfigureAwait(true);
+                VendorsPayment = TempVendorsPayment = new ObservableCollection<VendorPaymentModel>(vendorsPayment.OrderByDescending(x=>x.CreatedDate));
 
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retrieved vendor payments", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             }

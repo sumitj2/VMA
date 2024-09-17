@@ -178,7 +178,7 @@ namespace VMA.MVVM.ViewModels.Menus
                     OnPropertyChanged(nameof(SelectedVendorModel));
                     BeforeInvocie += " " + SelectedVendorModel.VendorName;
                     AfterInvoice += " " + SelectedVendorModel.VendorName;
-                    _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
+                    _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId,VendorPaymentYear);
                 }
             }
         }
@@ -293,7 +293,7 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 if (SelectedVendorDetailService?.VendorServiceName != null || !IsPaymentTypeYes)
                 {
-                    var paymentNoteNo = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorIdAndDetailServiceId(Convert.ToInt32(SelectedVendorModel?.VendorId),Convert.ToInt32(SelectedVendorDetailService?.VendorDetailId));
+                    var paymentNoteNo = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorIdAndDetailServiceId(Convert.ToInt32(SelectedVendorModel?.VendorId),Convert.ToInt32(SelectedVendorDetailService?.VendorDetailId), _vendorPaymentYear);
                     if (IsPaymentTypeYes)
                     {
                         await _paymentNoteInWord.CreateAndOpenWordFile(VendorServiceDetails?.Select(x => x.VendorServiceName).ToList(), From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " , _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo,NoteGenerationDate).ConfigureAwait(true);
@@ -332,9 +332,9 @@ namespace VMA.MVVM.ViewModels.Menus
             var vendors = await _vendorBusinessLogic.GetAllVendor().ConfigureAwait(true);
             VendorModels = new ObservableCollection<VendorModel>(vendors.ToList().OrderBy(x => x.VendorName));
         }
-        private async Task LoadVendorServiceDetails(int vendorId)
+        private async Task LoadVendorServiceDetails(int vendorId, string detailYear)
         {
-            var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
+            var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails(detailYear).ConfigureAwait(true);
             if (IsPaymentTypeYes)
             {
                 VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails.Where(x => x.VendorId == vendorId && x.ServicePaymentType == GeneralConstants.PaymentTypeNone));

@@ -15,6 +15,6 @@ namespace Database.Abstraction.VMA.Contract
         public Task<IEnumerable<VendorDetail>> GetAllVendorDetails();
         public Task<VendorDetail?> GetVendorDetailsId(int vendorDetailId);
         public Task RemoveVendorDetails(VendorDetail VendorDetailEntity);
-        public Task<List<VendorDetailsWithService>> GetVendorDetailsWithService();
+        public Task<List<VendorDetailsWithService>> GetVendorDetailsWithService(string detailsYear);
     }
 }

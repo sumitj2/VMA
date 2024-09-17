@@ -20,7 +20,7 @@ namespace Database.Abstraction.VMA.Contract
         public Task<List<ExportPaymentNoteData>> GetAllPaymentDetailsWithServiceDetailsToExport(string? finacialYear);
         Task<List<CreateWordDocumentPaymentNote>> GetAllServicePayments(List<string> serviceNameList, string? financialYear, string vendorName,string paymentNoteNo);
         Task<int> GetAllVendorsPaymentNotesCount();
-        Task<VendorPaymentNote?> GetVendorsPaymentNoteByVendorIdAndDetailServiceId(int? vendorId, int? detailsId);
+        Task<VendorPaymentNote?> GetVendorsPaymentNoteByVendorIdAndDetailServiceId(int? vendorId, int? detailsId, string paymentNoteYear);
         Task<VendorPaymentNote?> GetVendorsPaymentNoteByVendorId(int? vendorId);
     }
 }

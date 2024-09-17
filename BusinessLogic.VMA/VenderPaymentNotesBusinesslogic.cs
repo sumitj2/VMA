@@ -101,9 +101,9 @@ namespace Database.VMA.Repositories
             }
             return null;
         }
-        public async Task<VenderPaymentNoteModel?> GetPaymentNoteByVendorIdAndDetailServiceId(int? vendorId,int? detailServceId)
+        public async Task<VenderPaymentNoteModel?> GetPaymentNoteByVendorIdAndDetailServiceId(int? vendorId,int? detailServceId, string paymentNoteYear)
         {
-            var repositoryResult = await _venderPaymentNotesRepository.GetVendorsPaymentNoteByVendorIdAndDetailServiceId(vendorId, detailServceId).ConfigureAwait(true);
+            var repositoryResult = await _venderPaymentNotesRepository.GetVendorsPaymentNoteByVendorIdAndDetailServiceId(vendorId, detailServceId,paymentNoteYear).ConfigureAwait(true);
             if (repositoryResult != null)
             {
                 VenderPaymentNoteModel vendorModel = new()
