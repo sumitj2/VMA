@@ -21,7 +21,8 @@ public partial class VendorPaymentNote
 
     public DateTime? LastUpdatedDate { get; set; }
 
-    public int?  FkVendorId { get; set; }
+    public int? FkVendorId { get; set; }
     public string? PaymentNoteYear { get; set; }
     public int? FkVendorDetailId { get; set; }
+    public int? PaymentNoteId { get; set; }
 }
