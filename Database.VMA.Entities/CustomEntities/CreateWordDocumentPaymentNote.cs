@@ -24,5 +24,6 @@ namespace Database.VMA.Entities.CustomEntities
         public decimal? VendorPaymentSgst { get; set; }
 
         public decimal? VendorPaymentIgst { get; set; }
+        public int? PaymentNoteId { get; set; }
     }
 }

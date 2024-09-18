@@ -61,7 +61,8 @@ namespace Database.VMA.Repositories
                                                 PaymentNoteDate = paymentNote.PaymentNoteDate,
                                                 PaymentNoteNo = paymentNote.PaymentNoteNo,
                                                 PaymentNoteYear = paymentNote.PaymentNoteYear,
-                                                FkVendorDetailId = paymentNote.FkVendorDetailId
+                                                FkVendorDetailId = paymentNote.FkVendorDetailId,
+                                                PaymentNoteId = paymentNote.PaymentNoteId
                                             };
 
             return await paymentNoteWithAllDetails.ToListAsync();
@@ -105,7 +106,7 @@ namespace Database.VMA.Repositories
                                           IsAmc = details.IsAmc,
                                           PaymentType = details.ServicePaymentType,
                                           Notes = payment.Notes,
-
+                                          PaymentNoteId= paymentNote.PaymentNoteId
                                       };
             return await productsWithVendors.ToListAsync();
 
@@ -161,6 +162,7 @@ namespace Database.VMA.Repositories
                                           VendorPaymentCgst = payment.VendorPaymentCgst,
                                           VendorPaymentIgst = payment.VendorPaymentIgst,
                                           VendorPaymentSgst = payment.VendorPaymentSgst,
+                                          PaymentNoteId= paymentNote.PaymentNoteId
                                       };
 
             return await productsWithVendors.ToListAsync();
