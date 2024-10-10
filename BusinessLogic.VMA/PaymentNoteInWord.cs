@@ -15,6 +15,7 @@ using Color = DocumentFormat.OpenXml.Wordprocessing.Color;
 using BusinessLogic.Abstraction.VMA.Contract;
 using DocumentFormat.OpenXml.Drawing.Charts;
 using VMA.Constants;
+using DocumentFormat.OpenXml.VariantTypes;
 
 namespace BusinessLogic.VMA
 {
@@ -55,7 +56,7 @@ namespace BusinessLogic.VMA
                 else
                 {
                     string? location = path + "\\" + serviceName + "_PaymentNote.docx";
-                    
+
                     // Ensure the file does not get overridden by generating a unique file name
                     string uniqueLocation = GetUniqueFileName(location);
 
@@ -172,6 +173,7 @@ namespace BusinessLogic.VMA
                           new TableCell(new Paragraph(new Run(new Text("SrNo ")))),
                           new TableCell(new Paragraph(new Run(new Text("Invoice No")))),
                           new TableCell(new Paragraph(new Run(new Text("Date ")))),
+                          new TableCell(new Paragraph(new Run(new Text("Particular ")))),
                           new TableCell(new Paragraph(new Run(new Text("Description")))),
                           new TableCell(new Paragraph(new Run(new Text("Qty ")))),
                           new TableCell(new Paragraph(new Run(new Text("Rate")))),
@@ -182,12 +184,12 @@ namespace BusinessLogic.VMA
                         tableInvocie.Append(rowInvoice);
 
 
-                        TableRow rowHeaderMege = new TableRow();
-                        TableCell mergedCellInvoice = new TableCell(new TableCellProperties(new GridSpan() { Val = 9 }));
-                        mergedCellInvoice.Append(new Paragraph(new Run(new Text(result.FirstOrDefault().InvoiceParticulars.ToString()))));
-                        rowHeaderMege.Append(mergedCellInvoice);
+                        //TableRow rowHeaderMege = new TableRow();
+                        //TableCell mergedCellInvoice = new TableCell(new TableCellProperties(new GridSpan() { Val = 9 }));
+                        //mergedCellInvoice.Append(new Paragraph(new Run(new Text(result.FirstOrDefault().InvoiceParticulars.ToString()))));
+                        //rowHeaderMege.Append(mergedCellInvoice);
 
-                        tableInvocie.Append(rowHeaderMege);
+                        //tableInvocie.Append(rowHeaderMege);
 
                         int srNo = 1;
                         if (result != null)
@@ -199,13 +201,13 @@ namespace BusinessLogic.VMA
                                 (
                                   new TableCell(new Paragraph(new Run(new Text(srNo.ToString())))),
                                   new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceNumber ?? "")))),
-                                  new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceDate.ToString() ?? "")))),
+                                  new TableCell(new Paragraph(new Run(new Text(Convert.ToDouble(invoice?.InvoiceDate).ToString() ?? "")))),
                                   new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceParticulars ?? "")))),
                                   new TableCell(new Paragraph(new Run(new Text(invoice?.QuantityOfUnit.ToString() ?? "")))),
                                   new TableCell(new Paragraph(new Run(new Text(invoice?.RatePerUnit ?? "")))),
-                                  new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentAmount.ToString() ?? "")))),
-                                  new TableCell(new Paragraph(new Run(new Text(invoice?.TotalGST.ToString() ?? "")))),
-                                  new TableCell(new Paragraph(new Run(new Text(invoice?.TotalAmountPaid.ToString() ?? ""))))
+                                  new TableCell(new Paragraph(new Run(new Text(Convert.ToDouble(invoice?.VendorPaymentAmount).ToString() ?? "")))),
+                                  new TableCell(new Paragraph(new Run(new Text(Convert.ToDouble(invoice?.TotalGST).ToString() ?? "")))),
+                                  new TableCell(new Paragraph(new Run(new Text(Convert.ToDouble(invoice?.TotalAmountPaid).ToString() ?? ""))))
                                 );
                                 srNo++;
                                 tableInvocie.Append(rowInvoice1);
@@ -267,7 +269,7 @@ namespace BusinessLogic.VMA
                             new TableCell(new Paragraph(new Run(new Text("UTR No: ")))),
                             new TableCell(new Paragraph(new Run(new Text(result.Count() != 0 ? result?.FirstOrDefault().VendorPaymentUtrnumber : null)))),
                             new TableCell(new Paragraph(new Run(new Text("Amount: ")))),
-                            new TableCell(new Paragraph(new Run(new Text(" "))))
+                            new TableCell(new Paragraph(new Run(new Text(""))))
                             );
                         tableFooter.Append(rowFooter1);
                         //subject 
@@ -277,23 +279,24 @@ namespace BusinessLogic.VMA
                             new TableCell(new Paragraph(new Run(new Text("Date")))),
                             new TableCell(new Paragraph(new Run(new Text(result.FirstOrDefault().VendorPaymentDate.ToString())))),
                             new TableCell(new Paragraph(new Run(new Text("TDS")))),
-                            new TableCell(new Paragraph(new Run(new Text(result?.FirstOrDefault()?.VendorPaymentTdsamount.ToString()))))
+                            new TableCell(new Paragraph(new Run(new Text(Convert.ToDecimal(result?.FirstOrDefault()?.VendorPaymentTdsamount).ToString()))))
                             );
                         tableFooter.Append(rowFooter2);
 
+                        decimal amtPaid = Convert.ToDecimal(0) - Convert.ToDecimal(result?.FirstOrDefault()?.VendorPaymentTdsamount);
                         TableRow row2 = new TableRow();
                         row2.Append
                             (
                             new TableCell(new Paragraph(new Run(new Text("      ")))),
                             new TableCell(new Paragraph(new Run(new Text("      ")))),
                             new TableCell(new Paragraph(new Run(new Text("Total Amount Paid")))),
-                            new TableCell(new Paragraph(new Run(new Text("      "))))
+                            new TableCell(new Paragraph(new Run(new Text(amtPaid.ToString()))))
                             );
                         tableFooter.Append(row2);
 
                         body.AppendChild(tableFooter);
 
-                        #endregion                       
+                        #endregion
 
                         mainPart.Document.Append(body);
                         mainPart.Document.Save();
@@ -321,7 +324,7 @@ namespace BusinessLogic.VMA
                     string uniqueLocation = GetUniqueFileName(location);
 
                     try
-                    { 
+                    {
                         // Create and save the Word document
                         using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(uniqueLocation, WordprocessingDocumentType.Document))
                         {
@@ -442,6 +445,7 @@ namespace BusinessLogic.VMA
                               new TableCell(new Paragraph(new Run(new Text("SrNo ")))),
                               new TableCell(new Paragraph(new Run(new Text("Invoice No")))),
                               new TableCell(new Paragraph(new Run(new Text("Date ")))),
+                              new TableCell(new Paragraph(new Run(new Text("Particular ")))),
                               new TableCell(new Paragraph(new Run(new Text("Sub Total")))),
                               new TableCell(new Paragraph(new Run(new Text("CGST ")))),
                               new TableCell(new Paragraph(new Run(new Text("SGST")))),
@@ -452,11 +456,11 @@ namespace BusinessLogic.VMA
 
                             TableRow rowHeaderMege = new TableRow();
                             TableCell mergedCellInvoice = new TableCell(new TableCellProperties(new GridSpan() { Val = 9 }));
-                            mergedCellInvoice.Append(new Paragraph(new Run(new Text(result.FirstOrDefault().InvoiceParticulars.ToString()))));
-                            rowHeaderMege.Append(mergedCellInvoice);
+                            //mergedCellInvoice.Append(new Paragraph(new Run(new Text(result.FirstOrDefault().InvoiceParticulars.ToString()))));
+                            //rowHeaderMege.Append(mergedCellInvoice);
 
                             tableInvocie.Append(rowInvoice);
-                            tableInvocie.Append(rowHeaderMege);
+                            //tableInvocie.Append(rowHeaderMege);
                             int srNo = 1;
                             decimal totalAmountPaid = 0;
                             if (result != null)
@@ -470,11 +474,12 @@ namespace BusinessLogic.VMA
                                       new TableCell(new Paragraph(new Run(new Text(srNo.ToString())))),
                                       new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceNumber ?? "")))),
                                       new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceDate != null ? invoice?.InvoiceDate.Value.ToShortDateString().ToString() ?? "" : "")))),
-                                      new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentAmount.ToString() ?? "")))),
-                                      new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentCgst.ToString() ?? "")))),
-                                      new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentSgst.ToString() ?? "")))),
-                                      new TableCell(new Paragraph(new Run(new Text(invoice?.VendorPaymentIgst.ToString() ?? "")))),
-                                      new TableCell(new Paragraph(new Run(new Text(invoice?.TotalAmountPaid.ToString() ?? ""))))
+                                      new TableCell(new Paragraph(new Run(new Text(invoice?.InvoiceParticulars?.ToString() ?? "")))),
+                                      new TableCell(new Paragraph(new Run(new Text(string.Format("{0:F2}", invoice?.VendorPaymentAmount).ToString() ?? "")))),
+                                      new TableCell(new Paragraph(new Run(new Text(string.Format("{0:F2}", invoice?.VendorPaymentCgst).ToString() ?? "")))),
+                                      new TableCell(new Paragraph(new Run(new Text(string.Format("{0:F2}", invoice?.VendorPaymentSgst).ToString() ?? "")))),
+                                      new TableCell(new Paragraph(new Run(new Text(string.Format("{0:F2}", invoice?.VendorPaymentIgst).ToString() ?? "")))),
+                                      new TableCell(new Paragraph(new Run(new Text(string.Format("{0:F2}", invoice?.TotalAmountPaid).ToString() ?? ""))))
                                     );
                                     srNo++;
                                     tableInvocie.Append(rowInvoice1);
@@ -489,8 +494,9 @@ namespace BusinessLogic.VMA
                                        new TableCell(new Paragraph(new Run(new Text()))),
                                        new TableCell(new Paragraph(new Run(new Text()))),
                                        new TableCell(new Paragraph(new Run(new Text()))),
+                                       new TableCell(new Paragraph(new Run(new Text()))),
                                        new TableCell(new Paragraph(new Run(new Text("Total")))),
-                                       new TableCell(new Paragraph(new Run(new Text(totalAmountPaid.ToString()))))
+                                       new TableCell(new Paragraph(new Run(new Text(string.Format("{0:F2}", totalAmountPaid).ToString()))))
                                      );
                                 srNo++;
                                 tableInvocie.Append(rowInvoice2);
@@ -551,7 +557,7 @@ namespace BusinessLogic.VMA
                                 new TableCell(new Paragraph(new Run(new Text("UTR No: ")))),
                                 new TableCell(new Paragraph(new Run(new Text(result.Count() != 0 ? result?.FirstOrDefault().VendorPaymentUtrnumber : null)))),
                                 new TableCell(new Paragraph(new Run(new Text("Amount: ")))),
-                                new TableCell(new Paragraph(new Run(new Text(totalAmountPaid.ToString()))))
+                                new TableCell(new Paragraph(new Run(new Text(string.Format("{0:F2}", totalAmountPaid).ToString()))))
                                 );
                             tableFooter.Append(rowFooter1);
                             //subject 
@@ -559,9 +565,9 @@ namespace BusinessLogic.VMA
                             rowFooter2.Append
                                 (
                                 new TableCell(new Paragraph(new Run(new Text("Date")))),
-                                new TableCell(new Paragraph(new Run(new Text(result.FirstOrDefault().VendorPaymentDate.ToString())))),
+                                new TableCell(new Paragraph(new Run(new Text(result?.FindAll(x=>x.VendorPaymentRtgsDate!=null)?.FirstOrDefault()?.VendorPaymentRtgsDate?.ToString())))),
                                 new TableCell(new Paragraph(new Run(new Text("TDS")))),
-                                new TableCell(new Paragraph(new Run(new Text(result?.FirstOrDefault()?.VendorPaymentTdsamount.ToString()))))
+                                new TableCell(new Paragraph(new Run(new Text(string.Format("{0:F2}", result?.FirstOrDefault()?.VendorPaymentTdsamount)))))
                                 );
                             tableFooter.Append(rowFooter2);
 
@@ -572,14 +578,14 @@ namespace BusinessLogic.VMA
                                 new TableCell(new Paragraph(new Run(new Text("      ")))),
                                 new TableCell(new Paragraph(new Run(new Text("      ")))),
                                 new TableCell(new Paragraph(new Run(new Text("Total Amount Paid")))),
-                                new TableCell(new Paragraph(new Run(new Text(amtPaid.ToString()))))
+                                new TableCell(new Paragraph(new Run(new Text(string.Format("{0:F2}", amtPaid).ToString()))))
                                 );
                             tableFooter.Append(row2);
 
                             body.AppendChild(tableFooter);
 
                             #endregion
-                            
+
                             mainPart.Document.Append(body);
                             mainPart.Document.Save();
                         }

@@ -176,8 +176,8 @@ namespace VMA.MVVM.ViewModels.Menus
                 {
                     _ = ClearForm(null);
                     OnPropertyChanged(nameof(SelectedVendorModel));
-                    BeforeInvocie += " " + SelectedVendorModel.VendorName;
-                    AfterInvoice += " " + SelectedVendorModel.VendorName;
+                    BeforeInvocie += " " + SelectedVendorModel.VendorName+ " ";
+                    AfterInvoice += " " + SelectedVendorModel.VendorName + " ";
                     _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId,VendorPaymentYear);
                 }
             }
@@ -279,7 +279,7 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             else
             {
-                // await _yearlyReportPDF.GenerateMonthlyReport(_vendorPaymentYear, "month_need_to_pass", pathExcel).ConfigureAwait(true);
+                 await _yearlyReportPDF.GenerateMonthlyReport(_vendorPaymentYear, "month_need_to_pass", pathExcel).ConfigureAwait(true);
             }
         }
 
