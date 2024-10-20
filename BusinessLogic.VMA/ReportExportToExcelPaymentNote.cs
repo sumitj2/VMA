@@ -138,6 +138,7 @@ namespace BusinessLogic.VMA
                 vendorServiceCell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Top; // Align to the top vertically
                 //vendorServiceCell.Style.Alignment.Indent = 1; // Align slightly left
                 vendorServiceCell.Style.Font.Bold = true; // Bold text for vendor row
+                vendorServiceCell.Style.Fill.BackgroundColor = XLColor.LightBlue;
                 counter++;
 
                 if (service != null)
