@@ -237,14 +237,22 @@ namespace VMA.MVVM.ViewModels.Add
             set
             {
                 _selectPaymentType = value;
-                if (_selectPaymentType?.NameSearch == GeneralConstants.PaymentTypeNone)
+                if (SaveButtonName != GeneralConstants.Update)
                 {
-                    EnableDisableSantionedAmt=false;
-                    ServiceSantionAmount = null;
+                    if (_selectPaymentType?.NameSearch == GeneralConstants.PaymentTypeNone)
+                    {
+                        EnableDisableSantionedAmt = false;
+                        ServiceSantionAmount = null;
+                    }
+                    else
+                    {
+                        EnableDisableSantionedAmt = true;
+                    }
                 }
                 else
                 {
-                    EnableDisableSantionedAmt = true;
+                    EnableDisableSantionedAmt = false;
+
                 }
                 OnPropertyChanged(nameof(SelectPaymentType));
             }
