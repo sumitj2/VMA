@@ -110,31 +110,7 @@ namespace VMA.MVVM.ViewModels.Add
                 _SelectedVendorModel = value;
                 OnPropertyChanged(nameof(SelectedVendorModel));
                 _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId, PaymentNoteYear);
-                //var res = _paymentNotesViewModel.TempVendorPaymentNotes.FirstOrDefault(x => x.VendorName == _SelectedVendorModel?.VendorName);
-                ////_ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
-                //if (res != null)
-                //{
-                //    var msg1 = @$"{MessagesContants.PaymentNoteAlreadyGeneratedMsg} {_SelectedVendorModel?.VendorName}";
-
-                //    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, msg1, false, true);
-
-                //    _ = HidePaymentNoteForm(this);
-
-                //}
-                //Task.Run(async () =>
-                //{
-
-                //    var countOfnotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
-                //    var lastPaymentNote = countOfnotes?.OrderByDescending(x => x.PaymentNoteNo)?.ToList()?.FirstOrDefault()?.PaymentNoteNo;
-                //    if (lastPaymentNote != null)
-                //    {
-                //        PaymentNoteNo = PaymentNoteId + GetIncrementNoteId(lastPaymentNote);//_SelectedVendorModel?.VendorId;
-                //    }
-                //    else
-                //    {
-                //        PaymentNoteNo = PaymentNoteId + 1;
-                //    }
-                //});
+              
 
 
             }
@@ -350,6 +326,13 @@ namespace VMA.MVVM.ViewModels.Add
             }
             return validData;
         }
+        static string? GetLastNumberAfterLastSlash(string input)
+        {
+            // Use a regular expression to find the last set of digits after the last "/"
+            Match match = Regex.Match(input, @"\d+$");
+
+            return match.Success ? match.Value : null;
+        }
 
         private async Task SubmitPaymentNote(VenderPaymentNoteModel model)
         {
@@ -370,7 +353,7 @@ namespace VMA.MVVM.ViewModels.Add
                         VendorId = VendorModels.FirstOrDefault(x => x.VendorName == _editPaymentNote.VendorName).VendorId,
                         PaymentNoteYear = PaymentNoteYear,
                         FkVendorDetailId = _editPaymentNote.FkVendorDetailId,
-                        PaymentNoteId = PaymentNoteId
+                        PaymentNoteId = Convert.ToInt32(GetLastNumberAfterLastSlash(PaymentNoteNo ?? ""))
                     };
                     await _venderPaymentNotesBusinessLogic.EditUpdatePaymentNotes(payment);
 
@@ -432,9 +415,9 @@ namespace VMA.MVVM.ViewModels.Add
             if (_editPaymentNote != null)
             {
                 //PaymentNoteId = "";
-                PaymentNoteId = countOfnotes?.OrderByDescending(x => x.PaymentNoteId)?.ToList()?.FirstOrDefault()?.PaymentNoteId + 1;
+                PaymentNoteId = countOfnotes?.OrderByDescending(x => x.PaymentNoteNo)?.ToList()?.FirstOrDefault()?.PaymentNoteId + 1;
                 PaymentNoteYear = _editPaymentNote.PaymentNoteYear;
-                PaymentNoteNo = IncrementNoteId(lastPaymentNote, countOfnotes?.OrderByDescending(x => x.PaymentNoteId)?.ToList()?.FirstOrDefault()?.PaymentNoteId + 1);
+                PaymentNoteNo = IncrementNoteId(lastPaymentNote, Convert.ToInt32(GetLastNumberAfterLastSlash(lastPaymentNote ?? ""))+1);
                 PaymentNoteDate = Convert.ToDateTime(_editPaymentNote.PaymentNoteDate);
                 SelectedVendorName = _editPaymentNote.VendorName;// VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName ?? "";
                 SelctedVendorServiceName = _editPaymentNote.VendorServiceName;
