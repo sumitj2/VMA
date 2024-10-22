@@ -110,7 +110,7 @@ namespace VMA.MVVM.ViewModels.Add
                 _SelectedVendorModel = value;
                 OnPropertyChanged(nameof(SelectedVendorModel));
                 _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId, PaymentNoteYear);
-              
+
 
 
             }
@@ -342,6 +342,12 @@ namespace VMA.MVVM.ViewModels.Add
 
                 if (SaveButtonName == GeneralConstants.Update)
                 {
+                    var findDUblicate = _paymentNotesViewModel.VendorPaymentNotes.FirstOrDefault(x => x.PaymentNoteNo == PaymentNoteNo);
+                    if (findDUblicate!=null)
+                    {
+                        SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Dublicate Payment Note No found. Payment note cannot be saved", false, true);
+                        return;
+                    }
                     VenderPaymentNoteModel payment = new()
                     {
                         LastUpdateBy = UserAccountModel.Username,
@@ -411,13 +417,13 @@ namespace VMA.MVVM.ViewModels.Add
         private async Task PopulateValues()
         {
             var countOfnotes = await _venderPaymentNotesBusinessLogic.GetAllPaymentNotes().ConfigureAwait(true);
-            var lastPaymentNote = countOfnotes?.OrderByDescending(x => x.CreatedDate).OrderByDescending(x => x.LastUpdatedDate)?.ToList()?.FirstOrDefault()?.PaymentNoteNo;
+            //var lastPaymentNote = countOfnotes?.OrderByDescending(x => x.CreatedDate).OrderByDescending(x => x.LastUpdatedDate)?.ToList()?.FirstOrDefault()?.PaymentNoteNo;
             if (_editPaymentNote != null)
             {
                 //PaymentNoteId = "";
-                PaymentNoteId = countOfnotes?.OrderByDescending(x => x.PaymentNoteNo)?.ToList()?.FirstOrDefault()?.PaymentNoteId + 1;
+                PaymentNoteId = countOfnotes?.OrderByDescending(x => x.PaymentNoteId)?.ToList()?.FirstOrDefault()?.PaymentNoteId + 1;
                 PaymentNoteYear = _editPaymentNote.PaymentNoteYear;
-                PaymentNoteNo = IncrementNoteId(lastPaymentNote, Convert.ToInt32(GetLastNumberAfterLastSlash(lastPaymentNote ?? ""))+1);
+                PaymentNoteNo = IncrementNoteId(countOfnotes?.OrderByDescending(x => x.PaymentNoteId)?.ToList()?.FirstOrDefault()?.PaymentNoteNo ?? "", Convert.ToInt32(GetLastNumberAfterLastSlash(countOfnotes?.OrderByDescending(x => x.PaymentNoteId)?.ToList()?.FirstOrDefault()?.PaymentNoteNo ?? "")) + 1);
                 PaymentNoteDate = Convert.ToDateTime(_editPaymentNote.PaymentNoteDate);
                 SelectedVendorName = _editPaymentNote.VendorName;// VendorModels?.FirstOrDefault(x => x.VendorId == _editPaymentNote.FkVendorId)?.VendorName ?? "";
                 SelctedVendorServiceName = _editPaymentNote.VendorServiceName;
