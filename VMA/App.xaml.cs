@@ -106,12 +106,29 @@ namespace VMA
             base.OnStartup(e);
 
             string currentDirectory = Directory.GetCurrentDirectory() + "\\Logs\\";
+            if (!Directory.Exists(currentDirectory))
+            {
+                Directory.CreateDirectory(currentDirectory);
+            }
 
             // Configure Serilog
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.File(currentDirectory, rollingInterval: RollingInterval.Day)
                 .CreateLogger();
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()                
+                .WriteTo.File(currentDirectory,
+                    rollingInterval: RollingInterval.Day, // Creates a new file daily
+                    fileSizeLimitBytes: 10485760, // 10MB size limit
+                    rollOnFileSizeLimit: true, // Rolls over the file when size limit is reached
+                    retainedFileCountLimit: 7, // Keeps 7 days worth of logs
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            // Example log
+            Log.Information("Application started");
 
             // Handle UI thread exceptions
             this.DispatcherUnhandledException += App_DispatcherUnhandledException;
@@ -137,6 +154,11 @@ namespace VMA
                     superAdmin!.Show();
                 }
             };
+        }
+        protected override void OnExit(ExitEventArgs e)
+        {
+            Log.CloseAndFlush(); // Flushes and disposes Serilog when the app closes
+            base.OnExit(e);
         }
         private T? GetPropertyValue<T>(object dataContext, string propertyName)
         {
