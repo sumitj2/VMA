@@ -301,10 +301,11 @@ namespace VMA.MVVM.ViewModels.Add
         }
 
         string errorMsg = "";
+
+        bool validData;
+
         private bool ValidatePaymentNote()
         {
-            bool validData;
-
             if (SelectedVendorModel == null)
             {
                 validData = false;
@@ -314,9 +315,28 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 validData = true;
             }
+            if (SelectedVendorDetailService == null) 
+            {
+                validData = false;
+                errorMsg += nameof(SelectedVendorDetailService);
+            }
+            else 
+            {
+                validData = true;
+            }
             if (PaymentNoteDate == null)
             {
                 errorMsg += ", " + nameof(PaymentNoteDate);
+
+                validData = false;
+            }
+            else
+            {
+                validData = true;
+            }
+            if(PaymentNoteNo==null)
+            {
+                errorMsg += ", " + nameof(PaymentNoteNo);
 
                 validData = false;
             }
@@ -369,24 +389,27 @@ namespace VMA.MVVM.ViewModels.Add
                 }
                 else
                 {
-                    VenderPaymentNoteModel paymentNote = new()
+                    if (validData)
                     {
-                        PaymentNoteNo = PaymentNoteNo ?? "",
-                        PaymentNoteDate = PaymentNoteDate.ToString(),
-                        CreatedBy = UserAccountModel.Username,
-                        CreatedDate = DateTime.UtcNow,
-                        IsActive = true,
-                        FkVendorId = SelectedVendorModel.VendorId,
-                        PaymentNoteYear = PaymentNoteYear,
-                        FkVendorDetailId = SelectedVendorDetailService.VendorDetailId,
-                        PaymentNoteId = PaymentNoteId,
-                    };
-                    await _venderPaymentNotesBusinessLogic.AddPaymentNotes(paymentNote);
+                        VenderPaymentNoteModel paymentNote = new()
+                        {
+                            PaymentNoteNo = PaymentNoteNo ?? "",
+                            PaymentNoteDate = PaymentNoteDate.ToString(),
+                            CreatedBy = UserAccountModel.Username,
+                            CreatedDate = DateTime.UtcNow,
+                            IsActive = true,
+                            FkVendorId = SelectedVendorModel.VendorId,
+                            PaymentNoteYear = PaymentNoteYear,
+                            FkVendorDetailId = SelectedVendorDetailService.VendorDetailId,
+                            PaymentNoteId = PaymentNoteId,
+                        };
+                        await _venderPaymentNotesBusinessLogic.AddPaymentNotes(paymentNote);
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor payment saved Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
+                        Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Vendor payment saved Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.PaymentNoteDataAdded, true);
+                        SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.PaymentNoteDataAdded, true);
+                    }
                 }
 
                 await HidePaymentNoteForm(this);

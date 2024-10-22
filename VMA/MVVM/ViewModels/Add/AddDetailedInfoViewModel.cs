@@ -45,9 +45,9 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 _selectedVendorDetailService = value;
                 OnPropertyChanged(nameof(SelectedVendorDetailService));
-                var res = _detailsLsit.FirstOrDefault(x => x.VendorServiceName == _selectedVendorDetailService?.VendorServiceName && 
-                                                      x.FkVendorId== _selectedVendorDetailService.FkVendorId &&
-                                                      x.DetailsYear==ServiceYear);
+                var res = _detailsLsit.FirstOrDefault(x => x.VendorServiceName == _selectedVendorDetailService?.VendorServiceName &&
+                                                      x.FkVendorId == _selectedVendorDetailService.FkVendorId &&
+                                                      x.DetailsYear == ServiceYear);
                 var msg1 = @$"{MessagesContants.VendorDetailMsg} {_selectedVendorDetailService?.VendorServiceName}";
 
                 if (res != null)
@@ -622,22 +622,33 @@ namespace VMA.MVVM.ViewModels.Add
                 SlaExpireDate = DateOnly.MinValue;
             });
         }
+        bool validData;
         string errorMsg = "";
         private bool ValidateVendorServiceDetails()
         {
-            return true;
-            //bool validData;
+            //  return true;
 
 
-            //if (SelectedVendorDetailService == null)
-            //{
-            //    validData = false;
-            //    errorMsg += nameof(SelectedVendorDetailService);
-            //}
-            //else
-            //{
-            //    validData = true;
-            //}
+
+            if (SelectedVendorDetailService == null)
+            {
+                validData = false;
+                errorMsg += nameof(SelectedVendorDetailService);
+            }
+            else
+            {
+                validData = true;
+            }
+
+            if (SantionedNoteNo == null)
+            {
+                validData = false;
+                errorMsg += nameof(SelectPaymentType);
+            }
+            else
+            {
+                validData = true;
+            }
             //if (SelectedDepartment == null)
             //{
             //    validData = false;
@@ -656,15 +667,15 @@ namespace VMA.MVVM.ViewModels.Add
             //{
             //    validData = true;
             //}
-            //if (SelectPaymentType == null)
-            //{
-            //    validData = false;
-            //    errorMsg += nameof(SelectPaymentType);
-            //}
-            //else
-            //{
-            //    validData = true;
-            //}
+            if (SelectPaymentType == null)
+            {
+                validData = false;
+                errorMsg += nameof(SelectPaymentType);
+            }
+            else
+            {
+                validData = true;
+            }
 
             //if (SantionedDate == DateOnly.MinValue)
             //{
@@ -675,28 +686,31 @@ namespace VMA.MVVM.ViewModels.Add
             //{
             //    validData = true;
             //}
+            if (ComboxPaymentMethods.FirstOrDefault(x => x.SearchId == 5) != null)
+            {
+                if (ServiceSantionAmount == null || ServiceSantionAmount == 0 || ServiceSantionAmount.Value == 0)
+                {
+                    validData = false;
+                    errorMsg += nameof(ServiceSantionAmount);
+                }
+                else
+                {
+                    validData = true;
+                }
+            }
 
-            //if (ServiceSantionAmount == null || ServiceSantionAmount == 0 || ServiceSantionAmount.Value == 0)
-            //{
-            //    validData = false;
-            //    errorMsg += nameof(ServiceSantionAmount);
-            //}
-            //else
-            //{
-            //    validData = true;
-            //}
+            if (SelectedSanction == null)
+            {
+                validData = false;
+                errorMsg += nameof(SelectedSanction);
+            }
+            else
+            {
+                validData = true;
+            }
+            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning,"Please fill required field : "+errorMsg, false, true);
 
-            //if (SelectedSanction == null)
-            //{
-            //    validData = false;
-            //    errorMsg += nameof(SelectedSanction);
-            //}
-            //else
-            //{
-            //    validData = true;
-            //}
-
-            //return validData;
+            return validData;
         }
         public async Task GetAllConfigurations()
         {
@@ -760,9 +774,9 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     VendorDetailModel vendorModel = new()
                     {
-                        ServiceType = selectedExpenditure.ExpenditureName,
-                        ServiceSantionedBy = SelectedSanction.SanctionName,
-                        VendorDetailCategory = SelectedDepartment.DepartmentName,
+                        ServiceType = selectedExpenditure?.ExpenditureName,
+                        ServiceSantionedBy = SelectedSanction?.SanctionName,
+                        VendorDetailCategory = SelectedDepartment?.DepartmentName,
 
                         IsActive = true,
                         QuantityOfUnit = QuantityOfUnit,
@@ -776,18 +790,18 @@ namespace VMA.MVVM.ViewModels.Add
                         DetailsYear = ServiceYear,
                         IsAmc = IsAmcYes != true ? false : true,
                         SantionedDate = SantionedDate,
-                        VendorServiceName = _vendorDetailViewModel.VendorServiceName,
-                        VendorName = _vendorDetailViewModel.VendorName,
+                        VendorServiceName = _vendorDetailViewModel?.VendorServiceName,
+                        VendorName = _vendorDetailViewModel?.VendorName,
                         SantionedNoteNo = SantionedNoteNo,
-                        VendorServiceId = _vendorDetailViewModel.VendorServiceId,
-                        FkVendorId = _vendorDetailViewModel.VendorId,
-                        FkVendorServiceId = _vendorDetailViewModel.VendorServiceId,
-                        VendorId = _vendorDetailViewModel.VendorId,
-                        VendorCode = _vendorDetailViewModel.VendorCode,
+                        VendorServiceId = _vendorDetailViewModel?.VendorServiceId,
+                        FkVendorId = _vendorDetailViewModel?.VendorId,
+                        FkVendorServiceId = _vendorDetailViewModel?.VendorServiceId,
+                        VendorId = _vendorDetailViewModel?.VendorId,
+                        VendorCode = _vendorDetailViewModel?.VendorCode,
                         LastUpdateBy = UserAccountModel.Username,
-                        VendorDetailId = _vendorDetailViewModel.VendorDetailId,
+                        VendorDetailId = _vendorDetailViewModel?.VendorDetailId,
                         LastUpdatedDate = DateTime.UtcNow,
-                        SlaexpireDate=SlaExpireDate
+                        SlaexpireDate = SlaExpireDate
                     };
                     await _vendorDetailsBusinessLogic.EditUpdateVendorDetails(vendorModel);
 
@@ -797,41 +811,44 @@ namespace VMA.MVVM.ViewModels.Add
                 }
                 else
                 {
-                    VendorDetailModel vendorModel = new()
+                    if (validData)
                     {
-                        ServiceType = selectedExpenditure.ExpenditureName,
-                        ServiceSantionedBy = SelectedSanction.SanctionName,
-                        VendorDetailCategory = SelectedDepartment.DepartmentName,
+                        VendorDetailModel vendorModel = new()
+                        {
+                            ServiceType = selectedExpenditure?.ExpenditureName,
+                            ServiceSantionedBy = SelectedSanction?.SanctionName,
+                            VendorDetailCategory = SelectedDepartment?.DepartmentName,
 
-                        IsActive = true,
-                        CreatedBy = UserAccountModel.Username,
-                        CreatedDate = DateTime.UtcNow,
-                        QuantityOfUnit = QuantityOfUnit,
-                        ServiceSantionAmount = ServiceSantionAmount,
-                        ServiceEndDate = ServiceEndDate,
-                        RatePerUnit = RatePerUnit,
+                            IsActive = true,
+                            CreatedBy = UserAccountModel.Username,
+                            CreatedDate = DateTime.UtcNow,
+                            QuantityOfUnit = QuantityOfUnit,
+                            ServiceSantionAmount = ServiceSantionAmount,
+                            ServiceEndDate = ServiceEndDate,
+                            RatePerUnit = RatePerUnit,
 
 
-                        ServiceStartDate = ServiceStartDate,
-                        ServicePaymentType = SelectPaymentType?.NameSearch,
-                        DetailsYear = ServiceYear,
-                        IsAmc = IsAmcYes != true ? false : true,
-                        SantionedDate = SantionedDate,
-                        VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
-                        VendorName = SelectedVendorModel.VendorName,
-                        SantionedNoteNo = SantionedNoteNo,
-                        VendorServiceId = SelectedVendorDetailService?.VendorServiceId,
-                        FkVendorId = SelectedVendorModel.VendorId,
-                        FkVendorServiceId = SelectedVendorDetailService?.VendorServiceId,
-                        VendorId = SelectedVendorModel.VendorId,
-                        VendorCode = SelectedVendorModel.VendorCode,
-                        SlaexpireDate = SlaExpireDate
-                    };
-                    await _vendorDetailsBusinessLogic.AddVendorDetails(vendorModel);
+                            ServiceStartDate = ServiceStartDate,
+                            ServicePaymentType = SelectPaymentType?.NameSearch,
+                            DetailsYear = ServiceYear,
+                            IsAmc = IsAmcYes != true ? false : true,
+                            SantionedDate = SantionedDate,
+                            VendorServiceName = SelectedVendorDetailService?.VendorServiceName,
+                            VendorName = SelectedVendorModel?.VendorName,
+                            SantionedNoteNo = SantionedNoteNo,
+                            VendorServiceId = SelectedVendorDetailService?.VendorServiceId,
+                            FkVendorId = SelectedVendorModel?.VendorId,
+                            FkVendorServiceId = SelectedVendorDetailService?.VendorServiceId,
+                            VendorId = SelectedVendorModel?.VendorId,
+                            VendorCode = SelectedVendorModel?.VendorCode,
+                            SlaexpireDate = SlaExpireDate
+                        };
+                        await _vendorDetailsBusinessLogic.AddVendorDetails(vendorModel);
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Saved Vendor service details Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
+                        Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Saved Vendor service details Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.SuccessVendorDetailsAdded, true);
+                        SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.SuccessVendorDetailsAdded, true);
+                    }
                 }
 
                 await HideDetailInfoForm(this);
