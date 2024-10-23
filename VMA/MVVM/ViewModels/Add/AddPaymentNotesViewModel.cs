@@ -310,6 +310,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 validData = false;
                 errorMsg += nameof(SelectedVendorModel);
+                return false;
             }
             else
             {
@@ -319,6 +320,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 validData = false;
                 errorMsg += nameof(SelectedVendorDetailService);
+                return false;
             }
             else 
             {
@@ -327,8 +329,8 @@ namespace VMA.MVVM.ViewModels.Add
             if (PaymentNoteDate == null)
             {
                 errorMsg += ", " + nameof(PaymentNoteDate);
-
                 validData = false;
+                return false;
             }
             else
             {
@@ -337,8 +339,8 @@ namespace VMA.MVVM.ViewModels.Add
             if(PaymentNoteNo==null)
             {
                 errorMsg += ", " + nameof(PaymentNoteNo);
-
                 validData = false;
+                return false;
             }
             else
             {

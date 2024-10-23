@@ -634,6 +634,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 validData = false;
                 errorMsg += nameof(SelectedVendorDetailService);
+                return false;
             }
             else
             {
@@ -644,6 +645,8 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 validData = false;
                 errorMsg += nameof(SelectPaymentType);
+                return false;
+              
             }
             else
             {
@@ -671,6 +674,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 validData = false;
                 errorMsg += nameof(SelectPaymentType);
+                return false;
             }
             else
             {
@@ -692,6 +696,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     validData = false;
                     errorMsg += nameof(ServiceSantionAmount);
+                    return false;
                 }
                 else
                 {
@@ -699,17 +704,17 @@ namespace VMA.MVVM.ViewModels.Add
                 }
             }
 
-            if (SelectedSanction == null)
+            if (SantionedNoteNo == null)
             {
                 validData = false;
-                errorMsg += nameof(SelectedSanction);
+                errorMsg += nameof(SantionedNoteNo);
+                return false;
             }
             else
             {
                 validData = true;
             }
-            SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Warning,"Please fill required field : "+errorMsg, false, true);
-
+           
             return validData;
         }
         public async Task GetAllConfigurations()

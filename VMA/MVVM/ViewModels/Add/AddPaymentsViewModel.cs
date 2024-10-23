@@ -777,6 +777,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 errorMsg += nameof(SelectedVendorModel);
                 validData = false;
+                return false;
             }
             else
             {
@@ -787,6 +788,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 errorMsg += ", " + nameof(SelectedVendorDetailService);
                 validData = false;
+                return false;
             }
             else
             {
@@ -799,6 +801,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     errorMsg += ", " + nameof(SelectedGSTModel);
                     validData = false;
+                    return false;
                 }
                 else
                 {
@@ -812,6 +815,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     errorMsg += " ," + nameof(BankBranchName);
                     validData = false;
+                    return false;
                 }
                 else
                 {
@@ -825,6 +829,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     errorMsg += " ," + nameof(VendorPaymentTdsamountNew);
                     validData = false;
+                    return false;
                 }
                 else
                 {
@@ -835,6 +840,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 errorMsg += " ," + nameof(VendorPaymentDate);
                 validData = false;
+                return false;
             }
             else
             {
@@ -844,6 +850,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 errorMsg += " ," + nameof(InvoiceNumber);
                 validData = false;
+                return false;
             }
             else
             {
@@ -854,6 +861,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 errorMsg += " ," + nameof(InvoiceDate);
                 validData = false;
+                return false;
             }
             else
             {
