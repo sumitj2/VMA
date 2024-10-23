@@ -39,7 +39,7 @@ namespace BusinessLogic.VMA
             }
 
             var document = new Document();
-            var section = document.AddSection();
+            var section = document?.AddSection();
 
             // Page setup for better centering
             section.PageSetup.LeftMargin = "2cm";
@@ -85,12 +85,12 @@ namespace BusinessLogic.VMA
             row.Format.Font.Bold = true;
             row.Shading.Color = Colors.LightGray;
 
-            row.Cells[0].AddParagraph("Sr No");
-            row.Cells[1].AddParagraph("Vendor Name");
-            row.Cells[2].AddParagraph("Service Name");
-            row.Cells[3].AddParagraph("Sanctioned Amt");
-            row.Cells[4].AddParagraph("Paid Amt");
-            row.Cells[5].AddParagraph("Pending Amt");
+            row.Cells[0]?.AddParagraph("Sr No");
+            row.Cells[1]?.AddParagraph("Vendor Name");
+            row.Cells[2]?.AddParagraph("Service Name");
+            row.Cells[3]?.AddParagraph("Sanctioned Amt");
+            row.Cells[4]?.AddParagraph("Paid Amt");
+            row.Cells[5]?.AddParagraph("Pending Amt");
 
             int count = 1;
             decimal? santionedAmtTotal = 0;
@@ -101,12 +101,12 @@ namespace BusinessLogic.VMA
             foreach (var item in Data)
             {
                 row = table.AddRow();
-                row.Cells[0].AddParagraph(count.ToString());
-                row.Cells[1].AddParagraph(item?.VendorName);
-                row.Cells[2].AddParagraph(item?.VendorServiceName);
-                row.Cells[3].AddParagraph(item?.ServiceSantionAmount?.ToString("N2") ?? "0");
-                row.Cells[4].AddParagraph(item?.TotalVendorPaymentAmount?.ToString("N2") ?? "0");
-                row.Cells[5].AddParagraph(item?.RemainingAmount?.ToString("N2") ?? "0");
+                row.Cells[0]?.AddParagraph(count.ToString());
+                row.Cells[1]?.AddParagraph(item?.VendorName ?? "");
+                row.Cells[2]?.AddParagraph(item?.VendorServiceName ?? "");
+                row.Cells[3]?.AddParagraph(item?.ServiceSantionAmount?.ToString("N2") ?? "0");
+                row.Cells[4]?.AddParagraph(item?.TotalVendorPaymentAmount?.ToString("N2") ?? "0");
+                row.Cells[5]?.AddParagraph(item?.RemainingAmount?.ToString("N2") ?? "0");
 
                 count++;
                 santionedAmtTotal += item?.ServiceSantionAmount ?? 0;
@@ -116,14 +116,14 @@ namespace BusinessLogic.VMA
 
             // Add total row
             row = table.AddRow();
-            row.Cells[0].AddParagraph("Total");
+            row.Cells[0]?.AddParagraph("Total");
             row.Cells[1].MergeRight = 1; // Merge Vendor Name and Service Name cells
-            row.Cells[3].AddParagraph(santionedAmtTotal?.ToString("N2"));
-            row.Cells[4].AddParagraph(totalAmountPaid?.ToString("N2"));
-            row.Cells[5].AddParagraph(totalRemainingAmt?.ToString("N2"));
+            row.Cells[3]?.AddParagraph(santionedAmtTotal?.ToString("N2") ?? "");
+            row.Cells[4]?.AddParagraph(totalAmountPaid?.ToString("N2") ?? "");
+            row.Cells[5]?.AddParagraph(totalRemainingAmt?.ToString("N2") ?? "");
 
             // Render the document to PDF
-            var pdfRenderer = new PdfDocumentRenderer(true) { Document = document };
+            PdfDocumentRenderer pdfRenderer = new PdfDocumentRenderer(true) { Document = document };
             pdfRenderer.RenderDocument();
 
             string fileName = Path.Combine(path, $"YearlyReport_{financilaYear}.pdf");
@@ -153,8 +153,14 @@ namespace BusinessLogic.VMA
         {
             List<PDFYearlyData> pdfData = [];
             var payments = await _storeProcedureExecutionRepository.GetYearlyReportDataAsync(financilaYear).ConfigureAwait(true);
-
-            GeneratePdf(payments, path, financilaYear);
+            try
+            {
+                GeneratePdf(payments, path, financilaYear);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("While GenerateYearlyReport-> GeneratePDF exception occurs : " + ex);
+            }
         }
     }
 }

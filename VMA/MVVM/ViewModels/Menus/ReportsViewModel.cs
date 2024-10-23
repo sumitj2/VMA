@@ -267,6 +267,8 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             else
             {
+                Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the Function GenerateYearlyReport for Year: {2}", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name, _vendorPaymentYear));
+
                 await _yearlyReportPDF.GenerateYearlyReport(_vendorPaymentYear, pathWord).ConfigureAwait(true);
             }
         }
@@ -279,7 +281,7 @@ namespace VMA.MVVM.ViewModels.Menus
             }
             else
             {
-                 await _yearlyReportPDF.GenerateMonthlyReport(_vendorPaymentYear, "month_need_to_pass", pathExcel).ConfigureAwait(true);
+                await _yearlyReportPDF.GenerateMonthlyReport(_vendorPaymentYear, "month_need_to_pass", pathExcel).ConfigureAwait(true);
             }
         }
 
@@ -294,13 +296,20 @@ namespace VMA.MVVM.ViewModels.Menus
                 if (SelectedVendorDetailService?.VendorServiceName != null || !IsPaymentTypeYes)
                 {
                     var paymentNoteNo = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorIdAndDetailServiceId(Convert.ToInt32(SelectedVendorModel?.VendorId),Convert.ToInt32(SelectedVendorDetailService?.VendorDetailId), _vendorPaymentYear);
-                    if (IsPaymentTypeYes)
+                    if (paymentNoteNo != null)
                     {
-                        await _paymentNoteInWord.CreateAndOpenWordFile(VendorServiceDetails?.Select(x => x.VendorServiceName).ToList(), From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " , _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo,NoteGenerationDate).ConfigureAwait(true);
+                        if (IsPaymentTypeYes)
+                        {
+                            await _paymentNoteInWord.CreateAndOpenWordFile(VendorServiceDetails?.Select(x => x.VendorServiceName).ToList(), From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " ", _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo?.PaymentNoteNo, NoteGenerationDate).ConfigureAwait(true);
+                        }
+                        else
+                        {
+                            await _paymentNoteInWord.CreateAndOpenWordFile(new List<string>() { SelectedVendorDetailService.VendorServiceName }, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " ", _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo?.PaymentNoteNo, NoteGenerationDate).ConfigureAwait(true);
+                        }
                     }
                     else
                     {
-                        await _paymentNoteInWord.CreateAndOpenWordFile(new List<string>() { SelectedVendorDetailService.VendorServiceName }, From, To, BeforeInvocie + "The summary of the invoice is as under", AfterInvoice + " " , _vendorPaymentYear, pathWord, SelectedVendorModel.VendorName, paymentNoteNo.PaymentNoteNo, NoteGenerationDate).ConfigureAwait(true);
+                        SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Failure, "Payment Note is not generated for this service", false, true);
                     }
                 }
                 else
@@ -324,6 +333,7 @@ namespace VMA.MVVM.ViewModels.Menus
 
         private async Task ExportPaymentNote(Database.VMA.Entities.CustomEntities.ExportPaymentNoteData data)
         {
+            Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Into the function ExportPaymentNote", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
             await _reportExportToExcelPaymentNote.ExportPaymentNotes(_vendorPaymentYear, pathExcel).ConfigureAwait(true);
         }
 
