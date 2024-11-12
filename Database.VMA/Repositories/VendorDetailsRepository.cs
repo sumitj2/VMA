@@ -33,14 +33,16 @@ namespace Database.VMA.Repositories
             return await _context.VendorDetails.Where(x => x.IsActive == true).ToListAsync();
         }
 
-        public async Task<List<VendorDetailsWithService>> GetVendorDetailsWithService()
+        public async Task<List<VendorDetailsWithService>> GetVendorDetailsWithService(string detailsYear)
         {
             var productsWithVendors = from vendorDetail in _context.VendorDetails
                                       join service in _context.VendorServices
                                       on vendorDetail.FkVendorServiceId equals service.VendorServiceId
                                       join vendor in _context.Vendors
                                       on vendorDetail.FkVendorId equals vendor.VendorId
-                                      where service.IsActive == true
+                                      where service.IsActive == true 
+                                       //&& vendorDetail.DetailsYear == detailsYear
+                                      && (detailsYear != null ? vendorDetail.DetailsYear == detailsYear : true)
                                       select new VendorDetailsWithService
                                       {
                                           CreatedBy = vendorDetail.CreatedBy,

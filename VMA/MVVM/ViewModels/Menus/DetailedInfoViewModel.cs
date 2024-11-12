@@ -155,8 +155,8 @@ namespace VMA.MVVM.ViewModels.Menus
             {
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Getting Vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 
-                var details = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
-                VendorServiceDetails = TempVendorServiceDetails = new ObservableCollection<VendorDetailModel>(details);
+                var details = await _vendorDetailsBusinessLogic.GetAllVendorDetails(null).ConfigureAwait(true);
+                VendorServiceDetails = TempVendorServiceDetails = new ObservableCollection<VendorDetailModel>(details.OrderByDescending(x=>x.CreatedDate));
 
                 Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Retreived Vendor service details", this.GetType().Name, MethodBase.GetCurrentMethod().Name));
 

@@ -69,9 +69,9 @@ namespace Database.VMA.Repositories
                 await _vendorDetailsRepository.EditUpdateVendorDetail(detail);
             }
         }
-        public async Task<IEnumerable<VendorDetailModel>> GetAllVendorDetails()
+        public async Task<IEnumerable<VendorDetailModel>> GetAllVendorDetails(string? detailsYear)
         {
-            var repositoryResult = await _vendorDetailsRepository.GetVendorDetailsWithService();
+            var repositoryResult = await _vendorDetailsRepository.GetVendorDetailsWithService(detailsYear);
             IList<VendorDetailModel> result = [];
             if (repositoryResult != null)
             {

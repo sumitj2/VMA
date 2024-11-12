@@ -40,6 +40,6 @@ namespace Database.VMA.Entities.CustomEntities
         public bool? IsAmc { get; set; }
         public string? PaymentType { get; set; }
         public string? Notes { get; set; }
-
+        public int? PaymentNoteId { get; set; }
     }
 }

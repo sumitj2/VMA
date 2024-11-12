@@ -11,7 +11,7 @@ namespace BusinessLogic.Abstraction.VMA.Contract
     {
         public Task AddVendorDetails(VendorDetailModel vendorDetailModel);
         public Task EditUpdateVendorDetails(VendorDetailModel vendorDetailModel);
-        public Task<IEnumerable<VendorDetailModel>> GetAllVendorDetails();
+        public Task<IEnumerable<VendorDetailModel>> GetAllVendorDetails(string detailsYear);
         public Task<VendorDetailModel?> GetVendorDetailsById(int vendorDetailId);
         Task RemoveVendorDetails(VendorDetailModel VendorPaymentModel);
 

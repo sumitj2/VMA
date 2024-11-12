@@ -286,7 +286,7 @@ namespace VMA.MVVM.ViewModels.Add
                 if (SelectedVendorModel != null)
                 {
                     OnPropertyChanged(nameof(SelectedVendorModel));
-                    _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId);
+                    _ = LoadVendorServiceDetails(SelectedVendorModel.VendorId,VendorPaymentYear);
                     PaymentNoteNo = "";
                 }
             }
@@ -317,7 +317,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     OnPropertyChanged(nameof(SelectedVendorDetailService));
 
-                    _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId), Convert.ToInt32(SelectedVendorDetailService.VendorDetailId));
+                    _ = LoadVendorPaymentNotes(Convert.ToInt32(SelectedVendorDetailService.VendorId), Convert.ToInt32(SelectedVendorDetailService.VendorDetailId),VendorPaymentYear);
                     SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Alert, "Please wait...", true);
                     _ = GetAmountToBepaid();
                 }
@@ -768,14 +768,16 @@ namespace VMA.MVVM.ViewModels.Add
             IsTDSTextBoxVisible = false;
         }
         string errorMsg = "";
+        bool validData;
         private bool ValidatePAymentDetails()
         {
-            bool validData;
+            
 
             if (SelectedVendorModel == null)
             {
                 errorMsg += nameof(SelectedVendorModel);
                 validData = false;
+                return false;
             }
             else
             {
@@ -786,6 +788,7 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 errorMsg += ", " + nameof(SelectedVendorDetailService);
                 validData = false;
+                return false;
             }
             else
             {
@@ -798,6 +801,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     errorMsg += ", " + nameof(SelectedGSTModel);
                     validData = false;
+                    return false;
                 }
                 else
                 {
@@ -811,6 +815,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     errorMsg += " ," + nameof(BankBranchName);
                     validData = false;
+                    return false;
                 }
                 else
                 {
@@ -824,6 +829,7 @@ namespace VMA.MVVM.ViewModels.Add
                 {
                     errorMsg += " ," + nameof(VendorPaymentTdsamountNew);
                     validData = false;
+                    return false;
                 }
                 else
                 {
@@ -834,6 +840,28 @@ namespace VMA.MVVM.ViewModels.Add
             {
                 errorMsg += " ," + nameof(VendorPaymentDate);
                 validData = false;
+                return false;
+            }
+            else
+            {
+                validData = true;
+            }
+            if (InvoiceNumber == null)
+            {
+                errorMsg += " ," + nameof(InvoiceNumber);
+                validData = false;
+                return false;
+            }
+            else
+            {
+                validData = true;
+            }
+
+            if(InvoiceDate==null)
+            {
+                errorMsg += " ," + nameof(InvoiceDate);
+                validData = false;
+                return false;
             }
             else
             {
@@ -908,47 +936,50 @@ namespace VMA.MVVM.ViewModels.Add
                 }
                 else
                 {
-                    VendorPaymentModel payment = new()
+                    if (validData)
                     {
-                        PaymentYear = VendorPaymentYear,
-                        FkNoteId = PaymentNoteDetails?.NoteId.Value,//
-                        FkVendorDetailId = SelectedVendorDetailService.VendorDetailId,
-                        Notes = VendorPaymentNotesDetails,
+                        VendorPaymentModel payment = new()
+                        {
+                            PaymentYear = VendorPaymentYear,
+                            FkNoteId = PaymentNoteDetails?.NoteId.Value,//
+                            FkVendorDetailId = SelectedVendorDetailService.VendorDetailId,
+                            Notes = VendorPaymentNotesDetails,
 
-                        VendorPaymentDate = VendorPaymentDate.Value,
-                        VendorPaymentAmount = VendorPaymentAmount,
-                        VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
+                            VendorPaymentDate = VendorPaymentDate.Value,
+                            VendorPaymentAmount = VendorPaymentAmount,
+                            VendorPaymentTotalAmountPaid = VendorPaymentTotalAmountPaid,
 
-                        VendorPaymentIsGst = IsGSTDetailsVisible,
-                        FkGstmasterSrNo = SelectedGSTModel != null ? SelectedGSTModel.SrNo : 0,
-                        VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
-                        IsPaymentForBranch = IsBranchNameVisible,
-                        BankBranchName = IsBranchNameVisible ? BankBranchName : null,
+                            VendorPaymentIsGst = IsGSTDetailsVisible,
+                            FkGstmasterSrNo = SelectedGSTModel != null ? SelectedGSTModel.SrNo : 0,
+                            VendorPaymentIsTdsapplicable = IsTDSTextBoxVisible,
+                            IsPaymentForBranch = IsBranchNameVisible,
+                            BankBranchName = IsBranchNameVisible ? BankBranchName : null,
 
-                        VendorPaymentCgst = IsGSTDetailsVisible ? VendorPaymentCgst : 0,
-                        VendorPaymentSgst = IsGSTDetailsVisible ? VendorPaymentSgst : 0,
-                        VendorPaymentIgst = IsGSTDetailsVisible ? VendorPaymentIgst : 0,
+                            VendorPaymentCgst = IsGSTDetailsVisible ? VendorPaymentCgst : 0,
+                            VendorPaymentSgst = IsGSTDetailsVisible ? VendorPaymentSgst : 0,
+                            VendorPaymentIgst = IsGSTDetailsVisible ? VendorPaymentIgst : 0,
 
-                        InvoiceDate = InvoiceDate,
-                        InvoiceNumber = InvoiceNumber,
-                        InvoiceParticulars = InvoiceParticulars,
+                            InvoiceDate = InvoiceDate,
+                            InvoiceNumber = InvoiceNumber,
+                            InvoiceParticulars = InvoiceParticulars,
 
-                        PaymentCode = "",
+                            PaymentCode = "",
 
-                        VendorPaymentRtgsDate = VendorPaymentRtgsDate,
-                        VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
-                        VendorPaymentUtrnumber = VendorPaymentUtrnumber,
-                        VendorPaymentTdsamount = IsTDSTextBoxVisible ? Convert.ToDecimal(VendorPaymentTdsamountNew) : 0,
+                            VendorPaymentRtgsDate = VendorPaymentRtgsDate,
+                            VendorPaymentRtgsAmount = VendorPaymentRtgsAmount,
+                            VendorPaymentUtrnumber = VendorPaymentUtrnumber,
+                            VendorPaymentTdsamount = IsTDSTextBoxVisible ? Convert.ToDecimal(VendorPaymentTdsamountNew) : 0,
 
-                        CreatedBy = UserAccountModel.Username,
-                        CreatedDate = DateTime.UtcNow,
-                        IsActive = true,
-                    };
-                    await _vendorPaymentBusinessLogic.AddVendorPayment(payment);
+                            CreatedBy = UserAccountModel.Username,
+                            CreatedDate = DateTime.UtcNow,
+                            IsActive = true,
+                        };
+                        await _vendorPaymentBusinessLogic.AddVendorPayment(payment);
 
-                    Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Payment Details Added Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
+                        Log.Logger.Information(string.Format("Class: {0}, Method: {1} - Payment Details Added Successfully", this.GetType().Name, MethodBase.GetCurrentMethod()?.Name));
 
-                    SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.PaymentNoteDataAdded, true);
+                        SuccessPopupViewModel.Instance.ShowPopup(Enums.NotificationType.Success, MessagesContants.PaymentNoteDataAdded, true);
+                    }
                 }
 
                 await HidePaymentForm(this);
@@ -1058,9 +1089,9 @@ namespace VMA.MVVM.ViewModels.Add
 
         #region Combobox load vendors and services on combo box selection 
 
-        private async Task LoadVendorPaymentNotes(int vendorId, int serviceDetailId)
+        private async Task LoadVendorPaymentNotes(int vendorId, int serviceDetailId, string paymentNoteYear)
         {
-            var paymentNotesDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorIdAndDetailServiceId(vendorId, serviceDetailId).ConfigureAwait(true);
+            var paymentNotesDetails = await _venderPaymentNotesBusinessLogic.GetPaymentNoteByVendorIdAndDetailServiceId(vendorId, serviceDetailId,paymentNoteYear).ConfigureAwait(true);
             if (paymentNotesDetails != null)
             {
                 PaymentNoteDetails = paymentNotesDetails;
@@ -1077,9 +1108,9 @@ namespace VMA.MVVM.ViewModels.Add
         /// Combobox load Vendor Service Name on selection of Vendor
         /// </summary>
         /// <returns></returns>
-        private async Task LoadVendorServiceDetails(int vendorId)
+        private async Task LoadVendorServiceDetails(int vendorId, string detailsYear)
         {
-            var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails().ConfigureAwait(true);
+            var vendorServiceDetails = await _vendorDetailsBusinessLogic.GetAllVendorDetails(detailsYear).ConfigureAwait(true);
             VendorServiceDetails = new ObservableCollection<VendorDetailModel>(vendorServiceDetails.Where(x => x.VendorId == vendorId));
         }
 
