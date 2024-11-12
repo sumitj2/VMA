@@ -117,8 +117,8 @@ namespace BusinessLogic.VMA
                 worksheet.Cell(1, 6).Value = "Service_Name";
                 worksheet.Cell(1, 7).Value = "Sanctioned Amount";
                 worksheet.Cell(1, 8).Value = "Amount Due";
-                worksheet.Cell(1, 9).Value = "Period";
-                worksheet.Cell(1, 10).Value = "Period Amount Paid";
+                worksheet.Cell(1, 9).Value = "Installments";
+                worksheet.Cell(1, 10).Value = "Installment Amount Paid";
                 worksheet.Cell(1, 11).Value = "Payment Date";
                 worksheet.Cell(1, 12).Value = "Total Amount Paid Till Now";
                 worksheet.Cell(1, 13).Value = "Invoice_Number";
@@ -172,19 +172,49 @@ namespace BusinessLogic.VMA
                             }
                             else
                             {
+                                var previousValueCell = worksheet.Cell(counter + 2 - 1, 8);
+                                decimal previousValueNew = 0;
+
+                                if (previousValueCell.TryGetValue(out double numberPrevious))
+                                {
+                                    previousValueNew = (decimal)numberPrevious;
+                                }
+                                else
+                                {
+                                    // Handle the case where the previous cell is not a number, log it or assign default value
+                                    previousValueNew = 0;  // Assign default or handle as needed
+                                }
+
                                 worksheet.Cell(counter + 2, 8).Value = i == 0
                                     ? service?.ToList()[i]?.ServiceSantionAmount - service?.ToList()[i]?.VendorPaymentAmount
-                                    : (decimal)worksheet.Cell(counter + 2 - 1, 8)?.Value.GetNumber() - service?.ToList()[i]?.VendorPaymentAmount;
+                                    : previousValueNew - service?.ToList()[i]?.VendorPaymentAmount;
+
                             }
 
-                            worksheet.Cell(counter + 2, 9).Value = (i + 1) + " Period";
+                            worksheet.Cell(counter + 2, 9).Value = (i + 1) + "No Installment";
                             worksheet.Cell(counter + 2, 10).Value = service?.ToList()[i]?.VendorPaymentAmount;
                             worksheet.Cell(counter + 2, 11).Value = service?.ToList()[i]?.VendorPaymentDate?.ToString("dd-MM-yyyy");
 
                             // Total amount paid till now
+                            var previousCell = worksheet.Cell((counter + 2) - 1, 12);
+                            decimal previousValue = 0;
+
+                            if (previousCell.TryGetValue(out double number))  // Check if the previous cell contains a numeric value
+                            {
+                                previousValue = (decimal)number;
+                            }
+                            else
+                            {
+                                // Handle the case where the previous cell is not a number, log it, or use a default value
+                                previousValue = 0;  // Default value or other logic
+                            }
+
+                            decimal vendorPaymentAmount = service?.ToList()[i]?.VendorPaymentAmount ?? 0;
+
                             worksheet.Cell(counter + 2, 12).Value = i == 0
-                                ? service?.ToList()[i]?.VendorPaymentAmount
-                                : (decimal)worksheet.Cell((counter + 2) - 1, 12)?.Value.GetNumber() + service?.ToList()[i]?.VendorPaymentAmount;
+                                ? vendorPaymentAmount
+                                : previousValue + vendorPaymentAmount;
+
 
                             worksheet.Cell(counter + 2, 13).Value = service?.ToList()[i]?.InvoiceNumber;
                             worksheet.Cell(counter + 2, 14).Value = service?.ToList()[i]?.InvoiceDate?.ToString("dd-MM-yyyy");
